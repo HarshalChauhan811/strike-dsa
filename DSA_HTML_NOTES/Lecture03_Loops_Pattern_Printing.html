@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture 03: Loops in C++ & Pattern Printing</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@page {
+    size: A4 portrait;
+    margin: 0;
+    @top-right-corner {
+        content: "Harshal Chauhan";
+        font: 9px 'Poppins', sans-serif;
+        color: #8C8C8C;
+        opacity: 0.3;
+    }
+}
+
+* { box-sizing: border-box; }
+
+body {
+    padding: 22mm 22mm 22mm 28mm;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: #FBFBF9;
+    font-family: 'Poppins', sans-serif;
+    color: #1A1A1A;
+    font-size: 12.5px;
+    line-height: 1.75;
+    margin: 0;
+    background-image: 
+        linear-gradient( rgba(0,0,0,0.008) 1px, transparent 1px ),
+        linear-gradient( 90deg, rgba(0,0,0,0.008) 1px, transparent 1px );
+    background-size: 20px 20px;
+}
+
+h1 {
+    font-size: 44px; font-weight: 700; font-family: 'Poppins', sans-serif;
+    color: #0B1A2E; letter-spacing: -0.5px;
+    border-bottom: 3px solid #B49450; padding-bottom: 10px;
+    margin-bottom: 16px; margin-top: 0; line-height: 1.2;
+}
+
+h2 {
+    font-size: 26px; font-weight: 700; font-family: 'Poppins', sans-serif;
+    color: #B49450; border-bottom: 2px solid #B49450;
+    padding-bottom: 6px; margin-top: 32px; margin-bottom: 16px;
+    line-height: 1.3;
+}
+
+h3 {
+    font-size: 19px; font-weight: 700; font-family: 'Poppins', sans-serif;
+    color: #1A4A4A; margin-top: 22px; margin-bottom: 12px;
+    line-height: 1.3;
+}
+
+h4 {
+    font-size: 15px; font-weight: 600; font-family: 'Poppins', sans-serif;
+    color: #7A3B4A; text-transform: uppercase; letter-spacing: 0.8px;
+    margin-top: 16px; margin-bottom: 8px; line-height: 1.3;
+}
+
+h5 {
+    font-size: 12.5px; font-weight: 600; font-family: 'Poppins', sans-serif;
+    color: #3C3C3C; text-transform: uppercase; letter-spacing: 0.5px;
+    margin-top: 12px; margin-bottom: 6px; line-height: 1.3;
+}
+
+p, li, td, th {
+    font-size: 12.5px; line-height: 1.75; color: #1A1A1A;
+}
+
+.lead {
+    font-size: 13.5px; line-height: 1.8; color: #2C2C2C;
+}
+
+.caption {
+    font-size: 10.5px; font-weight: 500; font-family: 'Poppins', sans-serif;
+    color: #8C8C8C;
+}
+
+.hl {
+    background: #F4E9D8; color: #7A5C3A; font-weight: 600;
+    padding: 2px 6px; border-radius: 3px; font-size: 12.5px;
+}
+
+.golden-insight {
+    border-left: 6px solid #B49450; background: #FDF9F2;
+    border-radius: 10px; padding: 14px 18px; margin: 16px 0;
+    font-weight: 500; font-style: italic; color: #5C4033;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    page-break-inside: avoid;
+}
+.golden-insight strong { color: #B49450; font-style: normal; }
+
+.box {
+    border-radius: 12px; padding: 18px 22px; margin-bottom: 18px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03);
+    page-break-inside: avoid; border-left: 6px solid;
+}
+
+.box-label {
+    display: block; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.8px;
+    margin-bottom: 10px; color: inherit;
+}
+
+.box-pattern { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-pattern .box-label { color: #3A5F80; }
+
+.box-intuition { border-left-color: #C4924A; background: #F9FBF9; }
+.box-intuition .box-label { color: #C4924A; }
+
+.box-workflow { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-workflow .box-label { color: #2E6B5A; }
+
+.box-important { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-important .box-label { color: #A53F3F; }
+
+.box-interview { border-left-color: #5E4B7A; background: #F8F7FC; }
+.box-interview .box-label { color: #5E4B7A; }
+
+.box-takeaway { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-takeaway .box-label { color: #2E6B5A; }
+
+.box-security { border-left-color: #C4924A; background: #FDFBF5; }
+.box-security .box-label { color: #C4924A; }
+
+.box-edge { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-edge .box-label { color: #A53F3F; }
+
+.box-best { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-best .box-label { color: #2E6B5A; }
+
+.box-deploy { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-deploy .box-label { color: #3A5F80; }
+
+.box-css { border-left-color: #C4924A; background: #FFFFFF; }
+.box-css .box-label { color: #C4924A; }
+
+.box-browser { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-browser .box-label { color: #3A5F80; }
+
+.box-config { border-left-color: #5E4B7A; background: #F8F7FC; }
+.box-config .box-label { color: #5E4B7A; }
+
+.box-perf { border-left-color: #0B1A2E; background: #FFFFFF; }
+.box-perf .box-label { color: #0B1A2E; }
+
+.code-block {
+    background: #111824; border: 1px solid #2A3240;
+    border-radius: 12px; padding: 20px 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    page-break-inside: avoid;
+    font-family: 'Fira Code', monospace; font-size: 12px;
+    line-height: 1.5; color: #E0E0E0;
+    white-space: pre-wrap; overflow-x: auto; margin: 16px 0;
+}
+
+.syn-kw { color: #F88C6C; font-weight: bold; }
+.syn-str { color: #9CDCFE; }
+.syn-cm { color: #6A9955; font-style: italic; }
+.syn-fn { color: #DCDCAa; }
+.syn-num { color: #B5CEA8; }
+.syn-op { color: #89DDFF; }
+.syn-type { color: #FFD700; }
+.syn-tag { color: #D67E7E; }
+.syn-attr { color: #9CDCFE; }
+
+.table-wrap {
+    border: 1px solid #E3DED5; border-radius: 12px;
+    overflow: hidden; page-break-inside: avoid; margin: 18px 0;
+}
+
+table {
+    width: 100%; border-collapse: collapse; font-size: 11.5px;
+}
+
+thead tr {
+    background: #F7F3EC; color: #0B1A2E; font-weight: 700;
+    font-size: 11.5px; border-bottom: 2px solid #B49450;
+}
+
+th { padding: 12px 14px; text-align: left; font-weight: 700; }
+
+td { padding: 12px 14px; background: #FFFFFF; border-bottom: 1px solid #F0EDE8; }
+
+tr:nth-child(even) td { background: #FBFBF9; }
+tr:last-child td { border-bottom: none; }
+
+.divider {
+    text-align: center; margin: 30px 0;
+    color: #B49450; font-size: 20px; letter-spacing: 8px;
+}
+
+.diagram {
+    display: flex; align-items: center; justify-content: center;
+    gap: 12px; margin: 18px 0; padding: 18px;
+    background: #F7F7F5; border-radius: 12px;
+    border: 1px solid #E3DED5;
+    page-break-inside: avoid; flex-wrap: wrap;
+}
+
+.diagram-box {
+    padding: 12px 18px; border-radius: 8px;
+    font-weight: 600; font-size: 12px; text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06); min-width: 100px;
+}
+
+.diagram-arrow {
+    font-size: 18px; color: #B49450; font-weight: 700;
+}
+
+.db-navy { background: #0B1A2E; color: #FFFFFF; }
+.db-gold { background: #B49450; color: #FFFFFF; }
+.db-teal { background: #1A4A4A; color: #FFFFFF; }
+.db-white { background: #FFFFFF; color: #0B1A2E; border: 2px solid #B49450; }
+
+ul, ol { margin: 12px 0; padding-left: 24px; }
+li { margin-bottom: 6px; }
+
+.signature {
+    text-align: center; margin-top: 40px;
+    border-top: 1px solid #E3DED5; padding-top: 24px;
+    color: #8C8C8C; font-size: 11px; font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.important-text {
+    background: #FDF0ED; color: #A53F3F;
+    font-weight: 600; padding: 1px 4px; border-radius: 2px;
+}
+
+@media print {
+    body { padding: 22mm 22mm 22mm 28mm; }
+    .box, .code-block, .table-wrap, .golden-insight, .diagram { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<h1>Lecture 03: Loops in C++ & Pattern Printing</h1>
+
+<p class="lead">Loops programming ka sabse powerful tool hain — ye ek hi code block ko baar baar execute karne ki ability dete hain bina repetition likhe. Is lecture mein hum for, while, aur do-while loops ko detail mein samjhenge, saath mein nested loops se pattern printing seekhenge. Ye concepts competitive programming aur real-world coding ke liye foundation hain.</p>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>Introduction to Loops</h2>
+
+<h3>What are Loops</h3>
+
+<p><span class="hl">Loop</span> ek control structure hai jo code ke ek block ko repeatedly execute karta hai jab tak ek specific condition true hai. Real life mein socho — agar aapko ek room ke har tile ko saf karna hai, to aap ek tile saf karoge, phir next, phir next — ye process tab tak repeat hogi jab tak saari tiles saf na ho jaye. Programming mein loop exactly yehi kaam karta hai.</p>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+<strong>Loop = Automated Repetition.</strong> Bina loop ke 100 baar cout likhna padega. Loop se ek baar likho, aur wo 100 baar execute hoga. Ye <span class="hl">DRY Principle</span> (Don't Repeat Yourself) ka core example hai.
+</div>
+
+<h3>Types of Loops in C++</h3>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Loop Type</th><th>Best For</th><th>Condition Check</th><th>Minimum Runs</th></tr>
+</thead>
+<tbody>
+<tr><td><span class="hl">for</span> loop</td><td>Known iteration count</td><td>Before execution</td><td>0 times</td></tr>
+<tr><td><span class="hl">while</span> loop</td><td>Unknown iteration count</td><td>Before execution</td><td>0 times</td></tr>
+<tr><td><span class="hl">do-while</span> loop</td><td>At least once run chahiye</td><td>After execution</td><td>1 time</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>For Loop</h2>
+
+<h3>Syntax and Usage</h3>
+
+<p><span class="hl">for</span> loop tab use hota hai jab aapko pata ho ki kitni baar repeat karna hai. Isme teen parts hote hain: <span class="hl">initialization</span>, <span class="hl">condition</span>, aur <span class="hl">update</span>.</p>
+
+<div class="code-block"><span class="syn-kw">for</span>(initialization; condition; update) {
+    <span class="syn-cm">// code to repeat</span>
+}
+</div>
+
+<h3>How It Works Internally</h3>
+
+<div class="diagram">
+    <div class="diagram-box db-navy">Initialize</div>
+    <div class="diagram-arrow">→</div>
+    <div class="diagram-box db-gold">Check Condition</div>
+    <div class="diagram-arrow">→</div>
+    <div class="diagram-box db-teal">Execute Body</div>
+    <div class="diagram-arrow">→</div>
+    <div class="diagram-box db-white">Update</div>
+    <div class="diagram-arrow">→</div>
+    <div class="diagram-box db-navy">Repeat</div>
+</div>
+
+<p>Execution flow:</p>
+<ol>
+<li><strong>Step 1:</strong> Initialization — loop variable set hota hai (sirf ek baar)</li>
+<li><strong>Step 2:</strong> Condition check — agar true to body execute, false to exit</li>
+<li><strong>Step 3:</strong> Body execute — loop ka actual code chalta hai</li>
+<li><strong>Step 4:</strong> Update — loop variable modify hota hai</li>
+<li><strong>Step 5:</strong> Step 2 par wapas jaate hain — repeat until condition false</li>
+</ol>
+
+<h3>Example: Print 1 to 5</h3>
+
+<div class="code-block"><span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <span class="syn-op">&lt;=</span> <span class="syn-num">5</span>; i<span class="syn-op">++</span>) {
+    cout <span class="syn-op">&lt;&lt;</span> i <span class="syn-op">&lt;&lt;</span> endl;
+}
+</div>
+
+<h3>Step-by-Step Execution</h3>
+
+<div class="code-block">Step 1:  i = <span class="syn-num">1</span>  (initialization)
+Step 2:  Check i <span class="syn-op">&lt;=</span> <span class="syn-num">5</span>?  <span class="syn-kw">true</span>  → Print <span class="syn-num">1</span>
+Step 3:  i<span class="syn-op">++</span>  → i becomes <span class="syn-num">2</span>
+Step 4:  Check i <span class="syn-op">&lt;=</span> <span class="syn-num">5</span>?  <span class="syn-kw">true</span>  → Print <span class="syn-num">2</span>
+Step 5:  i<span class="syn-op">++</span>  → i becomes <span class="syn-num">3</span>
+Step 6:  Check i <span class="syn-op">&lt;=</span> <span class="syn-num">5</span>?  <span class="syn-kw">true</span>  → Print <span class="syn-num">3</span>
+Step 7:  i<span class="syn-op">++</span>  → i becomes <span class="syn-num">4</span>
+Step 8:  Check i <span class="syn-op">&lt;=</span> <span class="syn-num">5</span>?  <span class="syn-kw">true</span>  → Print <span class="syn-num">4</span>
+Step 9:  i<span class="syn-op">++</span>  → i becomes <span class="syn-num">5</span>
+Step 10: Check i <span class="syn-op">&lt;=</span> <span class="syn-num">5</span>?  <span class="syn-kw">true</span>  → Print <span class="syn-num">5</span>
+Step 11: i<span class="syn-op">++</span>  → i becomes <span class="syn-num">6</span>
+Step 12: Check i <span class="syn-op">&lt;=</span> <span class="syn-num">5</span>?  <span class="syn-kw">false</span> → <span class="syn-kw">EXIT</span> LOOP
+</div>
+
+<div class="golden-insight">
+<strong>Key Insight:</strong> for loop mein initialization <span class="hl">sirf ek baar</span> hota hai, condition <span class="hl">har iteration se pehle</span> check hoti hai, aur update <span class="hl">har iteration ke baad</span> hota hai. Ye order hamesha same rehta hai.
+</div>
+
+<h3>Example: Print Even Numbers</h3>
+
+<div class="code-block"><span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">2</span>; i <span class="syn-op">&lt;=</span> <span class="syn-num">10</span>; i <span class="syn-op">+=</span> <span class="syn-num">2</span>) {
+    cout <span class="syn-op">&lt;&lt;</span> i <span class="syn-op">&lt;&lt;</span> <span class="syn-str">" "</span>;
+}
+<span class="syn-cm">// Output: 2 4 6 8 10</span>
+</div>
+
+<p>Isme update step <span class="syn-op">i += 2</span> hai, isliye har iteration mein 2 se badhta hai. Isse even numbers print hote hain.</p>
+
+<h3>Example: Sum of First 10 Numbers</h3>
+
+<div class="code-block"><span class="syn-type">int</span> sum = <span class="syn-num">0</span>;
+
+<span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <span class="syn-op">&lt;=</span> <span class="syn-num">10</span>; i<span class="syn-op">++</span>) {
+    sum = sum <span class="syn-op">+</span> i;  <span class="syn-cm">// sum += i; (same thing)</span>
+}
+
+cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Sum: "</span> <span class="syn-op">&lt;&lt;</span> sum <span class="syn-op">&lt;&lt;</span> endl;
+<span class="syn-cm">// Output: Sum: 55</span>
+</div>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+<strong>Accumulator Pattern:</strong> sum variable ko accumulator kehte hain. Har iteration mein ek value add hoti hai. Isi pattern se factorial, product, average, aur saari aggregate calculations hoti hain. Hamesha accumulator ko <span class="hl">0</span> se initialize karo (multiplication ke case mein <span class="hl">1</span> se).
+</div>
+
+<h3>Example: Multiplication Table</h3>
+
+<div class="code-block"><span class="syn-type">int</span> num = <span class="syn-num">5</span>;
+
+cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Multiplication table of "</span> <span class="syn-op">&lt;&lt;</span> num <span class="syn-op">&lt;&lt;</span> endl;
+
+<span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <span class="syn-op">&lt;=</span> <span class="syn-num">10</span>; i<span class="syn-op">++</span>) {
+    cout <span class="syn-op">&lt;&lt;</span> num <span class="syn-op">&lt;&lt;</span> <span class="syn-str">" x "</span> <span class="syn-op">&lt;&lt;</span> i <span class="syn-op">&lt;&lt;</span> <span class="syn-str">" = "</span> <span class="syn-op">&lt;&lt;</span> (num <span class="syn-op">*</span> i) <span class="syn-op">&lt;&lt;</span> endl;
+}
+</div>
+
+<h3>Example: Reverse Counting</h3>
+
+<div class="code-block"><span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">10</span>; i <span class="syn-op">&gt;=</span> <span class="syn-num">1</span>; i<span class="syn-op">--</span>) {
+    cout <span class="syn-op">&lt;&lt;</span> i <span class="syn-op">&lt;&lt;</span> <span class="syn-str">" "</span>;
+}
+<span class="syn-cm">// Output: 10 9 8 7 6 5 4 3 2 1</span>
+</div>
+
+<div class="box box-edge">
+<span class="box-label">Edge Case</span>
+<strong>Infinite Loop Trap:</strong> Agar update step galat ho to loop kabhi end nahi hoga. <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <span class="syn-op">&lt;=</span> <span class="syn-num">5</span>; i<span class="syn-op">--</span>) <span class="syn-cm">// WRONG: i-- se i kam hota, condition hamesha true</span> <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <span class="syn-op">&gt;=</span> <span class="syn-num">5</span>; i<span class="syn-op">++</span>) <span class="syn-cm">// WRONG: i 1 se 5 tak kabhi nahi pahunchega</span> <span class="syn-cm">// Correct: for(int i=1; i<=5; i++)</span>
+</div>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>While Loop</h2>
+
+<h3>Syntax and Usage</h3>
+
+<p><span class="hl">while</span> loop tab use hota hai jab aapko nahi pata ki exactly kitni baar repeat karna hai. Condition check pehle hoti hai, isliye agar condition initially false hai to loop ek baar bhi nahi chalega.</p>
+
+<div class="code-block"><span class="syn-kw">while</span>(condition) {
+    <span class="syn-cm">// code to repeat</span>
+}
+</div>
+
+<h3>Example: Print 1 to 5</h3>
+
+<div class="code-block"><span class="syn-type">int</span> i = <span class="syn-num">1</span>;
+
+<span class="syn-kw">while</span>(i <span class="syn-op">&lt;=</span> <span class="syn-num">5</span>) {
+    cout <span class="syn-op">&lt;&lt;</span> i <span class="syn-op">&lt;&lt;</span> endl;
+    i<span class="syn-op">++</span>;
+}
+</div>
+
+<h3>Example: Password Validation</h3>
+
+<div class="code-block"><span class="syn-type">int</span> password;
+<span class="syn-type">int</span> correctPassword = <span class="syn-num">1234</span>;
+
+cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Enter password: "</span>;
+cin <span class="syn-op">&gt;&gt;</span> password;
+
+<span class="syn-kw">while</span>(password <span class="syn-op">!=</span> correctPassword) {
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Wrong! Try again: "</span>;
+    cin <span class="syn-op">&gt;&gt;</span> password;
+}
+
+cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Access granted!"</span> <span class="syn-op">&lt;&lt;</span> endl;
+</div>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+<strong>while = "Jab tak".</strong> while loop ko Hindi mein "jab tak" socho: "Jab tak password galat hai, tab tak pucho." Ye user input validation, file reading, aur network polling jaise scenarios mein perfect fit hai jahan iteration count pehle se unknown hai.
+</div>
+
+<h3>Example: Sum Until User Enters 0</h3>
+
+<div class="code-block"><span class="syn-type">int</span> num;
+<span class="syn-type">int</span> sum = <span class="syn-num">0</span>;
+
+cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Enter numbers (0 to stop):"</span> <span class="syn-op">&lt;&lt;</span> endl;
+
+<span class="syn-kw">while</span>(<span class="syn-kw">true</span>) {
+    cin <span class="syn-op">&gt;&gt;</span> num;
+
+    <span class="syn-kw">if</span>(num <span class="syn-op">==</span> <span class="syn-num">0</span>) {
+        <span class="syn-kw">break</span>;  <span class="syn-cm">// Exit loop immediately</span>
+    }
+
+    sum <span class="syn-op">+=</span> num;
+}
+
+cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Total sum: "</span> <span class="syn-op">&lt;&lt;</span> sum <span class="syn-op">&lt;&lt;</span> endl;
+</div>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>Do-While Loop</h2>
+
+<h3>Syntax and Usage</h3>
+
+<p><span class="hl">do-while</span> loop <span class="hl">kam se kam ek baar</span> execute hota hai, kyunki condition check <span class="hl">body ke baad</span> hoti hai. Ye tab useful hai jab aapko pehli iteration guaranteed chahiye ho.</p>
+
+<div class="code-block"><span class="syn-kw">do</span> {
+    <span class="syn-cm">// code to repeat</span>
+} <span class="syn-kw">while</span>(condition);
+</div>
+
+<h3>Example: Print 1 to 5</h3>
+
+<div class="code-block"><span class="syn-type">int</span> i = <span class="syn-num">1</span>;
+
+<span class="syn-kw">do</span> {
+    cout <span class="syn-op">&lt;&lt;</span> i <span class="syn-op">&lt;&lt;</span> endl;
+    i<span class="syn-op">++</span>;
+} <span class="syn-kw">while</span>(i <span class="syn-op">&lt;=</span> <span class="syn-num">5</span>);
+</div>
+
+<h3>While vs Do-While Comparison</h3>
+
+<div class="code-block"><span class="syn-cm">// while loop - condition pehle check hoti hai</span>
+<span class="syn-type">int</span> i = <span class="syn-num">10</span>;
+
+<span class="syn-kw">while</span>(i <span class="syn-op">&lt;=</span> <span class="syn-num">5</span>) {  <span class="syn-cm">// Condition false, loop kabhi nahi chalega</span>
+    cout <span class="syn-op">&lt;&lt;</span> i <span class="syn-op">&lt;&lt;</span> endl;
+}
+<span class="syn-cm">// Output: (nothing)</span>
+
+<span class="syn-cm">// do-while loop - condition baad mein check hoti hai</span>
+<span class="syn-type">int</span> i = <span class="syn-num">10</span>;
+
+<span class="syn-kw">do</span> {
+    cout <span class="syn-op">&lt;&lt;</span> i <span class="syn-op">&lt;&lt;</span> endl;  <span class="syn-cm">// Ek baar to chalega hi</span>
+} <span class="syn-kw">while</span>(i <span class="syn-op">&lt;=</span> <span class="syn-num">5</span>);
+<span class="syn-cm">// Output: 10</span>
+</div>
+
+<div class="golden-insight">
+<strong>Key Insight:</strong> do-while loop ka sabse common use case <span class="hl">menu-driven programs</span> hain. User se choice pucho, action perform karo, phir pucho ki continue karna hai ya nahi. Pehli baar to menu dikhana hi hai, isliye do-while perfect hai.
+</div>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>Loop Control Statements</h2>
+
+<h3>Break Statement</h3>
+
+<p><span class="hl">break</span> loop ko immediately exit kar deta hai. Jaise hi break execute hota hai, control loop ke baad wale statement par chala jata hai.</p>
+
+<div class="code-block"><span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <span class="syn-op">&lt;=</span> <span class="syn-num">10</span>; i<span class="syn-op">++</span>) {
+    <span class="syn-kw">if</span>(i <span class="syn-op">==</span> <span class="syn-num">5</span>) {
+        <span class="syn-kw">break</span>;  <span class="syn-cm">// Stop when i is 5</span>
+    }
+    cout <span class="syn-op">&lt;&lt;</span> i <span class="syn-op">&lt;&lt;</span> <span class="syn-str">" "</span>;
+}
+<span class="syn-cm">// Output: 1 2 3 4</span>
+</div>
+
+<div class="box box-important">
+<span class="box-label">Important</span>
+<span class="important-text">break</span> sirf <span class="hl">innermost loop</span> ko exit karta hai. Nested loops mein outer loop continue rehta hai. Agar saare nested loops exit karne hain to flags use karo ya goto (avoid karo), ya better — function mein wrap karo aur return use karo.
+</div>
+
+<h3>Continue Statement</h3>
+
+<p><span class="hl">continue</span> current iteration ko skip kar deta hai aur control sidha update step par bhej deta hai. Body ka baaki code execute nahi hota.</p>
+
+<div class="code-block"><span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <span class="syn-op">&lt;=</span> <span class="syn-num">5</span>; i<span class="syn-op">++</span>) {
+    <span class="syn-kw">if</span>(i <span class="syn-op">==</span> <span class="syn-num">3</span>) {
+        <span class="syn-kw">continue</span>;  <span class="syn-cm">// Skip 3</span>
+    }
+    cout <span class="syn-op">&lt;&lt;</span> i <span class="syn-op">&lt;&lt;</span> <span class="syn-str">" "</span>;
+}
+<span class="syn-cm">// Output: 1 2 4 5</span>
+</div>
+
+<h3>Example: Skip Even Numbers</h3>
+
+<div class="code-block"><span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <span class="syn-op">&lt;=</span> <span class="syn-num">10</span>; i<span class="syn-op">++</span>) {
+    <span class="syn-kw">if</span>(i <span class="syn-op">%</span> <span class="syn-num">2</span> <span class="syn-op">==</span> <span class="syn-num">0</span>) {
+        <span class="syn-kw">continue</span>;  <span class="syn-cm">// Skip even numbers</span>
+    }
+    cout <span class="syn-op">&lt;&lt;</span> i <span class="syn-op">&lt;&lt;</span> <span class="syn-str">" "</span>;
+}
+<span class="syn-cm">// Output: 1 3 5 7 9</span>
+</div>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+<strong>break = "Bas, ab nahi"</strong> (loop khatam). <strong>continue = "Ye wala skip karo, next dekho"</strong> (iteration skip). break loop se bahar nikalta hai, continue same loop mein next iteration par jump karta hai.
+</div>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>Pattern Printing with Nested Loops</h2>
+
+<h3>The Core Concept</h3>
+
+<p>Pattern printing <span class="hl">nested loops</span> par based hota hai. Outer loop <span class="hl">rows</span> control karta hai, inner loop <span class="hl">columns</span> control karta hai. Har pattern ka logic row aur column ke relationship par depend karta hai.</p>
+
+<div class="golden-insight">
+<strong>Key Insight:</strong> Har pattern ko solve karne ka mantra: <span class="hl">"Outer loop = rows, Inner loop = columns"</span>. Pehle outer loop ki range fix karo, phir inner loop mein socho ki har row mein kitne columns chahiye. Ye relationship row number se derive hota hai.
+</div>
+
+<h3>Pattern 1: Square Pattern</h3>
+
+<div class="code-block">*****
+*****
+*****
+*****
+*****
+</div>
+
+<div class="code-block"><span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <span class="syn-op">&lt;=</span> <span class="syn-num">5</span>; i<span class="syn-op">++</span>) {           <span class="syn-cm">// Outer: 5 rows</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <span class="syn-op">&lt;=</span> <span class="syn-num">5</span>; j<span class="syn-op">++</span>) {    <span class="syn-cm">// Inner: 5 columns per row</span>
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"*"</span>;
+    }
+    cout <span class="syn-op">&lt;&lt;</span> endl;                   <span class="syn-cm">// New line after each row</span>
+}
+</div>
+
+<h3>Pattern 2: Right Triangle (Increasing)</h3>
+
+<div class="code-block">*
+**
+***
+****
+*****
+</div>
+
+<div class="code-block"><span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <span class="syn-op">&lt;=</span> <span class="syn-num">5</span>; i<span class="syn-op">++</span>) {           <span class="syn-cm">// Row 1 to 5</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <span class="syn-op">&lt;=</span> i; j<span class="syn-op">++</span>) {    <span class="syn-cm">// Columns = row number</span>
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"*"</span>;
+    }
+    cout <span class="syn-op">&lt;&lt;</span> endl;
+}
+</div>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+<strong>Row-Column Relationship:</strong> Row 1 mein 1 star, Row 2 mein 2 stars, Row 3 mein 3 stars... Isliye inner loop <span class="hl">j <= i</span> hai. Jitni row number, utne stars. Ye "increasing triangle" ka fundamental logic hai.
+</div>
+
+<h3>Pattern 3: Right Triangle (Decreasing)</h3>
+
+<div class="code-block">*****
+****
+***
+**
+*
+</div>
+
+<div class="code-block"><span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">5</span>; i <span class="syn-op">&gt;=</span> <span class="syn-num">1</span>; i<span class="syn-op">--</span>) {           <span class="syn-cm">// Row 5 to 1</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <span class="syn-op">&lt;=</span> i; j<span class="syn-op">++</span>) {    <span class="syn-cm">// Columns = current row number</span>
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"*"</span>;
+    }
+    cout <span class="syn-op">&lt;&lt;</span> endl;
+}
+</div>
+
+<h3>Pattern 4: Inverted Right Triangle (With Spaces)</h3>
+
+<div class="code-block">    *
+   **
+  ***
+ ****
+*****
+</div>
+
+<div class="code-block"><span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <span class="syn-op">&lt;=</span> <span class="syn-num">5</span>; i<span class="syn-op">++</span>) {
+    <span class="syn-cm">// Print spaces</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <span class="syn-op">&lt;=</span> <span class="syn-num">5</span><span class="syn-op">-</span>i; j<span class="syn-op">++</span>) {
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">" "</span>;
+    }
+    <span class="syn-cm">// Print stars</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <span class="syn-op">&lt;=</span> i; j<span class="syn-op">++</span>) {
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"*"</span>;
+    }
+    cout <span class="syn-op">&lt;&lt;</span> endl;
+}
+</div>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow</span>
+<strong>Space-Star Pattern Logic:</strong><br>
+1. Total width fix karo (yahan 5)<br>
+2. Spaces = Total Width - Current Row Number<br>
+3. Stars = Current Row Number<br>
+4. Formula: <span class="hl">spaces = n - i</span>, <span class="hl">stars = i</span><br><br>
+Row 1: 4 spaces + 1 star<br>
+Row 2: 3 spaces + 2 stars<br>
+Row 3: 2 spaces + 3 stars<br>
+Row 4: 1 space + 4 stars<br>
+Row 5: 0 spaces + 5 stars
+</div>
+
+<h3>Pattern 5: Number Triangle</h3>
+
+<div class="code-block">1
+1 2
+1 2 3
+1 2 3 4
+1 2 3 4 5
+</div>
+
+<div class="code-block"><span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <span class="syn-op">&lt;=</span> <span class="syn-num">5</span>; i<span class="syn-op">++</span>) {
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <span class="syn-op">&lt;=</span> i; j<span class="syn-op">++</span>) {
+        cout <span class="syn-op">&lt;&lt;</span> j <span class="syn-op">&lt;&lt;</span> <span class="syn-str">" "</span>;
+    }
+    cout <span class="syn-op">&lt;&lt;</span> endl;
+}
+</div>
+
+<h3>Pattern 6: Pyramid (Full Triangle)</h3>
+
+<div class="code-block">    *
+   ***
+  *****
+ *******
+*********
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> n = <span class="syn-num">5</span>;
+
+<span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <span class="syn-op">&lt;=</span> n; i<span class="syn-op">++</span>) {
+    <span class="syn-cm">// Spaces: n - i</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <span class="syn-op">&lt;=</span> n <span class="syn-op">-</span> i; j<span class="syn-op">++</span>) {
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">" "</span>;
+    }
+    <span class="syn-cm">// Stars: 2*i - 1</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <span class="syn-op">&lt;=</span> <span class="syn-num">2</span><span class="syn-op">*</span>i <span class="syn-op">-</span> <span class="syn-num">1</span>; j<span class="syn-op">++</span>) {
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"*"</span>;
+    }
+    cout <span class="syn-op">&lt;&lt;</span> endl;
+}
+</div>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+<strong>Pyramid Pattern Formula:</strong> Row <span class="hl">i</span> mein stars ki count <span class="hl">2i - 1</span> hoti hai. Kyunki:<br>
+Row 1: 1 star (2*1-1 = 1)<br>
+Row 2: 3 stars (2*2-1 = 3)<br>
+Row 3: 5 stars (2*3-1 = 5)<br>
+Ye odd number sequence hai. Spaces har row mein center karne ke liye hain: <span class="hl">n - i</span>.
+</div>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>Common Mistakes and Gotchas</h2>
+
+<div class="box box-edge">
+<span class="box-label">Edge Case</span>
+<strong>1. Off-by-One Error:</strong> <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <span class="syn-op">&lt;</span> <span class="syn-num">5</span>; i<span class="syn-op">++</span>) <span class="syn-cm">// Prints 1,2,3,4 — 5 nahi print hoga!</span> <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <span class="syn-op">&lt;=</span> <span class="syn-num">5</span>; i<span class="syn-op">++</span>) <span class="syn-cm">// Correct: prints 1,2,3,4,5</span><br><br>
+<strong>2. Missing Update:</strong> <span class="syn-type">int</span> i = <span class="syn-num">1</span>; <span class="syn-kw">while</span>(i <span class="syn-op">&lt;=</span> <span class="syn-num">5</span>) { cout <span class="syn-op">&lt;&lt;</span> i; } <span class="syn-cm">// INFINITE LOOP — i kabhi badhta nahi!</span><br><br>
+<strong>3. Semicolon after loop:</strong> <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <span class="syn-op">&lt;=</span> <span class="syn-num">5</span>; i<span class="syn-op">++</span>); { cout <span class="syn-op">&lt;&lt;</span> i; } <span class="syn-cm">// Semicolon makes empty loop body!</span><br><br>
+<strong>4. Variable scope:</strong> <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i <span class="syn-op">&lt;</span> <span class="syn-num">5</span>; i<span class="syn-op">++</span>) { } cout <span class="syn-op">&lt;&lt;</span> i; <span class="syn-cm">// ERROR: i is out of scope</span>
+</div>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>Loop Comparison Summary</h2>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Feature</th><th>for</th><th>while</th><th>do-while</th></tr>
+</thead>
+<tbody>
+<tr><td>Initialization</td><td>Inside loop header</td><td>Before loop</td><td>Before loop</td></tr>
+<tr><td>Condition Check</td><td>Before each iteration</td><td>Before each iteration</td><td>After each iteration</td></tr>
+<tr><td>Update</td><td>Inside loop header</td><td>Inside body</td><td>Inside body</td></tr>
+<tr><td>Minimum Executions</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>Best Use Case</td><td>Known iterations</td><td>Unknown iterations</td><td>Menu/input validation</td></tr>
+<tr><td>Code Readability</td><td>Compact</td><td>Flexible</td><td>Guaranteed first run</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>Key Takeaways</h2>
+
+<div class="box box-takeaway">
+<span class="box-label">Takeaway</span>
+<ul>
+<li><span class="hl">for loop</span> use karo jab iteration count pehle se pata ho — initialization, condition, aur update ek line mein</li>
+<li><span class="hl">while loop</span> use karo jab condition-driven repetition ho aur count unknown ho</li>
+<li><span class="hl">do-while loop</span> use karo jab kam se kam ek baar execution guaranteed chahiye ho</li>
+<li><span class="hl">break</span> loop ko immediately exit karta hai; <span class="hl">continue</span> current iteration skip karke next par jump karta hai</li>
+<li>Nested loops mein <span class="hl">outer loop = rows</span>, <span class="hl">inner loop = columns</span>. Har pattern ka logic row-column relationship se derive hota hai</li>
+<li>Space-star patterns mein formula: <span class="hl">spaces = n - i</span>, <span class="hl">stars = 2i - 1</span> (pyramid ke liye)</li>
+<li>Infinite loops se bachne ke liye hamesha ensure karo ki condition eventually false ho jaye</li>
+<li>Accumulator pattern (sum, product) mein variable ko correct initial value do: 0 for sum, 1 for product</li>
+</ul>
+</div>
+
+<div class="box box-interview">
+<span class="box-label">Interview Tip</span>
+Commonly asked loop questions:<br>
+1. <strong>for vs while vs do-while:</strong> for = known count, while = unknown count, do-while = at least once. Condition check ka timing main difference hai.<br>
+2. <strong>break vs continue:</strong> break loop exit karta hai, continue iteration skip karta hai. break nested loops mein sirf innermost loop exit karta hai.<br>
+3. <strong>Time Complexity:</strong> Single loop = O(n), Nested loop = O(n²), Triple nested = O(n³). Pattern printing mostly O(n²).<br>
+4. <strong>Infinite loop causes:</strong> Missing update, wrong condition, semicolon after for().<br>
+5. <strong>Pattern printing approach:</strong> Pehle row count fix karo, phir har row mein spaces aur stars ka formula derive karo. Dry run karo pen-paper se.
+</div>
+
+<div class="signature">MADE BY HARSHAL CHAUHAN</div>
+
+</body>
+</html>
