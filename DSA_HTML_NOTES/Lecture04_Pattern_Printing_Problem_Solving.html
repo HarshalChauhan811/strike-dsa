@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture 04 — Pattern Printing & Problem Solving</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@page { size: A4 portrait; margin: 0; }
+
+@page {
+  @top-right-corner {
+    content: "Harshal Chauhan";
+    font: 9px 'Poppins', sans-serif;
+    color: #8C8C8C;
+    opacity: 0.3;
+  }
+}
+
+body {
+    padding: 22mm 22mm 22mm 28mm;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: #FBFBF9;
+    font-family: 'Poppins', sans-serif;
+    color: #1A1A1A;
+    font-size: 12.5px;
+    line-height: 1.75;
+    margin: 0;
+    background-image: 
+        linear-gradient( rgba(0,0,0,0.008) 1px, transparent 1px ),
+        linear-gradient( 90deg, rgba(0,0,0,0.008) 1px, transparent 1px );
+    background-size: 20px 20px;
+}
+
+h1 {
+    font-size: 44px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    color: #0B1A2E;
+    letter-spacing: -0.5px;
+    border-bottom: 3px solid #B49450;
+    padding-bottom: 10px;
+    margin-bottom: 16px;
+    margin-top: 0;
+}
+
+h2 {
+    font-size: 26px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    color: #B49450;
+    border-bottom: 2px solid #B49450;
+    padding-bottom: 6px;
+    margin-top: 32px;
+    margin-bottom: 16px;
+}
+
+h3 {
+    font-size: 19px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    color: #1A4A4A;
+    margin-top: 22px;
+    margin-bottom: 12px;
+}
+
+h4 {
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    color: #7A3B4A;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+h5 {
+    font-size: 12.5px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    color: #3C3C3C;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 12px;
+    margin-bottom: 6px;
+}
+
+.lead {
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: #2C2C2C;
+}
+
+.caption {
+    font-size: 10.5px;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    color: #8C8C8C;
+}
+
+.hl {
+    background: #F4E9D8;
+    color: #7A5C3A;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12.5px;
+}
+
+.golden-insight {
+    border-left: 6px solid #B49450;
+    background: #FDF9F2;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-weight: 500;
+    font-style: italic;
+    color: #5C4033;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    page-break-inside: avoid;
+}
+
+.golden-insight strong {
+    color: #B49450;
+    font-style: normal;
+}
+
+.code-block {
+    background: #111824;
+    border: 1px solid #2A3240;
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    page-break-inside: avoid;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #E0E0E0;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    margin: 16px 0;
+}
+
+.syn-kw { color: #F88C6C; font-weight: bold; }
+.syn-str { color: #9CDCFE; }
+.syn-cm { color: #6A9955; font-style: italic; }
+.syn-fn { color: #DCDCAa; }
+.syn-num { color: #B5CEA8; }
+.syn-op { color: #89DDFF; }
+.syn-type { color: #FFD700; }
+.syn-tag { color: #D67E7E; }
+.syn-attr { color: #9CDCFE; }
+
+.box {
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 18px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03);
+    page-break-inside: avoid;
+    border-left: 6px solid;
+}
+
+.box-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 10px;
+    color: inherit;
+}
+
+.box-pattern { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-pattern .box-label { color: #3A5F80; }
+
+.box-intuition { border-left-color: #C4924A; background: #F9FBF9; }
+.box-intuition .box-label { color: #C4924A; }
+
+.box-workflow { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-workflow .box-label { color: #2E6B5A; }
+
+.box-important { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-important .box-label { color: #A53F3F; }
+
+.box-interview { border-left-color: #5E4B7A; background: #F8F7FC; }
+.box-interview .box-label { color: #5E4B7A; }
+
+.box-takeaway { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-takeaway .box-label { color: #2E6B5A; }
+
+.box-security { border-left-color: #C4924A; background: #FDFBF5; }
+.box-security .box-label { color: #C4924A; }
+
+.box-edge { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-edge .box-label { color: #A53F3F; }
+
+.box-best { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-best .box-label { color: #2E6B5A; }
+
+.box-config { border-left-color: #5E4B7A; background: #F8F7FC; }
+.box-config .box-label { color: #5E4B7A; }
+
+.box-performance { border-left-color: #0B1A2E; background: #FFFFFF; }
+.box-performance .box-label { color: #0B1A2E; }
+
+.table-luxe {
+    border: 1px solid #E3DED5;
+    border-radius: 12px;
+    overflow: hidden;
+    page-break-inside: avoid;
+    margin: 18px 0;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-luxe th {
+    background: #F7F3EC;
+    color: #0B1A2E;
+    font-weight: 700;
+    font-size: 11.5px;
+    padding: 12px 14px;
+    border-bottom: 2px solid #B49450;
+    text-align: left;
+}
+
+.table-luxe td {
+    padding: 12px 14px;
+    font-size: 11.5px;
+    background: #FFFFFF;
+    border-bottom: 1px solid #E3DED5;
+}
+
+.table-luxe tr:nth-child(even) td {
+    background: #FBFBF9;
+}
+
+.table-luxe tr:last-child td {
+    border-bottom: none;
+}
+
+.approach-tabs {
+    display: flex;
+    gap: 8px;
+    margin: 14px 0;
+}
+
+.approach-tab {
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-size: 10.5px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+}
+
+.tab-basic { background: #EDF2F7; border: 1px solid #3A5F80; color: #3A5F80; }
+.tab-intermediate { background: #F2F5EF; border: 1px solid #2E6B5A; color: #2E6B5A; }
+.tab-advanced { background: #F0F0F5; border: 1px solid #0B1A2E; color: #0B1A2E; }
+
+.diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 16px;
+    background: #F7F7F5;
+    border: 1px solid #B49450;
+    border-radius: 10px;
+    margin: 14px 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    color: #0B1A2E;
+    page-break-inside: avoid;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.ornament {
+    text-align: center;
+    margin: 30px 0;
+    color: #B49450;
+    font-size: 20px;
+    letter-spacing: 8px;
+}
+
+.signature {
+    text-align: center;
+    margin-top: 40px;
+    border-top: 1px solid #E3DED5;
+    padding-top: 24px;
+    color: #8C8C8C;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+ul, ol {
+    margin: 8px 0;
+    padding-left: 22px;
+}
+
+li {
+    margin-bottom: 6px;
+}
+
+p {
+    margin: 8px 0;
+}
+
+.pattern-output {
+    background: #F7F7F5;
+    border: 1px solid #E3DED5;
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    color: #0B1A2E;
+    margin: 10px 0;
+    page-break-inside: avoid;
+    white-space: pre;
+    line-height: 1.4;
+}
+
+.pattern-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 14px 0;
+}
+
+@media print {
+    body { background: #FBFBF9 !important; }
+    .code-block { white-space: pre-wrap !important; }
+}
+</style>
+</head>
+<body>
+
+<h1>Lecture 04: Pattern Printing & Problem Solving</h1>
+
+<p class="lead">Is lecture mein hum <span class="hl">nested loops</span> ka use karke alag-alag <span class="hl">pattern printing</span> seekhenge, aur saath mein <span class="hl">type conversion</span> ke concepts ko deeply samajhenge. Ye dono topics interviews mein bahut commonly puche jaate hain.</p>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Part 1: Pattern Printing</h2>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Har pattern ko solve karne ka ek hi mantra hai — <span class="hl">outer loop rows ko control karta hai</span> aur <span class="hl">inner loop columns ko control karta hai</span>. Pattern ko pehle paper pe draw karo, phir logic identify karo, aur last mein code likho.
+</div>
+
+<h3>Pattern 1: Square Pattern</h3>
+
+<div class="pattern-output">*****
+*****
+*****
+*****
+*****</div>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow</span>
+<ul>
+<li>Outer loop 5 baar chalega (rows ke liye)</li>
+<li>Inner loop har row mein 5 stars print karega</li>
+<li>Har row ke baad <code>endl</code> se next line</li>
+</ul>
+</div>
+
+<div class="code-block"><span class="syn-cm">// Print 5x5 square of stars</span>
+<span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= <span class="syn-num">5</span>; i++) {
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= <span class="syn-num">5</span>; j++) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">"*"</span>;
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}</div>
+
+<h3>Pattern 2: Right Triangle (Increasing)</h3>
+
+<div class="pattern-output">*
+**
+***
+****
+*****</div>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Row 1 mein 1 star, Row 2 mein 2 stars... matlab <span class="hl">inner loop ki condition <code>j <= i</code></span> honi chahiye. Jab outer loop ka <code>i</code> badhta hai, inner loop utni hi baar chalta hai.
+</div>
+
+<div class="code-block"><span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= <span class="syn-num">5</span>; i++) {
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= i; j++) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">"*"</span>;
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}</div>
+
+<h3>Pattern 3: Right Triangle (Decreasing)</h3>
+
+<div class="pattern-output">*****
+****
+***
+**
+*</div>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Isme outer loop <span class="hl">reverse chalta hai</span> — <code>i = 5</code> se <code>i = 1</code> tak. Har row mein <code>i</code> ke equal stars print hote hain, isliye stars kam hote jaate hain.
+</div>
+
+<div class="code-block"><span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">5</span>; i >= <span class="syn-num">1</span>; i--) {
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= i; j++) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">"*"</span>;
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}</div>
+
+<h3>Pattern 4: Inverted Right Triangle</h3>
+
+<div class="pattern-output">    *
+   **
+  ***
+ ****
+*****</div>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow</span>
+<ul>
+<li><strong>Step 1:</strong> Spaces print karo — <code>5 - i</code> spaces har row mein</li>
+<li><strong>Step 2:</strong> Stars print karo — <code>i</code> stars har row mein</li>
+<li><strong>Step 3:</strong> Next line</li>
+</ul>
+</div>
+
+<div class="code-block"><span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= <span class="syn-num">5</span>; i++) {
+    <span class="syn-cm">// Print spaces</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= <span class="syn-num">5</span>-i; j++) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">" "</span>;
+    }
+    <span class="syn-cm">// Print stars</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= i; j++) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">"*"</span>;
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}</div>
+
+<div class="golden-insight">
+<strong>Key Insight:</strong> <span class="hl">Spaces aur stars ka combination</span> hi pyramid aur diamond patterns ka core logic hai. Spaces ko pehle handle karo, phir stars.
+</div>
+
+<h3>Pattern 5: Pyramid</h3>
+
+<div class="pattern-output">    *
+   ***
+  *****
+ *******
+*********</div>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Pyramid mein <span class="hl">odd number of stars</span> har row mein hote hain: 1, 3, 5, 7, 9. Formula: <code>2*i - 1</code>. Spaces ka formula same hai: <code>n - i</code>.
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> n = <span class="syn-num">5</span>;
+
+<span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= n; i++) {
+    <span class="syn-cm">// Print spaces</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= n-i; j++) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">" "</span>;
+    }
+    <span class="syn-cm">// Print stars</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= <span class="syn-num">2</span>*i-<span class="syn-num">1</span>; j++) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">"*"</span>;
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}</div>
+
+<h3>Pattern 6: Inverted Pyramid</h3>
+
+<div class="pattern-output">*********
+ *******
+  *****
+   ***
+    *</div>
+
+<div class="code-block"><span class="syn-type">int</span> n = <span class="syn-num">5</span>;
+
+<span class="syn-kw">for</span>(<span class="syn-type">int</span> i = n; i >= <span class="syn-num">1</span>; i--) {
+    <span class="syn-cm">// Print spaces</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= n-i; j++) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">" "</span>;
+    }
+    <span class="syn-cm">// Print stars</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= <span class="syn-num">2</span>*i-<span class="syn-num">1</span>; j++) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">"*"</span>;
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}</div>
+
+<h3>Pattern 7: Diamond</h3>
+
+<div class="pattern-output">    *
+   ***
+  *****
+ *******
+*********
+ *******
+  *****
+   ***
+    *</div>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow</span>
+<ul>
+<li><strong>Upper Half:</strong> Pyramid wala logic (1 se n tak)</li>
+<li><strong>Lower Half:</strong> Inverted pyramid wala logic (n-1 se 1 tak)</li>
+<li>Diamond = Pyramid + Inverted Pyramid (without repeating middle row)</li>
+</ul>
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> n = <span class="syn-num">5</span>;
+
+<span class="syn-cm">// Upper half (pyramid)</span>
+<span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= n; i++) {
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= n-i; j++) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">" "</span>;
+    }
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= <span class="syn-num">2</span>*i-<span class="syn-num">1</span>; j++) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">"*"</span>;
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}
+
+<span class="syn-cm">// Lower half (inverted pyramid)</span>
+<span class="syn-kw">for</span>(<span class="syn-type">int</span> i = n-<span class="syn-num">1</span>; i >= <span class="syn-num">1</span>; i--) {
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= n-i; j++) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">" "</span>;
+    }
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= <span class="syn-num">2</span>*i-<span class="syn-num">1</span>; j++) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">"*"</span>;
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}</div>
+
+<h3>Pattern 8: Hollow Square</h3>
+
+<div class="pattern-output">*****
+*   *
+*   *
+*   *
+*****</div>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Star tabhi print hota hai jab <span class="hl">first row, last row, first column, ya last column</span> ho. Baaki jagah space print karo. Condition: <code>i == 1 || i == n || j == 1 || j == n</code>.
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> n = <span class="syn-num">5</span>;
+
+<span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= n; i++) {
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= n; j++) {
+        <span class="syn-kw">if</span>(i == <span class="syn-num">1</span> || i == n || j == <span class="syn-num">1</span> || j == n) {
+            <span class="syn-fn">cout</span> << <span class="syn-str">"*"</span>;
+        } <span class="syn-kw">else</span> {
+            <span class="syn-fn">cout</span> << <span class="syn-str">" "</span>;
+        }
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h3>Pattern 9: Number Triangle</h3>
+
+<div class="pattern-output">1
+12
+123
+1234
+12345</div>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Har row mein numbers <code>1</code> se <code>i</code> tak print hote hain. Inner loop mein <code>j</code> ko directly print karo.
+</div>
+
+<div class="code-block"><span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= <span class="syn-num">5</span>; i++) {
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= i; j++) {
+        <span class="syn-fn">cout</span> << j;
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}</div>
+
+<h3>Pattern 10: Number Triangle (Same Number)</h3>
+
+<div class="pattern-output">1
+22
+333
+4444
+55555</div>
+
+<div class="code-block"><span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= <span class="syn-num">5</span>; i++) {
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= i; j++) {
+        <span class="syn-fn">cout</span> << i;
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}</div>
+
+<h3>Pattern 11: Number Triangle (Continuous)</h3>
+
+<div class="pattern-output">1
+23
+456
+78910</div>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Isme ek <span class="hl">global counter variable</span> chahiye jo har print ke baad increment ho. <code>num</code> variable ko outer loop ke bahar initialize karo.
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> num = <span class="syn-num">1</span>;
+
+<span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= <span class="syn-num">4</span>; i++) {
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= i; j++) {
+        <span class="syn-fn">cout</span> << num;
+        num++;
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}</div>
+
+<h3>Pattern 12: Floyd's Triangle</h3>
+
+<div class="pattern-output">1
+2 3
+4 5 6
+7 8 9 10
+11 12 13 14 15</div>
+
+<div class="box box-best">
+<span class="box-label">Best Practice</span>
+Floyd's Triangle mein numbers ke beech <span class="hl">space</span> dena zaroori hai taaki alignment sahi rahe. <code>cout << num << " ";</code> ka use karo.
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> num = <span class="syn-num">1</span>;
+
+<span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= <span class="syn-num">5</span>; i++) {
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= i; j++) {
+        <span class="syn-fn">cout</span> << num << <span class="syn-str">" "</span>;
+        num++;
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}</div>
+
+<h3>Pattern 13: Binary Triangle</h3>
+
+<div class="pattern-output">1
+01
+101
+0101
+10101</div>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Pattern observe karo: jab <span class="hl"><code>(i + j)</code> even hota hai</span> toh 1 print hota hai, warna 0. Ye sum ki parity check hai.
+</div>
+
+<div class="code-block"><span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= <span class="syn-num">5</span>; i++) {
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= i; j++) {
+        <span class="syn-kw">if</span>((i + j) % <span class="syn-num">2</span> == <span class="syn-num">0</span>) {
+            <span class="syn-fn">cout</span> << <span class="syn-str">"1"</span>;
+        } <span class="syn-kw">else</span> {
+            <span class="syn-fn">cout</span> << <span class="syn-str">"0"</span>;
+        }
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}</div>
+
+<h3>Pattern 14: Alphabet Triangle</h3>
+
+<div class="pattern-output">A
+AB
+ABC
+ABCD
+ABCDE</div>
+
+<div class="code-block"><span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= <span class="syn-num">5</span>; i++) {
+    <span class="syn-type">char</span> ch = <span class="syn-str">'A'</span>;
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= i; j++) {
+        <span class="syn-fn">cout</span> << ch;
+        ch++;
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}</div>
+
+<h3>Pattern 15: Alphabet Triangle (Repeated)</h3>
+
+<div class="pattern-output">A
+BB
+CCC
+DDDD
+EEEEE</div>
+
+<div class="code-block"><span class="syn-type">char</span> ch = <span class="syn-str">'A'</span>;
+
+<span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= <span class="syn-num">5</span>; i++) {
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= i; j++) {
+        <span class="syn-fn">cout</span> << ch;
+    }
+    ch++;
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}</div>
+
+<h3>Pattern 16: Palindrome Number Triangle</h3>
+
+<div class="pattern-output">    1
+   121
+  12321
+ 1234321
+123454321</div>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow</span>
+<ul>
+<li><strong>Step 1:</strong> Spaces print karo (<code>n - i</code>)</li>
+<li><strong>Step 2:</strong> Increasing numbers print karo (1 se i tak)</li>
+<li><strong>Step 3:</strong> Decreasing numbers print karo (i-1 se 1 tak)</li>
+</ul>
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> n = <span class="syn-num">5</span>;
+
+<span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= n; i++) {
+    <span class="syn-cm">// Print spaces</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= n-i; j++) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">" "</span>;
+    }
+    <span class="syn-cm">// Print increasing numbers</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= i; j++) {
+        <span class="syn-fn">cout</span> << j;
+    }
+    <span class="syn-cm">// Print decreasing numbers</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = i-<span class="syn-num">1</span>; j >= <span class="syn-num">1</span>; j--) {
+        <span class="syn-fn">cout</span> << j;
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}</div>
+
+<h3>Pattern 17: Butterfly Pattern</h3>
+
+<div class="pattern-output">*        *
+**      **
+***    ***
+****  ****
+**********
+**********
+****  ****
+***    ***
+**      **
+*        *</div>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Butterfly ko do parts mein divide karo: <span class="hl">Upper Half</span> aur <span class="hl">Lower Half</span>. Har row mein left stars, beech mein spaces, aur right stars hote hain. Spaces ka formula: <code>2*(n-i)</code>.
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> n = <span class="syn-num">5</span>;
+
+<span class="syn-cm">// Upper half</span>
+<span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= n; i++) {
+    <span class="syn-cm">// Left stars</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= i; j++) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">"*"</span>;
+    }
+    <span class="syn-cm">// Spaces</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= <span class="syn-num">2</span>*(n-i); j++) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">" "</span>;
+    }
+    <span class="syn-cm">// Right stars</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= i; j++) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">"*"</span>;
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}
+
+<span class="syn-cm">// Lower half</span>
+<span class="syn-kw">for</span>(<span class="syn-type">int</span> i = n; i >= <span class="syn-num">1</span>; i--) {
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= i; j++) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">"*"</span>;
+    }
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= <span class="syn-num">2</span>*(n-i); j++) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">" "</span>;
+    }
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= i; j++) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">"*"</span>;
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}</div>
+
+<h3>Pattern 18: Hollow Diamond</h3>
+
+<div class="pattern-output">    *
+   * *
+  *   *
+ *     *
+*       *
+ *     *
+  *   *
+   * *
+    *</div>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Hollow diamond mein sirf <span class="hl">boundary pe stars</span> hote hain. First aur last position pe star, beech mein space. Inner loop mein <code>j == 1</code> ya <code>j == 2*i-1</code> pe star print karo.
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> n = <span class="syn-num">5</span>;
+
+<span class="syn-cm">// Upper half</span>
+<span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= n; i++) {
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= n-i; j++) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">" "</span>;
+    }
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= <span class="syn-num">2</span>*i-<span class="syn-num">1</span>; j++) {
+        <span class="syn-kw">if</span>(j == <span class="syn-num">1</span> || j == <span class="syn-num">2</span>*i-<span class="syn-num">1</span>) {
+            <span class="syn-fn">cout</span> << <span class="syn-str">"*"</span>;
+        } <span class="syn-kw">else</span> {
+            <span class="syn-fn">cout</span> << <span class="syn-str">" "</span>;
+        }
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}
+
+<span class="syn-cm">// Lower half</span>
+<span class="syn-kw">for</span>(<span class="syn-type">int</span> i = n-<span class="syn-num">1</span>; i >= <span class="syn-num">1</span>; i--) {
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= n-i; j++) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">" "</span>;
+    }
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= <span class="syn-num">2</span>*i-<span class="syn-num">1</span>; j++) {
+        <span class="syn-kw">if</span>(j == <span class="syn-num">1</span> || j == <span class="syn-num">2</span>*i-<span class="syn-num">1</span>) {
+            <span class="syn-fn">cout</span> << <span class="syn-str">"*"</span>;
+        } <span class="syn-kw">else</span> {
+            <span class="syn-fn">cout</span> << <span class="syn-str">" "</span>;
+        }
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}</div>
+
+<h3>Pattern 19: Zig-Zag Pattern</h3>
+
+<div class="pattern-output">  *   *
+ * * * *
+*   *   *</div>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Zig-zag pattern mein <span class="hl">diagonal positions</span> pe stars hote hain. Mathematical observation: <code>(i + j) % 4 == 0</code> ya special case <code>i == 2 && j % 4 == 0</code>.
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> n = <span class="syn-num">9</span>; <span class="syn-cm">// columns</span>
+
+<span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= <span class="syn-num">3</span>; i++) {
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= n; j++) {
+        <span class="syn-kw">if</span>((i + j) % <span class="syn-num">4</span> == <span class="syn-num">0</span> || (i == <span class="syn-num">2</span> && j % <span class="syn-num">4</span> == <span class="syn-num">0</span>)) {
+            <span class="syn-fn">cout</span> << <span class="syn-str">"*"</span>;
+        } <span class="syn-kw">else</span> {
+            <span class="syn-fn">cout</span> << <span class="syn-str">" "</span>;
+        }
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}</div>
+
+<h3>Pattern 20: Plus Pattern</h3>
+
+<div class="pattern-output">  *
+  *
+*****
+  *
+  *</div>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Plus pattern mein <span class="hl">middle row</span> aur <span class="hl">middle column</span> pe stars hote hain. <code>mid = n/2 + 1</code> calculate karke condition lagao.
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> n = <span class="syn-num">5</span>;
+<span class="syn-type">int</span> mid = n/<span class="syn-num">2</span> + <span class="syn-num">1</span>;
+
+<span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= n; i++) {
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">1</span>; j <= n; j++) {
+        <span class="syn-kw">if</span>(i == mid || j == mid) {
+            <span class="syn-fn">cout</span> << <span class="syn-str">"*"</span>;
+        } <span class="syn-kw">else</span> {
+            <span class="syn-fn">cout</span> << <span class="syn-str">" "</span>;
+        }
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+}</div>
+
+<div class="box box-interview">
+<span class="box-label">Interview Tip</span>
+Pattern printing questions mein interviewer <span class="hl">logic samajhna</span> chahta hai, sirf output nahi. Hamesha pehle approach explain karo: "Outer loop rows ke liye, inner loop columns ke liye, aur spaces/stars ka formula yeh hai..."
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Part 2: Type Conversion</h2>
+
+<p class="lead">Type Conversion ka matlab hai ek data type ko dusre data type mein convert karna. C++ mein do tarike hote hain: <span class="hl">Implicit (Automatic)</span> aur <span class="hl">Explicit (Manual)</span>.</p>
+
+<h3>Implicit Type Conversion</h3>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Compiler automatically chhote type ko bade type mein convert kar deta hai. Jaise <code>int</code> ko <code>double</code> mein daalne pe koi data loss nahi hoti, isliye compiler khud handle kar leta hai.
+</div>
+
+<h4>Example 1: int to double</h4>
+
+<div class="code-block"><span class="syn-type">int</span> a = <span class="syn-num">10</span>;
+<span class="syn-type">double</span> b = a;  <span class="syn-cm">// Automatic conversion</span>
+
+<span class="syn-fn">cout</span> << b << <span class="syn-fn">endl</span>;  <span class="syn-cm">// 10.0</span></div>
+
+<p>Is case mein <span class="hl">koi data loss nahi hoti</span> — 10 as it is 10.0 ban jata hai.</p>
+
+<h4>Example 2: char to int</h4>
+
+<div class="code-block"><span class="syn-type">char</span> ch = <span class="syn-str">'A'</span>;
+<span class="syn-type">int</span> num = ch;  <span class="syn-cm">// Automatic conversion</span>
+
+<span class="syn-fn">cout</span> << num << <span class="syn-fn">endl</span>;  <span class="syn-cm">// 65 (ASCII value)</span></div>
+
+<h4>Example 3: int to float</h4>
+
+<div class="code-block"><span class="syn-type">int</span> x = <span class="syn-num">5</span>;
+<span class="syn-type">float</span> y = x;
+
+<span class="syn-fn">cout</span> << y << <span class="syn-fn">endl</span>;  <span class="syn-cm">// 5.0</span></div>
+
+<h4>Type Hierarchy</h4>
+
+<div class="diagram">
+char → short → int → long → float → double
+</div>
+
+<div class="box box-best">
+<span class="box-label">Best Practice</span>
+<span class="hl">Smaller to larger</span> conversion hamesha safe hota hai. Data loss nahi hota, aur compiler implicitly handle kar leta hai.
+</div>
+
+<h4>Dangerous Implicit Conversion</h4>
+
+<div class="box box-important">
+<span class="box-label">Important</span>
+Jab <span class="hl">larger type ko smaller type</span> mein convert karte hain, toh <span style="background:#FDF0ED; color:#A53F3F; font-weight:600; padding:1px 4px; border-radius:2px;">data loss ya overflow</span> ho sakta hai. Ye implicit conversion dangerous hai.
+</div>
+
+<h5>Example: double to int (Data Loss)</h5>
+
+<div class="code-block"><span class="syn-type">double</span> pi = <span class="syn-num">3.14159</span>;
+<span class="syn-type">int</span> num = pi;  <span class="syn-cm">// Automatic but LOSES decimal part</span>
+
+<span class="syn-fn">cout</span> << num << <span class="syn-fn">endl</span>;  <span class="syn-cm">// 3 (lost 0.14159!)</span></div>
+
+<h5>Example: Large to Small (Overflow)</h5>
+
+<div class="code-block"><span class="syn-type">int</span> big = <span class="syn-num">100000</span>;
+<span class="syn-type">short</span> small = big;  <span class="syn-cm">// May overflow</span>
+
+<span class="syn-fn">cout</span> << small << <span class="syn-fn">endl</span>;  <span class="syn-cm">// Unpredictable!</span></div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h3>Explicit Type Conversion (Type Casting)</h3>
+
+<p>Explicit conversion mein programmer manually cast operator ka use karke type change karta hai. C++ mein do tarike hain:</p>
+
+<h4>Method 1: C-Style Cast</h4>
+
+<div class="code-block">(<span class="syn-type">type</span>)variable</div>
+
+<div class="code-block"><span class="syn-type">double</span> pi = <span class="syn-num">3.14159</span>;
+<span class="syn-type">int</span> num = (<span class="syn-type">int</span>)pi;  <span class="syn-cm">// Explicit cast</span>
+
+<span class="syn-fn">cout</span> << num << <span class="syn-fn">endl</span>;  <span class="syn-cm">// 3</span></div>
+
+<h4>Method 2: C++ Style Cast (Recommended)</h4>
+
+<div class="code-block">static_cast&lt;<span class="syn-type">type</span>&gt;(variable)</div>
+
+<div class="code-block"><span class="syn-type">double</span> pi = <span class="syn-num">3.14159</span>;
+<span class="syn-type">int</span> num = <span class="syn-fn">static_cast</span>&lt;<span class="syn-type">int</span>&gt;(pi);
+
+<span class="syn-fn">cout</span> << num << <span class="syn-fn">endl</span>;  <span class="syn-cm">// 3</span></div>
+
+<div class="box box-best">
+<span class="box-label">Best Practice</span>
+Hamesha <span class="hl"><code>static_cast</code></span> prefer karo C-style cast ke upar. Ye compile-time check karta hai aur type safety better hoti hai.
+</div>
+
+<h4>Why Use Explicit Casting?</h4>
+
+<h5>Example 1: Division Problem</h5>
+
+<div class="code-block"><span class="syn-type">int</span> a = <span class="syn-num">10</span>;
+<span class="syn-type">int</span> b = <span class="syn-num">3</span>;
+
+<span class="syn-fn">cout</span> << a / b << <span class="syn-fn">endl</span>;  <span class="syn-cm">// 3 (integer division!)</span>
+
+<span class="syn-cm">// Fix: Cast to double</span>
+<span class="syn-fn">cout</span> << (<span class="syn-type">double</span>)a / b << <span class="syn-fn">endl</span>;  <span class="syn-cm">// 3.33333</span></div>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+<ul>
+<li><strong>Without cast:</strong> 10 / 3 → dono int hain → result bhi int → 3</li>
+<li><strong>With cast:</strong> (double)10 / 3 → 10.0 / 3 → result double → 3.33333</li>
+</ul>
+</div>
+
+<h5>Example 2: Percentage Calculation</h5>
+
+<div class="code-block"><span class="syn-type">int</span> marks = <span class="syn-num">85</span>;
+<span class="syn-type">int</span> total = <span class="syn-num">100</span>;
+
+<span class="syn-cm">// Wrong</span>
+<span class="syn-type">int</span> percentage = (marks / total) * <span class="syn-num">100</span>;
+<span class="syn-fn">cout</span> << percentage << <span class="syn-fn">endl</span>;  <span class="syn-cm">// 0 (why?)</span>
+
+<span class="syn-cm">// Correct</span>
+<span class="syn-type">double</span> percentage = ((<span class="syn-type">double</span>)marks / total) * <span class="syn-num">100</span>;
+<span class="syn-fn">cout</span> << percentage << <span class="syn-fn">endl</span>;  <span class="syn-cm">// 85</span></div>
+
+<div class="box box-edge">
+<span class="box-label">Edge Case</span>
+<span class="hl">85 / 100</span> integer division mein <span class="hl">0</span> hota hai, kyunki 85 ko 100 se divide karne pe quotient 0 aata hai. Phir 0 * 100 = 0. Isliye pehle kisi ek operand ko double mein cast karna zaroori hai.
+</div>
+
+<h5>Example 3: Average Calculation</h5>
+
+<div class="code-block"><span class="syn-type">int</span> a = <span class="syn-num">10</span>, b = <span class="syn-num">20</span>, c = <span class="syn-num">30</span>;
+
+<span class="syn-cm">// Wrong</span>
+<span class="syn-type">int</span> avg = (a + b + c) / <span class="syn-num">3</span>;
+<span class="syn-fn">cout</span> << avg << <span class="syn-fn">endl</span>;  <span class="syn-cm">// 20 (loses decimal)</span>
+
+<span class="syn-cm">// Correct</span>
+<span class="syn-type">double</span> avg = (<span class="syn-type">double</span>)(a + b + c) / <span class="syn-num">3</span>;
+<span class="syn-fn">cout</span> << avg << <span class="syn-fn">endl</span>;  <span class="syn-cm">// 20.0</span></div>
+
+<h4>Type Conversion in Expressions</h4>
+
+<div class="golden-insight">
+<strong>Key Insight:</strong> Expression ka result hamesha <span class="hl">sabse bade type</span> ke according hota hai. Agar expression mein <code>double</code> hai, toh final result <code>double</code> hoga.
+</div>
+
+<table class="table-luxe">
+<thead>
+<tr><th>Expression</th><th>Result Type</th><th>Example</th></tr>
+</thead>
+<tbody>
+<tr><td>int + int</td><td>int</td><td>5 + 3 = 8</td></tr>
+<tr><td>int + double</td><td>double</td><td>10 + 3.5 = 13.5</td></tr>
+<tr><td>float + double</td><td>double</td><td>2.5f + 3.5 = 6.0</td></tr>
+<tr><td>char + int</td><td>int</td><td>'A' + 1 = 66</td></tr>
+</tbody>
+</table>
+
+<div class="box box-edge">
+<span class="box-label">Edge Case</span>
+<code>int x = 5; int y = 2; double z = x / y;</code> → <span class="hl">z = 2.0</span> (NOT 2.5!)<br>
+Kyunki <code>x / y</code> pehle int division hota hai (5/2 = 2), aur phir wo 2 double mein convert hota hai (2.0). Agar 2.5 chahiye, toh pehle cast karo.
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Practice Problems</h2>
+
+<h3>Problem 1: Temperature Converter</h3>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow</span>
+Celsius input lo, formula <code>(celsius * 9.0 / 5.0) + 32</code> se Fahrenheit calculate karo. <code>9.0</code> likhna zaroori hai taaki floating-point division ho.
+</div>
+
+<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-type">double</span> celsius;
+
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Enter temperature in Celsius: "</span>;
+    <span class="syn-fn">cin</span> >> celsius;
+
+    <span class="syn-type">double</span> fahrenheit = (celsius * <span class="syn-num">9.0</span> / <span class="syn-num">5.0</span>) + <span class="syn-num">32</span>;
+
+    <span class="syn-fn">cout</span> << celsius << <span class="syn-str">"°C = "</span> << fahrenheit << <span class="syn-str">"°F"</span> << <span class="syn-fn">endl</span>;
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}</div>
+
+<h3>Problem 2: Grade Percentage</h3>
+
+<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-type">int</span> subject1, subject2, subject3;
+
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Enter marks of 3 subjects: "</span>;
+    <span class="syn-fn">cin</span> >> subject1 >> subject2 >> subject3;
+
+    <span class="syn-type">int</span> total = subject1 + subject2 + subject3;
+    <span class="syn-type">double</span> percentage = (<span class="syn-type">double</span>)total / <span class="syn-num">3</span>;
+
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Total: "</span> << total << <span class="syn-fn">endl</span>;
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Percentage: "</span> << percentage << <span class="syn-str">"%"</span> << <span class="syn-fn">endl</span>;
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}</div>
+
+<h3>Problem 3: ASCII Value</h3>
+
+<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-type">char</span> ch;
+
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Enter a character: "</span>;
+    <span class="syn-fn">cin</span> >> ch;
+
+    <span class="syn-type">int</span> ascii = (<span class="syn-type">int</span>)ch;
+
+    <span class="syn-fn">cout</span> << <span class="syn-str">"ASCII value of "</span> << ch << <span class="syn-str">" is "</span> << ascii << <span class="syn-fn">endl</span>;
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Bonus Problems</h2>
+
+<h3>Prime Number Check</h3>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Prime number wo hota hai jo <span class="hl">sirf 1 aur apne aap se divisible</span> ho. 2 se chhoti value kabhi prime nahi hoti. 2 se lekar <code>num-1</code> tak koi bhi divisor mil gaya toh not prime.
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> num;
+
+<span class="syn-fn">cout</span> << <span class="syn-str">"Enter the Number: "</span>;
+<span class="syn-fn">cin</span> >> num;
+
+<span class="syn-cm">// 2 se chhoti value kabhi bhi prime nahi hoti.</span>
+<span class="syn-kw">if</span> (num < <span class="syn-num">2</span>) {
+    <span class="syn-fn">cout</span> << num << <span class="syn-str">" is Not a Prime Number"</span>;
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}
+
+<span class="syn-cm">// 2 se num-1 tak divide karke check karo.</span>
+<span class="syn-kw">for</span> (<span class="syn-type">int</span> i = <span class="syn-num">2</span>; i < num; i++) {
+    <span class="syn-kw">if</span> (num % i == <span class="syn-num">0</span>) {
+        <span class="syn-fn">cout</span> << num << <span class="syn-str">" is Not a Prime Number"</span>;
+        <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+    }
+}
+
+<span class="syn-fn">cout</span> << num << <span class="syn-str">" is a Prime Number"</span> << <span class="syn-fn">endl</span>;</div>
+
+<div class="box box-performance">
+<span class="box-label">Performance</span>
+Is approach ki <span class="hl">time complexity O(n)</span> hai. Optimized approach mein sirf <code>sqrt(num)</code> tak check karte hain, jo O(√n) complexity deta hai. Interview mein optimized version bhi batana.
+</div>
+
+<h3>Sum of Digits</h3>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow</span>
+<ul>
+<li><strong>Step 1:</strong> <code>number % 10</code> se last digit nikalo</li>
+<li><strong>Step 2:</strong> Us digit ko <code>sum</code> mein add karo</li>
+<li><strong>Step 3:</strong> <code>number / 10</code> se last digit remove karo</li>
+<li><strong>Step 4:</strong> Jab tak number > 0, repeat karo</li>
+</ul>
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> number = <span class="syn-num">12345</span>;
+<span class="syn-type">int</span> sum = <span class="syn-num">0</span>;
+
+<span class="syn-kw">while</span> (number > <span class="syn-num">0</span>) {
+    <span class="syn-type">int</span> lastDigit = number % <span class="syn-num">10</span>; <span class="syn-cm">// Last digit nikalo</span>
+
+    sum = sum + lastDigit; <span class="syn-cm">// Sum me add karo</span>
+
+    number = number / <span class="syn-num">10</span>; <span class="syn-cm">// Last digit remove karo</span>
+}
+
+<span class="syn-fn">cout</span> << <span class="syn-str">"Sum of Digits: "</span> << sum << <span class="syn-fn">endl</span>;</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Key Takeaways</h2>
+
+<div class="box box-takeaway">
+<span class="box-label">Takeaway</span>
+<ul>
+<li><strong>Pattern Printing:</strong> Outer loop = rows, Inner loop = columns. Spaces aur stars ka formula pehle identify karo.</li>
+<li><strong>Implicit Conversion:</strong> Compiler automatically smaller → larger type mein convert karta hai. Safe hai, data loss nahi hota.</li>
+<li><strong>Explicit Conversion:</strong> Programmer manually cast karta hai. <code>static_cast</code> prefer karo C-style cast ke upar.</li>
+<li><strong>Integer Division Trap:</strong> Do integers divide karne pe decimal part lost ho jata hai. Hamesha explicit cast karo jab precise result chahiye.</li>
+<li><strong>Prime Check:</strong> 2 se n-1 tak check karo. Optimized version mein √n tak check karo.</li>
+<li><strong>Sum of Digits:</strong> Modulo 10 se digit nikalo, divide by 10 se remove karo. Loop until number becomes 0.</li>
+</ul>
+</div>
+
+<table class="table-luxe">
+<thead>
+<tr><th>Type</th><th>When</th><th>Example</th></tr>
+</thead>
+<tbody>
+<tr><td>Implicit</td><td>Automatic</td><td><code>int a = 5; double b = a;</code></td></tr>
+<tr><td>Explicit</td><td>Manual cast</td><td><code>int x = (int)3.14;</code></td></tr>
+<tr><td>Explicit (C++)</td><td>Recommended</td><td><code>int x = static_cast&lt;int&gt;(3.14);</code></td></tr>
+</tbody>
+</table>
+
+<div class="box box-interview">
+<span class="box-label">Interview Tip</span>
+Type conversion questions mein interviewer <span class="hl">integer division trap</span> check karta hai. Hamesha yaad rakho: <code>int / int = int</code>. Agar decimal result chahiye, toh pehle kisi ek operand ko <code>double</code> mein cast karo. Ye common mistake freshers ki interviews mein hoti hai.
+</div>
+
+<div class="signature">MADE BY HARSHAL CHAUHAN</div>
+
+</body>
+</html>
