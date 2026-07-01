@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture 02: Operators, Conditionals & Switch</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@page {
+    size: A4 portrait;
+    margin: 0;
+    @top-right-corner {
+        content: "Harshal Chauhan";
+        font: 9px 'Poppins', sans-serif;
+        color: #8C8C8C;
+        opacity: 0.3;
+    }
+}
+
+* { box-sizing: border-box; }
+
+body {
+    padding: 22mm 22mm 22mm 28mm;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: #FBFBF9;
+    font-family: 'Poppins', sans-serif;
+    color: #1A1A1A;
+    font-size: 12.5px;
+    line-height: 1.75;
+    margin: 0;
+    background-image: 
+        linear-gradient( rgba(0,0,0,0.008) 1px, transparent 1px ),
+        linear-gradient( 90deg, rgba(0,0,0,0.008) 1px, transparent 1px );
+    background-size: 20px 20px;
+}
+
+h1 {
+    font-size: 44px; font-weight: 700; font-family: 'Poppins', sans-serif;
+    color: #0B1A2E; letter-spacing: -0.5px;
+    border-bottom: 3px solid #B49450; padding-bottom: 10px;
+    margin-bottom: 16px; margin-top: 0; line-height: 1.2;
+}
+
+h2 {
+    font-size: 26px; font-weight: 700; font-family: 'Poppins', sans-serif;
+    color: #B49450; border-bottom: 2px solid #B49450;
+    padding-bottom: 6px; margin-top: 32px; margin-bottom: 16px;
+    line-height: 1.3;
+}
+
+h3 {
+    font-size: 19px; font-weight: 700; font-family: 'Poppins', sans-serif;
+    color: #1A4A4A; margin-top: 22px; margin-bottom: 12px;
+    line-height: 1.3;
+}
+
+h4 {
+    font-size: 15px; font-weight: 600; font-family: 'Poppins', sans-serif;
+    color: #7A3B4A; text-transform: uppercase; letter-spacing: 0.8px;
+    margin-top: 16px; margin-bottom: 8px; line-height: 1.3;
+}
+
+h5 {
+    font-size: 12.5px; font-weight: 600; font-family: 'Poppins', sans-serif;
+    color: #3C3C3C; text-transform: uppercase; letter-spacing: 0.5px;
+    margin-top: 12px; margin-bottom: 6px; line-height: 1.3;
+}
+
+p, li, td, th {
+    font-size: 12.5px; line-height: 1.75; color: #1A1A1A;
+}
+
+.lead {
+    font-size: 13.5px; line-height: 1.8; color: #2C2C2C;
+}
+
+.caption {
+    font-size: 10.5px; font-weight: 500; font-family: 'Poppins', sans-serif;
+    color: #8C8C8C;
+}
+
+.hl {
+    background: #F4E9D8; color: #7A5C3A; font-weight: 600;
+    padding: 2px 6px; border-radius: 3px; font-size: 12.5px;
+}
+
+.golden-insight {
+    border-left: 6px solid #B49450; background: #FDF9F2;
+    border-radius: 10px; padding: 14px 18px; margin: 16px 0;
+    font-weight: 500; font-style: italic; color: #5C4033;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    page-break-inside: avoid;
+}
+.golden-insight strong { color: #B49450; font-style: normal; }
+
+.box {
+    border-radius: 12px; padding: 18px 22px; margin-bottom: 18px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03);
+    page-break-inside: avoid; border-left: 6px solid;
+}
+
+.box-label {
+    display: block; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.8px;
+    margin-bottom: 10px; color: inherit;
+}
+
+.box-pattern { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-pattern .box-label { color: #3A5F80; }
+
+.box-intuition { border-left-color: #C4924A; background: #F9FBF9; }
+.box-intuition .box-label { color: #C4924A; }
+
+.box-workflow { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-workflow .box-label { color: #2E6B5A; }
+
+.box-important { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-important .box-label { color: #A53F3F; }
+
+.box-interview { border-left-color: #5E4B7A; background: #F8F7FC; }
+.box-interview .box-label { color: #5E4B7A; }
+
+.box-takeaway { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-takeaway .box-label { color: #2E6B5A; }
+
+.box-security { border-left-color: #C4924A; background: #FDFBF5; }
+.box-security .box-label { color: #C4924A; }
+
+.box-edge { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-edge .box-label { color: #A53F3F; }
+
+.box-best { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-best .box-label { color: #2E6B5A; }
+
+.box-deploy { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-deploy .box-label { color: #3A5F80; }
+
+.box-css { border-left-color: #C4924A; background: #FFFFFF; }
+.box-css .box-label { color: #C4924A; }
+
+.box-browser { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-browser .box-label { color: #3A5F80; }
+
+.box-config { border-left-color: #5E4B7A; background: #F8F7FC; }
+.box-config .box-label { color: #5E4B7A; }
+
+.box-perf { border-left-color: #0B1A2E; background: #FFFFFF; }
+.box-perf .box-label { color: #0B1A2E; }
+
+.code-block {
+    background: #111824; border: 1px solid #2A3240;
+    border-radius: 12px; padding: 20px 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    page-break-inside: avoid;
+    font-family: 'Fira Code', monospace; font-size: 12px;
+    line-height: 1.5; color: #E0E0E0;
+    white-space: pre-wrap; overflow-x: auto; margin: 16px 0;
+}
+
+.syn-kw { color: #F88C6C; font-weight: bold; }
+.syn-str { color: #9CDCFE; }
+.syn-cm { color: #6A9955; font-style: italic; }
+.syn-fn { color: #DCDCAa; }
+.syn-num { color: #B5CEA8; }
+.syn-op { color: #89DDFF; }
+.syn-type { color: #FFD700; }
+.syn-tag { color: #D67E7E; }
+.syn-attr { color: #9CDCFE; }
+
+.table-wrap {
+    border: 1px solid #E3DED5; border-radius: 12px;
+    overflow: hidden; page-break-inside: avoid; margin: 18px 0;
+}
+
+table {
+    width: 100%; border-collapse: collapse; font-size: 11.5px;
+}
+
+thead tr {
+    background: #F7F3EC; color: #0B1A2E; font-weight: 700;
+    font-size: 11.5px; border-bottom: 2px solid #B49450;
+}
+
+th { padding: 12px 14px; text-align: left; font-weight: 700; }
+
+td { padding: 12px 14px; background: #FFFFFF; border-bottom: 1px solid #F0EDE8; }
+
+tr:nth-child(even) td { background: #FBFBF9; }
+tr:last-child td { border-bottom: none; }
+
+.divider {
+    text-align: center; margin: 30px 0;
+    color: #B49450; font-size: 20px; letter-spacing: 8px;
+}
+
+.diagram {
+    display: flex; align-items: center; justify-content: center;
+    gap: 12px; margin: 18px 0; padding: 18px;
+    background: #F7F7F5; border-radius: 12px;
+    border: 1px solid #E3DED5;
+    page-break-inside: avoid; flex-wrap: wrap;
+}
+
+.diagram-box {
+    padding: 12px 18px; border-radius: 8px;
+    font-weight: 600; font-size: 12px; text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06); min-width: 100px;
+}
+
+.diagram-arrow {
+    font-size: 18px; color: #B49450; font-weight: 700;
+}
+
+.db-navy { background: #0B1A2E; color: #FFFFFF; }
+.db-gold { background: #B49450; color: #FFFFFF; }
+.db-teal { background: #1A4A4A; color: #FFFFFF; }
+.db-white { background: #FFFFFF; color: #0B1A2E; border: 2px solid #B49450; }
+
+ul, ol { margin: 12px 0; padding-left: 24px; }
+li { margin-bottom: 6px; }
+
+.signature {
+    text-align: center; margin-top: 40px;
+    border-top: 1px solid #E3DED5; padding-top: 24px;
+    color: #8C8C8C; font-size: 11px; font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.important-text {
+    background: #FDF0ED; color: #A53F3F;
+    font-weight: 600; padding: 1px 4px; border-radius: 2px;
+}
+
+@media print {
+    body { padding: 22mm 22mm 22mm 28mm; }
+    .box, .code-block, .table-wrap, .golden-insight, .diagram { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<h1>Lecture 02: Operators, Conditional Statements &amp; Switch</h1>
+
+<p class="lead">Is lecture mein hum C++ ke sabhi operators ko detail mein cover karenge — arithmetic se lekar bitwise tak. Saath mein if-else conditional statements, nested conditions, aur switch statement ka complete understanding develop karenge. Ye concepts C++ programming ke building blocks hain.</p>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>Operators</h2>
+
+<p>Operators special symbols hote hain jo variables aur values par operations perform karte hain. C++ mein operators ko categories mein divide kiya jata hai based on unka kaam.</p>
+
+<h3>Arithmetic Operators</h3>
+
+<p>Ye operators mathematical calculations ke liye use hote hain. Inme basic operations like addition, subtraction, multiplication, division, aur modulo (remainder) shamil hain.</p>
+
+<div class="code-block"><span class="syn-type">int</span> a = <span class="syn-num">10</span>, b = <span class="syn-num">3</span>;
+
+cout <span class="syn-op">&lt;&lt;</span> a <span class="syn-op">+</span> b;   <span class="syn-cm">// 13 (addition)</span>
+cout <span class="syn-op">&lt;&lt;</span> a <span class="syn-op">-</span> b;   <span class="syn-cm">// 7  (subtraction)</span>
+cout <span class="syn-op">&lt;&lt;</span> a <span class="syn-op">*</span> b;   <span class="syn-cm">// 30 (multiplication)</span>
+cout <span class="syn-op">&lt;&lt;</span> a <span class="syn-op">/</span> b;   <span class="syn-cm">// 3  (division - integer division)</span>
+cout <span class="syn-op">&lt;&lt;</span> a <span class="syn-op">%</span> b;   <span class="syn-cm">// 1  (remainder/modulo)</span>
+</div>
+
+<div class="box box-edge">
+<span class="box-label">Edge Case</span>
+<span class="important-text">Integer Division Trap:</span> Jab do integers ko divide karte hain, to result bhi integer hota hai. <span class="syn-type">int</span> a = <span class="syn-num">7</span>, b = <span class="syn-num">2</span>; cout <span class="syn-op">&lt;&lt;</span> a <span class="syn-op">/</span> b; <span class="syn-cm">// Output: 3 (not 3.5)</span> <span class="syn-cm">// For decimal result, use double: double result = (double)a / b;</span>
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> marks1 = <span class="syn-num">80</span>, marks2 = <span class="syn-num">90</span>;
+<span class="syn-type">int</span> total = marks1 <span class="syn-op">+</span> marks2;
+<span class="syn-type">int</span> average = total <span class="syn-op">/</span> <span class="syn-num">2</span>;
+
+cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Total: "</span> <span class="syn-op">&lt;&lt;</span> total <span class="syn-op">&lt;&lt;</span> endl;      <span class="syn-cm">// 170</span>
+cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Average: "</span> <span class="syn-op">&lt;&lt;</span> average <span class="syn-op">&lt;&lt;</span> endl;  <span class="syn-cm">// 85</span>
+</div>
+
+<h3>Assignment Operators</h3>
+
+<p>Assignment operators values assign karne ke liye use hote hain. Compound assignment operators (+=, -=, etc.) code ko concise banate hain.</p>
+
+<div class="code-block"><span class="syn-type">int</span> x = <span class="syn-num">10</span>;
+
+x = <span class="syn-num">5</span>;      <span class="syn-cm">// x becomes 5</span>
+x <span class="syn-op">+=</span> <span class="syn-num">3</span>;     <span class="syn-cm">// x = x + 3  → x becomes 8</span>
+x <span class="syn-op">-=</span> <span class="syn-num">2</span>;     <span class="syn-cm">// x = x - 2  → x becomes 6</span>
+x <span class="syn-op">*=</span> <span class="syn-num">4</span>;     <span class="syn-cm">// x = x * 4  → x becomes 24</span>
+x <span class="syn-op">/=</span> <span class="syn-num">2</span>;     <span class="syn-cm">// x = x / 2  → x becomes 12</span>
+x <span class="syn-op">%=</span> <span class="syn-num">5</span>;     <span class="syn-cm">// x = x % 5  → x becomes 2</span>
+</div>
+
+<h3>Comparison Operators</h3>
+
+<p>Comparison operators do values ko compare karte hain aur result <span class="hl">true</span> ya <span class="hl">false</span> (boolean) return karte hain. Ye conditional statements mein bahut use hote hain.</p>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Operator</th><th>Name</th><th>Example</th><th>Result</th></tr>
+</thead>
+<tbody>
+<tr><td><span class="syn-op">==</span></td><td>Equal to</td><td><span class="syn-num">10</span> <span class="syn-op">==</span> <span class="syn-num">5</span></td><td>false</td></tr>
+<tr><td><span class="syn-op">!=</span></td><td>Not equal to</td><td><span class="syn-num">10</span> <span class="syn-op">!=</span> <span class="syn-num">5</span></td><td>true</td></tr>
+<tr><td><span class="syn-op">&gt;</span></td><td>Greater than</td><td><span class="syn-num">10</span> <span class="syn-op">&gt;</span> <span class="syn-num">5</span></td><td>true</td></tr>
+<tr><td><span class="syn-op">&lt;</span></td><td>Less than</td><td><span class="syn-num">10</span> <span class="syn-op">&lt;</span> <span class="syn-num">5</span></td><td>false</td></tr>
+<tr><td><span class="syn-op">&gt;=</span></td><td>Greater than or equal</td><td><span class="syn-num">10</span> <span class="syn-op">&gt;=</span> <span class="syn-num">10</span></td><td>true</td></tr>
+<tr><td><span class="syn-op">&lt;=</span></td><td>Less than or equal</td><td><span class="syn-num">10</span> <span class="syn-op">&lt;=</span> <span class="syn-num">5</span></td><td>false</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="box box-important">
+<span class="box-label">Important</span>
+<span class="important-text">==</span> aur <span class="important-text">=</span> mein confusion common hai. <span class="syn-op">==</span> comparison hai (equals?), jabki <span class="syn-op">=</span> assignment hai (store value). <span class="syn-type">if</span> (x = <span class="syn-num">5</span>) <span class="syn-cm">// WRONG: assigns 5 to x, always true</span> <span class="syn-type">if</span> (x <span class="syn-op">==</span> <span class="syn-num">5</span>) <span class="syn-cm">// CORRECT: checks if x equals 5</span>
+</div>
+
+<h3>Logical Operators</h3>
+
+<p>Logical operators multiple conditions ko combine karne ke liye use hote hain. Ye boolean expressions par kaam karte hain.</p>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Operator</th><th>Name</th><th>Rule</th><th>Example</th></tr>
+</thead>
+<tbody>
+<tr><td><span class="syn-op">&&</span></td><td>AND</td><td>Both true → true</td><td><span class="syn-kw">true</span> <span class="syn-op">&&</span> <span class="syn-kw">false</span> = false</td></tr>
+<tr><td><span class="syn-op">||</span></td><td>OR</td><td>At least one true → true</td><td><span class="syn-kw">true</span> <span class="syn-op">||</span> <span class="syn-kw">false</span> = true</td></tr>
+<tr><td><span class="syn-op">!</span></td><td>NOT</td><td>Reverse the value</td><td><span class="syn-op">!</span><span class="syn-kw">true</span> = false</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> age = <span class="syn-num">20</span>;
+<span class="syn-type">bool</span> hasLicense = <span class="syn-kw">true</span>;
+
+<span class="syn-cm">// Can drive if age >= 18 AND has license</span>
+<span class="syn-kw">if</span>(age <span class="syn-op">&gt;=</span> <span class="syn-num">18</span> <span class="syn-op">&&</span> hasLicense) {
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Can drive!"</span>;
+}
+
+<span class="syn-cm">// Short-circuit evaluation: && mein agar first false, second check nahi hota</span>
+<span class="syn-cm">// || mein agar first true, second check nahi hota</span>
+</div>
+
+<h3>Increment and Decrement Operators</h3>
+
+<p>Ye operators variable ki value ko 1 se badhane ya ghataane ke liye use hote hain. Inme <span class="hl">prefix</span> aur <span class="hl">postfix</span> do forms hoti hain.</p>
+
+<div class="code-block"><span class="syn-type">int</span> x = <span class="syn-num">5</span>;
+
+x<span class="syn-op">++</span>;    <span class="syn-cm">// Post-increment: x becomes 6 (pehle use, phir badhao)</span>
+<span class="syn-op">++</span>x;    <span class="syn-cm">// Pre-increment: x becomes 7 (pehle badhao, phir use)</span>
+x<span class="syn-op">--</span>;    <span class="syn-cm">// Post-decrement: x becomes 6</span>
+<span class="syn-op">--</span>x;    <span class="syn-cm">// Pre-decrement: x becomes 5</span>
+</div>
+
+<div class="box box-edge">
+<span class="box-label">Edge Case</span>
+<strong>Prefix vs Postfix Difference:</strong> <span class="syn-type">int</span> a = <span class="syn-num">5</span>, b; b = a<span class="syn-op">++</span>; <span class="syn-cm">// b = 5, a = 6 (pehle b mein a ki old value, phir a++ )</span> <span class="syn-type">int</span> c = <span class="syn-num">5</span>, d; d = <span class="syn-op">++</span>c; <span class="syn-cm">// d = 6, c = 6 (pehle c++ , phir d mein new value)</span> <span class="syn-cm">// Same concept -- ke liye bhi apply hota hai</span>
+</div>
+
+<h3>Bitwise Operators</h3>
+
+<p>Bitwise operators numbers ke individual bits par directly operate karte hain. Ye low-level programming, flags, permissions, aur performance-critical code mein bahut use hote hain.</p>
+
+<h4>Bitwise AND, OR, XOR, NOT</h4>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Operator</th><th>Name</th><th>Rule</th><th>Example (5 &amp; 3)</th></tr>
+</thead>
+<tbody>
+<tr><td><span class="syn-op">&amp;</span></td><td>Bitwise AND</td><td>Both 1 → 1, else 0</td><td>5 (101) &amp; 3 (011) = 1 (001)</td></tr>
+<tr><td><span class="syn-op">|</span></td><td>Bitwise OR</td><td>At least one 1 → 1</td><td>5 (101) | 3 (011) = 7 (111)</td></tr>
+<tr><td><span class="syn-op">^</span></td><td>Bitwise XOR</td><td>Different → 1, Same → 0</td><td>5 (101) ^ 3 (011) = 6 (110)</td></tr>
+<tr><td><span class="syn-op">~</span></td><td>Bitwise NOT</td><td>1 → 0, 0 → 1</td><td>~5 (00000101) = -6 (11111010)</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> a = <span class="syn-num">5</span>;   <span class="syn-cm">// Binary: 00000101</span>
+<span class="syn-type">int</span> b = <span class="syn-num">3</span>;   <span class="syn-cm">// Binary: 00000011</span>
+
+cout <span class="syn-op">&lt;&lt;</span> (a <span class="syn-op">&amp;</span> b) <span class="syn-op">&lt;&lt;</span> endl;   <span class="syn-cm">// 1  (00000001)</span>
+cout <span class="syn-op">&lt;&lt;</span> (a <span class="syn-op">|</span> b) <span class="syn-op">&lt;&lt;</span> endl;   <span class="syn-cm">// 7  (00000111)</span>
+cout <span class="syn-op">&lt;&lt;</span> (a <span class="syn-op">^</span> b) <span class="syn-op">&lt;&lt;</span> endl;   <span class="syn-cm">// 6  (00000110)</span>
+cout <span class="syn-op">&lt;&lt;</span> (<span class="syn-op">~</span>a) <span class="syn-op">&lt;&lt;</span> endl;     <span class="syn-cm">// -6 (Two's complement)</span>
+</div>
+
+<h4>Bitwise Shift Operators</h4>
+
+<p>Shift operators bits ko left ya right move karte hain. Ye multiplication aur division by powers of 2 ke equivalent hote hain.</p>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Operator</th><th>Name</th><th>Effect</th><th>Example</th></tr>
+</thead>
+<tbody>
+<tr><td><span class="syn-op">&lt;&lt;</span></td><td>Left Shift</td><td>Bits left move, zeros fill right</td><td><span class="syn-num">5</span> <span class="syn-op">&lt;&lt;</span> <span class="syn-num">1</span> = <span class="syn-num">10</span> (101 → 1010)</td></tr>
+<tr><td><span class="syn-op">&gt;&gt;</span></td><td>Right Shift</td><td>Bits right move, zeros fill left</td><td><span class="syn-num">5</span> <span class="syn-op">&gt;&gt;</span> <span class="syn-num">1</span> = <span class="syn-num">2</span> (101 → 010)</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> x = <span class="syn-num">5</span>;    <span class="syn-cm">// Binary: 00000101</span>
+
+cout <span class="syn-op">&lt;&lt;</span> (x <span class="syn-op">&lt;&lt;</span> <span class="syn-num">1</span>) <span class="syn-op">&lt;&lt;</span> endl;   <span class="syn-cm">// 10  (00001010)  → 5 * 2^1</span>
+cout <span class="syn-op">&lt;&lt;</span> (x <span class="syn-op">&lt;&lt;</span> <span class="syn-num">2</span>) <span class="syn-op">&lt;&lt;</span> endl;   <span class="syn-cm">// 20  (00010100)  → 5 * 2^2</span>
+cout <span class="syn-op">&lt;&lt;</span> (x <span class="syn-op">&gt;&gt;</span> <span class="syn-num">1</span>) <span class="syn-op">&lt;&lt;</span> endl;   <span class="syn-cm">// 2   (00000010)  → 5 / 2^1</span>
+cout <span class="syn-op">&lt;&lt;</span> (x <span class="syn-op">&gt;&gt;</span> <span class="syn-num">2</span>) <span class="syn-op">&lt;&lt;</span> endl;   <span class="syn-cm">// 1   (00000001)  → 5 / 2^2</span>
+</div>
+
+<div class="golden-insight">
+<strong>Key Insight:</strong> Left shift <span class="hl">n</span> positions = multiply by <span class="hl">2^n</span>. Right shift <span class="hl">n</span> positions = divide by <span class="hl">2^n</span>. Ye operators hardware-level multiplication se fast hote hain, isliye embedded systems aur graphics programming mein widely use hote hain.
+</div>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+<strong>Bitwise AND &amp;</strong> ko socho mask ki tarah. Jahan mask mein 1 hai, wahan original bit pass hoti hai. Jahan 0 hai, wahan 0 aa jata hai. Isliye permissions check karne ke liye AND use hota hai.<br><br>
+<strong>Bitwise OR |</strong> ko socho combine karne ki tarah. Do bit patterns ko merge karo — jahan kisi mein bhi 1 hai, result mein 1 aa jayega. Isliye permissions set karne ke liye OR use hota hai.
+</div>
+
+<div class="box box-interview">
+<span class="box-label">Interview Tip</span>
+Bitwise operators se frequently puche jate hain:<br>
+1. <strong>Swap two numbers without temp variable:</strong> a = a ^ b; b = a ^ b; a = a ^ b;<br>
+2. <strong>Check if number is power of 2:</strong> (n &amp; (n-1)) == 0<br>
+3. <strong>Check odd/even:</strong> (n &amp; 1) == 0 → even, else odd<br>
+4. <strong>Turn off k-th bit:</strong> n &amp; ~(1 &lt;&lt; k)<br>
+5. <strong>Turn on k-th bit:</strong> n | (1 &lt;&lt; k)<br>
+6. <strong>Toggle k-th bit:</strong> n ^ (1 &lt;&lt; k)
+</div>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>Input and Output</h2>
+
+<h3>Output with cout</h3>
+
+<p><span class="hl">cout</span> (character output) screen par data print karne ke liye use hota hai. <span class="hl">endl</span> new line insert karta hai aur buffer flush karta hai. <span class="syn-op">&lt;&lt;</span> insertion operator hai.</p>
+
+<div class="code-block">cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Hello World"</span>;
+cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Age: "</span> <span class="syn-op">&lt;&lt;</span> <span class="syn-num">25</span>;
+cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Name: "</span> <span class="syn-op">&lt;&lt;</span> name <span class="syn-op">&lt;&lt;</span> endl;  <span class="syn-cm">// endl = new line + flush</span>
+</div>
+
+<h3>Input with cin</h3>
+
+<p><span class="hl">cin</span> (character input) user se keyboard input lene ke liye use hota hai. <span class="syn-op">&gt;&gt;</span> extraction operator hai. Ye whitespace (space, tab, newline) ko delimiter manta hai.</p>
+
+<div class="code-block"><span class="syn-type">int</span> age;
+cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Enter your age: "</span>;
+cin <span class="syn-op">&gt;&gt;</span> age;
+
+<span class="syn-type">string</span> name;
+cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Enter your name: "</span>;
+cin <span class="syn-op">&gt;&gt;</span> name;  <span class="syn-cm">// Only reads one word!</span>
+</div>
+
+<h3>Complete Input/Output Example</h3>
+
+<div class="code-block"><span class="syn-kw">#include</span> <span class="syn-op">&lt;</span><span class="syn-str">iostream</span><span class="syn-op">&gt;</span>
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-type">string</span> name;
+    <span class="syn-type">int</span> age;
+
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Enter your name: "</span>;
+    cin <span class="syn-op">&gt;&gt;</span> name;
+
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Enter your age: "</span>;
+    cin <span class="syn-op">&gt;&gt;</span> age;
+
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"
+Hello "</span> <span class="syn-op">&lt;&lt;</span> name <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"!"</span> <span class="syn-op">&lt;&lt;</span> endl;
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"You are "</span> <span class="syn-op">&lt;&lt;</span> age <span class="syn-op">&lt;&lt;</span> <span class="syn-str">" years old."</span> <span class="syn-op">&lt;&lt;</span> endl;
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}
+</div>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>Conditional Statements</h2>
+
+<p>Conditional statements program ko decisions lene ki ability dete hain. Code ka flow conditions ke basis par change hota hai.</p>
+
+<h3>Basic If Statement</h3>
+
+<p>Simplest form — agar condition true hai to code block execute hoga, warna nahi.</p>
+
+<div class="code-block"><span class="syn-kw">if</span>(condition) {
+    <span class="syn-cm">// code runs if condition is true</span>
+}
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> age = <span class="syn-num">20</span>;
+
+<span class="syn-kw">if</span>(age <span class="syn-op">&gt;=</span> <span class="syn-num">18</span>) {
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"You are an adult"</span>;
+}
+</div>
+
+<h3>If-Else Statement</h3>
+
+<p>Do paths provide karta hai — condition true ho to if block, false ho to else block.</p>
+
+<div class="code-block"><span class="syn-kw">if</span>(condition) {
+    <span class="syn-cm">// code runs if condition is true</span>
+} <span class="syn-kw">else</span> {
+    <span class="syn-cm">// code runs if condition is false</span>
+}
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> age = <span class="syn-num">15</span>;
+
+<span class="syn-kw">if</span>(age <span class="syn-op">&gt;=</span> <span class="syn-num">18</span>) {
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"You are an adult"</span>;
+} <span class="syn-kw">else</span> {
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"You are a minor"</span>;
+}
+</div>
+
+<h3>If-Else If-Else Ladder</h3>
+
+<p>Jab multiple conditions check karni ho, tab if-else if ladder use hoti hai. Conditions top se bottom check hoti hain, aur pehli true condition ka block execute hota hai.</p>
+
+<div class="code-block"><span class="syn-kw">if</span>(condition1) {
+    <span class="syn-cm">// runs if condition1 is true</span>
+} <span class="syn-kw">else if</span>(condition2) {
+    <span class="syn-cm">// runs if condition2 is true</span>
+} <span class="syn-kw">else</span> {
+    <span class="syn-cm">// runs if all conditions are false</span>
+}
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> marks = <span class="syn-num">85</span>;
+
+<span class="syn-kw">if</span>(marks <span class="syn-op">&gt;=</span> <span class="syn-num">90</span>) {
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Grade: A"</span>;
+} <span class="syn-kw">else if</span>(marks <span class="syn-op">&gt;=</span> <span class="syn-num">80</span>) {
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Grade: B"</span>;
+} <span class="syn-kw">else if</span>(marks <span class="syn-op">&gt;=</span> <span class="syn-num">70</span>) {
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Grade: C"</span>;
+} <span class="syn-kw">else if</span>(marks <span class="syn-op">&gt;=</span> <span class="syn-num">60</span>) {
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Grade: D"</span>;
+} <span class="syn-kw">else</span> {
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Grade: F"</span>;
+}
+</div>
+
+<div class="box box-best">
+<span class="box-label">Best Practice</span>
+Conditions hamesha <span class="hl">most specific se least specific</span> ki taraf rakho. Agar marks <span class="syn-op">&gt;=</span> <span class="syn-num">60</span> pehle check kiya aur marks <span class="syn-num">85</span> hain, to wo Grade D de dega, jo galat hai. Isliye descending order (highest threshold first) follow karo.
+</div>
+
+<h3>Nested If Statements</h3>
+
+<p>Ek if statement ke andar doosra if statement — jab multiple conditions dependent hain.</p>
+
+<div class="code-block"><span class="syn-type">int</span> age = <span class="syn-num">20</span>;
+<span class="syn-type">bool</span> hasLicense = <span class="syn-kw">true</span>;
+
+<span class="syn-kw">if</span>(age <span class="syn-op">&gt;=</span> <span class="syn-num">18</span>) {
+    <span class="syn-kw">if</span>(hasLicense) {
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"You can drive"</span>;
+    } <span class="syn-kw">else</span> {
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"You need a license"</span>;
+    }
+} <span class="syn-kw">else</span> {
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"You are too young"</span>;
+}
+</div>
+
+<div class="golden-insight">
+<strong>Key Insight:</strong> Nested if ko combine karke ek single if mein likh sakte hain: <span class="syn-kw">if</span>(age <span class="syn-op">&gt;=</span> <span class="syn-num">18</span> <span class="syn-op">&&</span> hasLicense). Ye code readable aur maintainable banata hai. Nested if sirf tab use karo jab intermediate actions bhi chahiye ho.
+</div>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>Switch Statement</h2>
+
+<h3>What is Switch</h3>
+
+<p><span class="hl">Switch</span> statement multiple if-else if ladder ka alternative hai. Ye ek variable ko multiple constant values se compare karta hai. Switch generally tab use hota hai jab ek hi variable ko different fixed values se check karna ho.</p>
+
+<div class="code-block"><span class="syn-kw">switch</span>(variable) {
+    <span class="syn-kw">case</span> value1:
+        <span class="syn-cm">// code</span>
+        <span class="syn-kw">break</span>;
+    <span class="syn-kw">case</span> value2:
+        <span class="syn-cm">// code</span>
+        <span class="syn-kw">break</span>;
+    <span class="syn-kw">default</span>:
+        <span class="syn-cm">// code if no match</span>
+}
+</div>
+
+<h3>Example: Days of Week</h3>
+
+<div class="code-block"><span class="syn-type">int</span> day = <span class="syn-num">3</span>;
+
+<span class="syn-kw">switch</span>(day) {
+    <span class="syn-kw">case</span> <span class="syn-num">1</span>:
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Monday"</span> <span class="syn-op">&lt;&lt;</span> endl;
+        <span class="syn-kw">break</span>;
+    <span class="syn-kw">case</span> <span class="syn-num">2</span>:
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Tuesday"</span> <span class="syn-op">&lt;&lt;</span> endl;
+        <span class="syn-kw">break</span>;
+    <span class="syn-kw">case</span> <span class="syn-num">3</span>:
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Wednesday"</span> <span class="syn-op">&lt;&lt;</span> endl;
+        <span class="syn-kw">break</span>;
+    <span class="syn-kw">case</span> <span class="syn-num">4</span>:
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Thursday"</span> <span class="syn-op">&lt;&lt;</span> endl;
+        <span class="syn-kw">break</span>;
+    <span class="syn-kw">case</span> <span class="syn-num">5</span>:
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Friday"</span> <span class="syn-op">&lt;&lt;</span> endl;
+        <span class="syn-kw">break</span>;
+    <span class="syn-kw">case</span> <span class="syn-num">6</span>:
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Saturday"</span> <span class="syn-op">&lt;&lt;</span> endl;
+        <span class="syn-kw">break</span>;
+    <span class="syn-kw">case</span> <span class="syn-num">7</span>:
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Sunday"</span> <span class="syn-op">&lt;&lt;</span> endl;
+        <span class="syn-kw">break</span>;
+    <span class="syn-kw">default</span>:
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Invalid day"</span> <span class="syn-op">&lt;&lt;</span> endl;
+}
+</div>
+
+<h3>Example: Calculator with Switch</h3>
+
+<div class="code-block"><span class="syn-type">char</span> op;
+<span class="syn-type">double</span> a, b;
+
+cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Enter operator (+, -, *, /): "</span>;
+cin <span class="syn-op">&gt;&gt;</span> op;
+
+cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Enter two numbers: "</span>;
+cin <span class="syn-op">&gt;&gt;</span> a <span class="syn-op">&gt;&gt;</span> b;
+
+<span class="syn-kw">switch</span>(op) {
+    <span class="syn-kw">case</span> <span class="syn-str">'+'</span>:
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Result: "</span> <span class="syn-op">&lt;&lt;</span> (a <span class="syn-op">+</span> b) <span class="syn-op">&lt;&lt;</span> endl;
+        <span class="syn-kw">break</span>;
+    <span class="syn-kw">case</span> <span class="syn-str">'-'</span>:
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Result: "</span> <span class="syn-op">&lt;&lt;</span> (a <span class="syn-op">-</span> b) <span class="syn-op">&lt;&lt;</span> endl;
+        <span class="syn-kw">break</span>;
+    <span class="syn-kw">case</span> <span class="syn-str">'*'</span>:
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Result: "</span> <span class="syn-op">&lt;&lt;</span> (a <span class="syn-op">*</span> b) <span class="syn-op">&lt;&lt;</span> endl;
+        <span class="syn-kw">break</span>;
+    <span class="syn-kw">case</span> <span class="syn-str">'/'</span>:
+        <span class="syn-kw">if</span>(b <span class="syn-op">!=</span> <span class="syn-num">0</span>) {
+            cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Result: "</span> <span class="syn-op">&lt;&lt;</span> (a <span class="syn-op">/</span> b) <span class="syn-op">&lt;&lt;</span> endl;
+        } <span class="syn-kw">else</span> {
+            cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Cannot divide by zero!"</span> <span class="syn-op">&lt;&lt;</span> endl;
+        }
+        <span class="syn-kw">break</span>;
+    <span class="syn-kw">default</span>:
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Invalid operator"</span> <span class="syn-op">&lt;&lt;</span> endl;
+}
+</div>
+
+<h3>Fall-Through Behavior</h3>
+
+<p>Switch mein <span class="hl">break</span> statement bahut important hai. Agar break nahi likha, to control next case mein bhi chala jata hai — isse <span class="hl">fall-through</span> kehte hain.</p>
+
+<div class="code-block"><span class="syn-type">int</span> num = <span class="syn-num">2</span>;
+
+<span class="syn-kw">switch</span>(num) {
+    <span class="syn-kw">case</span> <span class="syn-num">1</span>:
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"One"</span> <span class="syn-op">&lt;&lt;</span> endl;
+    <span class="syn-kw">case</span> <span class="syn-num">2</span>:
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Two"</span> <span class="syn-op">&lt;&lt;</span> endl;   <span class="syn-cm">// Prints this</span>
+    <span class="syn-kw">case</span> <span class="syn-num">3</span>:
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Three"</span> <span class="syn-op">&lt;&lt;</span> endl; <span class="syn-cm">// Also prints this!</span>
+    <span class="syn-kw">default</span>:
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Other"</span> <span class="syn-op">&lt;&lt;</span> endl; <span class="syn-cm">// And this too!</span>
+}
+
+<span class="syn-cm">// Output: Two</span>
+<span class="syn-cm">//         Three</span>
+<span class="syn-cm">//         Other</span>
+</div>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Fall-through intentionally bhi use hota hai! Jaise multiple cases mein same code execute karna ho: <span class="syn-kw">case</span> <span class="syn-num">1</span>: <span class="syn-kw">case</span> <span class="syn-num">2</span>: <span class="syn-kw">case</span> <span class="syn-num">3</span>: cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Weekday"</span>; <span class="syn-kw">break</span>; <span class="syn-kw">case</span> <span class="syn-num">6</span>: <span class="syn-kw">case</span> <span class="syn-num">7</span>: cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Weekend"</span>; <span class="syn-kw">break</span>;
+</div>
+
+<div class="box box-important">
+<span class="box-label">Important</span>
+Switch mein sirf <span class="hl">integer, char, aur enum</span> types use kar sakte hain. Float, double, ya string direct use nahi kar sakte. Isliye switch ka use limited hota hai compared to if-else. C++ mein switch ke cases compile-time constants hone chahiye.
+</div>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>Practice Problems</h2>
+
+<h3>Problem 1: Even or Odd</h3>
+
+<div class="code-block"><span class="syn-kw">#include</span> <span class="syn-op">&lt;</span><span class="syn-str">iostream</span><span class="syn-op">&gt;</span>
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-type">int</span> num;
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Enter a number: "</span>;
+    cin <span class="syn-op">&gt;&gt;</span> num;
+
+    <span class="syn-kw">if</span>(num <span class="syn-op">%</span> <span class="syn-num">2</span> <span class="syn-op">==</span> <span class="syn-num">0</span>) {
+        cout <span class="syn-op">&lt;&lt;</span> num <span class="syn-op">&lt;&lt;</span> <span class="syn-str">" is even"</span>;
+    } <span class="syn-kw">else</span> {
+        cout <span class="syn-op">&lt;&lt;</span> num <span class="syn-op">&lt;&lt;</span> <span class="syn-str">" is odd"</span>;
+    }
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}
+</div>
+
+<h3>Problem 2: Maximum of Two Numbers</h3>
+
+<div class="code-block"><span class="syn-kw">#include</span> <span class="syn-op">&lt;</span><span class="syn-str">iostream</span><span class="syn-op">&gt;</span>
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-type">int</span> a, b;
+
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Enter first number: "</span>;
+    cin <span class="syn-op">&gt;&gt;</span> a;
+
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Enter second number: "</span>;
+    cin <span class="syn-op">&gt;&gt;</span> b;
+
+    <span class="syn-kw">if</span>(a <span class="syn-op">&gt;</span> b) {
+        cout <span class="syn-op">&lt;&lt;</span> a <span class="syn-op">&lt;&lt;</span> <span class="syn-str">" is maximum"</span>;
+    } <span class="syn-kw">else</span> {
+        cout <span class="syn-op">&lt;&lt;</span> b <span class="syn-op">&lt;&lt;</span> <span class="syn-str">" is maximum"</span>;
+    }
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}
+</div>
+
+<h3>Problem 3: Positive, Negative, or Zero</h3>
+
+<div class="code-block"><span class="syn-kw">#include</span> <span class="syn-op">&lt;</span><span class="syn-str">iostream</span><span class="syn-op">&gt;</span>
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-type">int</span> num;
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Enter a number: "</span>;
+    cin <span class="syn-op">&gt;&gt;</span> num;
+
+    <span class="syn-kw">if</span>(num <span class="syn-op">&gt;</span> <span class="syn-num">0</span>) {
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Positive"</span>;
+    } <span class="syn-kw">else if</span>(num <span class="syn-op">&lt;</span> <span class="syn-num">0</span>) {
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Negative"</span>;
+    } <span class="syn-kw">else</span> {
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Zero"</span>;
+    }
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}
+</div>
+
+<h3>Problem 4: Calculator with Error Handling</h3>
+
+<div class="code-block"><span class="syn-kw">#include</span> <span class="syn-op">&lt;</span><span class="syn-str">iostream</span><span class="syn-op">&gt;</span>
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-type">double</span> num1, num2;
+    <span class="syn-type">char</span> op;
+
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Enter first number: "</span>;
+    cin <span class="syn-op">&gt;&gt;</span> num1;
+
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Enter operator (+, -, *, /): "</span>;
+    cin <span class="syn-op">&gt;&gt;</span> op;
+
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Enter second number: "</span>;
+    cin <span class="syn-op">&gt;&gt;</span> num2;
+
+    <span class="syn-kw">if</span>(op <span class="syn-op">==</span> <span class="syn-str">'+'</span>) {
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Result: "</span> <span class="syn-op">&lt;&lt;</span> (num1 <span class="syn-op">+</span> num2);
+    } <span class="syn-kw">else if</span>(op <span class="syn-op">==</span> <span class="syn-str">'-'</span>) {
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Result: "</span> <span class="syn-op">&lt;&lt;</span> (num1 <span class="syn-op">-</span> num2);
+    } <span class="syn-kw">else if</span>(op <span class="syn-op">==</span> <span class="syn-str">'*'</span>) {
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Result: "</span> <span class="syn-op">&lt;&lt;</span> (num1 <span class="syn-op">*</span> num2);
+    } <span class="syn-kw">else if</span>(op <span class="syn-op">==</span> <span class="syn-str">'/'</span>) {
+        <span class="syn-kw">if</span>(num2 <span class="syn-op">!=</span> <span class="syn-num">0</span>) {
+            cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Result: "</span> <span class="syn-op">&lt;&lt;</span> (num1 <span class="syn-op">/</span> num2);
+        } <span class="syn-kw">else</span> {
+            cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Cannot divide by zero!"</span>;
+        }
+    } <span class="syn-kw">else</span> {
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Invalid operator!"</span>;
+    }
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}
+</div>
+
+<h3>Problem 5: Grade Calculator with Validation</h3>
+
+<div class="code-block"><span class="syn-kw">#include</span> <span class="syn-op">&lt;</span><span class="syn-str">iostream</span><span class="syn-op">&gt;</span>
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-type">int</span> marks;
+
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Enter your marks (0-100): "</span>;
+    cin <span class="syn-op">&gt;&gt;</span> marks;
+
+    <span class="syn-kw">if</span>(marks <span class="syn-op">&gt;</span> <span class="syn-num">100</span> <span class="syn-op">||</span> marks <span class="syn-op">&lt;</span> <span class="syn-num">0</span>) {
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Invalid marks!"</span>;
+    } <span class="syn-kw">else if</span>(marks <span class="syn-op">&gt;=</span> <span class="syn-num">90</span>) {
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Grade: A (Excellent)"</span>;
+    } <span class="syn-kw">else if</span>(marks <span class="syn-op">&gt;=</span> <span class="syn-num">80</span>) {
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Grade: B (Very Good)"</span>;
+    } <span class="syn-kw">else if</span>(marks <span class="syn-op">&gt;=</span> <span class="syn-num">70</span>) {
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Grade: C (Good)"</span>;
+    } <span class="syn-kw">else if</span>(marks <span class="syn-op">&gt;=</span> <span class="syn-num">60</span>) {
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Grade: D (Satisfactory)"</span>;
+    } <span class="syn-kw">else</span> {
+        cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Grade: F (Fail)"</span>;
+    }
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}
+</div>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>Summary Cheat Sheet</h2>
+
+<h3>Operators Quick Reference</h3>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Category</th><th>Operators</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Arithmetic</strong></td><td><span class="syn-op">+ - * / %</span></td><td>Math operations</td></tr>
+<tr><td><strong>Assignment</strong></td><td><span class="syn-op">= += -= *= /= %=</span></td><td>Assign and update values</td></tr>
+<tr><td><strong>Comparison</strong></td><td><span class="syn-op">== != > < >= <=</span></td><td>Compare values, return bool</td></tr>
+<tr><td><strong>Logical</strong></td><td><span class="syn-op">&& || !</span></td><td>Combine boolean conditions</td></tr>
+<tr><td><strong>Increment</strong></td><td><span class="syn-op">++ --</span></td><td>Add/subtract 1</td></tr>
+<tr><td><strong>Bitwise</strong></td><td><span class="syn-op">& | ^ ~ << >></span></td><td>Operate on individual bits</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>If-Else vs Switch</h3>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Feature</th><th>If-Else</th><th>Switch</th></tr>
+</thead>
+<tbody>
+<tr><td>Conditions</td><td>Any boolean expression</td><td>Only equality check</td></tr>
+<tr><td>Data Types</td><td>Any type</td><td>int, char, enum only</td></tr>
+<tr><td>Range Check</td><td>Yes (>, <, >=, <=)</td><td>No</td></tr>
+<tr><td>Readability</td><td>Complex for many cases</td><td>Clean for many cases</td></tr>
+<tr><td>Performance</td><td>Sequential check</td><td>Jump table (faster)</td></tr>
+<tr><td>Fall-through</td><td>No</td><td>Yes (with break control)</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>Key Takeaways</h2>
+
+<div class="box box-takeaway">
+<span class="box-label">Takeaway</span>
+<ul>
+<li>Arithmetic operators basic math karte hain; <span class="hl">integer division</span> aur <span class="hl">modulo</span> ke behavior ko carefully samajhna zaroori hai</li>
+<li>Comparison operators <span class="hl">true/false</span> return karte hain; <span class="syn-op">==</span> aur <span class="syn-op">=</span> mein hamesha difference rakho</li>
+<li>Logical operators <span class="syn-op">&&</span>, <span class="syn-op">||</span>, <span class="syn-op">!</span> multiple conditions combine karne mein use hote hain; short-circuit evaluation performance improve karti hai</li>
+<li>Prefix <span class="syn-op">++x</span> pehle increment karta hai, postfix <span class="syn-op">x++</span> baad mein — assignment ke time difference matter karta hai</li>
+<li>Bitwise operators bits par directly operate karte hain; left shift <span class="syn-op">&lt;&lt;</span> multiply by 2^n, right shift <span class="syn-op">&gt;&gt;</span> divide by 2^n</li>
+<li>cin whitespace ko delimiter manta hai; spaces ke saath input ke liye getline() use karo</li>
+<li>If-else ladder mein conditions <span class="hl">most specific se least specific</span> rakho</li>
+<li>Switch sirf equality check ke liye use hota hai; break statement fall-through rokta hai</li>
+<li>Nested if ko logical operators se combine karke readable code likh sakte hain</li>
+</ul>
+</div>
+
+<h2>Practice Exercises</h2>
+
+<div class="box box-pattern">
+<span class="box-label">Pattern</span>
+<strong>Exercise 1:</strong> Write a program jo user se ek number le aur check kare wo positive even, positive odd, negative even, negative odd, ya zero hai. Nested if-else use karo.<br><br>
+<strong>Exercise 2:</strong> Bitwise operators se do numbers swap karo without using temporary variable. XOR operator (^) use karo.<br><br>
+<strong>Exercise 3:</strong> Ek program banao jo month number (1-12) input le aur switch statement se season print kare: Winter (Dec-Feb), Spring (Mar-May), Summer (Jun-Aug), Autumn (Sep-Nov). Fall-through behavior intentionally use karo.<br><br>
+<strong>Exercise 4:</strong> Ternary operator (? :) se maximum of three numbers nikalo. Nested ternary use karo.<br><br>
+<strong>Exercise 5:</strong> Ek calculator banao jo switch statement use kare. Division by zero, invalid operator, aur invalid input (non-numeric) sab handle karo.
+</div>
+
+<div class="box box-interview">
+<span class="box-label">Interview Tip</span>
+Commonly asked interview questions:<br>
+1. <strong>== aur = mein difference:</strong> == comparison, = assignment. if(x = 5) compile hoga lekin logical bug hoga.<br>
+2. <strong>Short-circuit evaluation:</strong> && mein agar first false, second evaluate nahi hota. || mein agar first true, second evaluate nahi hota. Iska use null pointer checks mein hota hai.<br>
+3. <strong>Switch vs If-else:</strong> Switch jump table use karta hai, isliye multiple cases mein faster. If-else flexible hai koi bhi condition check kar sakta hai.<br>
+4. <strong>Bitwise use cases:</strong> Permission flags, graphics (RGB values), compression algorithms, embedded systems.<br>
+5. <strong>Pre vs Post increment:</strong> Prefix pehle increment karta hai (use karne se pehle), postfix baad mein (use karne ke baad).
+</div>
+
+<div class="signature">MADE BY HARSHAL CHAUHAN</div>
+
+</body>
+</html>

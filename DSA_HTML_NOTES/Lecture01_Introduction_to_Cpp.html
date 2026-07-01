@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture 01: Introduction to C++</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@page {
+    size: A4 portrait;
+    margin: 0;
+    @top-right-corner {
+        content: "Harshal Chauhan";
+        font: 9px 'Poppins', sans-serif;
+        color: #8C8C8C;
+        opacity: 0.3;
+    }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    padding: 22mm 22mm 22mm 28mm;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: #FBFBF9;
+    font-family: 'Poppins', sans-serif;
+    color: #1A1A1A;
+    font-size: 12.5px;
+    line-height: 1.75;
+    margin: 0;
+    background-image: 
+        linear-gradient( rgba(0,0,0,0.008) 1px, transparent 1px ),
+        linear-gradient( 90deg, rgba(0,0,0,0.008) 1px, transparent 1px );
+    background-size: 20px 20px;
+}
+
+h1 {
+    font-size: 44px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    color: #0B1A2E;
+    letter-spacing: -0.5px;
+    border-bottom: 3px solid #B49450;
+    padding-bottom: 10px;
+    margin-bottom: 16px;
+    margin-top: 0;
+    line-height: 1.2;
+}
+
+h2 {
+    font-size: 26px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    color: #B49450;
+    border-bottom: 2px solid #B49450;
+    padding-bottom: 6px;
+    margin-top: 32px;
+    margin-bottom: 16px;
+    line-height: 1.3;
+}
+
+h3 {
+    font-size: 19px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    color: #1A4A4A;
+    margin-top: 22px;
+    margin-bottom: 12px;
+    line-height: 1.3;
+}
+
+h4 {
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    color: #7A3B4A;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    line-height: 1.3;
+}
+
+h5 {
+    font-size: 12.5px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    color: #3C3C3C;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 12px;
+    margin-bottom: 6px;
+    line-height: 1.3;
+}
+
+p, li, td, th {
+    font-size: 12.5px;
+    line-height: 1.75;
+    color: #1A1A1A;
+}
+
+.lead {
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: #2C2C2C;
+}
+
+.caption {
+    font-size: 10.5px;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    color: #8C8C8C;
+}
+
+.hl {
+    background: #F4E9D8;
+    color: #7A5C3A;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12.5px;
+}
+
+.golden-insight {
+    border-left: 6px solid #B49450;
+    background: #FDF9F2;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-weight: 500;
+    font-style: italic;
+    color: #5C4033;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    page-break-inside: avoid;
+}
+
+.golden-insight strong {
+    color: #B49450;
+    font-style: normal;
+}
+
+.box {
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 18px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03);
+    page-break-inside: avoid;
+    border-left: 6px solid;
+}
+
+.box-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 10px;
+    color: inherit;
+}
+
+.box-pattern { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-pattern .box-label { color: #3A5F80; }
+
+.box-intuition { border-left-color: #C4924A; background: #F9FBF9; }
+.box-intuition .box-label { color: #C4924A; }
+
+.box-workflow { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-workflow .box-label { color: #2E6B5A; }
+
+.box-important { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-important .box-label { color: #A53F3F; }
+
+.box-interview { border-left-color: #5E4B7A; background: #F8F7FC; }
+.box-interview .box-label { color: #5E4B7A; }
+
+.box-takeaway { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-takeaway .box-label { color: #2E6B5A; }
+
+.box-security { border-left-color: #C4924A; background: #FDFBF5; }
+.box-security .box-label { color: #C4924A; }
+
+.box-edge { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-edge .box-label { color: #A53F3F; }
+
+.box-best { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-best .box-label { color: #2E6B5A; }
+
+.box-deploy { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-deploy .box-label { color: #3A5F80; }
+
+.box-css { border-left-color: #C4924A; background: #FFFFFF; }
+.box-css .box-label { color: #C4924A; }
+
+.box-browser { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-browser .box-label { color: #3A5F80; }
+
+.box-config { border-left-color: #5E4B7A; background: #F8F7FC; }
+.box-config .box-label { color: #5E4B7A; }
+
+.box-perf { border-left-color: #0B1A2E; background: #FFFFFF; }
+.box-perf .box-label { color: #0B1A2E; }
+
+.code-block {
+    background: #111824;
+    border: 1px solid #2A3240;
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    page-break-inside: avoid;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #E0E0E0;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    margin: 16px 0;
+}
+
+.syn-kw { color: #F88C6C; font-weight: bold; }
+.syn-str { color: #9CDCFE; }
+.syn-cm { color: #6A9955; font-style: italic; }
+.syn-fn { color: #DCDCAa; }
+.syn-num { color: #B5CEA8; }
+.syn-op { color: #89DDFF; }
+.syn-type { color: #FFD700; }
+.syn-tag { color: #D67E7E; }
+.syn-attr { color: #9CDCFE; }
+
+.table-wrap {
+    border: 1px solid #E3DED5;
+    border-radius: 12px;
+    overflow: hidden;
+    page-break-inside: avoid;
+    margin: 18px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11.5px;
+}
+
+thead tr {
+    background: #F7F3EC;
+    color: #0B1A2E;
+    font-weight: 700;
+    font-size: 11.5px;
+    border-bottom: 2px solid #B49450;
+}
+
+th {
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 700;
+}
+
+td {
+    padding: 12px 14px;
+    background: #FFFFFF;
+    border-bottom: 1px solid #F0EDE8;
+}
+
+tr:nth-child(even) td {
+    background: #FBFBF9;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.divider {
+    text-align: center;
+    margin: 30px 0;
+    color: #B49450;
+    font-size: 20px;
+    letter-spacing: 8px;
+}
+
+.diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 18px 0;
+    padding: 18px;
+    background: #F7F7F5;
+    border-radius: 12px;
+    border: 1px solid #E3DED5;
+    page-break-inside: avoid;
+    flex-wrap: wrap;
+}
+
+.diagram-box {
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 12px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    min-width: 100px;
+}
+
+.diagram-arrow {
+    font-size: 18px;
+    color: #B49450;
+    font-weight: 700;
+}
+
+.db-navy { background: #0B1A2E; color: #FFFFFF; }
+.db-gold { background: #B49450; color: #FFFFFF; }
+.db-teal { background: #1A4A4A; color: #FFFFFF; }
+.db-white { background: #FFFFFF; color: #0B1A2E; border: 2px solid #B49450; }
+
+ul, ol {
+    margin: 12px 0;
+    padding-left: 24px;
+}
+
+li {
+    margin-bottom: 6px;
+}
+
+.signature {
+    text-align: center;
+    margin-top: 40px;
+    border-top: 1px solid #E3DED5;
+    padding-top: 24px;
+    color: #8C8C8C;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.important-text {
+    background: #FDF0ED;
+    color: #A53F3F;
+    font-weight: 600;
+    padding: 1px 4px;
+    border-radius: 2px;
+}
+
+@media print {
+    body { padding: 22mm 22mm 22mm 28mm; }
+    .box, .code-block, .table-wrap, .golden-insight, .diagram { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<h1>Lecture 01: Introduction to C++</h1>
+
+<p class="lead">C++ ek powerful aur fast programming language hai jo system-level programming, game development, aur high-performance applications ke liye use hoti hai. Is lecture mein hum C++ ke basics, binary number system, variables, data types, aur strings ko detail mein cover karenge.</p>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>What is C++</h2>
+
+<h3>Simple Definition</h3>
+
+<p>C++ ek <span class="hl">programming language</span> hai jo computer programs likhne ke liye use hoti hai. Ye ek aisi language hai jo humans likh sakte hain aur computer samajh sakta hai. Iska use software, games, operating systems, aur various applications banane ke liye hota hai.</p>
+
+<p>C++ mein aap instructions likhte hain jo computer ko batate hain ki kya karna hai. Ye language <span class="hl">high-level</span> bhi hai aur <span class="hl">low-level</span> control bhi deti hai, jo isse unique banata hai.</p>
+
+<h3>Created By</h3>
+
+<p>C++ ko <span class="hl">Bjarne Stroustrup</span> ne 1979 mein Bell Labs mein develop kiya tha. Is language ko originally <span class="hl">"C with Classes"</span> ke naam se jana jata tha, kyunki ye C language ke upar build ki gayi thi aur isme Object-Oriented Programming features add kiye gaye the.</p>
+
+<div class="golden-insight">
+<strong>Key Insight:</strong> C++ ka main goal tha C language ki speed aur power ko maintain karte hue <span class="hl">Object-Oriented Programming</span> capabilities provide karna, jo large-scale software development ko easy banati hai.
+</div>
+
+<h3>Core Philosophy</h3>
+
+<p>C++ ka design philosophy do cheezon par based hai: <span class="hl">Zero Overhead Principle</span> aur <span class="hl">Direct Mapping to Hardware</span>. Matlab jo features use nahi ho rahe unka koi cost nahi hota, aur jo code likhte hain wo directly hardware se connect hota hai.</p>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>Why Do We Need C++</h2>
+
+<h3>Speed and Performance</h3>
+
+<p>C++ programs bahut fast run karte hain kyunki ye <span class="hl">compiled language</span> hai. Code directly machine code mein translate hota hai, jo CPU directly execute kar sakta hai. Isliye C++ ka use un jagah hota hai jahan speed critical hai.</p>
+
+<div class="box box-best">
+<span class="box-label">Best Practice</span>
+Jahan microseconds matter karte hain, wahan C++ first choice hoti hai. High-Frequency Trading (HFT) systems, real-time game engines, aur operating systems isi reason se C++ mein likhe jate hain.
+</div>
+
+<h3>Control Over Computer</h3>
+
+<p>C++ programmer ko <span class="hl">memory</span>, <span class="hl">hardware</span>, aur <span class="hl">CPU</span> par direct control deta hai. Aap manually memory allocate aur deallocate kar sakte hain, pointers use kar sakte hain, aur hardware-specific optimizations kar sakte hain.</p>
+
+<h3>Real-World Applications</h3>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Field</th><th>Examples</th><th>Why C++</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Games</strong></td><td>Unreal Engine, Unity (core), GTA, Call of Duty, Fortnite</td><td>Real-time rendering, physics calculations</td></tr>
+<tr><td><strong>Systems</strong></td><td>Windows, macOS, Linux kernels</td><td>Direct hardware access, low-level control</td></tr>
+<tr><td><strong>Apps</strong></td><td>Photoshop, Microsoft Office, AutoCAD</td><td>Performance-critical operations</td></tr>
+<tr><td><strong>Databases</strong></td><td>MySQL, MongoDB, Redis</td><td>Fast I/O operations, memory management</td></tr>
+<tr><td><strong>Browsers</strong></td><td>Chrome (V8 engine), Firefox</td><td>JavaScript compilation, rendering engines</td></tr>
+<tr><td><strong>Embedded</strong></td><td>Car systems, Drones, IoT devices</td><td>Resource constraints, real-time response</td></tr>
+<tr><td><strong>Finance</strong></td><td>Trading systems, risk analysis</td><td>Microsecond latency requirements</td></tr>
+<tr><td><strong>ML Libraries</strong></td><td>TensorFlow (core), PyTorch (C++ backend)</td><td>Heavy mathematical computations</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>Foundation for Learning</h3>
+
+<p>C++ seekhne se aapko <span class="hl">memory management</span>, <span class="hl">pointers</span>, aur <span class="hl">computer architecture</span> ki deep understanding milti hai. Ye knowledge aapko Java, Python, ya JavaScript jaise languages mein bhi help karti hai, kyunki aapko internally pata hota hai ki kya ho raha hai.</p>
+
+<div class="box box-interview">
+<span class="box-label">Interview Tip</span>
+Interviewers C++ ko "mother of all languages" mante hain. Agar aap C++ mein strong hain, to aapko memory management, pointers, aur OOP concepts ke questions confidently answer karne chahiye. Ye aapko other languages ke against edge deta hai.
+</div>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>Binary Number System</h2>
+
+<h3>What is Binary</h3>
+
+<p><span class="hl">Binary</span> ek number system hai jisme sirf <strong>do digits</strong> hote hain: <span class="hl">0</span> aur <span class="hl">1</span>. Ye computer ka native language hai. Computer ki puri processing 0 aur 1 par based hoti hai.</p>
+
+<p>Binary mein:</p>
+<ul>
+<li><strong>0</strong> = OFF (no electricity, low voltage)</li>
+<li><strong>1</strong> = ON (electricity flowing, high voltage)</li>
+</ul>
+
+<h3>Why Binary</h3>
+
+<p>Computers electronic devices hain jo electricity par chalte hain. Electricity ke do stable states hote hain: <span class="hl">ON</span> aur <span class="hl">OFF</span>. Isliye binary system naturally fit hota hai. 0 aur 1 ko distinguish karna electrically easy hai, jabki 10 different voltage levels maintain karna difficult aur error-prone hota.</p>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Socho ek light switch ke baare mein: ya to light ON hai ya OFF. Ye do states hain. Computer mein billions of such switches hote hain (transistors), jo milke complex calculations karte hain. Har switch ek binary digit (bit) represent karta hai.
+</div>
+
+<h3>Decimal vs Binary</h3>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Decimal</th><th>Binary</th><th>Explanation</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>0</td><td>Zero</td></tr>
+<tr><td>1</td><td>1</td><td>One</td></tr>
+<tr><td>2</td><td>10</td><td>One two and zero ones</td></tr>
+<tr><td>3</td><td>11</td><td>One two and one one</td></tr>
+<tr><td>4</td><td>100</td><td>One four, zero twos, zero ones</td></tr>
+<tr><td>5</td><td>101</td><td>One four, zero twos, one one</td></tr>
+<tr><td>10</td><td>1010</td><td>One eight, zero four, one two, zero one</td></tr>
+<tr><td>15</td><td>1111</td><td>One eight, one four, one two, one one</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>Decimal to Binary Conversion</h2>
+
+<h3>Method: Divide by 2</h3>
+
+<p>Decimal number ko binary mein convert karne ke liye <span class="hl">Division by 2</span> method use karte hain. Steps:</p>
+
+<ol>
+<li>Number ko 2 se divide karo</li>
+<li>Remainder note karo</li>
+<li>Quotient ko fir 2 se divide karo</li>
+<li>Repeat jab tak quotient 0 na ho jaye</li>
+<li>Remainders ko <span class="hl">bottom se top</span> padho</li>
+</ol>
+
+<h3>Example 1: Convert 13 to Binary</h3>
+
+<div class="code-block">
+Step 1: 13 ÷ 2 = 6,  remainder = 1  ↓
+Step 2:  6 ÷ 2 = 3,  remainder = 0  ↓
+Step 3:  3 ÷ 2 = 1,  remainder = 1  ↓
+Step 4:  1 ÷ 2 = 0,  remainder = 1  ↓
+
+Read from bottom to top: 1101
+</div>
+
+<p><strong>Answer:</strong> <span class="hl">13 = 1101</span> in binary</p>
+
+<h3>Example 2: Convert 25 to Binary</h3>
+
+<div class="code-block">
+Step 1: 25 ÷ 2 = 12, remainder = 1  ↓
+Step 2: 12 ÷ 2 = 6,  remainder = 0  ↓
+Step 3:  6 ÷ 2 = 3,  remainder = 0  ↓
+Step 4:  3 ÷ 2 = 1,  remainder = 1  ↓
+Step 5:  1 ÷ 2 = 0,  remainder = 1  ↓
+
+Read from bottom to top: 11001
+</div>
+
+<p><strong>Answer:</strong> <span class="hl">25 = 11001</span> in binary</p>
+
+<h3>Example 3: Convert 8 to Binary</h3>
+
+<div class="code-block">
+Step 1: 8 ÷ 2 = 4, remainder = 0  ↓
+Step 2: 4 ÷ 2 = 2, remainder = 0  ↓
+Step 3: 2 ÷ 2 = 1, remainder = 0  ↓
+Step 4: 1 ÷ 2 = 0, remainder = 1  ↓
+
+Read from bottom to top: 1000
+</div>
+
+<p><strong>Answer:</strong> <span class="hl">8 = 1000</span> in binary</p>
+
+<h3>Quick Practice</h3>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Decimal</th><th>Binary</th></tr>
+</thead>
+<tbody>
+<tr><td>5</td><td>101</td></tr>
+<tr><td>7</td><td>111</td></tr>
+<tr><td>10</td><td>1010</td></tr>
+<tr><td>15</td><td>1111</td></tr>
+<tr><td>20</td><td>10100</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>Binary to Decimal Conversion</h2>
+
+<h3>Method: Powers of 2</h3>
+
+<p>Binary number ko decimal mein convert karne ke liye <span class="hl">Powers of 2</span> method use karte hain. Steps:</p>
+
+<ol>
+<li>Right se left jaate hue powers of 2 likho (2⁰, 2¹, 2², ...)</li>
+<li>Har binary digit ko uski corresponding power se multiply karo</li>
+<li>Sab results ko add karo</li>
+</ol>
+
+<h3>Powers of 2 Reference Table</h3>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Position (Right to Left)</th><th>Power</th><th>Value</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>2⁰</td><td>1</td></tr>
+<tr><td>1</td><td>2¹</td><td>2</td></tr>
+<tr><td>2</td><td>2²</td><td>4</td></tr>
+<tr><td>3</td><td>2³</td><td>8</td></tr>
+<tr><td>4</td><td>2⁴</td><td>16</td></tr>
+<tr><td>5</td><td>2⁵</td><td>32</td></tr>
+<tr><td>6</td><td>2⁶</td><td>64</td></tr>
+<tr><td>7</td><td>2⁷</td><td>128</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>Example 1: Convert 1101 to Decimal</h3>
+
+<div class="code-block">
+Binary:  1    1    0    1
+Power:   2³   2²   2¹   2⁰
+Value:   8    4    2    1
+
+Step 1: 1 × 8 = 8
+Step 2: 1 × 4 = 4
+Step 3: 0 × 2 = 0
+Step 4: 1 × 1 = 1
+
+Total: 8 + 4 + 0 + 1 = 13
+</div>
+
+<p><strong>Answer:</strong> <span class="hl">1101 = 13</span> in decimal</p>
+
+<h3>Example 2: Convert 1010 to Decimal</h3>
+
+<div class="code-block">
+Binary:  1    0    1    0
+Power:   2³   2²   2¹   2⁰
+Value:   8    4    2    1
+
+Step 1: 1 × 8 = 8
+Step 2: 0 × 4 = 0
+Step 3: 1 × 2 = 2
+Step 4: 0 × 1 = 0
+
+Total: 8 + 0 + 2 + 0 = 10
+</div>
+
+<p><strong>Answer:</strong> <span class="hl">1010 = 10</span> in decimal</p>
+
+<h3>Example 3: Convert 11001 to Decimal</h3>
+
+<div class="code-block">
+Binary:  1    1    0    0    1
+Power:   2⁴   2³   2²   2¹   2⁰
+Value:   16   8    4    2    1
+
+Step 1: 1 × 16 = 16
+Step 2: 1 × 8  = 8
+Step 3: 0 × 4  = 0
+Step 4: 0 × 2  = 0
+Step 5: 1 × 1  = 1
+
+Total: 16 + 8 + 0 + 0 + 1 = 25
+</div>
+
+<p><strong>Answer:</strong> <span class="hl">11001 = 25</span> in decimal</p>
+
+<h3>Example 4: Convert 1111 to Decimal</h3>
+
+<div class="code-block">
+Binary:  1    1    1    1
+Power:   2³   2²   2¹   2⁰
+Value:   8    4    2    1
+
+Step 1: 1 × 8 = 8
+Step 2: 1 × 4 = 4
+Step 3: 1 × 2 = 2
+Step 4: 1 × 1 = 1
+
+Total: 8 + 4 + 2 + 1 = 15
+</div>
+
+<p><strong>Answer:</strong> <span class="hl">1111 = 15</span> in decimal</p>
+
+<h3>Quick Practice</h3>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Binary</th><th>Decimal</th></tr>
+</thead>
+<tbody>
+<tr><td>101</td><td>5</td></tr>
+<tr><td>111</td><td>7</td></tr>
+<tr><td>1000</td><td>8</td></tr>
+<tr><td>10100</td><td>20</td></tr>
+<tr><td>11111</td><td>31</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>C++ Program Structure</h2>
+
+<h3>How C++ Code Runs</h3>
+
+<p>C++ code directly run nahi hota. Usse pehle <span class="hl">compiler</span> usse <span class="hl">machine code</span> mein convert karta hai. Machine code wo language hai jo computer directly samajh sakta hai.</p>
+
+<div class="diagram">
+    <div class="diagram-box db-navy">C++ Code</div>
+    <div class="diagram-arrow">→</div>
+    <div class="diagram-box db-gold">Compiler</div>
+    <div class="diagram-arrow">→</div>
+    <div class="diagram-box db-teal">Machine Code</div>
+    <div class="diagram-arrow">→</div>
+    <div class="diagram-box db-white">Computer</div>
+</div>
+
+<h3>The main() Function</h3>
+
+<p>Har C++ program ka entry point <span class="hl">main()</span> function hota hai. Program execution yahan se start hota hai. <span class="hl">return 0;</span> ka matlab hai ki program successfully complete hua hai.</p>
+
+<div class="code-block"><span class="syn-type">int</span> <span class="syn-fn">main</span>()
+{
+    <span class="syn-type">int</span> a = <span class="syn-num">10</span>;
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}
+</div>
+
+<div class="box box-important">
+<span class="box-label">Important</span>
+Kya ye program bina header file ke run hoga? <strong>Ha, run hoga.</strong> Sirf warning aa sakti hai. <span class="important-text">return 0;</span> ka matlab hai program successfully execute ho gaya hai. Compiler ke liye ye ek valid program hai, lekin production code mein hamesha proper headers include karni chahiye.
+</div>
+
+<h3>Header Files and Libraries</h3>
+
+<p><span class="hl">cin</span> aur <span class="hl">cout</span> C++ language ka core part nahi hain. Ye <span class="hl">iostream</span> library se aate hain. <span class="syn-kw">#include</span> <span class="syn-op">&lt;</span><span class="syn-str">iostream</span><span class="syn-op">&gt;</span> ek preprocessor directive hai jo iostream library ko program mein include karta hai.</p>
+
+<p>C++ mein 1000+ libraries hain. Jitni libraries include karoge, utna program ka size increase hoga. Isliye sirf wo libraries include karo jo actually use ho rahi hain.</p>
+
+<div class="code-block"><span class="syn-cm">// iostream library include karna zaroori hai</span>
+<span class="syn-cm">// cin, cout, endl isme defined hain</span>
+<span class="syn-kw">#include</span> <span class="syn-op">&lt;</span><span class="syn-str">iostream</span><span class="syn-op">&gt;</span>
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-type">int</span> a = <span class="syn-num">10</span>;
+    std::cout <span class="syn-op">&lt;&lt;</span> a;
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}
+</div>
+
+<h3>Namespace std</h3>
+
+<p><span class="hl">std::cout</span> mein <span class="hl">std</span> ka matlab <span class="hl">Standard</span> hai aur <span class="hl">::</span> <span class="hl">Scope Resolution Operator</span> hai. Ye batata hai ki cout standard namespace mein defined hai.</p>
+
+<p>Bar bar <span class="syn-str">std::</span> likhne se bachne ke liye <span class="syn-kw">using namespace</span> std; use karte hain. Isse aap directly <span class="syn-fn">cout</span>, <span class="syn-fn">cin</span>, <span class="syn-fn">endl</span> use kar sakte hain.</p>
+
+<div class="code-block"><span class="syn-kw">#include</span> <span class="syn-op">&lt;</span><span class="syn-str">iostream</span><span class="syn-op">&gt;</span>
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-type">int</span> a = <span class="syn-num">10</span>;
+    cout <span class="syn-op">&lt;&lt;</span> a <span class="syn-op">&lt;&lt;</span> endl;
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}
+</div>
+
+<div class="box box-edge">
+<span class="box-label">Edge Case</span>
+<span class="important-text">using namespace std;</span> small programs mein convenient hai, lekin large projects mein naming conflicts ho sakte hain. Professional code mein specific identifiers import karna better practice hai: <span class="syn-kw">using</span> std::cout; <span class="syn-kw">using</span> std::endl;
+</div>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>Variables</h2>
+
+<h3>What is a Variable</h3>
+
+<p><span class="hl">Variable</span> memory mein ek container hota hai jo data store karta hai. Isme aap value daal sakte hain, change kar sakte hain, aur use kar sakte hain.</p>
+
+<div class="code-block"><span class="syn-type">int</span> age = <span class="syn-num">25</span>;
+</div>
+
+<p>Is example mein:</p>
+<ul>
+<li><span class="syn-type">int</span> = container ka type (integer)</li>
+<li><span class="syn-str">age</span> = container ka naam</li>
+<li><span class="syn-num">25</span> = stored value</li>
+</ul>
+
+<h3>Rules for Naming Variables</h3>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Allowed</th><th>Not Allowed</th><th>Reason</th></tr>
+</thead>
+<tbody>
+<tr><td><span class="syn-type">int</span> age;</td><td><span class="syn-type">int</span> <span class="syn-num">123</span>roll;</td><td>Number se start nahi kar sakte</td></tr>
+<tr><td><span class="syn-type">int</span> student_name;</td><td><span class="syn-type">int</span> student-name;</td><td>Hyphen allowed nahi hai</td></tr>
+<tr><td><span class="syn-type">int</span> rollNo123;</td><td><span class="syn-type">int</span> <span class="syn-kw">int</span>;</td><td>Keywords use nahi kar sakte</td></tr>
+<tr><td><span class="syn-type">int</span> _value;</td><td><span class="syn-type">int</span> my name;</td><td>Spaces allowed nahi hain</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>Declaring Variables</h3>
+
+<p>C++ mein variables declare karne ke 3 tareeke hain:</p>
+
+<h4>Method 1: Declare Then Assign</h4>
+
+<div class="code-block"><span class="syn-type">int</span> age;
+age = <span class="syn-num">25</span>;
+</div>
+
+<h4>Method 2: Declare and Assign Together</h4>
+
+<div class="code-block"><span class="syn-type">int</span> age = <span class="syn-num">25</span>;
+</div>
+
+<h4>Method 3: Multiple Variables</h4>
+
+<div class="code-block"><span class="syn-type">int</span> a = <span class="syn-num">5</span>, b = <span class="syn-num">10</span>, c = <span class="syn-num">15</span>;
+</div>
+
+<div class="box box-best">
+<span class="box-label">Best Practice</span>
+Hamesha variables initialize karo jab declare karte ho. Uninitialized variables mein <span class="hl">garbage values</span> hoti hain jo unpredictable behavior cause kar sakti hain. <span class="syn-type">int</span> x; <span class="syn-cm">// Avoid - contains garbage value</span> <span class="syn-type">int</span> x = <span class="syn-num">0</span>; <span class="syn-cm">// Good - explicit initialization</span>
+</div>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>Data Types</h2>
+
+<h3>Basic Data Types</h3>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Data Type</th><th>Used For</th><th>Size</th><th>Example</th></tr>
+</thead>
+<tbody>
+<tr><td><span class="syn-type">int</span></td><td>Whole numbers</td><td>4 bytes</td><td><span class="syn-type">int</span> age = <span class="syn-num">25</span>;</td></tr>
+<tr><td><span class="syn-type">double</span></td><td>Decimal numbers</td><td>8 bytes</td><td><span class="syn-type">double</span> price = <span class="syn-num">99.99</span>;</td></tr>
+<tr><td><span class="syn-type">char</span></td><td>Single character</td><td>1 byte</td><td><span class="syn-type">char</span> grade = <span class="syn-str">'A'</span>;</td></tr>
+<tr><td><span class="syn-type">bool</span></td><td>True/False</td><td>1 byte</td><td><span class="syn-type">bool</span> isPassed = <span class="syn-kw">true</span>;</td></tr>
+<tr><td><span class="syn-type">string</span></td><td>Text</td><td>Varies</td><td><span class="syn-type">string</span> name = <span class="syn-str">"Rohit"</span>;</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>Complete Example</h3>
+
+<div class="code-block"><span class="syn-kw">#include</span> <span class="syn-op">&lt;</span><span class="syn-str">iostream</span><span class="syn-op">&gt;</span>
+<span class="syn-kw">#include</span> <span class="syn-op">&lt;</span><span class="syn-str">string</span><span class="syn-op">&gt;</span>
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-type">int</span> age = <span class="syn-num">25</span>;
+    <span class="syn-type">double</span> height = <span class="syn-num">5.9</span>;
+    <span class="syn-type">char</span> grade = <span class="syn-str">'A'</span>;
+    <span class="syn-type">bool</span> isStudent = <span class="syn-kw">true</span>;
+    <span class="syn-type">string</span> name = <span class="syn-str">"Rohit"</span>;
+
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Name: "</span> <span class="syn-op">&lt;&lt;</span> name <span class="syn-op">&lt;&lt;</span> endl;
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Age: "</span> <span class="syn-op">&lt;&lt;</span> age <span class="syn-op">&lt;&lt;</span> endl;
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Height: "</span> <span class="syn-op">&lt;&lt;</span> height <span class="syn-op">&lt;&lt;</span> endl;
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Grade: "</span> <span class="syn-op">&lt;&lt;</span> grade <span class="syn-op">&lt;&lt;</span> endl;
+    cout <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Student: "</span> <span class="syn-op">&lt;&lt;</span> isStudent <span class="syn-op">&lt;&lt;</span> endl;
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}
+</div>
+
+<h3>Important Notes</h3>
+
+<div class="box box-important">
+<span class="box-label">Important</span>
+<span class="syn-type">char</span> ke liye hamesha <span class="important-text">single quotes</span> use karo: <span class="syn-str">'A'</span>. Double quotes <span class="syn-str">"A"</span> string literal banate hain, jo char type se different hai.<br><br>
+<span class="syn-type">string</span> ke liye hamesha <span class="important-text">double quotes</span> use karo: <span class="syn-str">"Rohit"</span>. Single quotes <span class="syn-str">'Rohit'</span> compile error denge kyunki single quotes sirf single character ke liye hain.
+</div>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>Strings</h2>
+
+<h3>Basic String Operations</h3>
+
+<p>C++ mein <span class="hl">string</span> ek sequence of characters hai. <span class="syn-kw">#include</span> <span class="syn-op">&lt;</span><span class="syn-str">string</span><span class="syn-op">&gt;</span> library include karni padti hai string operations ke liye.</p>
+
+<div class="code-block"><span class="syn-kw">#include</span> <span class="syn-op">&lt;</span><span class="syn-str">iostream</span><span class="syn-op">&gt;</span>
+<span class="syn-kw">#include</span> <span class="syn-op">&lt;</span><span class="syn-str">string</span><span class="syn-op">&gt;</span>
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-type">string</span> name = <span class="syn-str">"Rohit"</span>;
+
+    <span class="syn-cm">// Length of string</span>
+    cout <span class="syn-op">&lt;&lt;</span> name.length() <span class="syn-op">&lt;&lt;</span> endl;  <span class="syn-cm">// Output: 5</span>
+
+    <span class="syn-cm">// Combine strings (Concatenation)</span>
+    <span class="syn-type">string</span> firstName = <span class="syn-str">"Rohit"</span>;
+    <span class="syn-type">string</span> lastName = <span class="syn-str">"Kumar"</span>;
+    <span class="syn-type">string</span> fullName = firstName + <span class="syn-str">" "</span> + lastName;
+    cout <span class="syn-op">&lt;&lt;</span> fullName <span class="syn-op">&lt;&lt;</span> endl;  <span class="syn-cm">// Output: Rohit Kumar</span>
+
+    <span class="syn-cm">// Access characters (0-based indexing)</span>
+    cout <span class="syn-op">&lt;&lt;</span> name[<span class="syn-num">0</span>] <span class="syn-op">&lt;&lt;</span> endl;  <span class="syn-cm">// Output: R</span>
+    cout <span class="syn-op">&lt;&lt;</span> name[<span class="syn-num">1</span>] <span class="syn-op">&lt;&lt;</span> endl;  <span class="syn-cm">// Output: o</span>
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}
+</div>
+
+<h3>String Input with Spaces</h3>
+
+<p><span class="hl">cin</span> sirf ek word read karta hai. Agar input mein spaces hain, to wo space ke baad ka part ignore kar deta hai.</p>
+
+<div class="box box-edge">
+<span class="box-label">Edge Case</span>
+<strong>Problem:</strong> <span class="syn-type">string</span> name; cin <span class="syn-op">&gt;&gt;</span> name; <span class="syn-cm">// Input: "Rohit Kumar"</span> <span class="syn-cm">// Stores: "Rohit" only</span><br><br>
+<span class="syn-op">&gt;&gt;</span> operator whitespace (space, tab, newline) ko delimiter manta hai. Isliye space ke baad ka data buffer mein reh jata hai aur next input mein chala jata hai.
+</div>
+
+<p><strong>Solution:</strong> <span class="hl">getline()</span> function use karo jo entire line read karta hai spaces ke saath.</p>
+
+<div class="code-block"><span class="syn-type">string</span> name;
+getline(cin, name);  <span class="syn-cm">// Reads entire line including spaces</span>
+<span class="syn-cm">// Input: "Rohit Kumar"</span>
+<span class="syn-cm">// Stores: "Rohit Kumar"</span>
+</div>
+
+<div class="box box-best">
+<span class="box-label">Best Practice</span>
+Mixed input scenarios mein (cin ke baad getline), buffer clear karna important hai. <span class="syn-type">int</span> n; cin <span class="syn-op">&gt;&gt;</span> n; cin.ignore(); <span class="syn-type">string</span> s; getline(cin, s); <span class="syn-cm">// cin.ignore() newline character ko discard karta hai</span>
+</div>
+
+<div class="divider">&#10086; &#10086; &#10086;</div>
+
+<h2>Key Takeaways</h2>
+
+<div class="box box-takeaway">
+<span class="box-label">Takeaway</span>
+<ul>
+<li>C++ ek fast, powerful, compiled language hai jo direct hardware control deti hai</li>
+<li>Computer sirf binary (0 aur 1) samajhta hai — decimal to binary divide-by-2 se, binary to decimal powers-of-2 se convert hota hai</li>
+<li>Har C++ program main() function se start hota hai aur return 0 successful execution indicate karta hai</li>
+<li>iostream library cin, cout provide karti hai; using namespace std; std:: likhne se bachata hai</li>
+<li>Variables memory containers hain; hamesha initialize karke declare karo</li>
+<li>char ke liye single quotes ('A'), string ke liye double quotes ("text") use karo</li>
+<li>Spaces ke saath string input ke liye getline(cin, variable) use karo</li>
+</ul>
+</div>
+
+<h2>Practice Exercise</h2>
+
+<div class="box box-pattern">
+<span class="box-label">Pattern</span>
+<strong>Exercise 1:</strong> Convert following decimal numbers to binary: 17, 31, 42, 100.<br><br>
+<strong>Exercise 2:</strong> Convert following binary numbers to decimal: 1001, 10101, 111000, 100000.<br><br>
+<strong>Exercise 3:</strong> Write a C++ program jo user se name, age, aur height input le aur formatted output print kare. Height input decimal mein honi chahiye. Spaces ke saath name handle karo.<br><br>
+<strong>Exercise 4:</strong> Bina using namespace std; ke same program likho. Har jagah std:: prefix use karo aur difference observe karo.
+</div>
+
+<div class="box box-interview">
+<span class="box-label">Interview Tip</span>
+Interview mein commonly puche jane wale questions:<br>
+1. C++ aur C mein kya difference hai? (OOP features, classes, inheritance, polymorphism)<br>
+2. Compiled vs Interpreted language kya hoti hai?<br>
+3. Binary conversion ka real-world use kya hai? (Memory addresses, flags, bitwise operations)<br>
+4. Variable initialization kyun important hai? (Garbage values, undefined behavior)<br>
+5. getline aur cin mein kya difference hai? (Delimiter handling, buffer behavior)
+</div>
+
+<div class="signature">MADE BY HARSHAL CHAUHAN</div>
+
+</body>
+</html>
