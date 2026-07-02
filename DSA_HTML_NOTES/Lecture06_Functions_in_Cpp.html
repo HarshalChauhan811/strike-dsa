@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture 06 — Functions in C++</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@page { size: A4 portrait; margin: 0; }
+
+@page {
+  @top-right-corner {
+    content: "Harshal Chauhan";
+    font: 9px 'Poppins', sans-serif;
+    color: #8C8C8C;
+    opacity: 0.3;
+  }
+}
+
+body {
+    padding: 22mm 22mm 22mm 28mm;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: #FBFBF9;
+    font-family: 'Poppins', sans-serif;
+    color: #1A1A1A;
+    font-size: 12.5px;
+    line-height: 1.75;
+    margin: 0;
+    background-image: 
+        linear-gradient( rgba(0,0,0,0.008) 1px, transparent 1px ),
+        linear-gradient( 90deg, rgba(0,0,0,0.008) 1px, transparent 1px );
+    background-size: 20px 20px;
+}
+
+h1 {
+    font-size: 44px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    color: #0B1A2E;
+    letter-spacing: -0.5px;
+    border-bottom: 3px solid #B49450;
+    padding-bottom: 10px;
+    margin-bottom: 16px;
+    margin-top: 0;
+}
+
+h2 {
+    font-size: 26px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    color: #B49450;
+    border-bottom: 2px solid #B49450;
+    padding-bottom: 6px;
+    margin-top: 32px;
+    margin-bottom: 16px;
+}
+
+h3 {
+    font-size: 19px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    color: #1A4A4A;
+    margin-top: 22px;
+    margin-bottom: 12px;
+}
+
+h4 {
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    color: #7A3B4A;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+h5 {
+    font-size: 12.5px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    color: #3C3C3C;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 12px;
+    margin-bottom: 6px;
+}
+
+.lead {
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: #2C2C2C;
+}
+
+.caption {
+    font-size: 10.5px;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    color: #8C8C8C;
+}
+
+.hl {
+    background: #F4E9D8;
+    color: #7A5C3A;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12.5px;
+}
+
+.golden-insight {
+    border-left: 6px solid #B49450;
+    background: #FDF9F2;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-weight: 500;
+    font-style: italic;
+    color: #5C4033;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    page-break-inside: avoid;
+}
+
+.golden-insight strong {
+    color: #B49450;
+    font-style: normal;
+}
+
+.code-block {
+    background: #111824;
+    border: 1px solid #2A3240;
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    page-break-inside: avoid;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #E0E0E0;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    margin: 16px 0;
+}
+
+.syn-kw { color: #F88C6C; font-weight: bold; }
+.syn-str { color: #9CDCFE; }
+.syn-cm { color: #6A9955; font-style: italic; }
+.syn-fn { color: #DCDCAa; }
+.syn-num { color: #B5CEA8; }
+.syn-op { color: #89DDFF; }
+.syn-type { color: #FFD700; }
+.syn-tag { color: #D67E7E; }
+.syn-attr { color: #9CDCFE; }
+
+.box {
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 18px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03);
+    page-break-inside: avoid;
+    border-left: 6px solid;
+}
+
+.box-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 10px;
+    color: inherit;
+}
+
+.box-pattern { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-pattern .box-label { color: #3A5F80; }
+
+.box-intuition { border-left-color: #C4924A; background: #F9FBF9; }
+.box-intuition .box-label { color: #C4924A; }
+
+.box-workflow { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-workflow .box-label { color: #2E6B5A; }
+
+.box-important { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-important .box-label { color: #A53F3F; }
+
+.box-interview { border-left-color: #5E4B7A; background: #F8F7FC; }
+.box-interview .box-label { color: #5E4B7A; }
+
+.box-takeaway { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-takeaway .box-label { color: #2E6B5A; }
+
+.box-security { border-left-color: #C4924A; background: #FDFBF5; }
+.box-security .box-label { color: #C4924A; }
+
+.box-edge { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-edge .box-label { color: #A53F3F; }
+
+.box-best { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-best .box-label { color: #2E6B5A; }
+
+.box-config { border-left-color: #5E4B7A; background: #F8F7FC; }
+.box-config .box-label { color: #5E4B7A; }
+
+.box-performance { border-left-color: #0B1A2E; background: #FFFFFF; }
+.box-performance .box-label { color: #0B1A2E; }
+
+.table-luxe {
+    border: 1px solid #E3DED5;
+    border-radius: 12px;
+    overflow: hidden;
+    page-break-inside: avoid;
+    margin: 18px 0;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-luxe th {
+    background: #F7F3EC;
+    color: #0B1A2E;
+    font-weight: 700;
+    font-size: 11.5px;
+    padding: 12px 14px;
+    border-bottom: 2px solid #B49450;
+    text-align: left;
+}
+
+.table-luxe td {
+    padding: 12px 14px;
+    font-size: 11.5px;
+    background: #FFFFFF;
+    border-bottom: 1px solid #E3DED5;
+}
+
+.table-luxe tr:nth-child(even) td {
+    background: #FBFBF9;
+}
+
+.table-luxe tr:last-child td {
+    border-bottom: none;
+}
+
+.approach-tabs {
+    display: flex;
+    gap: 8px;
+    margin: 14px 0;
+}
+
+.approach-tab {
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-size: 10.5px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+}
+
+.tab-basic { background: #EDF2F7; border: 1px solid #3A5F80; color: #3A5F80; }
+.tab-intermediate { background: #F2F5EF; border: 1px solid #2E6B5A; color: #2E6B5A; }
+.tab-advanced { background: #F0F0F5; border: 1px solid #0B1A2E; color: #0B1A2E; }
+
+.diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 16px;
+    background: #F7F7F5;
+    border: 1px solid #B49450;
+    border-radius: 10px;
+    margin: 14px 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    color: #0B1A2E;
+    page-break-inside: avoid;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.memory-box {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #0B1A2E;
+    color: #B49450;
+    border-radius: 6px;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 2px;
+}
+
+.arrow-flow {
+    color: #B49450;
+    font-size: 20px;
+    margin: 4px 0;
+}
+
+.ornament {
+    text-align: center;
+    margin: 30px 0;
+    color: #B49450;
+    font-size: 20px;
+    letter-spacing: 8px;
+}
+
+.signature {
+    text-align: center;
+    margin-top: 40px;
+    border-top: 1px solid #E3DED5;
+    padding-top: 24px;
+    color: #8C8C8C;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+ul, ol {
+    margin: 8px 0;
+    padding-left: 22px;
+}
+
+li {
+    margin-bottom: 6px;
+}
+
+p {
+    margin: 8px 0;
+}
+
+.math-block {
+    background: #F7F7F5;
+    border: 1px solid #E3DED5;
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    color: #0B1A2E;
+    margin: 10px 0;
+    page-break-inside: avoid;
+    line-height: 1.6;
+}
+
+.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 14px 0;
+}
+
+.memory-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+}
+
+.memory-table td, .memory-table th {
+    border: 2px solid #0B1A2E;
+    padding: 10px 14px;
+    text-align: center;
+}
+
+.memory-table th {
+    background: #0B1A2E;
+    color: #B49450;
+    font-weight: 700;
+}
+
+.memory-table td {
+    background: #FFFFFF;
+    color: #0B1A2E;
+}
+
+.memory-addr {
+    color: #8C8C8C;
+    font-size: 10px;
+}
+
+.mem-highlight {
+    background: #F4E9D8;
+    font-weight: 700;
+}
+
+.mem-changed {
+    background: #FDF0ED;
+    color: #A53F3F;
+    font-weight: 700;
+}
+
+.mem-ref {
+    background: #EDF2F7;
+    color: #3A5F80;
+    font-weight: 700;
+}
+
+@media print {
+    body { background: #FBFBF9 !important; }
+    .code-block { white-space: pre-wrap !important; }
+}
+</style>
+</head>
+<body>
+
+<h1>Lecture 06: Functions in C++</h1>
+
+<p class="lead">Is lecture mein hum <span class="hl">Functions</span> ko ground zero se samajhenge — kya hai, kaise kaam karta hai, aur kyun zaroori hai. Functions programming ka woh block hai jo <span class="hl">reusable code</span> likhne ki power deta hai. Agar aap first time functions padh rahe ho, toh ye notes aapke liye perfect starting point hai.</p>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Why Functions? — The DRY Principle</h2>
+
+<div class="golden-insight">
+<strong>Key Insight:</strong> <span class="hl">DRY</span> ka matlab hai — <span class="hl">"Do Not Repeat Yourself"</span>. Agar aapko same code baar-baar likhna pad raha hai, toh usse ek function bana lo aur baar-baar use karo.
+</div>
+
+<h4>The Problem Without Functions</h4>
+
+<p>Socho aapko 30 alag-alag numbers ka factorial nikalna hai. Bina functions ke aapko <span class="hl">same factorial code 30 baar copy-paste</span> karna padega. Agar code mein koi bug hai, toh 30 jagah fix karna padega. Ye inefficient hai aur galatiyan hone ka chance bahut zyada hai.</p>
+
+<div class="box box-important">
+<span class="box-label">Important</span>
+<ul>
+<li><strong>Without Functions:</strong> Same code 30 baar likhna → 30 bugs fix karna → Time waste</li>
+<li><strong>With Functions:</strong> Code ek baar likho → 30 baar call karo → Bug ek jagah fix karo</li>
+</ul>
+</div>
+
+<h4>Real-World Analogy</h4>
+
+<p>Function ko ek <span class="hl">machine</span> ki tarah samjho. Jaise washing machine — aap kapde daalo, button dabao, aur machine apna kaam karti hai. Aapko baar-baar washing machine ka internal mechanism nahi samajhna padta. Bas input do, aur output lo. Function bhi waise hi kaam karta hai.</p>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>What is a Function?</h2>
+
+<p>Function ek <span class="hl">named block of code</span> hai jo ek specific task perform karta hai. Jab function ko call karte hain, toh wo apna kaam karke result de sakta hai.</p>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow</span>
+<ul>
+<li><strong>Function Definition:</strong> Function ka code likhna (kya kaam karega)</li>
+<li><strong>Function Call:</strong> Function ko use karna (jab jarurat ho)</li>
+<li><strong>Function Return:</strong> Result wapas dena (agar kuch calculate kiya ho)</li>
+</ul>
+</div>
+
+<h3>Function Syntax — Step by Step</h3>
+
+<div class="code-block"><span class="syn-cm">// Step 1: Function Definition</span>
+<span class="syn-type">return_type</span> <span class="syn-fn">function_name</span>(<span class="syn-type">parameters</span>) {
+    <span class="syn-cm">// Function body — jo kaam karna hai</span>
+    <span class="syn-kw">return</span> value;  <span class="syn-cm">// (agar kuch return karna ho)</span>
+}
+
+<span class="syn-cm">// Step 2: Function Call</span>
+<span class="syn-fn">function_name</span>(arguments);</div>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+<ul>
+<li><strong>Return Type:</strong> Function kya type ki value wapas dega? (<code>int</code>, <code>double</code>, <code>void</code> — agar kuch nahi dega)</li>
+<li><strong>Function Name:</strong> Function ko identify karne ka naam</li>
+<li><strong>Parameters:</strong> Function ko input dene ke liye variables (jaise machine mein kapde daalna)</li>
+<li><strong>Arguments:</strong> Actual values jo function call ke time pass hoti hain</li>
+</ul>
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Example 1: Factorial Function (void — No Return)</h2>
+
+<p>Pehle dekhte hain ek simple function jo <span class="hl">sirf print karta hai</span>, kuch return nahi karta. Isme <code>void</code> return type use hota hai.</p>
+
+<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-cm">// Function Definition</span>
+<span class="syn-type">void</span> <span class="syn-fn">fact</span>(<span class="syn-type">int</span> n) {          <span class="syn-cm">// void = kuch return nahi karega</span>
+    <span class="syn-type">int</span> factorial = <span class="syn-num">1</span>;
+
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= n; i++) {
+        factorial *= i;
+    }
+
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Factorial of "</span> << n << <span class="syn-str">" is: "</span> << factorial << <span class="syn-fn">endl</span>;
+}
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-fn">fact</span>(<span class="syn-num">5</span>);   <span class="syn-cm">// Function Call with Argument 5</span>
+    <span class="syn-fn">fact</span>(<span class="syn-num">7</span>);   <span class="syn-cm">// Function Call with Argument 7</span>
+    <span class="syn-fn">fact</span>(<span class="syn-num">3</span>);   <span class="syn-cm">// Function Call with Argument 3</span>
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}</div>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow</span>
+<table class="table-luxe" style="margin:0">
+<thead>
+<tr><th>Step</th><th>What Happens</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td><code>main()</code> start hota hai</td></tr>
+<tr><td>2</td><td><code>fact(5)</code> call hota hai — control <code>fact</code> function mein jaata hai</td></tr>
+<tr><td>3</td><td><code>n = 5</code> set hota hai, factorial calculate hota hai = 120</td></tr>
+<tr><td>4</td><td>Result print hota hai, control <code>main()</code> mein wapas aata hai</td></tr>
+<tr><td>5</td><td><code>fact(7)</code> call hota hai — same process repeat</td></tr>
+<tr><td>6</td><td><code>fact(3)</code> call hota hai — same process repeat</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Example 2: Factorial Function (int — With Return)</h2>
+
+<p>Ab dekhte hain ek <span class="hl">better version</span> jo factorial calculate karke <span class="hl">wapas return</span> karta hai. Isse hum calculated value ko store kar sakte hain, compare kar sakte hain, ya further calculation mein use kar sakte hain.</p>
+
+<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-cm">// Function with return type int</span>
+<span class="syn-type">int</span> <span class="syn-fn">factorial</span>(<span class="syn-type">int</span> n) {
+    <span class="syn-type">int</span> fact = <span class="syn-num">1</span>;
+
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= n; i++) {
+        fact *= i;
+    }
+
+    <span class="syn-kw">return</span> fact;  <span class="syn-cm">// Calculated value wapas bhej raha hai</span>
+}
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-type">int</span> result = <span class="syn-fn">factorial</span>(<span class="syn-num">5</span>);  <span class="syn-cm">// Return value ko store kiya</span>
+
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Factorial: "</span> << result << <span class="syn-fn">endl</span>;
+
+    <span class="syn-cm">// Ab is result ko kahin bhi use kar sakte ho</span>
+    <span class="syn-kw">if</span>(result > <span class="syn-num">100</span>) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">"Greater than 100"</span> << <span class="syn-fn">endl</span>;
+    }
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}</div>
+
+<div class="golden-insight">
+<strong>Key Insight:</strong> <span class="hl">Return value</span> ko <code>main</code> function mein store karke aap uspe further operations kar sakte ho — comparison, arithmetic, ya kisi aur function mein pass karna. <code>void</code> function mein ye flexibility nahi hoti.
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Example 3: Grade Printing Function</h2>
+
+<p>Ek practical example jisme function <span class="hl">marks ke basis pe grade</span> print karta hai. Ye dekho kaise multiple conditions ek function mein handle hoti hain.</p>
+
+<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-type">void</span> <span class="syn-fn">findGrade</span>(<span class="syn-type">int</span> marks) {
+    <span class="syn-kw">if</span>(marks >= <span class="syn-num">90</span>) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">"Grade: A+"</span> << <span class="syn-fn">endl</span>;
+    }
+    <span class="syn-kw">else if</span>(marks >= <span class="syn-num">80</span>) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">"Grade: A"</span> << <span class="syn-fn">endl</span>;
+    }
+    <span class="syn-kw">else if</span>(marks >= <span class="syn-num">70</span>) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">"Grade: B"</span> << <span class="syn-fn">endl</span>;
+    }
+    <span class="syn-kw">else if</span>(marks >= <span class="syn-num">60</span>) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">"Grade: C"</span> << <span class="syn-fn">endl</span>;
+    }
+    <span class="syn-kw">else</span> {
+        <span class="syn-fn">cout</span> << <span class="syn-str">"Grade: F (Fail)"</span> << <span class="syn-fn">endl</span>;
+    }
+}
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-fn">findGrade</span>(<span class="syn-num">95</span>);   <span class="syn-cm">// A+</span>
+    <span class="syn-fn">findGrade</span>(<span class="syn-num">82</span>);   <span class="syn-cm">// A</span>
+    <span class="syn-fn">findGrade</span>(<span class="syn-num">45</span>);   <span class="syn-cm">// F</span>
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Multiple Parameters</h2>
+
+<p>Function mein <span class="hl">ek se zyada parameters</span> bhi pass kar sakte ho. Har parameter comma se separate hota hai.</p>
+
+<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-cm">// Function with multiple parameters</span>
+<span class="syn-type">void</span> <span class="syn-fn">sum</span>(<span class="syn-type">int</span> a, <span class="syn-type">int</span> b) {
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Sum: "</span> << a + b << <span class="syn-fn">endl</span>;
+}
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-fn">sum</span>(<span class="syn-num">10</span>, <span class="syn-num">20</span>);   <span class="syn-cm">// a=10, b=20 → Sum: 30</span>
+    <span class="syn-fn">sum</span>(<span class="syn-num">5</span>, <span class="syn-num">7</span>);     <span class="syn-cm">// a=5, b=7 → Sum: 12</span>
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}</div>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Jab <code>sum(10, 20)</code> call hota hai, toh <span class="hl">pehla argument pehle parameter mein jaata hai</span>, aur <span class="hl">dusra argument dusre parameter mein</span>. Order matter karta hai — <code>sum(10, 20)</code> aur <code>sum(20, 10)</code> same nahi hote.
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Example 4: Square Function with Return</h2>
+
+<p>Ek simple function jo number ka <span class="hl">square return</span> karta hai. Dekho kaise return value ko directly <code>cout</code> mein bhi use kar sakte hain.</p>
+
+<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-cm">// Function definition</span>
+<span class="syn-type">int</span> <span class="syn-fn">square</span>(<span class="syn-type">int</span> n) {
+    <span class="syn-kw">return</span> n * n;  <span class="syn-cm">// Square calculate karke wapas bhej raha hai</span>
+}
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-type">int</span> num = <span class="syn-num">5</span>;
+
+    <span class="syn-cm">// Method 1: Return value ko store karke print karo</span>
+    <span class="syn-type">int</span> result = <span class="syn-fn">square</span>(num);
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Square: "</span> << result << <span class="syn-fn">endl</span>;
+
+    <span class="syn-cm">// Method 2: Directly cout mein function call karo</span>
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Square of 7: "</span> << <span class="syn-fn">square</span>(<span class="syn-num">7</span>) << <span class="syn-fn">endl</span>;
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}</div>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow</span>
+<table class="table-luxe" style="margin:0">
+<thead>
+<tr><th>Call</th><th>n</th><th>Calculation</th><th>Return</th></tr>
+</thead>
+<tbody>
+<tr><td><code>square(5)</code></td><td>5</td><td>5 × 5</td><td>25</td></tr>
+<tr><td><code>square(7)</code></td><td>7</td><td>7 × 7</td><td>49</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Pass by Value vs Pass by Reference</h2>
+
+<p>Ye C++ ka <span class="hl">sabse important concept</span> hai. Jab function ko value pass karte hain, toh do tarike hote hain — <code>Pass by Value</code> aur <code>Pass by Reference</code>. Inka difference samajhna interviews mein bahut zaroori hai.</p>
+
+<h3>Pass by Value (Default)</h3>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Pass by Value mein function ko <span class="hl">original variable ki copy</span> milti hai. Function us copy pe kaam karta hai, original variable <span class="hl">unchanged rehta hai</span>. Jaise aap kisi ko apni photo ki copy doge, wo uspe kuch bhi likhe — aapki original photo safe rahegi.
+</div>
+
+<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-type">void</span> <span class="syn-fn">increment</span>(<span class="syn-type">int</span> a) {   <span class="syn-cm">// 'a' is a COPY of the original variable</span>
+    a++;                        <span class="syn-cm">// Only the copy is incremented</span>
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Inside function: a = "</span> << a << <span class="syn-fn">endl</span>;
+}
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-type">int</span> num = <span class="syn-num">10</span>;
+
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Before: num = "</span> << num << <span class="syn-fn">endl</span>;
+
+    <span class="syn-fn">increment</span>(num);   <span class="syn-cm">// num ki COPY ja rahi hai</span>
+
+    <span class="syn-fn">cout</span> << <span class="syn-str">"After: num = "</span> << num << <span class="syn-fn">endl</span>;
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}</div>
+
+<h4>Memory Layout — Pass by Value</h4>
+
+<div style="background: #F7F7F5; border: 2px solid #0B1A2E; border-radius: 12px; padding: 20px; margin: 14px 0; page-break-inside: avoid;">
+<p style="text-align: center; font-weight: 700; color: #0B1A2E; margin-bottom: 16px; font-size: 14px;">🔷 MEMORY LAYOUT: Pass by Value</p>
+
+<table class="memory-table">
+<tr>
+<th colspan="2" style="background: #1A4A4A; color: #FBFBF9;">main() Function</th>
+<th style="width: 60px; border: none; background: transparent;"></th>
+<th colspan="2" style="background: #7A3B4A; color: #FBFBF9;">increment() Function</th>
+</tr>
+<tr>
+<td class="memory-addr">Address 1000</td>
+<td class="mem-highlight">num = 10</td>
+<td style="border: none; background: transparent; font-size: 20px; color: #B49450;">→</td>
+<td class="memory-addr">Address 2000</td>
+<td class="mem-ref">a = 10 <span style="font-size:10px; color:#8C8C8C;">(COPY)</span></td>
+</tr>
+<tr>
+<td class="memory-addr">Address 1000</td>
+<td class="mem-highlight">num = 10</td>
+<td style="border: none; background: transparent; font-size: 20px; color: #B49450;">→</td>
+<td class="memory-addr">Address 2000</td>
+<td class="mem-changed">a = 11 <span style="font-size:10px; color:#8C8C8C;">(COPY changed)</span></td>
+</tr>
+<tr>
+<td class="memory-addr">Address 1000</td>
+<td class="mem-highlight">num = 10 ✓</td>
+<td style="border: none; background: transparent; font-size: 20px; color: #B49450;">←</td>
+<td class="memory-addr">Address 2000</td>
+<td style="color: #8C8C8C; text-decoration: line-through;">a = 11 <span style="font-size:10px;">(destroyed)</span></td>
+</tr>
+</table>
+
+<p style="text-align: center; margin-top: 12px; color: #2E6B5A; font-weight: 600;">✅ Original <code>num</code> unchanged — sirf COPY modify hui</p>
+</div>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow — Behind the Scenes</span>
+<table class="table-luxe" style="margin:0">
+<thead>
+<tr><th>Location</th><th>Variable</th><th>Value</th></tr>
+</thead>
+<tbody>
+<tr><td>main()</td><td>num</td><td>10</td></tr>
+<tr><td>increment()</td><td>a (copy of num)</td><td>10 → 11</td></tr>
+<tr><td>main() (after call)</td><td>num</td><td>10 (unchanged!)</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="box box-important">
+<span class="box-label">Important</span>
+Pass by Value mein <span class="hl">original variable kabhi change nahi hota</span>. Function sirf copy pe kaam karta hai. Ye safe hai lekin agar aapko original value change karni hai, toh ye kaam nahi karega.
+</div>
+
+<h3>Pass by Reference</h3>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Pass by Reference mein function ko <span class="hl">original variable ka address</span> milta hai (na ki copy). <code>&</code> symbol use hota hai parameter ke aage. Function jo bhi change karega, wo <span class="hl">original variable mein reflect hoga</span>. Jaise aap kisi ko apna original photo doge — wo uspe kuch bhi likhega toh aapki photo permanently change ho jayegi.
+</div>
+
+<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-type">void</span> <span class="syn-fn">increment</span>(<span class="syn-type">int</span> &a) {   <span class="syn-cm">// '&' means reference — original variable ka address</span>
+    a++;                        <span class="syn-cm">// Original variable incremented!</span>
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Inside function: a = "</span> << a << <span class="syn-fn">endl</span>;
+}
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-type">int</span> num = <span class="syn-num">10</span>;
+
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Before: num = "</span> << num << <span class="syn-fn">endl</span>;
+
+    <span class="syn-fn">increment</span>(num);   <span class="syn-cm">// num ka ADDRESS ja raha hai</span>
+
+    <span class="syn-fn">cout</span> << <span class="syn-str">"After: num = "</span> << num << <span class="syn-fn">endl</span>;
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}</div>
+
+<h4>Memory Layout — Pass by Reference</h4>
+
+<div style="background: #F7F7F5; border: 2px solid #0B1A2E; border-radius: 12px; padding: 20px; margin: 14px 0; page-break-inside: avoid;">
+<p style="text-align: center; font-weight: 700; color: #0B1A2E; margin-bottom: 16px; font-size: 14px;">🔷 MEMORY LAYOUT: Pass by Reference</p>
+
+<table class="memory-table">
+<tr>
+<th colspan="2" style="background: #1A4A4A; color: #FBFBF9;">main() Function</th>
+<th style="width: 60px; border: none; background: transparent;"></th>
+<th colspan="2" style="background: #7A3B4A; color: #FBFBF9;">increment() Function</th>
+</tr>
+<tr>
+<td class="memory-addr">Address 1000</td>
+<td class="mem-highlight">num = 10</td>
+<td style="border: none; background: transparent; font-size: 20px; color: #B49450;">→</td>
+<td class="memory-addr">&amp;a → 1000</td>
+<td class="mem-ref">a refers to num <span style="font-size:10px; color:#8C8C8C;">(ADDRESS)</span></td>
+</tr>
+<tr>
+<td class="memory-addr">Address 1000</td>
+<td class="mem-changed">num = 11 ✓</td>
+<td style="border: none; background: transparent; font-size: 20px; color: #B49450;">↔</td>
+<td class="memory-addr">&amp;a → 1000</td>
+<td class="mem-changed">a++ → num becomes 11 <span style="font-size:10px; color:#8C8C8C;">(SAME memory)</span></td>
+</tr>
+<tr>
+<td class="memory-addr">Address 1000</td>
+<td class="mem-changed">num = 11 ✓</td>
+<td style="border: none; background: transparent; font-size: 20px; color: #B49450;">←</td>
+<td class="memory-addr">&amp;a → 1000</td>
+<td style="color: #8C8C8C;">reference ended</td>
+</tr>
+</table>
+
+<p style="text-align: center; margin-top: 12px; color: #A53F3F; font-weight: 600;">⚠️ Original <code>num</code> changed — same memory location modify hui</p>
+</div>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow — Behind the Scenes</span>
+<table class="table-luxe" style="margin:0">
+<thead>
+<tr><th>Location</th><th>Variable</th><th>Value</th></tr>
+</thead>
+<tbody>
+<tr><td>main()</td><td>num</td><td>10</td></tr>
+<tr><td>increment()</td><td>&a (reference to num)</td><td>10 → 11</td></tr>
+<tr><td>main() (after call)</td><td>num</td><td>11 (changed!)</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="golden-insight">
+<strong>Key Insight:</strong> Pass by Value mein <span class="hl">copy banti hai</span> — original safe rehta hai. Pass by Reference mein <span class="hl">address jaata hai</span> — original change ho jata hai. <code>&</code> symbol yaad rakho — <span class="hl">"&amp; means ANDar ki value change hogi"</span>.
+</div>
+
+<h3>Side-by-Side Comparison</h3>
+
+<div style="background: #F7F7F5; border: 2px solid #B49450; border-radius: 12px; padding: 20px; margin: 14px 0; page-break-inside: avoid;">
+<p style="text-align: center; font-weight: 700; color: #0B1A2E; margin-bottom: 16px; font-size: 14px;">🔷 SIDE-BY-SIDE COMPARISON</p>
+
+<div class="two-col" style="margin: 0;">
+<div style="border: 2px solid #1A4A4A; border-radius: 8px; padding: 12px; background: #FFFFFF;">
+<p style="text-align: center; font-weight: 700; color: #1A4A4A; margin: 0 0 10px 0;">Pass by Value</p>
+<table class="memory-table" style="font-size: 11px;">
+<tr><th style="background: #1A4A4A; color: #FBFBF9;">Memory</th><th style="background: #1A4A4A; color: #FBFBF9;">Value</th></tr>
+<tr><td>0x1000 (num)</td><td>10</td></tr>
+<tr><td>0x2000 (a)</td><td>10 <span style="color:#8C8C8C; font-size:9px;">COPY</span></td></tr>
+<tr><td>0x2000 (a)</td><td class="mem-changed">11</td></tr>
+<tr><td>0x1000 (num)</td><td class="mem-highlight">10 ✓</td></tr>
+</table>
+<p style="text-align: center; color: #2E6B5A; font-size: 11px; margin: 8px 0 0 0;">✅ Original SAFE</p>
+</div>
+
+<div style="border: 2px solid #7A3B4A; border-radius: 8px; padding: 12px; background: #FFFFFF;">
+<p style="text-align: center; font-weight: 700; color: #7A3B4A; margin: 0 0 10px 0;">Pass by Reference</p>
+<table class="memory-table" style="font-size: 11px;">
+<tr><th style="background: #7A3B4A; color: #FBFBF9;">Memory</th><th style="background: #7A3B4A; color: #FBFBF9;">Value</th></tr>
+<tr><td>0x1000 (num)</td><td>10</td></tr>
+<tr><td>&amp;a → 0x1000</td><td>10 <span style="color:#8C8C8C; font-size:9px;">SAME</span></td></tr>
+<tr><td>&amp;a → 0x1000</td><td class="mem-changed">11</td></tr>
+<tr><td>0x1000 (num)</td><td class="mem-changed">11 ✓</td></tr>
+</table>
+<p style="text-align: center; color: #A53F3F; font-size: 11px; margin: 8px 0 0 0;">⚠️ Original CHANGED</p>
+</div>
+</div>
+</div>
+
+<h3>Comparison Table</h3>
+
+<table class="table-luxe">
+<thead>
+<tr><th>Aspect</th><th>Pass by Value</th><th>Pass by Reference</th></tr>
+</thead>
+<tbody>
+<tr><td>Syntax</td><td><code>void fn(int a)</code></td><td><code>void fn(int &a)</code></td></tr>
+<tr><td>What passes?</td><td>Copy of value</td><td>Address of original</td></tr>
+<tr><td>Original changes?</td><td>No</td><td>Yes</td></tr>
+<tr><td>Memory</td><td>Extra memory for copy</td><td>No extra memory</td></tr>
+<tr><td>Use case</td><td>When original safe rakhna hai</td><td>When original change karna hai</td></tr>
+<tr><td>Example</td><td>Display, Calculate</td><td>Swap, Update</td></tr>
+</tbody>
+</table>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Example 5: Swap Two Numbers (Pass by Reference)</h2>
+
+<p>Swap function <span class="hl">Pass by Reference</span> ka best example hai. Bina reference ke swap kaam nahi karega kyunki copy pe swap karne se original unchanged rehta hai.</p>
+
+<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-cm">// Pass by Reference — original values swap hongi</span>
+<span class="syn-type">void</span> <span class="syn-fn">swap</span>(<span class="syn-type">int</span> &a, <span class="syn-type">int</span> &b) {
+    <span class="syn-type">int</span> temp = a;
+    a = b;
+    b = temp;
+}
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-type">int</span> x = <span class="syn-num">10</span>, y = <span class="syn-num">20</span>;
+
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Before: x = "</span> << x << <span class="syn-str">", y = "</span> << y << <span class="syn-fn">endl</span>;
+
+    <span class="syn-fn">swap</span>(x, y);   <span class="syn-cm">// x aur y swap ho jayenge</span>
+
+    <span class="syn-fn">cout</span> << <span class="syn-str">"After: x = "</span> << x << <span class="syn-str">", y = "</span> << y << <span class="syn-fn">endl</span>;
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}</div>
+
+<h4>Memory Layout — Swap Function</h4>
+
+<div style="background: #F7F7F5; border: 2px solid #0B1A2E; border-radius: 12px; padding: 20px; margin: 14px 0; page-break-inside: avoid;">
+<p style="text-align: center; font-weight: 700; color: #0B1A2E; margin-bottom: 16px; font-size: 14px;">🔷 MEMORY LAYOUT: Swap with Pass by Reference</p>
+
+<table class="memory-table">
+<tr>
+<th style="background: #1A4A4A; color: #FBFBF9;">Step</th>
+<th style="background: #1A4A4A; color: #FBFBF9;">x (0x1000)</th>
+<th style="background: #1A4A4A; color: #FBFBF9;">y (0x1004)</th>
+<th style="background: #7A3B4A; color: #FBFBF9;">temp</th>
+</tr>
+<tr>
+<td>Initial</td>
+<td class="mem-highlight">10</td>
+<td class="mem-highlight">20</td>
+<td style="color: #8C8C8C;">—</td>
+</tr>
+<tr>
+<td>temp = a</td>
+<td class="mem-highlight">10</td>
+<td class="mem-highlight">20</td>
+<td class="mem-ref">10</td>
+</tr>
+<tr>
+<td>a = b</td>
+<td class="mem-changed">20</td>
+<td class="mem-highlight">20</td>
+<td class="mem-ref">10</td>
+</tr>
+<tr>
+<td>b = temp</td>
+<td class="mem-changed">20</td>
+<td class="mem-changed">10</td>
+<td class="mem-ref">10</td>
+</tr>
+</table>
+
+<p style="text-align: center; margin-top: 12px; color: #2E6B5A; font-weight: 600;">✅ x = 20, y = 10 — Values successfully swapped!</p>
+</div>
+
+<div class="box box-edge">
+<span class="box-label">Edge Case</span>
+Agar aap <code>swap</code> function ko <span class="hl">Pass by Value</span> se likhoge (<code>void swap(int a, int b)</code>), toh <code>x</code> aur <code>y</code> <span class="hl">swap nahi honge</span>. Sirf copies swap hongi, originals same rahenge. Ye common interview mistake hai!
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Function Overloading</h2>
+
+<p>Function Overloading ka matlab hai <span class="hl">same naam ke multiple functions</span> banana, lekin unke parameters alag hone chahiye. C++ compiler <span class="hl">parameters ke basis pe</span> decide karta hai ki kaunsa function call karna hai.</p>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Socho aapke ghar mein sabka naam "Kumar" hai — lekin ek Kumar doctor hai, ek Kumar engineer hai, ek Kumar teacher hai. Same naam, alag kaam. Function overloading bhi waise hi kaam karta hai — <span class="hl">same function name, alag parameters</span>.
+</div>
+
+<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-cm">// Function 1: Two integers ka sum</span>
+<span class="syn-type">int</span> <span class="syn-fn">sum</span>(<span class="syn-type">int</span> a, <span class="syn-type">int</span> b) {
+    <span class="syn-kw">return</span> a + b;
+}
+
+<span class="syn-cm">// Function 2: Three integers ka sum (different number of parameters)</span>
+<span class="syn-type">int</span> <span class="syn-fn">sum</span>(<span class="syn-type">int</span> a, <span class="syn-type">int</span> b, <span class="syn-type">int</span> c) {
+    <span class="syn-kw">return</span> a + b + c;
+}
+
+<span class="syn-cm">// Function 3: Two floats ka sum (different parameter types)</span>
+<span class="syn-type">float</span> <span class="syn-fn">sum</span>(<span class="syn-type">float</span> a, <span class="syn-type">float</span> b) {
+    <span class="syn-kw">return</span> a + b;
+}
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-fn">cout</span> << <span class="syn-fn">sum</span>(<span class="syn-num">3</span>, <span class="syn-num">4</span>) << <span class="syn-fn">endl</span>;        <span class="syn-cm">// Calls Function 1 → 7</span>
+    <span class="syn-fn">cout</span> << <span class="syn-fn">sum</span>(<span class="syn-num">3</span>, <span class="syn-num">4</span>, <span class="syn-num">5</span>) << <span class="syn-fn">endl</span>;     <span class="syn-cm">// Calls Function 2 → 12</span>
+    <span class="syn-fn">cout</span> << <span class="syn-fn">sum</span>(<span class="syn-num">3.5f</span>, <span class="syn-num">4.5f</span>) << <span class="syn-fn">endl</span>;  <span class="syn-cm">// Calls Function 3 → 8.0</span>
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}</div>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow — How Compiler Decides</span>
+<table class="table-luxe" style="margin:0">
+<thead>
+<tr><th>Call</th><th>Arguments</th><th>Matched Function</th><th>Reason</th></tr>
+</thead>
+<tbody>
+<tr><td><code>sum(3, 4)</code></td><td>int, int</td><td><code>sum(int, int)</code></td><td>Exact match</td></tr>
+<tr><td><code>sum(3, 4, 5)</code></td><td>int, int, int</td><td><code>sum(int, int, int)</code></td><td>3 parameters</td></tr>
+<tr><td><code>sum(3.5f, 4.5f)</code></td><td>float, float</td><td><code>sum(float, float)</code></td><td>float types</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="box box-important">
+<span class="box-label">Important</span>
+Function Overloading mein sirf <span class="hl">return type alag</span> karne se kaam <span class="hl">nahi chalega</span>. Parameters ka number ya type alag hona zaroori hai. <code>int sum(int, int)</code> aur <code>float sum(int, int)</code> — ye overloading nahi hai, ye <span class="hl">compile error</span> dega.
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Default Parameters</h2>
+
+<p>Default Parameters se aap function call ke time <span class="hl">kuch arguments skip</span> kar sakte ho. Agar argument nahi diya, toh default value use hoti hai.</p>
+
+<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-cm">// Default parameter: num = 5</span>
+<span class="syn-type">void</span> <span class="syn-fn">printing</span>(<span class="syn-type">int</span> num = <span class="syn-num">5</span>) {
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Number: "</span> << num << <span class="syn-fn">endl</span>;
+}
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-fn">printing</span>(<span class="syn-num">10</span>);   <span class="syn-cm">// Argument diya → num = 10</span>
+    <span class="syn-fn">printing</span>();      <span class="syn-cm">// Argument nahi diya → num = 5 (default)</span>
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}</div>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow</span>
+<table class="table-luxe" style="margin:0">
+<thead>
+<tr><th>Call</th><th>Argument Passed?</th><th>Value of num</th></tr>
+</thead>
+<tbody>
+<tr><td><code>printing(10)</code></td><td>Yes</td><td>10 (argument used)</td></tr>
+<tr><td><code>printing()</code></td><td>No</td><td>5 (default used)</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="box box-best">
+<span class="box-label">Best Practice</span>
+Default parameters hamesha <span class="hl">rightmost</span> se start karo. <code>void fn(int a, int b = 5, int c = 10)</code> ✓ sahi hai. <code>void fn(int a = 5, int b)</code> ✗ galat hai — default parameter ke baad non-default nahi aa sakta.
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Real-World Use Case: YouTube Video System</h2>
+
+<p>Ek real-world example samajhte hain — <span class="hl">YouTube video upload system</span>. Har video ke liye same steps hote hain: thumbnail generate karna, title set karna, views count karna, upload time record karna. Ye sab ek function mein daal do aur har video ke liye call karo.</p>
+
+<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-cm">// Function jo har video ke liye same kaam karega</span>
+<span class="syn-type">void</span> <span class="syn-fn">uploadVideo</span>(<span class="syn-type">string</span> title, <span class="syn-type">string</span> thumbnail, <span class="syn-type">int</span> views) {
+    <span class="syn-fn">cout</span> << <span class="syn-str">"========================================"</span> << <span class="syn-fn">endl</span>;
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Thumbnail: "</span> << thumbnail << <span class="syn-fn">endl</span>;
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Title: "</span> << title << <span class="syn-fn">endl</span>;
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Views: "</span> << views << <span class="syn-fn">endl</span>;
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Upload Time: "</span> << <span class="syn-str">"Just now"</span> << <span class="syn-fn">endl</span>;
+    <span class="syn-fn">cout</span> << <span class="syn-str">"========================================"</span> << <span class="syn-fn">endl</span>;
+}
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-cm">// 4 videos upload kar rahe hain</span>
+    <span class="syn-fn">uploadVideo</span>(<span class="syn-str">"C++ Basics"</span>, <span class="syn-str">"thumb1.jpg"</span>, <span class="syn-num">1500</span>);
+    <span class="syn-fn">uploadVideo</span>(<span class="syn-str">"Arrays in C++"</span>, <span class="syn-str">"thumb2.jpg"</span>, <span class="syn-num">2300</span>);
+    <span class="syn-fn">uploadVideo</span>(<span class="syn-str">"Pointers Explained"</span>, <span class="syn-str">"thumb3.jpg"</span>, <span class="syn-num">8900</span>);
+    <span class="syn-fn">uploadVideo</span>(<span class="syn-str">"OOP Concepts"</span>, <span class="syn-str">"thumb4.jpg"</span>, <span class="syn-num">5600</span>);
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}</div>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Agar <code>uploadVideo</code> function nahi hota, toh 4 videos ke liye <span class="hl">same code 4 baar likhna padta</span>. Function ne code ko reusable bana diya. Kal ko agar upload logic change hua (jaise "Upload Time" ke format mein), toh sirf ek jagah change karna padega.
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Key Takeaways</h2>
+
+<div class="box box-takeaway">
+<span class="box-label">Takeaway</span>
+<ul>
+<li><strong>DRY Principle:</strong> "Do Not Repeat Yourself" — same code baar-baar mat likho, function bana lo.</li>
+<li><strong>Function = Machine:</strong> Input do, processing hogi, output lo. Internal mechanism jaanna zaroori nahi.</li>
+<li><strong>Return Type:</strong> <code>void</code> = kuch return nahi karta. <code>int</code>, <code>double</code>, etc. = value return karta hai.</li>
+<li><strong>Parameters vs Arguments:</strong> Parameters = function definition mein variables. Arguments = function call ke time actual values.</li>
+<li><strong>Pass by Value:</strong> Copy jaati hai, original safe rehta hai. Default behavior hai.</li>
+<li><strong>Pass by Reference:</strong> Address jaata hai, original change ho jata hai. <code>&</code> symbol use karo.</li>
+<li><strong>Swap Function:</strong> Hamesha Pass by Reference se likho, warna swap nahi hoga.</li>
+<li><strong>Function Overloading:</strong> Same naam, alag parameters. Return type alag karne se overloading nahi hoti.</li>
+<li><strong>Default Parameters:</strong> Rightmost se start karo. Call ke time skip kar sakte ho.</li>
+</ul>
+</div>
+
+<table class="table-luxe">
+<thead>
+<tr><th>Concept</th><th>Syntax</th><th>Use Case</th></tr>
+</thead>
+<tbody>
+<tr><td>void Function</td><td><code>void fn(int a)</code></td><td>Print, Display</td></tr>
+<tr><td>Return Function</td><td><code>int fn(int a)</code></td><td>Calculate, Return result</td></tr>
+<tr><td>Multiple Parameters</td><td><code>void fn(int a, int b)</code></td><td>Sum, Operations on multiple values</td></tr>
+<tr><td>Pass by Value</td><td><code>void fn(int a)</code></td><td>Original safe rakhna</td></tr>
+<tr><td>Pass by Reference</td><td><code>void fn(int &a)</code></td><td>Original change karna</td></tr>
+<tr><td>Function Overloading</td><td>Same name, different params</td><td>Same operation, different inputs</td></tr>
+<tr><td>Default Parameters</td><td><code>void fn(int a = 5)</code></td><td>Optional arguments</td></tr>
+</tbody>
+</table>
+
+<div class="box box-interview">
+<span class="box-label">Interview Tip</span>
+Interviewers sabse zyada <span class="hl">Pass by Value vs Pass by Reference</span> puchte hain. Hamesha memory diagram bana ke explain karo — copy vs address. Swap function ko dono tarike se likh ke dikhana — Value se fail, Reference se success. Ye dikhata hai ki aap concept deeply samajhte ho.
+</div>
+
+<div class="golden-insight">
+<strong>Key Insight:</strong> Functions programming ki <span class="hl">building blocks</span> hain. Bade projects mein hazaar lines ka code hota hai — bina functions ke manage karna impossible hai. Functions se code <span class="hl">modular, reusable, aur maintainable</span> banta hai. Ye concept aage ke har topic mein use hoga — Arrays, Strings, OOP, sab mein.
+</div>
+
+<div class="signature">MADE BY HARSHAL CHAUHAN</div>
+
+</body>
+</html>
