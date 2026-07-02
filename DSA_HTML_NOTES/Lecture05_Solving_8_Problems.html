@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture 05 — Solving 8 Problems</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@page { size: A4 portrait; margin: 0; }
+
+@page {
+  @top-right-corner {
+    content: "Harshal Chauhan";
+    font: 9px 'Poppins', sans-serif;
+    color: #8C8C8C;
+    opacity: 0.3;
+  }
+}
+
+body {
+    padding: 22mm 22mm 22mm 28mm;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: #FBFBF9;
+    font-family: 'Poppins', sans-serif;
+    color: #1A1A1A;
+    font-size: 12.5px;
+    line-height: 1.75;
+    margin: 0;
+    background-image: 
+        linear-gradient( rgba(0,0,0,0.008) 1px, transparent 1px ),
+        linear-gradient( 90deg, rgba(0,0,0,0.008) 1px, transparent 1px );
+    background-size: 20px 20px;
+}
+
+h1 {
+    font-size: 44px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    color: #0B1A2E;
+    letter-spacing: -0.5px;
+    border-bottom: 3px solid #B49450;
+    padding-bottom: 10px;
+    margin-bottom: 16px;
+    margin-top: 0;
+}
+
+h2 {
+    font-size: 26px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    color: #B49450;
+    border-bottom: 2px solid #B49450;
+    padding-bottom: 6px;
+    margin-top: 32px;
+    margin-bottom: 16px;
+}
+
+h3 {
+    font-size: 19px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    color: #1A4A4A;
+    margin-top: 22px;
+    margin-bottom: 12px;
+}
+
+h4 {
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    color: #7A3B4A;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+h5 {
+    font-size: 12.5px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    color: #3C3C3C;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 12px;
+    margin-bottom: 6px;
+}
+
+.lead {
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: #2C2C2C;
+}
+
+.caption {
+    font-size: 10.5px;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    color: #8C8C8C;
+}
+
+.hl {
+    background: #F4E9D8;
+    color: #7A5C3A;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12.5px;
+}
+
+.golden-insight {
+    border-left: 6px solid #B49450;
+    background: #FDF9F2;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-weight: 500;
+    font-style: italic;
+    color: #5C4033;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    page-break-inside: avoid;
+}
+
+.golden-insight strong {
+    color: #B49450;
+    font-style: normal;
+}
+
+.code-block {
+    background: #111824;
+    border: 1px solid #2A3240;
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    page-break-inside: avoid;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #E0E0E0;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    margin: 16px 0;
+}
+
+.syn-kw { color: #F88C6C; font-weight: bold; }
+.syn-str { color: #9CDCFE; }
+.syn-cm { color: #6A9955; font-style: italic; }
+.syn-fn { color: #DCDCAa; }
+.syn-num { color: #B5CEA8; }
+.syn-op { color: #89DDFF; }
+.syn-type { color: #FFD700; }
+.syn-tag { color: #D67E7E; }
+.syn-attr { color: #9CDCFE; }
+
+.box {
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 18px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03);
+    page-break-inside: avoid;
+    border-left: 6px solid;
+}
+
+.box-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 10px;
+    color: inherit;
+}
+
+.box-pattern { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-pattern .box-label { color: #3A5F80; }
+
+.box-intuition { border-left-color: #C4924A; background: #F9FBF9; }
+.box-intuition .box-label { color: #C4924A; }
+
+.box-workflow { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-workflow .box-label { color: #2E6B5A; }
+
+.box-important { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-important .box-label { color: #A53F3F; }
+
+.box-interview { border-left-color: #5E4B7A; background: #F8F7FC; }
+.box-interview .box-label { color: #5E4B7A; }
+
+.box-takeaway { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-takeaway .box-label { color: #2E6B5A; }
+
+.box-security { border-left-color: #C4924A; background: #FDFBF5; }
+.box-security .box-label { color: #C4924A; }
+
+.box-edge { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-edge .box-label { color: #A53F3F; }
+
+.box-best { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-best .box-label { color: #2E6B5A; }
+
+.box-config { border-left-color: #5E4B7A; background: #F8F7FC; }
+.box-config .box-label { color: #5E4B7A; }
+
+.box-performance { border-left-color: #0B1A2E; background: #FFFFFF; }
+.box-performance .box-label { color: #0B1A2E; }
+
+.table-luxe {
+    border: 1px solid #E3DED5;
+    border-radius: 12px;
+    overflow: hidden;
+    page-break-inside: avoid;
+    margin: 18px 0;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-luxe th {
+    background: #F7F3EC;
+    color: #0B1A2E;
+    font-weight: 700;
+    font-size: 11.5px;
+    padding: 12px 14px;
+    border-bottom: 2px solid #B49450;
+    text-align: left;
+}
+
+.table-luxe td {
+    padding: 12px 14px;
+    font-size: 11.5px;
+    background: #FFFFFF;
+    border-bottom: 1px solid #E3DED5;
+}
+
+.table-luxe tr:nth-child(even) td {
+    background: #FBFBF9;
+}
+
+.table-luxe tr:last-child td {
+    border-bottom: none;
+}
+
+.approach-tabs {
+    display: flex;
+    gap: 8px;
+    margin: 14px 0;
+}
+
+.approach-tab {
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-size: 10.5px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+}
+
+.tab-basic { background: #EDF2F7; border: 1px solid #3A5F80; color: #3A5F80; }
+.tab-intermediate { background: #F2F5EF; border: 1px solid #2E6B5A; color: #2E6B5A; }
+.tab-advanced { background: #F0F0F5; border: 1px solid #0B1A2E; color: #0B1A2E; }
+
+.diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 16px;
+    background: #F7F7F5;
+    border: 1px solid #B49450;
+    border-radius: 10px;
+    margin: 14px 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    color: #0B1A2E;
+    page-break-inside: avoid;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.ornament {
+    text-align: center;
+    margin: 30px 0;
+    color: #B49450;
+    font-size: 20px;
+    letter-spacing: 8px;
+}
+
+.signature {
+    text-align: center;
+    margin-top: 40px;
+    border-top: 1px solid #E3DED5;
+    padding-top: 24px;
+    color: #8C8C8C;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+ul, ol {
+    margin: 8px 0;
+    padding-left: 22px;
+}
+
+li {
+    margin-bottom: 6px;
+}
+
+p {
+    margin: 8px 0;
+}
+
+.math-block {
+    background: #F7F7F5;
+    border: 1px solid #E3DED5;
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    color: #0B1A2E;
+    margin: 10px 0;
+    page-break-inside: avoid;
+    line-height: 1.6;
+}
+
+@media print {
+    body { background: #FBFBF9 !important; }
+    .code-block { white-space: pre-wrap !important; }
+}
+</style>
+</head>
+<body>
+
+<h1>Lecture 05: Solving 8 Problems</h1>
+
+<p class="lead">Is lecture mein hum <span class="hl">8 fundamental programming problems</span> ko solve karenge — Prime Number, Factorial, Sum of Digits, Reverse a Number, Decimal to Binary, Binary to Decimal, Fibonacci Number, aur Square Root. Saath mein <span class="hl">do-while loop</span> ka concept bhi cover karenge. Ye problems interviews mein sabse zyada puche jaate hain.</p>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Do-While Loop</h2>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+<code>do-while</code> loop mein condition <span class="hl">baad mein check hoti hai</span> — matlab loop body kam se kam ek baar toh chalegi hi. <code>while</code> loop mein condition pehle check hoti hai, toh agar condition false ho toh loop ek baar bhi nahi chalega.
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> i = <span class="syn-num">1</span>;  <span class="syn-cm">// Initialize</span>
+
+<span class="syn-kw">do</span> {
+    <span class="syn-fn">cout</span> << i << <span class="syn-str">" "</span>;  <span class="syn-cm">// Print</span>
+    i++;                    <span class="syn-cm">// Increment / Decrement</span>
+} <span class="syn-kw">while</span>(i < <span class="syn-num">10</span>);        <span class="syn-cm">// Condition check (after body)</span></div>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow</span>
+<ul>
+<li><strong>Step 1:</strong> Loop body execute karo</li>
+<li><strong>Step 2:</strong> Condition check karo</li>
+<li><strong>Step 3:</strong> Agar condition true hai, toh Step 1 repeat karo</li>
+<li><strong>Step 4:</strong> Agar condition false hai, loop exit karo</li>
+</ul>
+</div>
+
+<div class="box box-important">
+<span class="box-label">Important</span>
+<code>do-while</code> loop ka use tab karo jab aapko <span class="hl">kam se kam ek baar execution</span> guaranteed chahiye. Jaise user se input lena jab tak valid na ho, ya menu-driven programs.
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Problem 1: Prime Number Check</h2>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Prime number wo number hota hai jo <span class="hl">sirf 1 aur apne aap se divisible</span> ho. Sabse pehle check karo ki number 2 se chhota hai ya nahi — kyunki 2 se chhoti values (0, 1) prime nahi hoti. Phir 2 se lekar <code>num-1</code> tak har number se divide karke check karo.
+</div>
+
+<h4>Approach</h4>
+
+<div class="approach-tabs">
+<span class="approach-tab tab-basic">Basic</span>
+<span class="approach-tab tab-intermediate">Optimized</span>
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> num;
+
+<span class="syn-fn">cout</span> << <span class="syn-str">"Enter the Number: "</span>;
+<span class="syn-fn">cin</span> >> num;
+
+<span class="syn-cm">// 2 se chhoti value kabhi bhi prime nahi hoti</span>
+<span class="syn-kw">if</span> (num < <span class="syn-num">2</span>) {
+    <span class="syn-fn">cout</span> << num << <span class="syn-str">" is Not a Prime Number"</span>;
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}
+
+<span class="syn-cm">// 2 se num-1 tak divide karke check karo</span>
+<span class="syn-kw">for</span> (<span class="syn-type">int</span> i = <span class="syn-num">2</span>; i < num; i++) {
+    <span class="syn-kw">if</span> (num % i == <span class="syn-num">0</span>) {
+        <span class="syn-fn">cout</span> << num << <span class="syn-str">" is Not a Prime Number"</span>;
+        <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+    }
+}
+
+<span class="syn-fn">cout</span> << num << <span class="syn-str">" is a Prime Number"</span> << <span class="syn-fn">endl</span>;</div>
+
+<div class="box box-performance">
+<span class="box-label">Performance</span>
+Is approach ki <span class="hl">time complexity O(n)</span> hai. Optimized approach mein sirf <code>sqrt(num)</code> tak check karte hain — <span class="hl">O(√n)</span> complexity. Kyunki agar <code>n</code> ka koi factor <code>√n</code> se bada hai, toh uska corresponding pair <code>√n</code> se chhota hoga.
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Problem 2: Factorial</h2>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Factorial ka matlab hai ek number se lekar 1 tak sabka product. Jaise <code>5! = 5 × 4 × 3 × 2 × 1 = 120</code>. Base cases: <code>0! = 1</code> aur <code>1! = 1</code>. Loop 1 se n tak chalao aur har iteration mein running product update karo.
+</div>
+
+<div class="math-block">
+0! = 1<br>
+1! = 1<br>
+2! = 2<br>
+3! = 6<br>
+4! = 24<br>
+5! = 120
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> fact = <span class="syn-num">1</span>;
+
+<span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= <span class="syn-num">5</span>; i++) {
+    fact = fact * i;
+}
+
+<span class="syn-fn">cout</span> << fact << <span class="syn-fn">endl</span>;  <span class="syn-cm">// 120</span></div>
+
+<div class="box box-edge">
+<span class="box-label">Edge Case</span>
+<span class="hl">Integer Overflow</span>: <code>int</code> ki range takriban 2 billion hoti hai. <code>13! = 6,227,020,800</code> jo ki <code>int</code> ki range se bahar hai. Bade factorials ke liye <code>long long</code> use karo, ya phir <span class="hl">modulo</span> lete raho agar sirf remainder chahiye.
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Problem 3: Sum of Digits</h2>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Number ke har digit ko alag karna hai aur unka sum nikalna hai. <span class="hl">Modulo 10</span> se last digit nikalti hai, aur <span class="hl">divide by 10</span> se last digit remove hoti hai. Ye process tab tak repeat karo jab tak number 0 nahi ban jata.
+</div>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow</span>
+<ul>
+<li><strong>Step 1:</strong> <code>number % 10</code> se last digit nikalo</li>
+<li><strong>Step 2:</strong> Us digit ko <code>sum</code> mein add karo</li>
+<li><strong>Step 3:</strong> <code>number / 10</code> se last digit remove karo</li>
+<li><strong>Step 4:</strong> Jab tak number > 0, repeat karo</li>
+</ul>
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> number = <span class="syn-num">12345</span>;
+<span class="syn-type">int</span> sum = <span class="syn-num">0</span>;
+
+<span class="syn-kw">while</span> (number > <span class="syn-num">0</span>) {
+    <span class="syn-type">int</span> lastDigit = number % <span class="syn-num">10</span>;  <span class="syn-cm">// Last digit nikalo</span>
+
+    sum = sum + lastDigit;              <span class="syn-cm">// Sum me add karo</span>
+
+    number = number / <span class="syn-num">10</span>;             <span class="syn-cm">// Last digit remove karo</span>
+}
+
+<span class="syn-fn">cout</span> << <span class="syn-str">"Sum of Digits: "</span> << sum << <span class="syn-fn">endl</span>;  <span class="syn-cm">// 15</span></div>
+
+<div class="golden-insight">
+<strong>Key Insight:</strong> <span class="hl">Modulo 10</span> hamesha last digit deta hai, aur <span class="hl">Divide by 10</span> hamesha last digit ko remove kar deta hai. Ye trick digit manipulation problems mein universally kaam aati hai.
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Problem 4: Reverse a Number</h2>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Number ko reverse karne ka formula hai: <span class="hl"><code>ans = ans * 10 + lastDigit</code></span>. Har baar <code>ans</code> ko 10 se multiply karke usme last digit add karo. Jaise 12345 ko reverse karne pe 54321 aata hai.
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> num = <span class="syn-num">12345</span>;
+<span class="syn-type">int</span> ans = <span class="syn-num">0</span>;
+
+<span class="syn-kw">while</span> (num > <span class="syn-num">0</span>) {
+    <span class="syn-type">int</span> lastDigit = num % <span class="syn-num">10</span>;
+    num = num / <span class="syn-num">10</span>;
+    ans = ans * <span class="syn-num">10</span> + lastDigit;
+}
+
+<span class="syn-fn">cout</span> << ans << <span class="syn-fn">endl</span>;  <span class="syn-cm">// 54321</span></div>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow</span>
+<table class="table-luxe" style="margin:0">
+<thead>
+<tr><th>Iteration</th><th>lastDigit</th><th>num</th><th>ans</th></tr>
+</thead>
+<tbody>
+<tr><td>Initial</td><td>-</td><td>12345</td><td>0</td></tr>
+<tr><td>1</td><td>5</td><td>1234</td><td>5</td></tr>
+<tr><td>2</td><td>4</td><td>123</td><td>54</td></tr>
+<tr><td>3</td><td>3</td><td>12</td><td>543</td></tr>
+<tr><td>4</td><td>2</td><td>1</td><td>5432</td></tr>
+<tr><td>5</td><td>1</td><td>0</td><td>54321</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Problem 5: Decimal to Binary</h2>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Decimal number ko binary mein convert karne ke liye number ko <span class="hl">baar-baar 2 se divide</span> karo aur har baar <span class="hl">remainder</span> ko store karo. Remainders ko <span class="hl">reverse order</span> mein padhne pe binary number milta hai.
+</div>
+
+<div class="diagram">
+2 | 13  →  1 ↑<br>
+2 |  6  →  0 ↑<br>
+2 |  3  →  1 ↑<br>
+2 |  1  →  1 ↑<br>
+&nbsp;&nbsp;&nbsp;0<br><br>
+Binary: 1101
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> num = <span class="syn-num">13</span>;
+<span class="syn-type">int</span> ans = <span class="syn-num">0</span>;
+<span class="syn-type">int</span> mul = <span class="syn-num">1</span>;  <span class="syn-cm">// multiplier (10^0, 10^1, 10^2...)</span>
+
+<span class="syn-kw">while</span>(num != <span class="syn-num">0</span>) {
+    <span class="syn-type">int</span> rem = num % <span class="syn-num">2</span>;    <span class="syn-cm">// remainder (0 ya 1)</span>
+    num = num / <span class="syn-num">2</span>;        <span class="syn-cm">// number ko 2 se divide karo</span>
+    ans = ans + rem * mul;  <span class="syn-cm">// remainder ko correct position pe place karo</span>
+    mul = mul * <span class="syn-num">10</span>;       <span class="syn-cm">// next decimal place ke liye</span>
+}
+
+<span class="syn-fn">cout</span> << ans << <span class="syn-fn">endl</span>;  <span class="syn-cm">// 1101</span></div>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow</span>
+<ul>
+<li><strong>Step 1:</strong> Number ko 2 se divide karo, remainder nikalo</li>
+<li><strong>Step 2:</strong> Remainder ko <code>ans</code> mein add karo with proper place value</li>
+<li><strong>Step 3:</strong> <code>mul</code> ko 10 se multiply karo (next digit position)</li>
+<li><strong>Step 4:</strong> Number ko 2 se divide karke update karo</li>
+<li><strong>Step 5:</strong> Jab number 0 ho jaye, loop exit karo</li>
+</ul>
+</div>
+
+<div class="box box-edge">
+<span class="box-label">Edge Case</span>
+<span class="hl">XOR Approach:</span> Kuch log is problem ko XOR operation se solve karte hain, lekin wo approach <span class="hl">code readable nahi hoti</span> aur interviews mein explain karna mushkil hota hai. Hamesha simple, readable approach prefer karo.
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Problem 6: Binary to Decimal</h2>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Binary number ko decimal mein convert karne ke liye har digit ko uski <span class="hl">position ke power of 2</span> se multiply karo. Rightmost digit <code>2^0</code>, usse left <code>2^1</code>, phir <code>2^2</code>, aur aage badhte jao.
+</div>
+
+<div class="diagram">
+Binary: 1 1 0 1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ ↓ ↓ ↓<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8 4 2 1  ← 2^3 2^2 2^1 2^0<br><br>
+1×8 + 1×4 + 0×2 + 1×1 = 8 + 4 + 0 + 1 = <strong>13</strong>
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> num = <span class="syn-num">1101</span>;  <span class="syn-cm">// binary number stored as int</span>
+<span class="syn-type">int</span> ans = <span class="syn-num">0</span>;
+<span class="syn-type">int</span> mul = <span class="syn-num">1</span>;  <span class="syn-cm">// 2^0, 2^1, 2^2...</span>
+
+<span class="syn-kw">while</span>(num != <span class="syn-num">0</span>) {
+    <span class="syn-type">int</span> rem = num % <span class="syn-num">10</span>;   <span class="syn-cm">// last digit nikalo (0 ya 1)</span>
+    num = num / <span class="syn-num">10</span>;         <span class="syn-cm">// last digit remove karo</span>
+    ans = ans + rem * mul;  <span class="syn-cm">// digit × power of 2</span>
+    mul = mul * <span class="syn-num">2</span>;        <span class="syn-cm">// next power of 2</span>
+}
+
+<span class="syn-fn">cout</span> << ans << <span class="syn-fn">endl</span>;  <span class="syn-cm">// 13</span></div>
+
+<div class="golden-insight">
+<strong>Key Insight:</strong> Decimal to Binary aur Binary to Decimal dono mein <span class="hl">same core logic</span> hai — <code>num % 10</code> se digit nikalo, <code>num / 10</code> se remove karo. Bas <code>mul</code> ka base alag hai: Decimal→Binary mein <code>mul × 10</code> (place value), Binary→Decimal mein <code>mul × 2</code> (power of 2).
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Problem 7: Fibonacci Number</h2>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Fibonacci series mein <span class="hl">har number apne pehle do numbers ka sum</span> hota hai. Base cases: <code>F(0) = 0</code> aur <code>F(1) = 1</code>. Recursive formula: <code>F(n) = F(n-1) + F(n-2)</code>.
+</div>
+
+<div class="math-block">
+F(0) = 0  → Base Case<br>
+F(1) = 1  → Base Case<br>
+F(2) = F(1) + F(0) = 1 + 0 = 1<br>
+F(3) = F(2) + F(1) = 1 + 1 = 2<br>
+F(4) = F(3) + F(2) = 2 + 1 = 3<br>
+F(5) = F(4) + F(3) = 3 + 2 = 5<br>
+F(6) = F(5) + F(4) = 5 + 3 = 8<br><br>
+Series: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34...
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> <span class="syn-fn">fib</span>(<span class="syn-type">int</span> n) {
+    <span class="syn-kw">if</span>(n <= <span class="syn-num">1</span>) {
+        <span class="syn-kw">return</span> n;  <span class="syn-cm">// Base case: F(0)=0, F(1)=1</span>
+    }
+
+    <span class="syn-type">int</span> first = <span class="syn-num">0</span>, second = <span class="syn-num">1</span>;
+
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">2</span>; i <= n; i++) {
+        <span class="syn-type">int</span> curr = first + second;
+        first = second;
+        second = curr;
+    }
+
+    <span class="syn-kw">return</span> second;
+}</div>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow</span>
+<ul>
+<li><strong>Step 1:</strong> Base cases handle karo (n <= 1)</li>
+<li><strong>Step 2:</strong> <code>first = 0</code>, <code>second = 1</code> initialize karo</li>
+<li><strong>Step 3:</strong> Loop 2 se n tak chalao</li>
+<li><strong>Step 4:</strong> <code>curr = first + second</code> calculate karo</li>
+<li><strong>Step 5:</strong> <code>first = second</code> aur <code>second = curr</code> update karo</li>
+<li><strong>Step 6:</strong> Return <code>second</code> (jo ki F(n) hai)</li>
+</ul>
+</div>
+
+<div class="box box-performance">
+<span class="box-label">Performance</span>
+Iterative approach ki <span class="hl">time complexity O(n)</span> aur <span class="hl">space complexity O(1)</span> hai. Recursive approach ki time complexity <span class="hl">O(2^n)</span> hoti hai (exponential), isliye iterative hamesha prefer karo. Recursive version mein <span class="hl">TLE (Time Limit Exceeded)</span> ho sakta hai competitive programming mein.
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Problem 8: Square Root of a Number</h2>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Square root wo number hota hai jiska <span class="hl">square original number ke barabar</span> ho. Jaise <code>√16 = 4</code> kyunki <code>4 × 4 = 16</code>. Approach: 1 se lekar number tak har value ka square check karo, jahan <code>i × i > x</code> ho jaye, wahan <code>i-1</code> return karo.
+</div>
+
+<div class="math-block">
+√16 = 4  →  4 × 4 = 16<br>
+√25 = 5  →  5 × 5 = 25<br>
+√6 = 2   →  2 × 2 = 4 ≤ 6, 3 × 3 = 9 > 6<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Isliye integer part 2 hai
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> <span class="syn-fn">mySqrt</span>(<span class="syn-type">int</span> x) {
+    <span class="syn-kw">if</span>(x == <span class="syn-num">0</span>) <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+
+    <span class="syn-type">int</span> ans = <span class="syn-num">1</span>;
+
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= x; i++) {
+        <span class="syn-kw">if</span>((<span class="syn-type">long long</span>)i * i <= x) {
+            ans = i;
+        } <span class="syn-kw">else</span> {
+            <span class="syn-kw">break</span>;
+        }
+    }
+
+    <span class="syn-kw">return</span> ans;
+}</div>
+
+<div class="box box-edge">
+<span class="box-label">Edge Case</span>
+<span class="hl">Integer Overflow:</span> <code>i * i</code> mein agar <code>i</code> bada ho toh <code>int</code> overflow ho sakta hai. Isliye <code>(long long)i * i</code> use karo taaki multiplication <code>long long</code> mein ho. Ya phir <code>i <= x / i</code> condition use karo — ye overflow se bachata hai.
+</div>
+
+<div class="box box-performance">
+<span class="box-label">Performance</span>
+Linear search approach ki <span class="hl">time complexity O(n)</span> hai. Optimized approach mein <span class="hl">Binary Search</span> use karte hain jo <span class="hl">O(log n)</span> complexity deta hai. Interview mein pehle linear approach batao, phir optimized binary search version batao.
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Bonus: Armstrong Number</h2>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Armstrong number (ya Narcissistic number) wo number hota hai jisme <span class="hl">har digit ka cube sum</span> usi number ke barabar hota hai. 3-digit numbers ke liye: <code>sum of cubes of digits = original number</code>.
+</div>
+
+<div class="math-block">
+153: 1³ + 5³ + 3³ = 1 + 125 + 27 = 153 ✓ Armstrong<br><br>
+163: 1³ + 6³ + 3³ = 1 + 216 + 27 = 244 ✗ Not Armstrong<br><br>
+264: 2³ + 6³ + 4³ = 8 + 216 + 64 = 288 ✗ Not Armstrong
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> num = <span class="syn-num">153</span>;
+<span class="syn-type">int</span> original = num;
+<span class="syn-type">int</span> sum = <span class="syn-num">0</span>;
+
+<span class="syn-kw">while</span>(num > <span class="syn-num">0</span>) {
+    <span class="syn-type">int</span> digit = num % <span class="syn-num">10</span>;
+    sum = sum + (digit * digit * digit);  <span class="syn-cm">// cube of digit</span>
+    num = num / <span class="syn-num">10</span>;
+}
+
+<span class="syn-kw">if</span>(sum == original) {
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Armstrong Number"</span> << <span class="syn-fn">endl</span>;
+} <span class="syn-kw">else</span> {
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Not Armstrong"</span> << <span class="syn-fn">endl</span>;
+}</div>
+
+<div class="box box-best">
+<span class="box-label">Best Practice</span>
+Original number ko <span class="hl">ek alag variable mein store</span> karo (<code>original = num</code>) kyunki loop ke andar <code>num</code> ki value 0 ho jati hai. Comparison ke liye original value chahiye hoti hai.
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Key Takeaways</h2>
+
+<div class="box box-takeaway">
+<span class="box-label">Takeaway</span>
+<ul>
+<li><strong>Do-While Loop:</strong> Condition baad mein check hoti hai, body kam se kam ek baar chalti hai. Menu-driven programs mein useful.</li>
+<li><strong>Prime Check:</strong> 2 se n-1 tak check karo. Optimized: √n tak check karo. Edge case: numbers < 2 are not prime.</li>
+<li><strong>Factorial:</strong> Running product approach. Overflow ka dhyan rakhna — use <code>long long</code> for large values.</li>
+<li><strong>Sum of Digits:</strong> <code>num % 10</code> → last digit, <code>num / 10</code> → remove last digit. Universal digit manipulation trick.</li>
+<li><strong>Reverse Number:</strong> <code>ans = ans * 10 + lastDigit</code>. Har iteration mein place value shift hoti hai.</li>
+<li><strong>Decimal ↔ Binary:</strong> Same core logic, bas multiplier alag — ×10 for decimal place value, ×2 for power of 2.</li>
+<li><strong>Fibonacci:</strong> Iterative approach O(n) time, O(1) space. Recursive O(2^n) — avoid in interviews.</li>
+<li><strong>Square Root:</strong> Linear search O(n), Binary Search O(log n). Overflow se bachne ke liye <code>long long</code> ya <code>i <= x / i</code> use karo.</li>
+<li><strong>Armstrong:</strong> Sum of cubes of digits = original number. Original value ko alag store karo.</li>
+</ul>
+</div>
+
+<table class="table-luxe">
+<thead>
+<tr><th>Problem</th><th>Time Complexity</th><th>Space Complexity</th><th>Key Trick</th></tr>
+</thead>
+<tbody>
+<tr><td>Prime Check</td><td>O(n) / O(√n)</td><td>O(1)</td><td>2 se √n tak check</td></tr>
+<tr><td>Factorial</td><td>O(n)</td><td>O(1)</td><td>Running product</td></tr>
+<tr><td>Sum of Digits</td><td>O(digits)</td><td>O(1)</td><td>%10 / /10</td></tr>
+<tr><td>Reverse Number</td><td>O(digits)</td><td>O(1)</td><td>ans*10 + digit</td></tr>
+<tr><td>Decimal→Binary</td><td>O(log n)</td><td>O(1)</td><td>Divide by 2, store remainder</td></tr>
+<tr><td>Binary→Decimal</td><td>O(digits)</td><td>O(1)</td><td>digit × power of 2</td></tr>
+<tr><td>Fibonacci</td><td>O(n)</td><td>O(1)</td><td>Two variables swap</td></tr>
+<tr><td>Square Root</td><td>O(n) / O(log n)</td><td>O(1)</td><td>i*i ≤ x, avoid overflow</td></tr>
+</tbody>
+</table>
+
+<div class="box box-interview">
+<span class="box-label">Interview Tip</span>
+Ye 8 problems <span class="hl">interviewers ki favorite list</span> mein hain. Hamesha pehle brute force approach batao, phir optimized version batana. Jaise Prime Check mein pehle O(n) batao, phir O(√n). Square Root mein pehle linear search, phir binary search. Ye dikhata hai ki aap optimization soch sakte ho.
+</div>
+
+<div class="golden-insight">
+<strong>Key Insight:</strong> <span class="hl">Logic → Code → Initial Phase → 1 Month</span>. Pehle logic samajhna zaroori hai, phir code likhna, phir practice. In 8 problems ko ek baar samajh lo, toh aage ke complex problems bhi asaani se solve kar paoge.
+</div>
+
+<div class="signature">MADE BY HARSHAL CHAUHAN</div>
+
+</body>
+</html>
