@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture 08 — Problem Solving in Arrays</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@page { size: A4 portrait; margin: 0; }
+@page { @top-right-corner { content: "Harshal Chauhan"; font: 9px 'Poppins', sans-serif; color: #8C8C8C; opacity: 0.3; } }
+body {
+    padding: 22mm 22mm 22mm 28mm;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: #FBFBF9;
+    font-family: 'Poppins', sans-serif;
+    color: #1A1A1A;
+    font-size: 12.5px;
+    line-height: 1.75;
+    margin: 0;
+    background-image: linear-gradient(rgba(0,0,0,0.008) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.008) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+h1 { font-size: 44px; font-weight: 700; font-family: 'Poppins', sans-serif; color: #0B1A2E; letter-spacing: -0.5px; border-bottom: 3px solid #B49450; padding-bottom: 10px; margin-bottom: 16px; margin-top: 0; }
+h2 { font-size: 26px; font-weight: 700; font-family: 'Poppins', sans-serif; color: #B49450; border-bottom: 2px solid #B49450; padding-bottom: 6px; margin-top: 32px; margin-bottom: 16px; }
+h3 { font-size: 19px; font-weight: 700; font-family: 'Poppins', sans-serif; color: #1A4A4A; margin-top: 22px; margin-bottom: 12px; }
+h4 { font-size: 15px; font-weight: 600; font-family: 'Poppins', sans-serif; color: #7A3B4A; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 16px; margin-bottom: 8px; }
+h5 { font-size: 12.5px; font-weight: 600; font-family: 'Poppins', sans-serif; color: #3C3C3C; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 12px; margin-bottom: 6px; }
+.lead { font-size: 13.5px; line-height: 1.8; color: #2C2C2C; }
+.caption { font-size: 10.5px; font-weight: 500; font-family: 'Poppins', sans-serif; color: #8C8C8C; }
+.hl { background: #F4E9D8; color: #7A5C3A; font-weight: 600; padding: 2px 6px; border-radius: 3px; font-size: 12.5px; }
+.golden-insight { border-left: 6px solid #B49450; background: #FDF9F2; border-radius: 10px; padding: 14px 18px; margin: 16px 0; font-weight: 500; font-style: italic; color: #5C4033; box-shadow: 0 1px 4px rgba(0,0,0,0.04); page-break-inside: avoid; }
+.golden-insight strong { color: #B49450; font-style: normal; }
+.code-block { background: #111824; border: 1px solid #2A3240; border-radius: 12px; padding: 20px 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); page-break-inside: avoid; font-family: 'Fira Code', monospace; font-size: 12px; line-height: 1.5; color: #E0E0E0; white-space: pre-wrap; overflow-x: auto; margin: 16px 0; }
+.syn-kw { color: #F88C6C; font-weight: bold; }
+.syn-str { color: #9CDCFE; }
+.syn-cm { color: #6A9955; font-style: italic; }
+.syn-fn { color: #DCDCAa; }
+.syn-num { color: #B5CEA8; }
+.syn-op { color: #89DDFF; }
+.syn-type { color: #FFD700; }
+.syn-tag { color: #D67E7E; }
+.syn-attr { color: #9CDCFE; }
+.box { border-radius: 12px; padding: 18px 22px; margin-bottom: 18px; background: #FFFFFF; box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03); page-break-inside: avoid; border-left: 6px solid; }
+.box-label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; color: inherit; }
+.box-intuition { border-left-color: #C4924A; background: #F9FBF9; }
+.box-intuition .box-label { color: #C4924A; }
+.box-workflow { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-workflow .box-label { color: #2E6B5A; }
+.box-important { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-important .box-label { color: #A53F3F; }
+.box-interview { border-left-color: #5E4B7A; background: #F8F7FC; }
+.box-interview .box-label { color: #5E4B7A; }
+.box-takeaway { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-takeaway .box-label { color: #2E6B5A; }
+.box-edge { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-edge .box-label { color: #A53F3F; }
+.box-best { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-best .box-label { color: #2E6B5A; }
+.box-performance { border-left-color: #0B1A2E; background: #FFFFFF; }
+.box-performance .box-label { color: #0B1A2E; }
+.table-luxe { border: 1px solid #E3DED5; border-radius: 12px; overflow: hidden; page-break-inside: avoid; margin: 18px 0; width: 100%; border-collapse: collapse; }
+.table-luxe th { background: #F7F3EC; color: #0B1A2E; font-weight: 700; font-size: 11.5px; padding: 12px 14px; border-bottom: 2px solid #B49450; text-align: left; }
+.table-luxe td { padding: 12px 14px; font-size: 11.5px; background: #FFFFFF; border-bottom: 1px solid #E3DED5; }
+.table-luxe tr:nth-child(even) td { background: #FBFBF9; }
+.table-luxe tr:last-child td { border-bottom: none; }
+.approach-tabs { display: flex; gap: 8px; margin: 14px 0; }
+.approach-tab { padding: 7px 16px; border-radius: 20px; font-size: 10.5px; font-weight: bold; font-family: 'Poppins', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; }
+.tab-basic { background: #EDF2F7; border: 1px solid #3A5F80; color: #3A5F80; }
+.tab-intermediate { background: #F2F5EF; border: 1px solid #2E6B5A; color: #2E6B5A; }
+.tab-advanced { background: #F0F0F5; border: 1px solid #0B1A2E; color: #0B1A2E; }
+.ornament { text-align: center; margin: 30px 0; color: #B49450; font-size: 20px; letter-spacing: 8px; }
+.signature { text-align: center; margin-top: 40px; border-top: 1px solid #E3DED5; padding-top: 24px; color: #8C8C8C; font-size: 11px; font-weight: 500; letter-spacing: 1px; }
+ul, ol { margin: 8px 0; padding-left: 22px; }
+li { margin-bottom: 6px; }
+p { margin: 8px 0; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 14px 0; }
+.array-box { display: flex; justify-content: center; gap: 0; margin: 14px 0; }
+.array-cell { width: 55px; height: 50px; border: 2px solid #0B1A2E; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #FFFFFF; font-family: 'Fira Code', monospace; }
+.array-cell:first-child { border-radius: 8px 0 0 8px; }
+.array-cell:last-child { border-radius: 0 8px 8px 0; }
+.array-index { font-size: 10px; color: #8C8C8C; background: #F7F3EC; width: 100%; text-align: center; padding: 2px 0; border-bottom: 1px solid #E3DED5; }
+.array-value { font-size: 14px; font-weight: 700; color: #0B1A2E; padding: 4px 0; }
+.array-swap { background: #F4E9D8 !important; border-color: #B49450 !important; }
+.array-done { background: #EDF2F7 !important; color: #3A5F80 !important; }
+.arrow-swap { text-align: center; color: #B49450; font-size: 24px; margin: 4px 0; }
+@media print { body { background: #FBFBF9 !important; } .code-block { white-space: pre-wrap !important; } }
+</style>
+</head>
+<body>
+
+<h1>Lecture 08: Problem Solving in Arrays</h1>
+
+<p class="lead">Is lecture mein hum arrays ke upar <span class="hl">5 important problems</span> solve karenge — Array ko Function mein pass karna, Array Search, Reverse Array, Check Sorted, aur Missing Number. Har problem ko <span class="hl">multiple approaches</span> se samajhenge taaki aap har situation mein best solution choose kar sako.</p>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Passing Array to a Function</h2>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Jab aap array ko function mein pass karte ho, toh C++ mein wo <span class="hl">Pass by Reference</span> hota hai — matlab original array ka address jaata hai, copy nahi. Isliye agar function mein array modify karte ho, toh <span class="hl">original array bhi change ho jata hai</span>.
+</div>
+
+<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-cm">// Array ko function mein pass karna</span>
+<span class="syn-type">void</span> <span class="syn-fn">printValue</span>(<span class="syn-type">int</span> a[], <span class="syn-type">int</span> n) {
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i < n; i++) {
+        <span class="syn-fn">cout</span> << a[i] << <span class="syn-str">" "</span>;
+    }
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+
+    <span class="syn-cm">// Original array modify kar rahe hain</span>
+    a[<span class="syn-num">0</span>] = <span class="syn-num">90</span>;
+}
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-type">int</span> arr[<span class="syn-num">5</span>] = {<span class="syn-num">10</span>, <span class="syn-num">20</span>, <span class="syn-num">30</span>, <span class="syn-num">40</span>, <span class="syn-num">50</span>};
+
+    <span class="syn-fn">printValue</span>(arr, <span class="syn-num">5</span>);   <span class="syn-cm">// Array pass kiya</span>
+
+    <span class="syn-fn">cout</span> << <span class="syn-str">"arr[0] after function: "</span> << arr[<span class="syn-num">0</span>] << <span class="syn-fn">endl</span>;
+    <span class="syn-cm">// Output: 90 (Original change ho gaya!)</span>
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}</div>
+
+<div class="box box-important">
+<span class="box-label">Important</span>
+Array function mein <span class="hl">hamesha Pass by Reference</span> hota hai — chahe aap <code>&</code> lagao ya na lagao. Ye C++ ka default behavior hai arrays ke liye. Isliye function mein array modify karne se <span class="hl">original array bhi change hota hai</span>.
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Problem 1: Array Search (Linear Search)</h2>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Array ke har element ko ek-ek karke check karo. Target element mil jaye toh uska <span class="hl">index return</span> karo. Agar pura array check karne ke baad bhi na mile, toh <span class="hl">-1 return</span> karo (not found).
+</div>
+
+<h4>Problem Statement</h4>
+<p>Input: <code>arr = [3, 2, 8, 4]</code>, <code>x = 3</code><br>Output: <code>2</code> (kyunki 3 index 2 pe hai)</p>
+
+<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-type">int</span> <span class="syn-fn">search</span>(<span class="syn-type">int</span> arr[], <span class="syn-type">int</span> n, <span class="syn-type">int</span> x) {
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i < n; i++) {
+        <span class="syn-kw">if</span>(arr[i] == x) {
+            <span class="syn-kw">return</span> i;  <span class="syn-cm">// Element mil gaya, index return karo</span>
+        }
+    }
+    <span class="syn-kw">return</span> -<span class="syn-num">1</span>;  <span class="syn-cm">// Element nahi mila</span>
+}
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-type">int</span> arr[<span class="syn-num">4</span>] = {<span class="syn-num">3</span>, <span class="syn-num">2</span>, <span class="syn-num">8</span>, <span class="syn-num">4</span>};
+    <span class="syn-type">int</span> x = <span class="syn-num">3</span>;
+
+    <span class="syn-type">int</span> result = <span class="syn-fn">search</span>(arr, <span class="syn-num">4</span>, x);
+
+    <span class="syn-kw">if</span>(result != -<span class="syn-num">1</span>) {
+        <span class="syn-fn">cout</span> << <span class="syn-str">"Element found at index: "</span> << result << <span class="syn-fn">endl</span>;
+    } <span class="syn-kw">else</span> {
+        <span class="syn-fn">cout</span> << <span class="syn-str">"Element not found"</span> << <span class="syn-fn">endl</span>;
+    }
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}</div>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow — Search for 8</span>
+<table class="table-luxe" style="margin:0">
+<thead>
+<tr><th>Iteration</th><th>i</th><th>arr[i]</th><th>arr[i] == 8?</th><th>Action</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>0</td><td>3</td><td>No</td><td>Continue</td></tr>
+<tr><td>2</td><td>1</td><td>2</td><td>No</td><td>Continue</td></tr>
+<tr><td>3</td><td>2</td><td>8</td><td>Yes ✓</td><td>return 2</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="box box-performance">
+<span class="box-label">Performance</span>
+Linear Search ki <span class="hl">Time Complexity: O(n)</span> — worst case mein pura array traverse karna padta hai. <span class="hl">Space Complexity: O(1)</span> — extra space nahi lagti.
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Problem 2: Reverse an Array</h2>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Array ke <span class="hl">pehle element ko last se swap</span> karo, dusre ko second last se, aur aage badhte jao. Middle tak pahunchne pe array reverse ho jayega. Formula: <span class="hl"><code>arr[i]</code> swap with <code>arr[n-1-i]</code></span>.
+</div>
+
+<h4>Visual Representation</h4>
+
+<div style="background: #F7F7F5; border: 2px solid #B49450; border-radius: 12px; padding: 16px; margin: 14px 0; page-break-inside: avoid;">
+<p style="text-align: center; font-weight: 700; color: #0B1A2E; margin-bottom: 12px;">🔷 REVERSE ARRAY VISUAL</p>
+
+<p style="text-align: center; font-weight: 600; color: #1A4A4A; margin: 8px 0;">Original Array</p>
+<div class="array-box">
+<div class="array-cell"><div class="array-index">0</div><div class="array-value">10</div></div>
+<div class="array-cell"><div class="array-index">1</div><div class="array-value">15</div></div>
+<div class="array-cell"><div class="array-index">2</div><div class="array-value">18</div></div>
+<div class="array-cell"><div class="array-index">3</div><div class="array-value">22</div></div>
+<div class="array-cell"><div class="array-index">4</div><div class="array-value">28</div></div>
+</div>
+
+<p class="arrow-swap">⇅ ⇅ ⇅ ⇅ ⇅</p>
+
+<p style="text-align: center; font-weight: 600; color: #7A3B4A; margin: 8px 0;">Reversed Array</p>
+<div class="array-box">
+<div class="array-cell array-done"><div class="array-index">0</div><div class="array-value">28</div></div>
+<div class="array-cell array-done"><div class="array-index">1</div><div class="array-value">22</div></div>
+<div class="array-cell array-done"><div class="array-index">2</div><div class="array-value">18</div></div>
+<div class="array-cell array-done"><div class="array-index">3</div><div class="array-value">15</div></div>
+<div class="array-cell array-done"><div class="array-index">4</div><div class="array-value">10</div></div>
+</div>
+</div>
+
+<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-type">void</span> <span class="syn-fn">reverseArray</span>(<span class="syn-type">int</span> arr[], <span class="syn-type">int</span> n) {
+    <span class="syn-cm">// Sirf n/2 tak chalana hai — warna dobara swap ho jayega</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i < n/<span class="syn-num">2</span>; i++) {
+        <span class="syn-cm">// arr[i] ko arr[n-1-i] se swap karo</span>
+        <span class="syn-type">int</span> temp = arr[i];
+        arr[i] = arr[n-<span class="syn-num">1</span>-i];
+        arr[n-<span class="syn-num">1</span>-i] = temp;
+    }
+}
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-type">int</span> arr[<span class="syn-num">5</span>] = {<span class="syn-num">10</span>, <span class="syn-num">15</span>, <span class="syn-num">18</span>, <span class="syn-num">22</span>, <span class="syn-num">28</span>};
+
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Before: "</span>;
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i < <span class="syn-num">5</span>; i++) <span class="syn-fn">cout</span> << arr[i] << <span class="syn-str">" "</span>;
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+
+    <span class="syn-fn">reverseArray</span>(arr, <span class="syn-num">5</span>);
+
+    <span class="syn-fn">cout</span> << <span class="syn-str">"After:  "</span>;
+    <span class="syn-k">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i < <span class="syn-num">5</span>; i++) <span class="syn-fn">cout</span> << arr[i] << <span class="syn-str">" "</span>;
+    <span class="syn-fn">cout</span> << <span class="syn-fn">endl</span>;
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}</div>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow — Step by Step</span>
+<table class="table-luxe" style="margin:0">
+<thead>
+<tr><th>Iteration</th><th>i</th><th>Swap</th><th>Array After Swap</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>0</td><td>arr[0] ↔ arr[4]</td><td>28, 15, 18, 22, 10</td></tr>
+<tr><td>2</td><td>1</td><td>arr[1] ↔ arr[3]</td><td>28, 22, 18, 15, 10</td></tr>
+<tr><td>3</td><td>2</td><td>arr[2] ↔ arr[2]</td><td>28, 22, 18, 15, 10 (same)</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="golden-insight">
+<strong>Key Insight:</strong> Loop <span class="hl"><code>n/2</code></span> tak hi chalana hai. Agar pura array traverse karoge, toh elements dobara apni original position pe aa jayenge. Middle element (agar odd size hai) khud se swap hota hai — koi change nahi hota.
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Problem 3: Check if Array is Sorted</h2>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Array <span class="hl">sorted</span> hai agar har element apne pehle wale element se <span class="hl">bada ya barabar</span> ho. Matlab <code>arr[i] >= arr[i-1]</code> har valid <code>i</code> ke liye true hona chahiye. Agar koi bhi element chhota mila, toh array sorted nahi hai.
+</div>
+
+<div class="two-col">
+<div style="border: 2px solid #2E6B5A; border-radius: 8px; padding: 12px; background: #F9FBF9;">
+<p style="text-align: center; font-weight: 700; color: #2E6B5A; margin: 0 0 8px 0;">✅ Increasing (Sorted)</p>
+<div class="array-box" style="margin: 0;">
+<div class="array-cell" style="width: 45px;"><div class="array-index">0</div><div class="array-value">10</div></div>
+<div class="array-cell" style="width: 45px;"><div class="array-index">1</div><div class="array-value">20</div></div>
+<div class="array-cell" style="width: 45px;"><div class="array-index">2</div><div class="array-value">30</div></div>
+<div class="array-cell" style="width: 45px;"><div class="array-index">3</div><div class="array-value">40</div></div>
+<div class="array-cell" style="width: 45px;"><div class="array-index">4</div><div class="array-value">50</div></div>
+</div>
+<p style="text-align: center; font-size: 11px; color: #2E6B5A; margin: 8px 0 0 0;">10 ≤ 20 ≤ 30 ≤ 40 ≤ 50 ✓</p>
+</div>
+<div style="border: 2px solid #A53F3F; border-radius: 8px; padding: 12px; background: #FDF8F8;">
+<p style="text-align: center; font-weight: 700; color: #A53F3F; margin: 0 0 8px 0;">❌ Not Sorted</p>
+<div class="array-box" style="margin: 0;">
+<div class="array-cell" style="width: 45px;"><div class="array-index">0</div><div class="array-value">50</div></div>
+<div class="array-cell" style="width: 45px;"><div class="array-index">1</div><div class="array-value">40</div></div>
+<div class="array-cell" style="width: 45px;"><div class="array-index">2</div><div class="array-value">30</div></div>
+<div class="array-cell" style="width: 45px;"><div class="array-index">3</div><div class="array-value">20</div></div>
+<div class="array-cell" style="width: 45px;"><div class="array-index">4</div><div class="array-value">10</div></div>
+</div>
+<p style="text-align: center; font-size: 11px; color: #A53F3F; margin: 8px 0 0 0;">50 > 40 > 30 > 20 > 10 ✗ (Decreasing)</p>
+</div>
+</div>
+
+<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-type">bool</span> <span class="syn-fn">isSorted</span>(<span class="syn-type">int</span> arr[], <span class="syn-type">int</span> n) {
+    <span class="syn-cm">// Index 1 se start karo aur previous element se compare karo</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i < n; i++) {
+        <span class="syn-kw">if</span>(arr[i-<span class="syn-num">1</span>] > arr[i]) {
+            <span class="syn-kw">return</span> <span class="syn-kw">false</span>;  <span class="syn-cm">// Previous element bada hai — not sorted</span>
+        }
+    }
+    <span class="syn-kw">return</span> <span class="syn-kw">true</span>;  <span class="syn-cm">// Sab theek hai — sorted hai</span>
+}
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-type">int</span> arr1[<span class="syn-num">5</span>] = {<span class="syn-num">10</span>, <span class="syn-num">20</span>, <span class="syn-num">30</span>, <span class="syn-num">40</span>, <span class="syn-num">50</span>};
+    <span class="syn-type">int</span> arr2[<span class="syn-num">5</span>] = {<span class="syn-num">50</span>, <span class="syn-num">40</span>, <span class="syn-num">30</span>, <span class="syn-num">20</span>, <span class="syn-num">10</span>};
+
+    <span class="syn-fn">cout</span> << <span class="syn-str">"arr1 sorted? "</span> << (<span class="syn-fn">isSorted</span>(arr1, <span class="syn-num">5</span>) ? <span class="syn-str">"YES"</span> : <span class="syn-str">"NO"</span>) << <span class="syn-fn">endl</span>;
+    <span class="syn-fn">cout</span> << <span class="syn-str">"arr2 sorted? "</span> << (<span class="syn-fn">isSorted</span>(arr2, <span class="syn-num">5</span>) ? <span class="syn-str">"YES"</span> : <span class="syn-str">"NO"</span>) << <span class="syn-fn">endl</span>;
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}</div>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow — Check arr1 = [10, 20, 20, 30, 40]</span>
+<table class="table-luxe" style="margin:0">
+<thead>
+<tr><th>Iteration</th><th>i</th><th>arr[i-1]</th><th>arr[i]</th><th>arr[i-1] > arr[i]?</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>1</td><td>10</td><td>20</td><td>10 > 20? No ✓</td></tr>
+<tr><td>2</td><td>2</td><td>20</td><td>20</td><td>20 > 20? No ✓</td></tr>
+<tr><td>3</td><td>3</td><td>20</td><td>30</td><td>20 > 30? No ✓</td></tr>
+<tr><td>4</td><td>4</td><td>30</td><td>40</td><td>30 > 40? No ✓</td></tr>
+<tr><td colspan="5" style="text-align:center; font-weight:700; color: #2E6B5A;">return true — Array is sorted!</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Problem 4: Missing Number in Array</h2>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Array mein <code>1 se n</code> tak ke numbers hain, lekin <span class="hl">ek number missing hai</span>. Us missing number ko find karna hai. Is problem ko <span class="hl">3 tarike</span> se solve kar sakte hain — Brute Force, Sum Formula, aur XOR.
+</div>
+
+<h4>Problem Statement</h4>
+<p>Input: <code>arr = [3, 1, 2, 5]</code> (1 to 5 mein se 4 missing hai)<br>Output: <code>4</code></p>
+
+<div class="approach-tabs">
+<span class="approach-tab tab-basic">Approach 1: Brute Force</span>
+<span class="approach-tab tab-intermediate">Approach 2: Sum Formula</span>
+<span class="approach-tab tab-advanced">Approach 3: XOR</span>
+</div>
+
+<h4>Approach 1: Brute Force (O(n²))</h4>
+
+<div class="code-block"><span class="syn-type">int</span> <span class="syn-fn">missingNumber</span>(<span class="syn-type">int</span> arr[], <span class="syn-type">int</span> n) {
+    <span class="syn-type">int</span> size = n + <span class="syn-num">1</span>;  <span class="syn-cm">// Actual size = n+1 (ek missing hai)</span>
+
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= size; i++) {
+        <span class="syn-type">bool</span> found = <span class="syn-kw">false</span>;
+
+        <span class="syn-kw">for</span>(<span class="syn-type">int</span> j = <span class="syn-num">0</span>; j < n; j++) {
+            <span class="syn-kw">if</span>(arr[j] == i) {
+                found = <span class="syn-kw">true</span>;
+                <span class="syn-kw">break</span>;
+            }
+        }
+
+        <span class="syn-kw">if</span>(!found) {
+            <span class="syn-kw">return</span> i;  <span class="syn-cm">// Ye number missing hai</span>
+        }
+    }
+    <span class="syn-kw">return</span> -<span class="syn-num">1</span>;
+}</div>
+
+<div class="box box-performance">
+<span class="box-label">Performance</span>
+Brute Force ki <span class="hl">Time Complexity: O(n²)</span> — nested loop hai. <span class="hl">TLE (Time Limit Exceeded)</span> ho sakta hai bade inputs pe. Interview mein ye approach batana chalega, lekin optimized version bhi batana zaroori hai.
+</div>
+
+<h4>Approach 2: Sum Formula (O(n)) ⭐ Recommended</h4>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+<span class="hl">Sum of first n natural numbers</span> ka formula: <code>n × (n+1) / 2</code>. Agar array ke elements ka sum nikalo aur expected sum se minus karo, toh missing number mil jayega.<br><br>
+<span class="hl">Missing Number = Expected Sum - Actual Sum</span>
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> <span class="syn-fn">missingNumber</span>(<span class="syn-type">int</span> arr[], <span class="syn-type">int</span> n) {
+    <span class="syn-type">int</span> size = n + <span class="syn-num">1</span>;  <span class="syn-cm">// Kyunki ek number missing hai</span>
+
+    <span class="syn-cm">// Step 1: Expected sum nikalo (1 se size tak)</span>
+    <span class="syn-type">int</span> expectedSum = size * (size + <span class="syn-num">1</span>) / <span class="syn-num">2</span>;
+
+    <span class="syn-cm">// Step 2: Actual sum nikalo</span>
+    <span class="syn-type">int</span> actualSum = <span class="syn-num">0</span>;
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i < n; i++) {
+        actualSum += arr[i];
+    }
+
+    <span class="syn-cm">// Step 3: Difference hi missing number hai</span>
+    <span class="syn-kw">return</span> expectedSum - actualSum;
+}</div>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow — arr = [3, 1, 2, 5], n = 4</span>
+<table class="table-luxe" style="margin:0">
+<thead>
+<tr><th>Step</th><th>Calculation</th><th>Result</th></tr>
+</thead>
+<tbody>
+<tr><td>size</td><td>n + 1 = 4 + 1</td><td>5</td></tr>
+<tr><td>Expected Sum</td><td>5 × 6 / 2</td><td>15</td></tr>
+<tr><td>Actual Sum</td><td>3 + 1 + 2 + 5</td><td>11</td></tr>
+<tr><td>Missing Number</td><td>15 - 11</td><td class="mem-changed">4 ✓</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="box box-performance">
+<span class="box-label">Performance</span>
+Sum Formula ki <span class="hl">Time Complexity: O(n)</span> — single loop. <span class="hl">Space Complexity: O(1)</span>. Ye approach interviews mein sabse zyada prefer ki jati hai.
+</div>
+
+<h4>Approach 3: XOR (O(n)) — Bit Manipulation</h4>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+XOR ka ek property hai: <span class="hl"><code>a ^ a = 0</code></span> aur <span class="hl"><code>a ^ 0 = a</code></span>. Agar saare numbers ko XOR karo (1 se n tak) aur saare array elements ko bhi XOR karo, toh same numbers cancel ho jayenge aur sirf <span class="hl">missing number bachega</span>.
+</div>
+
+<div class="code-block"><span class="syn-type">int</span> <span class="syn-fn">missingNumberXOR</span>(<span class="syn-type">int</span> arr[], <span class="syn-type">int</span> n) {
+    <span class="syn-type">int</span> size = n + <span class="syn-num">1</span>;
+    <span class="syn-type">int</span> ans = <span class="syn-num">0</span>;
+
+    <span class="syn-cm">// Step 1: 1 se size tak XOR karo</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i <= size; i++) {
+        ans = ans ^ i;
+    }
+
+    <span class="syn-cm">// Step 2: Array ke saare elements XOR karo</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i < n; i++) {
+        ans = ans ^ arr[i];
+    }
+
+    <span class="syn-kw">return</span> ans;  <span class="syn-cm">// Missing number mil gaya</span>
+}</div>
+
+<div class="box box-workflow">
+<span class="box-label">Workflow — XOR Property</span>
+<table class="table-luxe" style="margin:0">
+<thead>
+<tr><th>Property</th><th>Example</th><th>Result</th></tr>
+</thead>
+<tbody>
+<tr><td>a ^ a</td><td>5 ^ 5</td><td>0</td></tr>
+<tr><td>a ^ 0</td><td>5 ^ 0</td><td>5</td></tr>
+<tr><td>a ^ b ^ a</td><td>5 ^ 3 ^ 5</td><td>3</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="box box-edge">
+<span class="box-label">Edge Case</span>
+XOR approach <span class="hl">integer overflow se bachata hai</span>. Sum formula mein bade numbers pe overflow ho sakta hai (<code>int</code> ki limit cross). XOR mein koi overflow nahi hota. Lekin XOR approach thoda complex hai samajhne mein.
+</div>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Problem 5: Vector Basics (Dynamic Array)</h2>
+
+<div class="box box-intuition">
+<span class="box-label">Intuition</span>
+Normal array ki problem hai ki uska size <span class="hl">fix</span> hota hai. Vector ek <span class="hl">dynamic array</span> hai jo apne aap size badha sakta hai. <code>push_back()</code> se element add karo, <code>pop_back()</code> se last element remove karo.
+</div>
+
+<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
+<span class="syn-kw">#include</span> &lt;vector&gt;  <span class="syn-cm">// Vector library include karna zaroori</span>
+<span class="syn-kw">using namespace</span> std;
+
+<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
+    <span class="syn-cm">// Vector declare karna</span>
+    vector&lt;<span class="syn-type">int</span>&gt; arr;
+
+    <span class="syn-cm">// Elements add karna (size automatically badhega)</span>
+    arr.push_back(<span class="syn-num">10</span>);  <span class="syn-cm">// arr = [10]</span>
+    arr.push_back(<span class="syn-num">20</span>);  <span class="syn-cm">// arr = [10, 20]</span>
+    arr.push_back(<span class="syn-num">30</span>);  <span class="syn-cm">// arr = [10, 20, 30]</span>
+
+    <span class="syn-cm">// Last element remove karna</span>
+    arr.pop_back();       <span class="syn-cm">// arr = [10, 20], last element (30) remove</span>
+
+    <span class="syn-cm">// Size check karna</span>
+    <span class="syn-fn">cout</span> << <span class="syn-str">"Size: "</span> << arr.size() << <span class="syn-fn">endl</span>;  <span class="syn-cm">// 2</span>
+
+    <span class="syn-cm">// Traverse karna (same as array)</span>
+    <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i < arr.size(); i++) {
+        <span class="syn-fn">cout</span> << arr[i] << <span class="syn-str">" "</span>;
+    }
+
+    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+}</div>
+
+<table class="table-luxe">
+<thead>
+<tr><th>Operation</th><th>Syntax</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td>Declare</td><td><code>vector&lt;int&gt; v;</code></td><td>Empty vector</td></tr>
+<tr><td>Add Element</td><td><code>v.push_back(x);</code></td><td>End mein x add karega</td></tr>
+<tr><td>Remove Last</td><td><code>v.pop_back();</code></td><td>Last element remove</td></tr>
+<tr><td>Size</td><td><code>v.size();</code></td><td>Current elements count</td></tr>
+<tr><td>Access</td><td><code>v[i]</code></td><td>i-th element access</td></tr>
+<tr><td>Empty Check</td><td><code>v.empty();</code></td><td>true if empty</td></tr>
+</tbody>
+</table>
+
+<div class="ornament">❦ ❦ ❦</div>
+
+<h2>Key Takeaways</h2>
+
+<div class="box box-takeaway">
+<span class="box-label">Takeaway</span>
+<ul>
+<li><strong>Array in Function:</strong> Hamesha Pass by Reference hota hai. Function mein modify karne se original array change hota hai.</li>
+<li><strong>Linear Search:</strong> Har element check karo. <code>O(n)</code> time. Element milne pe index return, nahi toh -1.</li>
+<li><strong>Reverse Array:</strong> <code>arr[i]</code> ko <code>arr[n-1-i]</code> se swap karo. Loop <code>n/2</code> tak chalao.</li>
+<li><strong>Check Sorted:</strong> Har element apne previous se compare karo. <code>arr[i-1] > arr[i]</code> ho toh not sorted.</li>
+<li><strong>Missing Number (Brute):</strong> Nested loop se har number check karo. <code>O(n²)</code> — TLE risk.</li>
+<li><strong>Missing Number (Sum):</strong> <code>Expected Sum - Actual Sum</code>. <code>O(n)</code> — Best for interviews.</li>
+<li><strong>Missing Number (XOR):</strong> XOR properties use karo. <code>O(n)</code> — Overflow safe, lekin complex.</li>
+<li><strong>Vector:</strong> Dynamic array hai. <code>push_back()</code>, <code>pop_back()</code>, <code>size()</code> — main operations.</li>
+</ul>
+</div>
+
+<table class="table-luxe">
+<thead>
+<tr><th>Problem</th><th>Best Approach</th><th>Time</th><th>Space</th></tr>
+</thead>
+<tbody>
+<tr><td>Array Search</td><td>Linear Search</td><td>O(n)</td><td>O(1)</td></tr>
+<tr><td>Reverse Array</td><td>Two Pointer Swap</td><td>O(n)</td><td>O(1)</td></tr>
+<tr><td>Check Sorted</td><td>Single Loop Compare</td><td>O(n)</td><td>O(1)</td></tr>
+<tr><td>Missing Number</td><td>Sum Formula</td><td>O(n)</td><td>O(1)</td></tr>
+<tr><td>Missing Number</td><td>XOR (Overflow Safe)</td><td>O(n)</td><td>O(1)</td></tr>
+</tbody>
+</table>
+
+<div class="box box-interview">
+<span class="box-label">Interview Tip</span>
+Missing Number problem mein <span class="hl">hamesha Sum Formula approach</span> batana pehle — ye sabse intuitive hai. Phir XOR approach batana as an alternative. Brute Force sirf tab batana jab interviewer specifically puche. <span class="hl">"Expected Sum minus Actual Sum"</span> — ye line yaad rakho, interview clear ho jayega.
+</div>
+
+<div class="golden-insight">
+<strong>Key Insight:</strong> Array problems solve karne ka <span class="hl">golden rule</span>: Pehle brute force socho, phir optimize karo. Har problem ke liye multiple approaches hote hain — basic se lekar advanced tak. Interview mein <span class="hl">pehle brute force batao, phir optimized</span>. Ye dikhata hai ki aap soch sakte ho aur optimize kar sakte ho.
+</div>
+
+<div class="signature">MADE BY HARSHAL CHAUHAN</div>
+
+</body>
+</html>
