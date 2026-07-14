@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture 13: Sorting Algorithms & Binary Search</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 0;
+            @top-right-corner {
+                content: "Harshal Chauhan";
+                font: 9px 'Poppins', sans-serif;
+                color: #8C8C8C;
+                opacity: 0.3;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            padding: 22mm 22mm 22mm 28mm;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            background: #FBFBF9;
+            font-family: 'Poppins', sans-serif;
+            color: #1A1A1A;
+            font-size: 12.5px;
+            line-height: 1.75;
+            margin: 0;
+            background-image: 
+                linear-gradient( rgba(0,0,0,0.008) 1px, transparent 1px ),
+                linear-gradient( 90deg, rgba(0,0,0,0.008) 1px, transparent 1px );
+            background-size: 20px 20px;
+        }
+
+        h1 {
+            font-size: 44px;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            color: #0B1A2E;
+            letter-spacing: -0.5px;
+            border-bottom: 3px solid #B49450;
+            padding-bottom: 10px;
+            margin-bottom: 16px;
+            margin-top: 0;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            color: #B49450;
+            border-bottom: 2px solid #B49450;
+            padding-bottom: 6px;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        h3 {
+            font-size: 19px;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            color: #1A4A4A;
+            margin-top: 22px;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        h4 {
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            color: #7A3B4A;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+
+        h5 {
+            font-size: 12.5px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            color: #3C3C3C;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 12px;
+            margin-bottom: 6px;
+        }
+
+        p, li {
+            font-size: 12.5px;
+            font-weight: 400;
+            font-family: 'Poppins', sans-serif;
+            color: #1A1A1A;
+            line-height: 1.75;
+            margin-bottom: 10px;
+        }
+
+        .lead {
+            font-size: 13.5px;
+            line-height: 1.8;
+            color: #2C2C2C;
+        }
+
+        .hl {
+            background: #F4E9D8;
+            color: #7A5C3A;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12.5px;
+        }
+
+        .golden-insight {
+            border-left: 6px solid #B49450;
+            background: #FDF9F2;
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin: 16px 0;
+            font-weight: 500;
+            font-style: italic;
+            color: #5C4033;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            page-break-inside: avoid;
+        }
+
+        .box {
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin-bottom: 18px;
+            background: #FFFFFF;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03);
+            page-break-inside: avoid;
+            border-left: 6px solid;
+        }
+
+        .box-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 10px;
+            color: inherit;
+        }
+
+        .box-pattern { border-left-color: #3A5F80; background: #FFFFFF; }
+        .box-pattern .box-label { color: #3A5F80; }
+
+        .box-intuition { border-left-color: #C4924A; background: #F9FBF9; }
+        .box-intuition .box-label { color: #C4924A; }
+
+        .box-workflow { border-left-color: #2E6B5A; background: #F9FBF9; }
+        .box-workflow .box-label { color: #2E6B5A; }
+
+        .box-important { border-left-color: #A53F3F; background: #FDF8F8; }
+        .box-important .box-label { color: #A53F3F; }
+
+        .box-interview { border-left-color: #5E4B7A; background: #F8F7FC; }
+        .box-interview .box-label { color: #5E4B7A; }
+
+        .box-takeaway { border-left-color: #2E6B5A; background: #F9FBF9; }
+        .box-takeaway .box-label { color: #2E6B5A; }
+
+        .box-edge { border-left-color: #A53F3F; background: #FDF8F8; }
+        .box-edge .box-label { color: #A53F3F; }
+
+        .box-best { border-left-color: #2E6B5A; background: #F9FBF9; }
+        .box-best .box-label { color: #2E6B5A; }
+
+        .box-performance { border-left-color: #0B1A2E; background: #FFFFFF; }
+        .box-performance .box-label { color: #0B1A2E; }
+
+        .code-block {
+            background: #111824;
+            border: 1px solid #2A3240;
+            border-radius: 12px;
+            padding: 20px 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            page-break-inside: avoid;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #E0E0E0;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        .syn-kw { color: #F88C6C; font-weight: bold; }
+        .syn-str { color: #9CDCFE; }
+        .syn-cm { color: #6A9955; font-style: italic; }
+        .syn-fn { color: #DCDCAA; }
+        .syn-num { color: #B5CEA8; }
+        .syn-op { color: #89DDFF; }
+        .syn-type { color: #FFD700; }
+        .syn-tag { color: #D67E7E; }
+        .syn-attr { color: #9CDCFE; }
+
+        table {
+            width: 100%;
+            border: 1px solid #E3DED5;
+            border-radius: 12px;
+            overflow: hidden;
+            page-break-inside: avoid;
+            margin: 18px 0;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        th {
+            background: #F7F3EC;
+            color: #0B1A2E;
+            font-weight: 700;
+            font-size: 11.5px;
+            padding: 12px 14px;
+            border-bottom: 2px solid #B49450;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px 14px;
+            font-size: 11.5px;
+            background: #FFFFFF;
+            border-bottom: 1px solid #E3DED5;
+        }
+
+        tr:nth-child(even) td {
+            background: #FBFBF9;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin: 16px 0;
+            padding: 16px;
+            background: #F7F7F5;
+            border-radius: 12px;
+            border: 1px solid #E3DED5;
+            page-break-inside: avoid;
+            flex-wrap: wrap;
+        }
+
+        .diagram-box {
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 11.5px;
+            font-weight: 600;
+            text-align: center;
+            min-width: 40px;
+        }
+
+        .diagram-arrow {
+            color: #B49450;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .diagram-label {
+            width: 100%;
+            text-align: center;
+            font-size: 10.5px;
+            color: #8C8C8C;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            color: #B49450;
+            font-size: 20px;
+            letter-spacing: 8px;
+        }
+
+        ul, ol {
+            margin: 10px 0;
+            padding-left: 24px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        .caption {
+            font-size: 10.5px;
+            font-weight: 500;
+            color: #8C8C8C;
+            text-align: center;
+            margin-top: 6px;
+        }
+
+        .warning-inline {
+            background: #FDF0ED;
+            color: #A53F3F;
+            font-weight: 600;
+            padding: 1px 4px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Lecture 13: Sorting Algorithms & Binary Search</h1>
+
+<p class="lead">Is lecture mein hum teen fundamental algorithms cover karenge: <span class="hl">Bubble Sort</span>, <span class="hl">Insertion Sort</span>, aur <span class="hl">Binary Search</span>. Ye algorithms <span class="hl">LeetCode 912</span> aur <span class="hl">LeetCode 704</span> ke solutions hain. Inki internal working, complexity analysis, aur interview-relevant insights ko detail mein samjhenge.</p>
+
+<div class="divider">&#10022; &#10022; &#10022;</div>
+
+<!-- ==================== BUBBLE SORT ==================== -->
+
+<h2>Bubble Sort</h2>
+
+<div class="box box-pattern">
+    <span class="box-label">Pattern</span>
+    <strong>Sorting</strong> &mdash; Bubble Sort, Comparison-Based, In-Place, Stable
+</div>
+
+<h3>Introduction</h3>
+<p>Bubble Sort ek simple <span class="hl">comparison-based sorting algorithm</span> hai. Ismein adjacent elements ko compare kiya jata hai aur agar wo wrong order mein hain toh swap kar diya jata hai. Har pass ke baad, sabse bada element apni correct position pe pahunch jata hai array ke end mein. Ye process tab tak repeat hoti hai jab tak poora array sorted na ho jaye.</p>
+
+<div class="golden-insight">
+    <strong style="color:#B49450;">Key Insight:</strong> Bubble Sort ka har pass <span class="hl">largest unsorted element</span> ko end mein &ldquo;bubble up&rdquo; kar deta hai, jaise paani mein hawa ka bubble upar ki taraf jaata hai.
+</div>
+
+<h3>The Analogy</h3>
+<p>Socho aapke paas ek line mein students khade hain unki height ke hisaab se. Agar bagal wala student zyada lamba hai, toh wo aage chala jata hai. Har round ke baad sabse lamba student apni correct position pe pahunch jata hai end mein. Isi tarah Bubble Sort mein har pass ke baad largest element apni final position pe settle ho jata hai.</p>
+
+<h3>How It Works Internally</h3>
+<ol>
+    <li>Algorithm total <span class="hl">n-1 passes</span> chalata hai.</li>
+    <li>Har pass mein, <span class="hl">adjacent elements</span> ko compare kiya jata hai.</li>
+    <li>Agar left element right element se bada hai, toh dono ko <span class="hl">swap</span> kar diya jata hai.</li>
+    <li>Har pass ke end mein, largest unsorted element apni correct sorted position pe pahunch jata hai.</li>
+    <li>Ye process tab tak repeat hoti hai jab tak poora array sorted na ho jaye.</li>
+</ol>
+
+<div class="box box-workflow">
+    <span class="box-label">Workflow</span>
+    <strong>Pass 1:</strong> Largest element index n-1 pe pahunchta hai.<br>
+    <strong>Pass 2:</strong> Second largest element index n-2 pe pahunchta hai.<br>
+    <strong>Pass i:</strong> i-th largest element apni correct position pe pahunchta hai.<br>
+    <strong>Total:</strong> n-1 passes ke baad array completely sorted hota hai.
+</div>
+
+<h3>Algorithm Steps</h3>
+<ol>
+    <li>Outer loop <code>i = 0</code> se <code>n - 2</code> tak chalao.</li>
+    <li>Inner loop <code>j = 0</code> se <code>n - i - 2</code> tak chalao.</li>
+    <li>Compare <code>nums[j]</code> aur <code>nums[j + 1]</code>.</li>
+    <li>Agar <code>nums[j] &gt; nums[j + 1]</code>, toh swap karo.</li>
+    <li>Return sorted <code>nums</code>.</li>
+</ol>
+
+<h3>Code Implementation</h3>
+<div class="code-block"><span class="syn-cm">// LeetCode 912 - Bubble Sort Solution</span>
+<span class="syn-kw">class</span> <span class="syn-type">Solution</span> {
+<span class="syn-kw">public</span>:
+    <span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt; <span class="syn-fn">sortArray</span>(<span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt;&amp; nums) {
+        <span class="syn-type">int</span> n = nums.<span class="syn-fn">size</span>();
+
+        <span class="syn-cm">// Total n-1 passes</span>
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i &lt; n - <span class="syn-num">1</span>; i++) {
+
+            <span class="syn-cm">// Compare adjacent elements</span>
+            <span class="syn-kw">for</span> (<span class="syn-type">int</span> j = <span class="syn-num">0</span>; j &lt; n - i - <span class="syn-num">1</span>; j++) {
+
+                <span class="syn-cm">// Swap if elements are in wrong order</span>
+                <span class="syn-kw">if</span> (nums[j] &gt; nums[j + <span class="syn-num">1</span>]) {
+                    <span class="syn-fn">swap</span>(nums[j], nums[j + <span class="syn-num">1</span>]);
+                }
+            }
+        }
+
+        <span class="syn-kw">return</span> nums;
+    }
+};</div>
+
+<h3>Complexity Analysis</h3>
+<table>
+    <tr>
+        <th>Case</th>
+        <th>Time Complexity</th>
+        <th>Reason</th>
+    </tr>
+    <tr>
+        <td><strong>Best</strong></td>
+        <td><span class="hl">O(n&sup2;)</span></td>
+        <td>Without optimization, saare passes execute hote hain even if array already sorted hai.</td>
+    </tr>
+    <tr>
+        <td><strong>Average</strong></td>
+        <td><span class="hl">O(n&sup2;)</span></td>
+        <td>Multiple comparisons aur swaps required hain har element ke liye.</td>
+    </tr>
+    <tr>
+        <td><strong>Worst</strong></td>
+        <td><span class="hl">O(n&sup2;)</span></td>
+        <td>Reverse sorted array mein maximum swaps required hote hain.</td>
+    </tr>
+    <tr>
+        <td><strong>Space</strong></td>
+        <td><span class="hl">O(1)</span></td>
+        <td>In-place sorting hai, koi extra array use nahi hota.</td>
+    </tr>
+</table>
+
+<div class="box box-performance">
+    <span class="box-label">Performance Note</span>
+    <strong>Optimization:</strong> Agar kisi pass mein <span class="hl">koi swap nahi hota</span>, iska matlab array already sorted hai. Ek <span class="hl">swapped flag</span> use karke early exit possible hai, jisse <strong>Best Case O(n)</strong> ban jata hai.
+</div>
+
+<h3>Common Mistakes & Edge Cases</h3>
+<div class="box box-edge">
+    <span class="box-label">Edge Case</span>
+    <ul>
+        <li><strong>Inner loop boundary:</strong> <code>j &lt; n - i - 1</code> hona chahiye, <code>j &lt; n - 1</code> nahi. Last i elements already sorted hain, unhe dubara compare karne ki zaroorat nahi.</li>
+        <li><strong>Empty array / Single element:</strong> Directly return karo, loops execute nahi honge.</li>
+        <li><strong>Duplicate elements:</strong> Bubble Sort <span class="hl">stable</span> hai, equal elements ka relative order maintain hota hai.</li>
+    </ul>
+</div>
+
+<div class="box box-important">
+    <span class="box-label">Important</span>
+    <span class="warning-inline">Bubble Sort practical applications mein rarely use hota hai.</span> Iska main purpose sorting fundamentals samajhna hai. Real-world mein <span class="hl">Quick Sort</span>, <span class="hl">Merge Sort</span>, ya <span class="hl">Tim Sort</span> use hote hain.
+</div>
+
+<div class="box box-interview">
+    <span class="box-label">Interview Tip</span>
+    Bubble Sort ko sirf <strong>educational purpose</strong> ke liye yaad rakho. Interview mein directly nahi mangta, lekin iski working principle clear honi chahiye. <span class="hl">Optimization wala variation</span> (swapped flag) zaroor batana &mdash; ye dikhata hai ki aap edge cases sochte hain.
+</div>
+
+<div class="box box-takeaway">
+    <span class="box-label">Key Takeaways</span>
+    <ul>
+        <li>Bubble Sort <span class="hl">stable</span> sorting algorithm hai.</li>
+        <li>In-place sorting hai, space <strong>O(1)</strong>.</li>
+        <li>Naive implementation mein time complexity <strong>O(n&sup2;)</strong> hai.</li>
+        <li>Optimization se best case <strong>O(n)</strong> ban sakta hai.</li>
+        <li>Har pass mein largest element end mein settle hota hai.</li>
+    </ul>
+</div>
+
+<div class="divider">&#10022; &#10022; &#10022;</div>
+
+<!-- ==================== INSERTION SORT ==================== -->
+
+<h2>Insertion Sort</h2>
+
+<div class="box box-pattern">
+    <span class="box-label">Pattern</span>
+    <strong>Sorting</strong> &mdash; Insertion Sort, Comparison-Based, In-Place, Stable, Adaptive
+</div>
+
+<h3>Introduction</h3>
+<p>Insertion Sort mein array ko do parts mein divide kiya jata hai: <span class="hl">sorted part</span> aur <span class="hl">unsorted part</span>. Pehla element already sorted maana jata hai. Har iteration mein next element ko uthaya jata hai aur sorted part mein uski correct position pe insert kiya jata hai. Ye process array ke end tak repeat hoti hai.</p>
+
+<div class="golden-insight">
+    <strong style="color:#B49450;">Key Insight:</strong> Insertion Sort <span class="hl">left side ko hamesha sorted maintain karta hai</span> aur right side se elements uthata rehta hai. Har step mein sorted portion grow hota hai.
+</div>
+
+<h3>The Analogy</h3>
+<p>Jaise card game mein player ek ek card uthata hai aur apne haath mein already sorted cards ke beech mein sahi jagah pe rakh deta hai. Har baar naya card aata hai, aur player usse compare karta hai already sorted cards se aur sahi position pe slide kar deta hai. Waise hi Insertion Sort kaam karta hai.</p>
+
+<h3>How It Works Internally</h3>
+<ol>
+    <li>Index <span class="hl">0</span> ko already sorted maano.</li>
+    <li>Index <span class="hl">1</span> se last tak iterate karo.</li>
+    <li>Current element ko previous elements se compare karo.</li>
+    <li>Agar current element chota hai, toh swap karte jao left ki taraf.</li>
+    <li>Correct position milne par <span class="hl">break</span> karo.</li>
+    <li>Ye process har element ke liye repeat karo.</li>
+</ol>
+
+<div class="box box-workflow">
+    <span class="box-label">Workflow</span>
+    <strong>Iteration i:</strong> Element at index i ko sorted part [0, i-1] mein insert karo.<br>
+    <strong>Comparison:</strong> nums[j] ko nums[j-1] se compare karo.<br>
+    <strong>Shift:</strong> Agar nums[j] &lt; nums[j-1], swap karo aur j-- karo.<br>
+    <strong>Stop:</strong> Jab nums[j] &gt;= nums[j-1] ya j == 0, break karo.
+</div>
+
+<h3>Algorithm Steps</h3>
+<ol>
+    <li><code>i = 1</code> se <code>n - 1</code> tak loop chalao.</li>
+    <li><code>j = i</code> se <code>1</code> tak decrement karo.</li>
+    <li>Agar <code>nums[j] &lt; nums[j - 1]</code>, toh swap karo.</li>
+    <li>Nahi toh break &mdash; correct position mil gayi.</li>
+    <li>Return sorted array.</li>
+</ol>
+
+<h3>Code Implementation</h3>
+<div class="code-block"><span class="syn-cm">// LeetCode 912 - Insertion Sort Solution</span>
+<span class="syn-kw">class</span> <span class="syn-type">Solution</span> {
+<span class="syn-kw">public</span>:
+    <span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt; <span class="syn-fn">sortArray</span>(<span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt;&amp; nums) {
+        <span class="syn-type">int</span> n = nums.<span class="syn-fn">size</span>();
+
+        <span class="syn-cm">// Assume first element is already sorted</span>
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i &lt; n; i++) {
+
+            <span class="syn-cm">// Insert current element into sorted part</span>
+            <span class="syn-kw">for</span> (<span class="syn-type">int</span> j = i; j &gt; <span class="syn-num">0</span>; j--) {
+
+                <span class="syn-cm">// Move current element towards left</span>
+                <span class="syn-kw">if</span> (nums[j] &lt; nums[j - <span class="syn-num">1</span>]) {
+                    <span class="syn-fn">swap</span>(nums[j], nums[j - <span class="syn-num">1</span>]);
+                }
+
+                <span class="syn-cm">// Correct position found</span>
+                <span class="syn-kw">else</span> {
+                    <span class="syn-kw">break</span>;
+                }
+            }
+        }
+
+        <span class="syn-kw">return</span> nums;
+    }
+};</div>
+
+<h3>Complexity Analysis</h3>
+<table>
+    <tr>
+        <th>Case</th>
+        <th>Time Complexity</th>
+        <th>Reason</th>
+    </tr>
+    <tr>
+        <td><strong>Best</strong></td>
+        <td><span class="hl">O(n)</span></td>
+        <td>Array already sorted hai, sirf ek comparison per element required hai.</td>
+    </tr>
+    <tr>
+        <td><strong>Average</strong></td>
+        <td><span class="hl">O(n&sup2;)</span></td>
+        <td>Elements ko partially shift karna padta hai.</td>
+    </tr>
+    <tr>
+        <td><strong>Worst</strong></td>
+        <td><span class="hl">O(n&sup2;)</span></td>
+        <td>Reverse sorted array mein har element beginning tak shift hota hai.</td>
+    </tr>
+    <tr>
+        <td><strong>Space</strong></td>
+        <td><span class="hl">O(1)</span></td>
+        <td>In-place sorting hai, koi extra array use nahi hota.</td>
+    </tr>
+</table>
+
+<div class="box box-best">
+    <span class="box-label">Best Practice</span>
+    Standard Insertion Sort implementation <span class="hl">shifting</span> use karta hai instead of swapping: current element ko store karo, larger elements ko right shift karo, aur stored element ko correct gap mein daalo. Isse number of assignments kam hote hain. Lekin swap-based approach bhi <strong>logically correct</strong> hai aur interviews mein accept hota hai.
+</div>
+
+<h3>Common Mistakes & Edge Cases</h3>
+<div class="box box-edge">
+    <span class="box-label">Edge Case</span>
+    <ul>
+        <li><strong>j &gt; 0 condition:</strong> Inner loop mein hamesha <code>j &gt; 0</code> check karo taaki index out of bounds na ho.</li>
+        <li><strong>Nearly sorted arrays:</strong> Insertion Sort nearly sorted data pe bahut efficient hai. Ye fact miss mat karna.</li>
+        <li><strong>Duplicates:</strong> Insertion Sort stable hai, equal elements ka order maintain hota hai.</li>
+    </ul>
+</div>
+
+<div class="box box-interview">
+    <span class="box-label">Interview Tip</span>
+    Insertion Sort <strong>small datasets</strong> aur <strong>nearly sorted arrays</strong> ke liye best choice hai. Ye <span class="hl">adaptive</span> sorting algorithm hai &mdash; already sorted data pe bahut fast kaam karta hai. Real-world mein ye <span class="hl">TimSort</span> aur <span class="hl">IntroSort</span> mein hybrid component ke roop mein use hota hai.
+</div>
+
+<div class="box box-takeaway">
+    <span class="box-label">Key Takeaways</span>
+    <ul>
+        <li>Insertion Sort <span class="hl">adaptive</span> aur <span class="hl">stable</span> hai.</li>
+        <li>Best case <strong>O(n)</strong>, worst case <strong>O(n&sup2;)</strong>.</li>
+        <li>Left side hamesha sorted maintain hoti hai.</li>
+        <li>Real-world mein small arrays ke liye use hota hai (Timsort, Introsort).</li>
+        <li>Nearly sorted data ke liye highly efficient hai.</li>
+    </ul>
+</div>
+
+<div class="divider">&#10022; &#10022; &#10022;</div>
+
+<!-- ==================== BINARY SEARCH ==================== -->
+
+<h2>Binary Search</h2>
+
+<div class="box box-pattern">
+    <span class="box-label">Pattern</span>
+    <strong>Searching</strong> &mdash; Binary Search, Divide & Conquer, Sorted Array Required
+</div>
+
+<h3>Introduction</h3>
+<p>Binary Search ek searching algorithm hai jo <span class="hl">sirf sorted arrays</span> pe kaam karta hai. Har comparison ke baad search space ko <span class="hl">half</span> kar deta hai. Isliye ye Linear Search se exponentially fast hai. Is algorithm ko samajhna DSA ke liye fundamental hai kyunki iske variations bahut se advanced problems mein use hote hain.</p>
+
+<div class="golden-insight">
+    <strong style="color:#B49450;">Key Insight:</strong> Binary Search har step mein search space ko <span class="hl">half kar deta hai</span>. Isliye 1 million elements mein sirf <strong>~20 comparisons</strong> mein target mil sakta hai, jabki Linear Search mein 1 million comparisons lag sakte hain.
+</div>
+
+<h3>The Analogy</h3>
+<p>Socho aapko dictionary mein ek word dhoondhna hai. Aap beech se khulte hain. Agar word alphabetically aage hai, toh pehli aadhi dictionary discard kar dete hain. Agar peeche hai, toh aadhi dictionary discard kar dete hain. Baar baar aadha karke jaldi pahunch jaate hain. Binary Search exactly aise hi kaam karta hai.</p>
+
+<h3>How It Works Internally</h3>
+<ol>
+    <li>Do pointers initialize karo: <span class="hl">low = 0</span>, <span class="hl">high = n - 1</span>.</li>
+    <li>Tab tak chalao jab tak <code>low &lt;= high</code>:</li>
+    <li>Mid calculate karo: <span class="hl">mid = low + (high - low) / 2</span> (overflow se bachne ke liye).</li>
+    <li>Three cases:
+        <ul>
+            <li><strong>Found:</strong> <code>nums[mid] == target</code> &rarr; return <code>mid</code>.</li>
+            <li><strong>Go Right:</strong> <code>nums[mid] &lt; target</code> &rarr; <code>low = mid + 1</code>.</li>
+            <li><strong>Go Left:</strong> <code>nums[mid] &gt; target</code> &rarr; <code>high = mid - 1</code>.</li>
+        </ul>
+    </li>
+    <li>Loop end hone par target nahi mila, return <span class="hl">-1</span>.</li>
+</ol>
+
+<div class="box box-workflow">
+    <span class="box-label">Workflow</span>
+    <strong>Step 1:</strong> low = 0, high = n-1 initialize karo.<br>
+    <strong>Step 2:</strong> mid = low + (high - low) / 2.<br>
+    <strong>Step 3:</strong> nums[mid] ko target se compare karo.<br>
+    <strong>Step 4:</strong> Equal? Return mid. Chota? Right jao. Bada? Left jao.<br>
+    <strong>Step 5:</strong> low &gt; high hone par return -1.
+</div>
+
+<h3>Visual Diagram &mdash; Search Space Elimination</h3>
+<div class="diagram">
+    <div class="diagram-box" style="background:#F4E9D8; color:#7A5C3A; border:1px solid #B49450;">-1</div>
+    <div class="diagram-box" style="background:#F4E9D8; color:#7A5C3A; border:1px solid #B49450;">0</div>
+    <div class="diagram-box" style="background:#F4E9D8; color:#7A5C3A; border:1px solid #B49450;">3</div>
+    <div class="diagram-box" style="background:#0B1A2E; color:#FFFFFF; border:1px solid #0B1A2E;">5</div>
+    <div class="diagram-box" style="background:#F4E9D8; color:#7A5C3A; border:1px solid #B49450;">9</div>
+    <div class="diagram-box" style="background:#F4E9D8; color:#7A5C3A; border:1px solid #B49450;">12</div>
+    <div class="diagram-label">Array: [-1, 0, 3, 5, 9, 12] &nbsp;|&nbsp; Target: 9</div>
+</div>
+
+<div class="diagram">
+    <div class="diagram-box" style="background:#A53F3F; color:#FFFFFF; border:1px solid #A53F3F;">-1</div>
+    <div class="diagram-box" style="background:#A53F3F; color:#FFFFFF; border:1px solid #A53F3F;">0</div>
+    <div class="diagram-box" style="background:#A53F3F; color:#FFFFFF; border:1px solid #A53F3F;">3</div>
+    <div class="diagram-arrow">&#10007;</div>
+    <div class="diagram-box" style="background:#2E6B5A; color:#FFFFFF; border:1px solid #2E6B5A;">5</div>
+    <div class="diagram-box" style="background:#2E6B5A; color:#FFFFFF; border:1px solid #2E6B5A;">9</div>
+    <div class="diagram-box" style="background:#2E6B5A; color:#FFFFFF; border:1px solid #2E6B5A;">12</div>
+    <div class="diagram-label">Step 1: mid=2, value=3. 3 &lt; 9, so left half discarded. Search [5, 9, 12]</div>
+</div>
+
+<div class="diagram">
+    <div class="diagram-box" style="background:#2E6B5A; color:#FFFFFF; border:1px solid #2E6B5A;">5</div>
+    <div class="diagram-box" style="background:#0B1A2E; color:#FFFFFF; border:1px solid #0B1A2E;">9</div>
+    <div class="diagram-box" style="background:#2E6B5A; color:#FFFFFF; border:1px solid #2E6B5A;">12</div>
+    <div class="diagram-label">Step 2: mid=4, value=9. 9 == 9, Found at index 4!</div>
+</div>
+
+<h3>Algorithm Steps</h3>
+<ol>
+    <li><code>low = 0</code>, <code>high = n - 1</code> initialize karo.</li>
+    <li><code>while (low &lt;= high)</code> loop chalao.</li>
+    <li>Mid calculate karo: <code>low + (high - low) / 2</code> (overflow safe).</li>
+    <li>Three cases handle karo: found, go right, go left.</li>
+    <li>Target nahi mila toh <code>return -1</code>.</li>
+</ol>
+
+<h3>Code Implementation</h3>
+<div class="code-block"><span class="syn-cm">// LeetCode 704 - Binary Search Solution</span>
+<span class="syn-kw">class</span> <span class="syn-type">Solution</span> {
+<span class="syn-kw">public</span>:
+    <span class="syn-type">int</span> <span class="syn-fn">search</span>(<span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt;&amp; nums, <span class="syn-type">int</span> target) {
+        <span class="syn-type">int</span> low = <span class="syn-num">0</span>;
+        <span class="syn-type">int</span> high = nums.<span class="syn-fn">size</span>() - <span class="syn-num">1</span>;
+
+        <span class="syn-kw">while</span> (low &lt;= high) {
+
+            <span class="syn-cm">// Prevents integer overflow</span>
+            <span class="syn-type">int</span> mid = low + (high - low) / <span class="syn-num">2</span>;
+
+            <span class="syn-cm">// Target Found</span>
+            <span class="syn-kw">if</span> (nums[mid] == target) {
+                <span class="syn-kw">return</span> mid;
+            }
+
+            <span class="syn-cm">// Search Right Half</span>
+            <span class="syn-kw">else if</span> (nums[mid] &lt; target) {
+                low = mid + <span class="syn-num">1</span>;
+            }
+
+            <span class="syn-cm">// Search Left Half</span>
+            <span class="syn-kw">else</span> {
+                high = mid - <span class="syn-num">1</span>;
+            }
+        }
+
+        <span class="syn-cm">// Target doesn't exist</span>
+        <span class="syn-kw">return</span> -<span class="syn-num">1</span>;
+    }
+};</div>
+
+<h3>Complexity Analysis</h3>
+<table>
+    <tr>
+        <th>Case</th>
+        <th>Time Complexity</th>
+        <th>Reason</th>
+    </tr>
+    <tr>
+        <td><strong>Best</strong></td>
+        <td><span class="hl">O(1)</span></td>
+        <td>Target first mid pe hi mil jaye.</td>
+    </tr>
+    <tr>
+        <td><strong>Average</strong></td>
+        <td><span class="hl">O(log n)</span></td>
+        <td>Har step mein search space half hota hai.</td>
+    </tr>
+    <tr>
+        <td><strong>Worst</strong></td>
+        <td><span class="hl">O(log n)</span></td>
+        <td>Target last comparison pe mile ya array mein na ho.</td>
+    </tr>
+    <tr>
+        <td><strong>Space</strong></td>
+        <td><span class="hl">O(1)</span></td>
+        <td>Sirf low, high, mid variables use hote hain.</td>
+    </tr>
+</table>
+
+<h3>Common Mistakes & Edge Cases</h3>
+<div class="box box-edge">
+    <span class="box-label">Edge Case</span>
+    <ul>
+        <li><strong>Integer Overflow:</strong> <code>(low + high) / 2</code> use mat karo. Bade arrays mein <span class="hl">low + high overflow</span> ho sakta hai. Hamesha <code>low + (high - low) / 2</code> use karo.</li>
+        <li><strong>While condition:</strong> <code>low &lt;= high</code> use karo, <code>low &lt; high</code> nahi. <span class="hl">Single element</span> bhi check hona chahiye.</li>
+        <li><strong>Boundary updates:</strong> <code>low = mid + 1</code> aur <code>high = mid - 1</code> karo. <code>low = mid</code> se <span class="warning-inline">infinite loop</span> ho sakta hai.</li>
+        <li><strong>Empty array:</strong> Directly return -1.</li>
+    </ul>
+</div>
+
+<div class="box box-important">
+    <span class="box-label">Important</span>
+    Binary Search <span class="warning-inline">sirf sorted arrays pe kaam karta hai</span>. Unsorted data pe apply karne se galat result milega. Hamesha pehle <span class="hl">sorting condition</span> verify karo.
+</div>
+
+<div class="box box-interview">
+    <span class="box-label">Interview Tip</span>
+    Binary Search ka template <strong>rote learn mat karo</strong>, logic samjho. Three cases hain: equal, go left, go right. <span class="hl">Overflow-safe mid calculation</span> hamesha mention karna. Binary Search sirf arrays pe nahi, <strong>rotated arrays</strong>, <strong>sorted matrices</strong>, aur <strong>answer space search</strong> (Binary Search on Answer) mein bhi use hota hai.
+</div>
+
+<div class="box box-takeaway">
+    <span class="box-label">Key Takeaways</span>
+    <ul>
+        <li>Binary Search <span class="hl">sirf sorted data</span> pe kaam karta hai.</li>
+        <li>Time complexity <strong>O(log n)</strong> hai.</li>
+        <li>Overflow-safe mid calculation zaroori hai: <code>low + (high - low) / 2</code>.</li>
+        <li>Template-based approach se variations easily solve hote hain.</li>
+        <li>Real-world mein databases, file systems, aur competitive programming mein extensively use hota hai.</li>
+    </ul>
+</div>
+
+<div class="divider">&#10022; &#10022; &#10022;</div>
+
+<!-- ==================== COMPARATIVE SUMMARY ==================== -->
+
+<h2>Comparative Summary</h2>
+
+<table>
+    <tr>
+        <th>Algorithm</th>
+        <th>Best Time</th>
+        <th>Average Time</th>
+        <th>Worst Time</th>
+        <th>Space</th>
+        <th>Stable</th>
+    </tr>
+    <tr>
+        <td><strong>Bubble Sort</strong></td>
+        <td>O(n&sup2;) / O(n)*</td>
+        <td>O(n&sup2;)</td>
+        <td>O(n&sup2;)</td>
+        <td>O(1)</td>
+        <td>Yes</td>
+    </tr>
+    <tr>
+        <td><strong>Insertion Sort</strong></td>
+        <td>O(n)</td>
+        <td>O(n&sup2;)</td>
+        <td>O(n&sup2;)</td>
+        <td>O(1)</td>
+        <td>Yes</td>
+    </tr>
+    <tr>
+        <td><strong>Binary Search</strong></td>
+        <td>O(1)</td>
+        <td>O(log n)</td>
+        <td>O(log n)</td>
+        <td>O(1)</td>
+        <td>N/A</td>
+    </tr>
+</table>
+<p class="caption">* Bubble Sort with swapped flag optimization</p>
+
+<div class="box box-takeaway">
+    <span class="box-label">Lecture Takeaways</span>
+    <ul>
+        <li><span class="hl">Bubble Sort</span> sorting fundamentals samajhne ke liye best hai, lekin practical use mein rarely aata hai.</li>
+        <li><span class="hl">Insertion Sort</span> small arrays aur nearly sorted data ke liye highly efficient hai.</li>
+        <li><span class="hl">Binary Search</span> har developer ko rote learn hona chahiye &mdash; iske bina DSA incomplete hai.</li>
+        <li>In algorithms ko <strong>dry run</strong> karna mat bhoolna. Paper pe chalao, tabhi true understanding aayegi.</li>
+    </ul>
+</div>
+
+<div style="text-align:center; margin-top:40px; border-top:1px solid #E3DED5; padding-top:24px; color:#8C8C8C; font-size:11px; font-weight:500; letter-spacing:1px;">MADE BY HARSHAL CHAUHAN</div>
+
+</body>
+</html>
