@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture 12: Space Complexity & Selection Sort</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@page { size: A4 portrait; margin: 0; }
+@page { @top-right-corner { content: "Harshal Chauhan"; font: 9px 'Poppins', sans-serif; color: #7A7A7A; opacity: 0.3; } }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    padding: 22mm 22mm 22mm 28mm;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: #FFFCF5;
+    font-family: 'Poppins', sans-serif;
+    color: #1C1C1C;
+    font-size: 12.5px;
+    line-height: 1.75;
+    margin: 0;
+    background-image: radial-gradient(circle, rgba(0,0,0,0.04) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #2C3E50;
+    border-bottom: 3px solid #D48C3C;
+    padding-bottom: 10px;
+    margin-bottom: 24px;
+    letter-spacing: -0.5px;
+}
+
+h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #2C3E50;
+    margin-top: 28px;
+    margin-bottom: 14px;
+    padding-left: 12px;
+    border-left: 4px solid #D48C3C;
+}
+
+h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1F6E6E;
+    margin-top: 22px;
+    margin-bottom: 10px;
+}
+
+h4 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #A0523B;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+h5 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #3A3A3A;
+    margin-top: 12px;
+    margin-bottom: 6px;
+}
+
+p {
+    margin-bottom: 12px;
+    color: #333333;
+    text-align: justify;
+}
+
+.hl {
+    background: #FDF3E1;
+    color: #8B5A2B;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12.5px;
+}
+
+.key-insight {
+    border-left: 6px solid #D48C3C;
+    background: #FDF8F2;
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-weight: 500;
+    font-style: italic;
+    color: #5C4033;
+}
+
+.key-insight strong {
+    color: #D48C3C;
+    font-style: normal;
+}
+
+.box {
+    border-radius: 0 12px 12px 0;
+    padding: 18px 22px;
+    margin-bottom: 18px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03);
+    page-break-inside: avoid;
+    border-left: 6px solid;
+    transition: none;
+}
+
+.box-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 10px;
+    color: inherit;
+}
+
+.box-pattern { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-pattern .box-label { color: #3A5F80; }
+
+.box-intuition { border-left-color: #C4924A; background: #F9FBF9; }
+.box-intuition .box-label { color: #C4924A; }
+
+.box-workflow { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-workflow .box-label { color: #2E6B5A; }
+
+.box-important { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-important .box-label { color: #A53F3F; }
+
+.box-interview { border-left-color: #5E4B7A; background: #F8F7FC; }
+.box-interview .box-label { color: #5E4B7A; }
+
+.box-takeaway { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-takeaway .box-label { color: #2E6B5A; }
+
+.box-edge { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-edge .box-label { color: #A53F3F; }
+
+.box-best { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-best .box-label { color: #2E6B5A; }
+
+.box-dryrun { border-left-color: #D48C3C; background: #FFFFFF; }
+.box-dryrun .box-label { color: #D48C3C; }
+
+.box-complexity { border-left-color: #4F46E5; background: #FFFFFF; }
+.box-complexity .box-label { color: #4F46E5; }
+
+.box-problem { border-left-color: #65A30D; background: #FFFFFF; }
+.box-problem .box-label { color: #65A30D; }
+
+.box-transfer { border-left-color: #7E22CE; background: #F8F7FC; }
+.box-transfer .box-label { color: #7E22CE; }
+
+.code-block {
+    background: #1B1E2A;
+    border: 1px solid #3A3F4A;
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    page-break-inside: avoid;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #E0E0E0;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    margin: 16px 0;
+}
+
+.syn-kw { color: #C586C0; font-weight: bold; }
+.syn-str { color: #CE9178; }
+.syn-cm { color: #6A9955; font-style: italic; }
+.syn-fn { color: #DCDCAA; }
+.syn-num { color: #B5CEA8; }
+.syn-op { color: #D4D4D4; }
+.syn-type { color: #4EC9B0; }
+.syn-dt { color: #569CD6; }
+.syn-var { color: #9CDCFE; }
+
+.table-wrap {
+    border: 1px solid #E0D8CC;
+    border-radius: 12px;
+    overflow: hidden;
+    page-break-inside: avoid;
+    margin: 18px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11.5px;
+}
+
+thead {
+    background: #F5F0E8;
+    color: #2C3E50;
+    font-weight: 700;
+    font-size: 11.5px;
+    border-bottom: 2px solid #D48C3C;
+}
+
+th, td {
+    padding: 12px 14px;
+    text-align: left;
+}
+
+tbody tr:nth-child(even) { background: #FDFBF7; }
+tbody tr { background: #FFFFFF; }
+
+.divider {
+    text-align: center;
+    margin: 30px 0;
+    color: #D48C3C;
+    font-size: 20px;
+    letter-spacing: 8px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'Fira Code', monospace;
+    margin: 0 2px;
+}
+
+.badge-o1 { background: #E8F5E9; color: #2E7D32; }
+.badge-on { background: #FFF3E0; color: #E65100; }
+.badge-olog { background: #E3F2FD; color: #1565C0; }
+.badge-on2 { background: #FCE4EC; color: #C2185B; }
+.badge-on3 { background: #F3E5F5; color: #7B1FA2; }
+
+.array-viz {
+    display: flex;
+    gap: 6px;
+    margin: 14px 0;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.array-cell {
+    width: 46px;
+    height: 46px;
+    border: 2px solid #D48C3C;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fira Code', monospace;
+    font-weight: 600;
+    font-size: 13px;
+    background: #FFFFFF;
+    color: #2C3E50;
+    position: relative;
+}
+
+.array-cell.active {
+    background: #D48C3C;
+    color: #FFFFFF;
+    border-color: #A0523B;
+}
+
+.array-cell.highlight {
+    background: #FDF3E1;
+    border-color: #A0523B;
+    color: #8B5A2B;
+}
+
+.array-cell.sorted {
+    background: #E8F5E9;
+    border-color: #3A6B5A;
+    color: #2E7D32;
+}
+
+.array-cell.min {
+    background: #FCE4EC;
+    border-color: #C2185B;
+    color: #880E4F;
+}
+
+.array-cell.swap {
+    background: #E3F2FD;
+    border-color: #1565C0;
+    color: #0D47A1;
+    animation: pulse 1s ease-in-out;
+}
+
+.array-label {
+    font-size: 10px;
+    color: #7A7A7A;
+    text-align: center;
+    width: 46px;
+    margin-top: 4px;
+    font-family: 'Fira Code', monospace;
+}
+
+.array-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.arrow-flow {
+    font-size: 20px;
+    color: #D48C3C;
+    font-weight: 700;
+    padding: 0 4px;
+}
+
+.formula-box {
+    background: #F7F5F0;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    color: #2C3E50;
+    border: 1px solid #E0D8CC;
+    page-break-inside: avoid;
+}
+
+.formula-step {
+    margin: 6px 0;
+    padding-left: 12px;
+    border-left: 2px solid #D48C3C;
+}
+
+.approach-tab {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+
+.tab-brute { background: #FFEBEE; color: #C62828; }
+.tab-better { background: #FFF8E1; color: #F9A825; }
+.tab-optimal { background: #E8F5E9; color: #2E7D32; }
+
+.notation-card {
+    background: #FFFFFF;
+    border-radius: 0 12px 12px 0;
+    border-left: 6px solid;
+    padding: 16px 20px;
+    margin: 12px 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03);
+    page-break-inside: avoid;
+}
+
+.notation-card.big-o { border-left-color: #4F46E5; }
+.notation-card.omega { border-left-color: #1F6E6E; }
+.notation-card.theta { border-left-color: #D48C3C; }
+
+.notation-title {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.notation-symbol {
+    font-family: 'Fira Code', monospace;
+    font-size: 18px;
+    background: #F5F0E8;
+    padding: 2px 10px;
+    border-radius: 6px;
+}
+
+ul, ol {
+    margin-left: 20px;
+    margin-bottom: 12px;
+}
+
+li {
+    margin-bottom: 6px;
+}
+
+.signature {
+    text-align: center;
+    margin-top: 40px;
+    border-top: 1px solid #E0D8CC;
+    padding-top: 24px;
+    color: #7A7A7A;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.math-inline {
+    font-family: 'Fira Code', monospace;
+    background: #F5F0E8;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #2C3E50;
+}
+
+.case-box {
+    display: flex;
+    gap: 12px;
+    margin: 14px 0;
+    flex-wrap: wrap;
+}
+
+.case-item {
+    flex: 1;
+    min-width: 140px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    padding: 14px;
+    border: 1px solid #E0D8CC;
+    text-align: center;
+    page-break-inside: avoid;
+}
+
+.case-item.best { border-top: 4px solid #3A6B5A; }
+.case-item.avg { border-top: 4px solid #D48C3C; }
+.case-item.worst { border-top: 4px solid #A53F3F; }
+
+.case-title {
+    font-weight: 700;
+    font-size: 12px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.case-best-title { color: #3A6B5A; }
+.case-avg-title { color: #D48C3C; }
+.case-worst-title { color: #A53F3F; }
+
+.case-badge {
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 4px;
+}
+
+.step-card {
+    background: #FFFFFF;
+    border-radius: 12px;
+    border: 1px solid #E0D8CC;
+    padding: 16px 20px;
+    margin: 14px 0;
+    page-break-inside: avoid;
+}
+
+.step-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #F0EBE0;
+}
+
+.step-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #D48C3C;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.step-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: #2C3E50;
+}
+
+.comparison-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+    padding: 10px 14px;
+    background: #FDFBF7;
+    border-radius: 8px;
+}
+
+.comparison-arrow {
+    color: #D48C3C;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.visual-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin: 16px 0;
+}
+
+.visual-card {
+    background: #FFFFFF;
+    border-radius: 10px;
+    padding: 16px;
+    border: 1px solid #E0D8CC;
+    page-break-inside: avoid;
+}
+
+.visual-card-title {
+    font-weight: 600;
+    font-size: 12px;
+    color: #2C3E50;
+    margin-bottom: 10px;
+    text-align: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #F0EBE0;
+}
+
+.space-bar {
+    height: 24px;
+    border-radius: 6px;
+    background: #E8F5E9;
+    border: 1px solid #3A6B5A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: #2E7D32;
+    margin: 4px 0;
+}
+
+.space-bar.medium {
+    background: #FFF3E0;
+    border-color: #D48C3C;
+    color: #E65100;
+}
+
+.space-bar.large {
+    background: #FCE4EC;
+    border-color: #C2185B;
+    color: #880E4F;
+}
+
+.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 14px 0;
+}
+
+@media print {
+    .two-col { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<h1>Lecture 12: Space Complexity & Selection Sort</h1>
+
+<div class="box box-problem">
+    <span class="box-label">Problem Statement</span>
+    <p>Is lecture mein hum <span class="hl">Space Complexity</span> ko deeply samjhenge — kaise calculate karte hain, auxiliary space kya hoti hai, aur alag-alag examples ke through visualize karenge. Uske baad <span class="hl">Selection Sort</span> algorithm ko step-by-step dry run karenge with real array example, complete C++ code, aur complexity analysis.</p>
+</div>
+
+<div class="box box-intuition">
+    <span class="box-label">Intuition</span>
+    <p><span class="hl">Space Complexity</span> ka matlab hai — algorithm solve karne ke liye <span class="hl">extra kitni memory</span> chahiye. Input array ki memory nahi ginte, sirf extra variables, arrays, aur data structures ki memory count hoti hai. <span class="hl">Auxiliary Space</span> woh extra space hoti hai jo algorithm ke execution ke dauraan use hoti hai.</p>
+</div>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<h2>Part 1: Space Complexity Deep Dive</h2>
+
+<h3>What is Space Complexity?</h3>
+<p>Space Complexity = <span class="math-inline">Input Space + Auxiliary Space</span>. Lekin generally jab hum Space Complexity bolte hain, toh <span class="hl">Auxiliary Space</span> ki baat karte hain — matlab algorithm ke andar jo extra space use ho rahi hai.</p>
+
+<div class="box box-workflow">
+    <span class="box-label">Workflow / Algorithm</span>
+    <p><strong>Space Complexity Calculate Karne Ka Tarika:</strong></p>
+    <ol>
+        <li>Code mein dekho ki <span class="hl">kitne extra variables</span> declare ho rahe hain.</li>
+        <li>Agar <span class="hl">new array</span> bana rahe ho toh uski size count karo.</li>
+        <li>Recursion mein <span class="hl">call stack</span> ki memory bhi add karo.</li>
+        <li>Input array ki memory <span class="hl">ignore</span> karo — woh toh already given hai.</li>
+        <li>Sabse bade extra space wale term ko pakad lo — wahi S.C. hoti hai.</li>
+    </ol>
+</div>
+
+<h3>Example 1: Simple Loop (O(1) Space)</h3>
+<div class="code-block">
+<span class="syn-cm">// Only one variable 'i' is using extra space</span>
+<span class="syn-kw">for</span> (<span class="syn-type">int</span> <span class="syn-var">i</span> <span class="syn-op">=</span> <span class="syn-num">0</span>; <span class="syn-var">i</span> <span class="syn-op">&lt;</span> <span class="syn-var">n</span>; <span class="syn-var">i</span><span class="syn-op">++</span>) {
+    <span class="syn-fn">cout</span> <span class="syn-op">&lt;&lt;</span> <span class="syn-var">i</span>;
+}
+</div>
+
+<div class="box box-dryrun">
+    <span class="box-label">Dry Run / Visualization</span>
+    <p style="margin-bottom:10px;">Memory usage breakdown:</p>
+    <div class="visual-grid">
+        <div class="visual-card">
+            <div class="visual-card-title">Variables</div>
+            <div class="space-bar">int i = 4 bytes</div>
+        </div>
+        <div class="visual-card">
+            <div class="visual-card-title">Extra Arrays</div>
+            <div class="space-bar" style="background:#F5F5F5;border-color:#999;color:#666;">None</div>
+        </div>
+        <div class="visual-card">
+            <div class="visual-card-title">Call Stack</div>
+            <div class="space-bar" style="background:#F5F5F5;border-color:#999;color:#666;">None</div>
+        </div>
+        <div class="visual-card">
+            <div class="visual-card-title">Total Extra Space</div>
+            <div class="space-bar">O(1) — Constant</div>
+        </div>
+    </div>
+    <p style="margin-top:10px;">Sirf ek <span class="math-inline">int i</span> variable hai jo <span class="hl">4 bytes</span> leta hai. Chahe <span class="math-inline">n = 10</span> ho ya <span class="math-inline">n = 10⁶</span>, space same rehti hai. Isliye <span class="hl">S.C. = O(1)</span>.</p>
+</div>
+
+<h3>Example 2: Reverse Array with Extra Array (O(n) Space)</h3>
+<div class="code-block">
+<span class="syn-cm">// Input array</span>
+<span class="syn-type">int</span> <span class="syn-var">arr</span>[] <span class="syn-op">=</span> {<span class="syn-num">10</span>, <span class="syn-num">20</span>, <span class="syn-num">30</span>, <span class="syn-num">40</span>};
+
+<span class="syn-cm">// Extra array liya — yahi space complexity badhata hai</span>
+<span class="syn-type">int</span> <span class="syn-var">newarr</span>[<span class="syn-var">n</span>];
+
+<span class="syn-type">int</span> <span class="syn-var">j</span> <span class="syn-op">=</span> <span class="syn-var">n</span> <span class="syn-op">-</span> <span class="syn-num">1</span>;
+<span class="syn-kw">for</span> (<span class="syn-type">int</span> <span class="syn-var">i</span> <span class="syn-op">=</span> <span class="syn-num">0</span>; <span class="syn-var">i</span> <span class="syn-op">&lt;</span> <span class="syn-var">n</span>; <span class="syn-var">i</span><span class="syn-op">++</span>) {
+    <span class="syn-var">newarr</span>[<span class="syn-var">j</span>] <span class="syn-op">=</span> <span class="syn-var">arr</span>[<span class="syn-var">i</span>];
+    <span class="syn-var">j</span><span class="syn-op">--</span>;
+}
+<span class="syn-kw">return</span> <span class="syn-var">newarr</span>;
+</div>
+
+<div class="box box-dryrun">
+    <span class="box-label">Dry Run / Visualization</span>
+    <p style="margin-bottom:10px;">Array state after each iteration (n = 4):</p>
+
+    <p style="font-weight:600;color:#2C3E50;margin-bottom:6px;">Initial:</p>
+    <div class="array-viz">
+        <div class="array-row"><div class="array-cell">10</div><div class="array-label">arr[0]</div></div>
+        <div class="array-row"><div class="array-cell">20</div><div class="array-label">arr[1]</div></div>
+        <div class="array-row"><div class="array-cell">30</div><div class="array-label">arr[2]</div></div>
+        <div class="array-row"><div class="array-cell">40</div><div class="array-label">arr[3]</div></div>
+    </div>
+
+    <p style="font-weight:600;color:#2C3E50;margin:10px 0 6px;">After i=0, j=3: newarr[3] = 10</p>
+    <div class="array-viz">
+        <div class="array-row"><div class="array-cell" style="background:#F5F5F5;border-color:#999;color:#999;">?</div><div class="array-label">new[0]</div></div>
+        <div class="array-row"><div class="array-cell" style="background:#F5F5F5;border-color:#999;color:#999;">?</div><div class="array-label">new[1]</div></div>
+        <div class="array-row"><div class="array-cell" style="background:#F5F5F5;border-color:#999;color:#999;">?</div><div class="array-label">new[2]</div></div>
+        <div class="array-row"><div class="array-cell active">10</div><div class="array-label">new[3]</div></div>
+    </div>
+
+    <p style="font-weight:600;color:#2C3E50;margin:10px 0 6px;">After i=1, j=2: newarr[2] = 20</p>
+    <div class="array-viz">
+        <div class="array-row"><div class="array-cell" style="background:#F5F5F5;border-color:#999;color:#999;">?</div><div class="array-label">new[0]</div></div>
+        <div class="array-row"><div class="array-cell" style="background:#F5F5F5;border-color:#999;color:#999;">?</div><div class="array-label">new[1]</div></div>
+        <div class="array-row"><div class="array-cell active">20</div><div class="array-label">new[2]</div></div>
+        <div class="array-row"><div class="array-cell active">10</div><div class="array-label">new[3]</div></div>
+    </div>
+
+    <p style="font-weight:600;color:#2C3E50;margin:10px 0 6px;">After i=2, j=1: newarr[1] = 30</p>
+    <div class="array-viz">
+        <div class="array-row"><div class="array-cell" style="background:#F5F5F5;border-color:#999;color:#999;">?</div><div class="array-label">new[0]</div></div>
+        <div class="array-row"><div class="array-cell active">30</div><div class="array-label">new[1]</div></div>
+        <div class="array-row"><div class="array-cell active">20</div><div class="array-label">new[2]</div></div>
+        <div class="array-row"><div class="array-cell active">10</div><div class="array-label">new[3]</div></div>
+    </div>
+
+    <p style="font-weight:600;color:#2C3E50;margin:10px 0 6px;">After i=3, j=0: newarr[0] = 40 → Final:</p>
+    <div class="array-viz">
+        <div class="array-row"><div class="array-cell sorted">40</div><div class="array-label">new[0]</div></div>
+        <div class="array-row"><div class="array-cell sorted">30</div><div class="array-label">new[1]</div></div>
+        <div class="array-row"><div class="array-cell sorted">20</div><div class="array-label">new[2]</div></div>
+        <div class="array-row"><div class="array-cell sorted">10</div><div class="array-label">new[3]</div></div>
+    </div>
+</div>
+
+<div class="box box-complexity">
+    <span class="box-label">Complexity Analysis</span>
+    <div class="two-col">
+        <div>
+            <p style="font-weight:600;margin-bottom:6px;">Extra Space Used:</p>
+            <ul style="margin-left:16px;">
+                <li><span class="math-inline">newarr[n]</span> → <span class="math-inline">n</span> integers</li>
+                <li><span class="math-inline">int i, int j</span> → 2 variables</li>
+            </ul>
+        </div>
+        <div>
+            <p style="font-weight:600;margin-bottom:6px;">Result:</p>
+            <p>Dominant term: <span class="math-inline">n</span></p>
+            <p><span class="badge badge-on">S.C. = O(n)</span></p>
+            <p><span class="badge badge-on">Ω(n)</span> <span class="badge badge-on">Θ(n)</span></p>
+        </div>
+    </div>
+</div>
+
+<div class="key-insight">
+    <strong>Key Insight:</strong> Jab bhi tum <span class="hl">naya array banate ho</span> input ke size ka, toh Space Complexity <span class="math-inline">O(n)</span> ho jaati hai. Agar tum <span class="hl">in-place</span> (same array mein) swap karoge, toh sirf <span class="math-inline">O(1)</span> extra space lagegi.
+</div>
+
+<h3>Example 3: In-Place Reverse (O(1) Space)</h3>
+<div class="code-block">
+<span class="syn-cm">// In-place reverse — no extra array needed</span>
+<span class="syn-type">int</span> <span class="syn-var">i</span> <span class="syn-op">=</span> <span class="syn-num">0</span>, <span class="syn-var">j</span> <span class="syn-op">=</span> <span class="syn-var">n</span> <span class="syn-op">-</span> <span class="syn-num">1</span>;
+<span class="syn-kw">while</span> (<span class="syn-var">i</span> <span class="syn-op">&lt;</span> <span class="syn-var">j</span>) {
+    <span class="syn-fn">swap</span>(<span class="syn-var">arr</span>[<span class="syn-var">i</span>], <span class="syn-var">arr</span>[<span class="syn-var">j</span>]);
+    <span class="syn-var">i</span><span class="syn-op">++</span>;
+    <span class="syn-var">j</span><span class="syn-op">--</span>;
+}
+</div>
+
+<div class="box box-best">
+    <span class="box-label">Best Practice / Optimization</span>
+    <p>Yeh approach <span class="hl">Two Pointer Technique</span> use karti hai. Sirf do variables <span class="math-inline">i</span> aur <span class="math-inline">j</span> extra use ho rahe hain — chahe array kitna bada ho. Isliye <span class="hl">S.C. = O(1)</span>. Hamesha try karo ki <span class="hl">in-place</span> solve karo, extra array mat banao.</p>
+</div>
+
+<h3>Example 4: Recursive Sum (O(n) Space — Call Stack)</h3>
+<div class="code-block">
+<span class="syn-cm">// Recursive function — each call uses stack space</span>
+<span class="syn-type">int</span> <span class="syn-fn">sum</span>(<span class="syn-type">int</span> <span class="syn-var">n</span>) {
+    <span class="syn-kw">if</span> (<span class="syn-var">n</span> <span class="syn-op">==</span> <span class="syn-num">0</span>) <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+    <span class="syn-kw">return</span> <span class="syn-var">n</span> <span class="syn-op">+</span> <span class="syn-fn">sum</span>(<span class="syn-var">n</span> <span class="syn-op">-</span> <span class="syn-num">1</span>);
+}
+</div>
+
+<div class="box box-dryrun">
+    <span class="box-label">Dry Run / Visualization</span>
+    <p style="margin-bottom:10px;">Call Stack for <span class="math-inline">sum(4)</span>:</p>
+    <div style="display:flex;flex-direction:column;gap:6px;align-items:center;">
+        <div style="width:200px;padding:8px 12px;background:#FCE4EC;border:2px solid #C2185B;border-radius:8px;text-align:center;font-family:'Fira Code',monospace;font-size:12px;">sum(0) → returns 0</div>
+        <div style="color:#D48C3C;font-size:18px;">↑</div>
+        <div style="width:200px;padding:8px 12px;background:#FDF3E1;border:2px solid #D48C3C;border-radius:8px;text-align:center;font-family:'Fira Code',monospace;font-size:12px;">sum(1) → 1 + sum(0)</div>
+        <div style="color:#D48C3C;font-size:18px;">↑</div>
+        <div style="width:200px;padding:8px 12px;background:#FDF3E1;border:2px solid #D48C3C;border-radius:8px;text-align:center;font-family:'Fira Code',monospace;font-size:12px;">sum(2) → 2 + sum(1)</div>
+        <div style="color:#D48C3C;font-size:18px;">↑</div>
+        <div style="width:200px;padding:8px 12px;background:#FDF3E1;border:2px solid #D48C3C;border-radius:8px;text-align:center;font-family:'Fira Code',monospace;font-size:12px;">sum(3) → 3 + sum(2)</div>
+        <div style="color:#D48C3C;font-size:18px;">↑</div>
+        <div style="width:200px;padding:8px 12px;background:#E3F2FD;border:2px solid #1565C0;border-radius:8px;text-align:center;font-family:'Fira Code',monospace;font-size:12px;font-weight:600;">sum(4) → 4 + sum(3)</div>
+    </div>
+    <p style="margin-top:10px;">Har recursive call stack mein ek frame add hoti hai. <span class="math-inline">n = 4</span> ke liye 5 frames. <span class="math-inline">n</span> ke liye <span class="math-inline">n+1</span> frames. Isliye <span class="hl">S.C. = O(n)</span> (call stack space).</p>
+</div>
+
+<h3>Space Complexity Cheat Sheet</h3>
+<div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Scenario</th>
+                <th>Extra Space Used</th>
+                <th>Space Complexity</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Few variables only</td>
+                <td>int, float variables</td>
+                <td><span class="badge badge-o1">O(1)</span></td>
+            </tr>
+            <tr>
+                <td>New array of size n</td>
+                <td>int newarr[n]</td>
+                <td><span class="badge badge-on">O(n)</span></td>
+            </tr>
+                <td>2D matrix n×n</td>
+                <td>int matrix[n][n]</td>
+                <td><span class="badge badge-on2">O(n²)</span></td>
+            </tr>
+            <tr>
+                <td>Recursion depth n</td>
+                <td>Call stack frames</td>
+                <td><span class="badge badge-on">O(n)</span></td>
+            </tr>
+            <tr>
+                <td>Binary recursion</td>
+                <td>Tree of calls</td>
+                <td><span class="badge badge-on">O(n)</span> to <span class="badge badge-olog">O(log n)</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<h2>Part 2: Selection Sort Algorithm</h2>
+
+<h3>Real-World Analogy</h3>
+<p>Socho class mein <span class="hl">5 students</span> line mein khade hain unki height ke hisaab se: <span class="math-inline">[10, 3, 9, 9, 5]</span>. Teacher ko sabse <span class="hl">chhote student ko sabse aage</span> laana hai. Phir bache hue mein se phir sabse chhote ko second position pe, and so on. Yahi logic <span class="hl">Selection Sort</span> ka hai — har step pe <span class="hl">minimum element dhoondh ke usko correct position pe lao</span>.</p>
+
+<div class="box box-problem">
+    <span class="box-label">Problem Statement</span>
+    <p>Given array <span class="math-inline">[10, 3, 9, 9, 5]</span> ko <span class="hl">ascending order</span> mein sort karna hai using Selection Sort. Step-by-step dry run karo, code likho, aur complexity analyze karo.</p>
+</div>
+
+<h3>Algorithm Steps</h3>
+<div class="box box-workflow">
+    <span class="box-label">Workflow / Algorithm</span>
+    <ol>
+        <li>Outer loop <span class="math-inline">i = 0</span> se <span class="math-inline">n-2</span> tak chalega.</li>
+        <li>Har <span class="math-inline">i</span> ke liye, assume karo ki <span class="math-inline">i</span> wala index <span class="hl">minimum</span> hai.</li>
+        <li>Inner loop <span class="math-inline">j = i+1</span> se <span class="math-inline">n-1</span> tak — <span class="hl">remaining array mein minimum dhoondo</span>.</li>
+        <li>Agar <span class="math-inline">nums[j] &lt; nums[minIndex]</span>, toh <span class="math-inline">minIndex = j</span>.</li>
+        <li>Inner loop ke baad, <span class="math-inline">swap(nums[i], nums[minIndex])</span>.</li>
+        <li>Repeat until sorted.</li>
+    </ol>
+</div>
+
+<h3>Complete C++ Implementation</h3>
+<div class="code-block">
+<span class="syn-kw">class</span> <span class="syn-type">Solution</span> {
+<span class="syn-kw">public</span>:
+    <span class="syn-dt">vector</span><span class="syn-op">&lt;</span><span class="syn-type">int</span><span class="syn-op">&gt;</span> <span class="syn-fn">sortArray</span>(<span class="syn-dt">vector</span><span class="syn-op">&lt;</span><span class="syn-type">int</span><span class="syn-op">&gt;&amp;</span> <span class="syn-var">nums</span>) {
+        <span class="syn-type">int</span> <span class="syn-var">n</span> <span class="syn-op">=</span> <span class="syn-var">nums</span>.<span class="syn-fn">size</span>();
+
+        <span class="syn-cm">// Selection Sort</span>
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> <span class="syn-var">i</span> <span class="syn-op">=</span> <span class="syn-num">0</span>; <span class="syn-var">i</span> <span class="syn-op">&lt;</span> <span class="syn-var">n</span> <span class="syn-op">-</span> <span class="syn-num">1</span>; <span class="syn-var">i</span><span class="syn-op">++</span>) {
+
+            <span class="syn-cm">// Assume current index has the smallest element</span>
+            <span class="syn-type">int</span> <span class="syn-var">minIndex</span> <span class="syn-op">=</span> <span class="syn-var">i</span>;
+
+            <span class="syn-kw">for</span> (<span class="syn-type">int</span> <span class="syn-var">j</span> <span class="syn-op">=</span> <span class="syn-var">i</span> <span class="syn-op">+</span> <span class="syn-num">1</span>; <span class="syn-var">j</span> <span class="syn-op">&lt;</span> <span class="syn-var">n</span>; <span class="syn-var">j</span><span class="syn-op">++</span>) {
+                <span class="syn-kw">if</span> (<span class="syn-var">nums</span>[<span class="syn-var">j</span>] <span class="syn-op">&lt;</span> <span class="syn-var">nums</span>[<span class="syn-var">minIndex</span>]) {
+                    <span class="syn-var">minIndex</span> <span class="syn-op">=</span> <span class="syn-var">j</span>;
+                }
+            }
+
+            <span class="syn-cm">// Swap current element with minimum found</span>
+            <span class="syn-fn">swap</span>(<span class="syn-var">nums</span>[<span class="syn-var">i</span>], <span class="syn-var">nums</span>[<span class="syn-var">minIndex</span>]);
+        }
+
+        <span class="syn-kw">return</span> <span class="syn-var">nums</span>;
+    }
+};
+</div>
+
+<h3>Step-by-Step Visual Dry Run</h3>
+<p>Input Array: <span class="math-inline">[10, 3, 9, 9, 5]</span></p>
+
+<div class="step-card">
+    <div class="step-header">
+        <div class="step-number">1</div>
+        <div class="step-title">Pass 1: i = 0, Find minimum in [10, 3, 9, 9, 5]</div>
+    </div>
+    <p style="margin-bottom:10px;">minIndex start = 0 (value 10). Inner loop checks j = 1 to 4:</p>
+    <div class="array-viz">
+        <div class="array-row"><div class="array-cell">10</div><div class="array-label">i=0</div></div>
+        <div class="array-row"><div class="array-cell min">3</div><div class="array-label">j=1</div></div>
+        <div class="array-row"><div class="array-cell">9</div><div class="array-label">j=2</div></div>
+        <div class="array-row"><div class="array-cell">9</div><div class="array-label">j=3</div></div>
+        <div class="array-row"><div class="array-cell">5</div><div class="array-label">j=4</div></div>
+    </div>
+    <p style="margin-top:10px;">Minimum = <span class="hl">3</span> at index 1. Swap index 0 and index 1.</p>
+    <div class="array-viz">
+        <div class="array-row"><div class="array-cell swap">3</div><div class="array-label">swapped</div></div>
+        <div class="array-row"><div class="array-cell swap">10</div><div class="array-label">swapped</div></div>
+        <div class="array-row"><div class="array-cell">9</div><div class="array-label"></div></div>
+        <div class="array-row"><div class="array-cell">9</div><div class="array-label"></div></div>
+        <div class="array-row"><div class="array-cell">5</div><div class="array-label"></div></div>
+    </div>
+    <p style="margin-top:8px;color:#3A6B5A;font-weight:600;">Array after Pass 1: [3, 10, 9, 9, 5] → 3 is now sorted at position 0 ✓</p>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <div class="step-number">2</div>
+        <div class="step-title">Pass 2: i = 1, Find minimum in [10, 9, 9, 5]</div>
+    </div>
+    <p style="margin-bottom:10px;">minIndex start = 1 (value 10). Inner loop checks j = 2 to 4:</p>
+    <div class="array-viz">
+        <div class="array-row"><div class="array-cell sorted">3</div><div class="array-label">sorted</div></div>
+        <div class="array-row"><div class="array-cell">10</div><div class="array-label">i=1</div></div>
+        <div class="array-row"><div class="array-cell">9</div><div class="array-label">j=2</div></div>
+        <div class="array-row"><div class="array-cell">9</div><div class="array-label">j=3</div></div>
+        <div class="array-row"><div class="array-cell min">5</div><div class="array-label">j=4</div></div>
+    </div>
+    <p style="margin-top:10px;">Minimum = <span class="hl">5</span> at index 4. Swap index 1 and index 4.</p>
+    <div class="array-viz">
+        <div class="array-row"><div class="array-cell sorted">3</div><div class="array-label">sorted</div></div>
+        <div class="array-row"><div class="array-cell swap">5</div><div class="array-label">swapped</div></div>
+        <div class="array-row"><div class="array-cell">9</div><div class="array-label"></div></div>
+        <div class="array-row"><div class="array-cell">9</div><div class="array-label"></div></div>
+        <div class="array-row"><div class="array-cell swap">10</div><div class="array-label">swapped</div></div>
+    </div>
+    <p style="margin-top:8px;color:#3A6B5A;font-weight:600;">Array after Pass 2: [3, 5, 9, 9, 10] → 3, 5 sorted ✓</p>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <div class="step-number">3</div>
+        <div class="step-title">Pass 3: i = 2, Find minimum in [9, 9, 10]</div>
+    </div>
+    <p style="margin-bottom:10px;">minIndex start = 2 (value 9). Inner loop checks j = 3 to 4:</p>
+    <div class="array-viz">
+        <div class="array-row"><div class="array-cell sorted">3</div><div class="array-label">sorted</div></div>
+        <div class="array-row"><div class="array-cell sorted">5</div><div class="array-label">sorted</div></div>
+        <div class="array-row"><div class="array-cell">9</div><div class="array-label">i=2</div></div>
+        <div class="array-row"><div class="array-cell min">9</div><div class="array-label">j=3</div></div>
+        <div class="array-row"><div class="array-cell">10</div><div class="array-label">j=4</div></div>
+    </div>
+    <p style="margin-top:10px;">Minimum = <span class="hl">9</span> at index 3. But 9 is already at index 2 (same value). Swap index 2 and 3 — no visual change.</p>
+    <div class="array-viz">
+        <div class="array-row"><div class="array-cell sorted">3</div><div class="array-label">sorted</div></div>
+        <div class="array-row"><div class="array-cell sorted">5</div><div class="array-label">sorted</div></div>
+        <div class="array-row"><div class="array-cell">9</div><div class="array-label">same</div></div>
+        <div class="array-row"><div class="array-cell">9</div><div class="array-label">same</div></div>
+        <div class="array-row"><div class="array-cell">10</div><div class="array-label"></div></div>
+    </div>
+    <p style="margin-top:8px;color:#3A6B5A;font-weight:600;">Array after Pass 3: [3, 5, 9, 9, 10] → 3, 5, 9 sorted ✓</p>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <div class="step-number">4</div>
+        <div class="step-title">Pass 4: i = 3, Find minimum in [9, 10]</div>
+    </div>
+    <p style="margin-bottom:10px;">minIndex start = 3 (value 9). Inner loop checks j = 4:</p>
+    <div class="array-viz">
+        <div class="array-row"><div class="array-cell sorted">3</div><div class="array-label">sorted</div></div>
+        <div class="array-row"><div class="array-cell sorted">5</div><div class="array-label">sorted</div></div>
+        <div class="array-row"><div class="array-cell sorted">9</div><div class="array-label">sorted</div></div>
+        <div class="array-row"><div class="array-cell">9</div><div class="array-label">i=3</div></div>
+        <div class="array-row"><div class="array-cell">10</div><div class="array-label">j=4</div></div>
+    </div>
+    <p style="margin-top:10px;">Minimum = <span class="hl">9</span> at index 3 (already minimum). No swap needed.</p>
+    <p style="margin-top:8px;color:#3A6B5A;font-weight:600;">Array after Pass 4: [3, 5, 9, 9, 10] → Fully Sorted ✓✓✓</p>
+</div>
+
+<div class="box box-dryrun">
+    <span class="box-label">Dry Run / Visualization — Summary Table</span>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Pass</th>
+                    <th>i</th>
+                    <th>Subarray Scanned</th>
+                    <th>Min Found</th>
+                    <th>Swap With</th>
+                    <th>Array After Pass</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>[10, 3, 9, 9, 5]</td>
+                    <td>3 @ idx 1</td>
+                    <td>idx 0</td>
+                    <td>[3, 10, 9, 9, 5]</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>[10, 9, 9, 5]</td>
+                    <td>5 @ idx 4</td>
+                    <td>idx 1</td>
+                    <td>[3, 5, 9, 9, 10]</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>2</td>
+                    <td>[9, 9, 10]</td>
+                    <td>9 @ idx 3</td>
+                    <td>idx 2</td>
+                    <td>[3, 5, 9, 9, 10]</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>3</td>
+                    <td>[9, 10]</td>
+                    <td>9 @ idx 3</td>
+                    <td>—</td>
+                    <td>[3, 5, 9, 9, 10]</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<h3>Time & Space Complexity Analysis</h3>
+
+<div class="box box-complexity">
+    <span class="box-label">Complexity Analysis</span>
+    <div class="two-col">
+        <div>
+            <p style="font-weight:600;margin-bottom:8px;color:#2C3E50;">Time Complexity:</p>
+            <div class="formula-box" style="margin:0;">
+                <div class="formula-step">Outer loop: n-1 iterations</div>
+                <div class="formula-step">Inner loop: (n-1) + (n-2) + ... + 1</div>
+                <div class="formula-step">Sum = n(n-1)/2 = (n² - n)/2</div>
+                <div class="formula-step" style="border-left-color:#2E6B5A;font-weight:700;">T.C. = O(n²)</div>
+            </div>
+        </div>
+        <div>
+            <p style="font-weight:600;margin-bottom:8px;color:#2C3E50;">Space Complexity:</p>
+            <div class="formula-box" style="margin:0;">
+                <div class="formula-step">Variables: i, j, minIndex</div>
+                <div class="formula-step">No extra array used</div>
+                <div class="formula-step">In-place sorting</div>
+                <div class="formula-step" style="border-left-color:#2E6B5A;font-weight:700;">S.C. = O(1)</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="key-insight">
+    <strong>Key Insight:</strong> Selection Sort mein <span class="hl">hamesha O(n²) comparisons</span> hote hain chahe array sorted ho ya ulta. Kyunki har pass mein inner loop poora chalta hai minimum dhoondhne ke liye. Isliye <span class="hl">Best Case = Worst Case = Average Case = O(n²)</span>. Lekin <span class="hl">swaps sirf O(n)</span> hote hain — har pass mein maximum 1 swap.
+</div>
+
+<div class="case-box">
+    <div class="case-item best">
+        <div class="case-title case-best-title">Best Case</div>
+        <p style="font-size:11px;color:#555;margin-bottom:6px;">Already sorted array</p>
+        <div class="case-badge"><span class="badge badge-on2">O(n²)</span></div>
+    </div>
+    <div class="case-item avg">
+        <div class="case-title case-avg-title">Average Case</div>
+        <p style="font-size:11px;color:#555;margin-bottom:6px;">Random order array</p>
+        <div class="case-badge"><span class="badge badge-on2">O(n²)</span></div>
+    </div>
+    <div class="case-item worst">
+        <div class="case-title case-worst-title">Worst Case</div>
+        <p style="font-size:11px;color:#555;margin-bottom:6px;">Reverse sorted array</p>
+        <div class="case-badge"><span class="badge badge-on2">O(n²)</span></div>
+    </div>
+</div>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<h2>Real-World Applications of Sorting</h2>
+
+<div class="box box-intuition">
+    <span class="box-label">Intuition</span>
+    <p>Sorting sirf DSA ka topic nahi hai — yeh <span class="hl">real life mein har jagah use hota hai</span>:</p>
+    <ul>
+        <li><span class="hl">Myntra / Flipkart</span> — "Sort by Price: Low to High" — products ko price ke hisaab se arrange karna.</li>
+        <li><span class="hl">Amazon</span> — "Sort by Rating" — sabse zyada rated products pehle dikhana.</li>
+        <li><span class="hl">Google Maps</span> — "Sort by Distance" — sabse paas wale restaurants pehle.</li>
+        <li><span class="hl">Excel / Sheets</span> — Data ko alphabetical ya numerical order mein arrange karna.</li>
+        <li><span class="hl">Class Ranking</span> — Students ko marks ke hisaab se sort karna.</li>
+    </ul>
+    <p style="margin-top:8px;">Har jagah same concept hai — <span class="hl">data ko ascending order mein arrange karna</span> taaki user ko easily samajh aa sake.</p>
+</div>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<h2>Big-O, Omega, Theta Revisited</h2>
+
+<div class="notation-card big-o">
+    <div class="notation-title">
+        <span class="notation-symbol">O</span>
+        <span>Big-O (Upper Bound) — Sabse Zyada</span>
+    </div>
+    <p>Big-O batata hai ki algorithm <span class="hl">maximum kitna time</span> lega. Agar T.C. = n² hai, toh O(n²), O(n³), O(n⁴) sab valid upper bounds hain. Lekin hum <span class="hl">tightest upper bound</span> dete hain — matlab O(n²).</p>
+    <p style="margin-top:8px;font-size:11px;color:#555;"><strong>Interview Rule:</strong> Hamesha Big-O batana. O(n²) ke jagah O(n³) mat likhna — interviewer ko pata chal jaata hai ki tumhe exact complexity nahi aati.</p>
+</div>
+
+<div class="notation-card omega">
+    <div class="notation-title">
+        <span class="notation-symbol">Ω</span>
+        <span>Omega (Lower Bound) — Sabse Kam</span>
+    </div>
+    <p>Omega batata hai ki algorithm <span class="hl">minimum kitna time</span> lega. Agar T.C. = n² hai, toh Ω(n²), Ω(n), Ω(1) sab valid lower bounds hain. Lekin tightest lower bound Ω(n²) hota hai.</p>
+</div>
+
+<div class="notation-card theta">
+    <div class="notation-title">
+        <span class="notation-symbol">Θ</span>
+        <span>Theta (Tight Bound) — Exact</span>
+    </div>
+    <p>Theta tab use hota hai jab <span class="hl">upper bound = lower bound</span>. Selection Sort ke case mein T.C. hamesha n² hai — chahe best case ho ya worst. Isliye <span class="math-inline">Θ(n²)</span> bhi valid hai. Lekin practically sirf Big-O use karte hain.</p>
+</div>
+
+<div class="box box-important">
+    <span class="box-label">Important</span>
+    <p><span class="hl">Selection Sort mein teeno cases same hain</span> — Best, Average, Worst sab O(n²). Kyunki chahe array sorted ho ya nahi, inner loop hamesha poora chalta hai minimum dhoondhne ke liye. Yeh <span class="hl">Bubble Sort se behtar</span> isliye hai kyunki swaps kam hote hain (maximum n swaps), lekin comparisons same hain.</p>
+</div>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<h2>Sorting Algorithms Comparison</h2>
+
+<div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Algorithm</th>
+                <th>Best Case</th>
+                <th>Average Case</th>
+                <th>Worst Case</th>
+                <th>Space</th>
+                <th>Stable?</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Selection Sort</strong></td>
+                <td><span class="badge badge-on2">O(n²)</span></td>
+                <td><span class="badge badge-on2">O(n²)</span></td>
+                <td><span class="badge badge-on2">O(n²)</span></td>
+                <td><span class="badge badge-o1">O(1)</span></td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>Bubble Sort</td>
+                <td><span class="badge badge-on">O(n)</span></td>
+                <td><span class="badge badge-on2">O(n²)</span></td>
+                <td><span class="badge badge-on2">O(n²)</span></td>
+                <td><span class="badge badge-o1">O(1)</span></td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td>Insertion Sort</td>
+                <td><span class="badge badge-on">O(n)</span></td>
+                <td><span class="badge badge-on2">O(n²)</span></td>
+                <td><span class="badge badge-on2">O(n²)</span></td>
+                <td><span class="badge badge-o1">O(1)</span></td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td>Merge Sort</td>
+                <td><span class="badge badge-olog">O(n log n)</span></td>
+                <td><span class="badge badge-olog">O(n log n)</span></td>
+                <td><span class="badge badge-olog">O(n log n)</span></td>
+                <td><span class="badge badge-on">O(n)</span></td>
+                <td>Yes</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<h2>Interview Tips & Common Pitfalls</h2>
+
+<div class="box box-interview">
+    <span class="box-label">Interview Tip</span>
+    <ul>
+        <li><span class="hl">Selection Sort ka dry run</span> zaroor practice karo — interview mein pen-paper pe dry run mangte hain.</li>
+        <li>Space Complexity puchein toh <span class="hl">auxiliary space</span> batana — input array ki memory nahi ginte.</li>
+        <li>Selection Sort <span class="hl">stable nahi hai</span> — equal elements ka original order change ho sakta hai.</li>
+        <li>Swaps vs Comparisons alag hote hain — Selection Sort mein <span class="hl">comparisons O(n²)</span> lekin <span class="hl">swaps O(n)</span>.</li>
+        <li>Big-O mein hamesha <span class="hl">tightest bound</span> do — O(n²) ke jagah O(n³) mat likhna.</li>
+    </ul>
+</div>
+
+<div class="box box-edge">
+    <span class="box-label">Edge Case</span>
+    <ul>
+        <li><span class="math-inline">n = 0</span> ya <span class="math-inline">n = 1</span> — already sorted, loop nahi chalega.</li>
+        <li><span class="hl">Duplicate values</span> — Selection Sort duplicates ko handle kar leta hai lekin stable nahi hai.</li>
+        <li>Already sorted array — phir bhi <span class="math-inline">O(n²)</span> comparisons honge (yeh disadvantage hai).</li>
+        <li>Large arrays ke liye Selection Sort <span class="hl">avoid</span> karo — Merge Sort ya Quick Sort use karo.</li>
+    </ul>
+</div>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<h2>Key Takeaways</h2>
+
+<div class="box box-takeaway">
+    <span class="box-label">Takeaway</span>
+    <ol>
+        <li><span class="hl">Space Complexity</span> = Extra space jo algorithm use karta hai. Input space nahi ginte.</li>
+        <li>Simple variables → <span class="math-inline">O(1)</span>; New array → <span class="math-inline">O(n)</span>; Recursion → <span class="math-inline">O(n)</span> stack space.</li>
+        <li><span class="hl">In-place</span> algorithms (Two Pointer) hamesha behtar hote hain — extra memory bachati hai.</li>
+        <li>Selection Sort ka logic: <span class="hl">Har pass mein minimum dhoondh ke usko correct position pe lao</span>.</li>
+        <li>Selection Sort: <span class="math-inline">T.C. = O(n²)</span>, <span class="math-inline">S.C. = O(1)</span> — all cases same.</li>
+        <li>Swaps maximum <span class="math-inline">n-1</span> hote hain — isliye write-heavy systems mein useful ho sakta hai.</li>
+        <li>Sorting real life mein har jagah — e-commerce, maps, databases, spreadsheets.</li>
+        <li>Big-O = Upper Bound (sabse zyada), Omega = Lower Bound (sabse kam), Theta = Tight Bound (exact).</li>
+    </ol>
+</div>
+
+<div class="signature">MADE BY HARSHAL CHAUHAN</div>
+
+</body>
+</html>
