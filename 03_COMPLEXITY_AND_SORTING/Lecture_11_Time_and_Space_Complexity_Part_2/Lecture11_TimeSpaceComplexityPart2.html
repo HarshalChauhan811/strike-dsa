@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture 11: Time & Space Complexity Part 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@page { size: A4 portrait; margin: 0; }
+@page { @top-right-corner { content: "Harshal Chauhan"; font: 9px 'Poppins', sans-serif; color: #7A7A7A; opacity: 0.3; } }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    padding: 22mm 22mm 22mm 28mm;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: #FFFCF5;
+    font-family: 'Poppins', sans-serif;
+    color: #1C1C1C;
+    font-size: 12.5px;
+    line-height: 1.75;
+    margin: 0;
+    background-image: radial-gradient(circle, rgba(0,0,0,0.04) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #2C3E50;
+    border-bottom: 3px solid #D48C3C;
+    padding-bottom: 10px;
+    margin-bottom: 24px;
+    letter-spacing: -0.5px;
+}
+
+h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #2C3E50;
+    margin-top: 28px;
+    margin-bottom: 14px;
+    padding-left: 12px;
+    border-left: 4px solid #D48C3C;
+}
+
+h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1F6E6E;
+    margin-top: 22px;
+    margin-bottom: 10px;
+}
+
+h4 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #A0523B;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+h5 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #3A3A3A;
+    margin-top: 12px;
+    margin-bottom: 6px;
+}
+
+p {
+    margin-bottom: 12px;
+    color: #333333;
+    text-align: justify;
+}
+
+.hl {
+    background: #FDF3E1;
+    color: #8B5A2B;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12.5px;
+}
+
+.key-insight {
+    border-left: 6px solid #D48C3C;
+    background: #FDF8F2;
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-weight: 500;
+    font-style: italic;
+    color: #5C4033;
+}
+
+.key-insight strong {
+    color: #D48C3C;
+    font-style: normal;
+}
+
+.box {
+    border-radius: 0 12px 12px 0;
+    padding: 18px 22px;
+    margin-bottom: 18px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03);
+    page-break-inside: avoid;
+    border-left: 6px solid;
+    transition: none;
+}
+
+.box-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 10px;
+    color: inherit;
+}
+
+.box-pattern { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-pattern .box-label { color: #3A5F80; }
+
+.box-intuition { border-left-color: #C4924A; background: #F9FBF9; }
+.box-intuition .box-label { color: #C4924A; }
+
+.box-workflow { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-workflow .box-label { color: #2E6B5A; }
+
+.box-important { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-important .box-label { color: #A53F3F; }
+
+.box-interview { border-left-color: #5E4B7A; background: #F8F7FC; }
+.box-interview .box-label { color: #5E4B7A; }
+
+.box-takeaway { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-takeaway .box-label { color: #2E6B5A; }
+
+.box-edge { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-edge .box-label { color: #A53F3F; }
+
+.box-best { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-best .box-label { color: #2E6B5A; }
+
+.box-dryrun { border-left-color: #D48C3C; background: #FFFFFF; }
+.box-dryrun .box-label { color: #D48C3C; }
+
+.box-complexity { border-left-color: #4F46E5; background: #FFFFFF; }
+.box-complexity .box-label { color: #4F46E5; }
+
+.box-problem { border-left-color: #65A30D; background: #FFFFFF; }
+.box-problem .box-label { color: #65A30D; }
+
+.box-transfer { border-left-color: #7E22CE; background: #F8F7FC; }
+.box-transfer .box-label { color: #7E22CE; }
+
+.code-block {
+    background: #1B1E2A;
+    border: 1px solid #3A3F4A;
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    page-break-inside: avoid;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #E0E0E0;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    margin: 16px 0;
+}
+
+.syn-kw { color: #C586C0; font-weight: bold; }
+.syn-str { color: #CE9178; }
+.syn-cm { color: #6A9955; font-style: italic; }
+.syn-fn { color: #DCDCAA; }
+.syn-num { color: #B5CEA8; }
+.syn-op { color: #D4D4D4; }
+.syn-type { color: #4EC9B0; }
+.syn-dt { color: #569CD6; }
+.syn-var { color: #9CDCFE; }
+
+.table-wrap {
+    border: 1px solid #E0D8CC;
+    border-radius: 12px;
+    overflow: hidden;
+    page-break-inside: avoid;
+    margin: 18px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11.5px;
+}
+
+thead {
+    background: #F5F0E8;
+    color: #2C3E50;
+    font-weight: 700;
+    font-size: 11.5px;
+    border-bottom: 2px solid #D48C3C;
+}
+
+th, td {
+    padding: 12px 14px;
+    text-align: left;
+}
+
+tbody tr:nth-child(even) { background: #FDFBF7; }
+tbody tr { background: #FFFFFF; }
+
+.divider {
+    text-align: center;
+    margin: 30px 0;
+    color: #D48C3C;
+    font-size: 20px;
+    letter-spacing: 8px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'Fira Code', monospace;
+    margin: 0 2px;
+}
+
+.badge-o1 { background: #E8F5E9; color: #2E7D32; }
+.badge-on { background: #FFF3E0; color: #E65100; }
+.badge-olog { background: #E3F2FD; color: #1565C0; }
+.badge-on2 { background: #FCE4EC; color: #C2185B; }
+.badge-on3 { background: #F3E5F5; color: #7B1FA2; }
+
+.array-viz {
+    display: flex;
+    gap: 6px;
+    margin: 14px 0;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.array-cell {
+    width: 42px;
+    height: 42px;
+    border: 2px solid #D48C3C;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fira Code', monospace;
+    font-weight: 600;
+    font-size: 12px;
+    background: #FFFFFF;
+    color: #2C3E50;
+    position: relative;
+}
+
+.array-cell.active {
+    background: #D48C3C;
+    color: #FFFFFF;
+    border-color: #A0523B;
+}
+
+.array-cell.highlight {
+    background: #FDF3E1;
+    border-color: #A0523B;
+    color: #8B5A2B;
+}
+
+.array-label {
+    font-size: 10px;
+    color: #7A7A7A;
+    text-align: center;
+    width: 42px;
+    margin-top: 4px;
+    font-family: 'Fira Code', monospace;
+}
+
+.array-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.graph-container {
+    margin: 20px 0;
+    padding: 20px;
+    background: #FFFFFF;
+    border-radius: 12px;
+    border: 1px solid #E0D8CC;
+    page-break-inside: avoid;
+}
+
+.graph-curve {
+    height: 200px;
+    position: relative;
+    border-left: 2px solid #2C3E50;
+    border-bottom: 2px solid #2C3E50;
+    margin: 10px 30px 10px 40px;
+}
+
+.graph-point {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    transform: translate(-50%, 50%);
+}
+
+.graph-label {
+    position: absolute;
+    font-size: 10px;
+    font-family: 'Fira Code', monospace;
+    font-weight: 600;
+}
+
+.axis-label-x {
+    text-align: center;
+    font-size: 11px;
+    color: #7A7A7A;
+    margin-top: 8px;
+    font-weight: 600;
+}
+
+.axis-label-y {
+    position: absolute;
+    left: -35px;
+    top: 50%;
+    transform: rotate(-90deg) translateX(50%);
+    font-size: 11px;
+    color: #7A7A7A;
+    font-weight: 600;
+    transform-origin: left center;
+}
+
+.formula-box {
+    background: #F7F5F0;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    color: #2C3E50;
+    border: 1px solid #E0D8CC;
+    page-break-inside: avoid;
+}
+
+.formula-step {
+    margin: 6px 0;
+    padding-left: 12px;
+    border-left: 2px solid #D48C3C;
+}
+
+.approach-tab {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+
+.tab-brute { background: #FFEBEE; color: #C62828; }
+.tab-better { background: #FFF8E1; color: #F9A825; }
+.tab-optimal { background: #E8F5E9; color: #2E7D32; }
+
+.notation-card {
+    background: #FFFFFF;
+    border-radius: 0 12px 12px 0;
+    border-left: 6px solid;
+    padding: 16px 20px;
+    margin: 12px 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03);
+    page-break-inside: avoid;
+}
+
+.notation-card.big-o { border-left-color: #4F46E5; }
+.notation-card.omega { border-left-color: #1F6E6E; }
+.notation-card.theta { border-left-color: #D48C3C; }
+
+.notation-title {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.notation-symbol {
+    font-family: 'Fira Code', monospace;
+    font-size: 18px;
+    background: #F5F0E8;
+    padding: 2px 10px;
+    border-radius: 6px;
+}
+
+ul, ol {
+    margin-left: 20px;
+    margin-bottom: 12px;
+}
+
+li {
+    margin-bottom: 6px;
+}
+
+.signature {
+    text-align: center;
+    margin-top: 40px;
+    border-top: 1px solid #E0D8CC;
+    padding-top: 24px;
+    color: #7A7A7A;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.math-inline {
+    font-family: 'Fira Code', monospace;
+    background: #F5F0E8;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #2C3E50;
+}
+
+.case-box {
+    display: flex;
+    gap: 12px;
+    margin: 14px 0;
+    flex-wrap: wrap;
+}
+
+.case-item {
+    flex: 1;
+    min-width: 140px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    padding: 14px;
+    border: 1px solid #E0D8CC;
+    text-align: center;
+    page-break-inside: avoid;
+}
+
+.case-item.best { border-top: 4px solid #3A6B5A; }
+.case-item.avg { border-top: 4px solid #D48C3C; }
+.case-item.worst { border-top: 4px solid #A53F3F; }
+
+.case-title {
+    font-weight: 700;
+    font-size: 12px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.case-best-title { color: #3A6B5A; }
+.case-avg-title { color: #D48C3C; }
+.case-worst-title { color: #A53F3F; }
+
+.case-badge {
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 4px;
+}
+</style>
+</head>
+<body>
+
+<h1>Lecture 11: Time & Space Complexity Part 2</h1>
+
+<div class="box box-problem">
+    <span class="box-label">Problem Statement</span>
+    <p>Is lecture mein hum <span class="hl">loop-based time complexity</span> ko deeply analyze karenge. Har tarah ke loop pattern — exponential increment, nested loops, variable inner loops — ka exact derivation samjhenge. Saath hi <span class="hl">Best, Average, Worst Case</span> aur <span class="hl">Big-O, Omega, Theta</span> notations ka complete comparison karenge.</p>
+</div>
+
+<div class="box box-intuition">
+    <span class="box-label">Intuition</span>
+    <p>Time complexity calculate karne ka sabse asaan tarika yeh hai ki hum <span class="hl">loop ke andar kitni baar code execute ho raha hai</span> usko count karein. Har iteration ka cost 1 maan ke total iterations ka sum nikaal lo. Uske baad sabse badi power wale term ko pakad lo — wahi T.C. hoti hai.</p>
+</div>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<h2>Example 1: Exponential Increment Loop (Base 2)</h2>
+
+<h3>Code Snippet</h3>
+<div class="code-block">
+<span class="syn-cm">// Loop with i = i * 2</span>
+<span class="syn-kw">for</span> (<span class="syn-type">int</span> <span class="syn-var">i</span> <span class="syn-op">=</span> <span class="syn-num">1</span>; <span class="syn-var">i</span> <span class="syn-op">&lt;</span> <span class="syn-var">n</span>; <span class="syn-var">i</span> <span class="syn-op">=</span> <span class="syn-var">i</span> <span class="syn-op">*</span> <span class="syn-num">2</span>) {
+    <span class="syn-fn">cout</span> <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"hello"</span>;
+}
+</div>
+
+<h3>Step-by-Step Dry Run</h3>
+<div class="box box-dryrun">
+    <span class="box-label">Dry Run / Visualization</span>
+    <p style="margin-bottom:10px;">Har iteration pe <span class="math-inline">i</span> ka value:</p>
+    <div class="array-viz">
+        <div class="array-row"><div class="array-cell active">1</div><div class="array-label">i=1</div></div>
+        <div style="font-size:18px;color:#D48C3C;">→</div>
+        <div class="array-row"><div class="array-cell active">2</div><div class="array-label">i=2</div></div>
+        <div style="font-size:18px;color:#D48C3C;">→</div>
+        <div class="array-row"><div class="array-cell active">4</div><div class="array-label">i=4</div></div>
+        <div style="font-size:18px;color:#D48C3C;">→</div>
+        <div class="array-row"><div class="array-cell active">8</div><div class="array-label">i=8</div></div>
+        <div style="font-size:18px;color:#D48C3C;">→</div>
+        <div class="array-row"><div class="array-cell">...</div><div class="array-label">...</div></div>
+        <div style="font-size:18px;color:#D48C3C;">→</div>
+        <div class="array-row"><div class="array-cell highlight">2<sup>k</sup></div><div class="array-label">i≤n</div></div>
+    </div>
+    <p style="margin-top:10px;">Iteration count: <span class="math-inline">1, 2, 4, 8, ..., 2<sup>k</sup></span> jab tak <span class="math-inline">2<sup>k</sup> ≤ n</span></p>
+</div>
+
+<h3>Mathematical Derivation</h3>
+<div class="formula-box">
+    <div class="formula-step">2<sup>k</sup> ≤ n</div>
+    <div class="formula-step">log<sub>2</sub>(2<sup>k</sup>) ≤ log<sub>2</sub>(n)</div>
+    <div class="formula-step">k · log<sub>2</sub>(2) ≤ log<sub>2</sub>(n)</div>
+    <div class="formula-step">k ≤ log<sub>2</sub>(n)</div>
+    <div class="formula-step" style="border-left-color:#2E6B5A;font-weight:700;">T.C. = O(log<sub>2</sub> n)</div>
+</div>
+
+<div class="key-insight">
+    <strong>Key Insight:</strong> Jab loop variable ko har baar <span class="hl">2 se multiply</span> karte hain, toh total iterations <span class="math-inline">log₂ n</span> hoti hain. Kyunki har step pe value double ho rahi hai, isliye bahut jaldi n ke paas pahunch jaate hain.
+</div>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<h2>Example 2: Exponential Increment Loop (Base 3)</h2>
+
+<h3>Code Snippet</h3>
+<div class="code-block">
+<span class="syn-cm">// Loop with i = i * 3</span>
+<span class="syn-kw">for</span> (<span class="syn-type">int</span> <span class="syn-var">i</span> <span class="syn-op">=</span> <span class="syn-num">1</span>; <span class="syn-var">i</span> <span class="syn-op">&lt;</span> <span class="syn-var">n</span>; <span class="syn-var">i</span> <span class="syn-op">=</span> <span class="syn-var">i</span> <span class="syn-op">*</span> <span class="syn-num">3</span>) {
+    <span class="syn-fn">cout</span> <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"hello"</span>;
+}
+</div>
+
+<h3>Mathematical Derivation</h3>
+<div class="formula-box">
+    <div class="formula-step">3<sup>k</sup> ≤ n</div>
+    <div class="formula-step">k ≤ log<sub>3</sub>(n)</div>
+    <div class="formula-step" style="border-left-color:#2E6B5A;font-weight:700;">T.C. = O(log<sub>3</sub> n)</div>
+</div>
+
+<div class="box box-best">
+    <span class="box-label">Best Practice / Optimization</span>
+    <p><span class="hl">Base change karne se complexity class same rehti hai</span> — log<sub>3</sub> n aur log<sub>2</sub> n dono <span class="math-inline">O(log n)</span> mein aate hain. Lekin exact count ke liye base matter karta hai. Interview mein generally <span class="math-inline">O(log n)</span> likhna sufficient hai.</p>
+</div>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<h2>Example 3: Halving Loop (While i > 0)</h2>
+
+<h3>Code Snippet</h3>
+<div class="code-block">
+<span class="syn-type">int</span> <span class="syn-var">i</span> <span class="syn-op">=</span> <span class="syn-var">n</span>;
+<span class="syn-kw">while</span> (<span class="syn-var">i</span> <span class="syn-op">&gt;</span> <span class="syn-num">0</span>) {
+    <span class="syn-fn">cout</span> <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"hello"</span>;
+    <span class="syn-var">i</span> <span class="syn-op">=</span> <span class="syn-var">i</span> <span class="syn-op">/</span> <span class="syn-num">2</span>;
+}
+</div>
+
+<h3>Step-by-Step Dry Run</h3>
+<div class="box box-dryrun">
+    <span class="box-label">Dry Run / Visualization</span>
+    <p style="margin-bottom:10px;">Assume <span class="math-inline">n = 16</span>:</p>
+    <div class="array-viz">
+        <div class="array-row"><div class="array-cell active">16</div><div class="array-label">i=16</div></div>
+        <div style="font-size:18px;color:#D48C3C;">→</div>
+        <div class="array-row"><div class="array-cell active">8</div><div class="array-label">i=8</div></div>
+        <div style="font-size:18px;color:#D48C3C;">→</div>
+        <div class="array-row"><div class="array-cell active">4</div><div class="array-label">i=4</div></div>
+        <div style="font-size:18px;color:#D48C3C;">→</div>
+        <div class="array-row"><div class="array-cell active">2</div><div class="array-label">i=2</div></div>
+        <div style="font-size:18px;color:#D48C3C;">→</div>
+        <div class="array-row"><div class="array-cell active">1</div><div class="array-label">i=1</div></div>
+        <div style="font-size:18px;color:#D48C3C;">→</div>
+        <div class="array-row"><div class="array-cell highlight">0</div><div class="array-label">stop</div></div>
+    </div>
+    <p style="margin-top:10px;">Har step pe <span class="math-inline">n</span> ka aadha ho raha hai: <span class="math-inline">n, n/2, n/4, n/8, ...</span></p>
+</div>
+
+<h3>Mathematical Derivation</h3>
+<div class="formula-box">
+    <div class="formula-step">n / 2<sup>k</sup> ≤ 1  &nbsp;&nbsp;(jab tak i &gt; 0)</div>
+    <div class="formula-step">n ≤ 2<sup>k</sup></div>
+    <div class="formula-step">log<sub>2</sub>(n) ≤ k</div>
+    <div class="formula-step" style="border-left-color:#2E6B5A;font-weight:700;">T.C. = O(log<sub>2</sub> n)</div>
+</div>
+
+<div class="box box-important">
+    <span class="box-label">Important</span>
+    <p>Exponential increment <span class="math-inline">(i = i * 2)</span> aur halving decrement <span class="math-inline">(i = i / 2)</span> dono same complexity dete hain — <span class="hl">O(log n)</span>. Dono cases mein input size exponentially reduce ya increase ho rahi hai.</p>
+</div>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<h2>Example 4: Triple Nested Loop (O(n³))</h2>
+
+<h3>Code Snippet</h3>
+<div class="code-block">
+<span class="syn-cm">// Three nested loops, each running n times</span>
+<span class="syn-kw">for</span> (<span class="syn-type">int</span> <span class="syn-var">i</span> <span class="syn-op">=</span> <span class="syn-num">0</span>; <span class="syn-var">i</span> <span class="syn-op">&lt;</span> <span class="syn-var">n</span>; <span class="syn-var">i</span><span class="syn-op">++</span>) {
+    <span class="syn-kw">for</span> (<span class="syn-type">int</span> <span class="syn-var">j</span> <span class="syn-op">=</span> <span class="syn-num">0</span>; <span class="syn-var">j</span> <span class="syn-op">&lt;</span> <span class="syn-var">n</span>; <span class="syn-var">j</span><span class="syn-op">++</span>) {
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> <span class="syn-var">k</span> <span class="syn-op">=</span> <span class="syn-num">0</span>; <span class="syn-var">k</span> <span class="syn-op">&lt;</span> <span class="syn-var">n</span>; <span class="syn-var">k</span><span class="syn-op">++</span>) {
+            <span class="syn-fn">cout</span> <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"hello"</span>;
+        }
+    }
+}
+</div>
+
+<h3>Complexity Analysis</h3>
+<div class="box box-complexity">
+    <span class="box-label">Complexity Analysis</span>
+    <p>Outer loop <span class="math-inline">n</span> baar chalega. Har outer iteration ke andar middle loop <span class="math-inline">n</span> baar. Har middle iteration ke andar inner loop <span class="math-inline">n</span> baar.</p>
+    <div class="formula-box" style="margin-top:10px;margin-bottom:0;">
+        <div class="formula-step">Total iterations = n × n × n</div>
+        <div class="formula-step" style="border-left-color:#2E6B5A;font-weight:700;">T.C. = O(n³)</div>
+    </div>
+</div>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<h2>Example 5: Variable Inner Loop (Dependent on Outer)</h2>
+
+<h3>Code Snippet</h3>
+<div class="code-block">
+<span class="syn-cm">// Inner loop depends on outer loop variable i</span>
+<span class="syn-kw">for</span> (<span class="syn-type">int</span> <span class="syn-var">i</span> <span class="syn-op">=</span> <span class="syn-num">1</span>; <span class="syn-var">i</span> <span class="syn-op">&lt;</span> <span class="syn-var">n</span>; <span class="syn-var">i</span><span class="syn-op">++</span>) {
+    <span class="syn-kw">for</span> (<span class="syn-type">int</span> <span class="syn-var">j</span> <span class="syn-op">=</span> <span class="syn-num">0</span>; <span class="syn-var">j</span> <span class="syn-op">&lt;</span> <span class="syn-var">i</span> <span class="syn-op">*</span> <span class="syn-var">i</span>; <span class="syn-var">j</span><span class="syn-op">++</span>) {
+        <span class="syn-fn">cout</span> <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"hello"</span>;
+    }
+}
+</div>
+
+<h3>Step-by-Step Dry Run</h3>
+<div class="box box-dryrun">
+    <span class="box-label">Dry Run / Visualization</span>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr><th>Outer i</th><th>Inner j runs</th><th>Iterations</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>i = 1</td><td>j = 0 to 0</td><td>1 time</td></tr>
+                <tr><td>i = 2</td><td>j = 0 to 3</td><td>4 times</td></tr>
+                <tr><td>i = 3</td><td>j = 0 to 8</td><td>9 times</td></tr>
+                <tr><td>i = 4</td><td>j = 0 to 15</td><td>16 times</td></tr>
+                <tr><td>...</td><td>...</td><td>...</td></tr>
+                <tr><td>i = n-1</td><td>j = 0 to (n-1)² - 1</td><td>(n-1)² times</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<h3>Mathematical Derivation</h3>
+<div class="formula-box">
+    <div class="formula-step">Sum = 1² + 2² + 3² + 4² + ... + (n-1)²</div>
+    <div class="formula-step">Formula: Σk² = n(n+1)(2n+1) / 6</div>
+    <div class="formula-step">For (n-1) terms: (n-1)(n)(2n-1) / 6</div>
+    <div class="formula-step">Expand: (2n³ - 3n² + n) / 6</div>
+    <div class="formula-step">Dominant term: 2n³ / 6 = n³ / 3</div>
+    <div class="formula-step" style="border-left-color:#2E6B5A;font-weight:700;">T.C. = O(n³)</div>
+</div>
+
+<div class="key-insight">
+    <strong>Key Insight:</strong> <span class="hl">"Sabse badi value ko pakad ke chalna"</span> — jab bhi polynomial sum aaye, toh sabse highest degree wale term ko utha lo. Constants aur lower degree terms ko ignore kar do. Yahi Big-O analysis ka core principle hai.
+</div>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<h2>Best, Average & Worst Case Analysis</h2>
+
+<h3>Understanding Through Linear Search</h3>
+<div class="code-block">
+<span class="syn-type">int</span> <span class="syn-var">arr</span>[] <span class="syn-op">=</span> {<span class="syn-num">10</span>, <span class="syn-num">20</span>, <span class="syn-num">17</span>, <span class="syn-num">9</span>, <span class="syn-num">8</span>, <span class="syn-num">11</span>};
+<span class="syn-type">int</span> <span class="syn-var">element</span> <span class="syn-op">=</span> <span class="syn-num">10</span>;
+
+<span class="syn-kw">for</span> (<span class="syn-type">int</span> <span class="syn-var">i</span> <span class="syn-op">=</span> <span class="syn-num">0</span>; <span class="syn-var">i</span> <span class="syn-op">&lt;</span> <span class="syn-var">n</span>; <span class="syn-var">i</span><span class="syn-op">++</span>) {
+    <span class="syn-kw">if</span> (<span class="syn-var">arr</span>[<span class="syn-var">i</span>] <span class="syn-op">==</span> <span class="syn-var">element</span>) {
+        <span class="syn-fn">cout</span> <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"Yes"</span>;
+        <span class="syn-kw">return</span> <span class="syn-num">0</span>;
+    }
+}
+<span class="syn-fn">cout</span> <span class="syn-op">&lt;&lt;</span> <span class="syn-str">"No"</span>;
+</div>
+
+<div class="case-box">
+    <div class="case-item best">
+        <div class="case-title case-best-title">Best Case</div>
+        <p style="font-size:11px;color:#555;margin-bottom:6px;">Element pehle index pe mil jaye</p>
+        <div class="case-badge"><span class="badge badge-o1">O(1)</span></div>
+    </div>
+    <div class="case-item avg">
+        <div class="case-title case-avg-title">Average Case</div>
+        <p style="font-size:11px;color:#555;margin-bottom:6px;">Element beech mein kahi mile</p>
+        <div class="case-badge"><span class="badge badge-on">O(n)</span></div>
+    </div>
+    <div class="case-item worst">
+        <div class="case-title case-worst-title">Worst Case</div>
+        <p style="font-size:11px;color:#555;margin-bottom:6px;">Element last mein mile ya na mile</p>
+        <div class="case-badge"><span class="badge badge-on">O(n)</span></div>
+    </div>
+</div>
+
+<div class="box box-interview">
+    <span class="box-label">Interview Tip</span>
+    <p><span class="hl">Interview mein hamesha Worst Case complexity hi batate hain.</span> Kyunki interviewer yeh dekhna chahta hai ki algorithm sabse bure scenario mein kitna time lega. Best case toh rarely hota hai, aur average case ka assumption input distribution pe depend karta hai. Isliye safe answer hamesha <span class="math-inline">O(n)</span> (worst case) batana.</p>
+</div>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<h2>Asymptotic Notations: Big-O, Omega & Theta</h2>
+
+<h3>Visual Comparison</h3>
+<div class="graph-container">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:10px;">
+        <div style="font-size:12px;font-weight:600;color:#2C3E50;">Growth Rate Comparison</div>
+        <div style="font-size:10px;color:#7A7A7A;">Y-axis: Time | X-axis: Input Size</div>
+    </div>
+    <div class="graph-curve">
+        <div class="axis-label-y">Time</div>
+
+        <!-- n^3 curve -->
+        <svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;" preserveAspectRatio="none">
+            <polyline points="0,200 20,180 40,140 60,80 80,20 100,0" fill="none" stroke="#A53F3F" stroke-width="2.5"/>
+            <polyline points="0,200 25,190 50,170 75,140 100,100" fill="none" stroke="#D48C3C" stroke-width="2.5"/>
+            <polyline points="0,200 30,195 60,185 90,170 100,160" fill="none" stroke="#2E6B5A" stroke-width="2.5"/>
+        </svg>
+
+        <div class="graph-label" style="right:5px;top:5px;color:#A53F3F;">n³</div>
+        <div class="graph-label" style="right:5px;top:90px;color:#D48C3C;">n²</div>
+        <div class="graph-label" style="right:5px;top:150px;color:#2E6B5A;">n</div>
+    </div>
+    <div class="axis-label-x">Input Size (n)</div>
+</div>
+
+<h3>Notation Deep Dive</h3>
+
+<div class="notation-card big-o">
+    <div class="notation-title">
+        <span class="notation-symbol">O</span>
+        <span>Big-O (Upper Bound)</span>
+    </div>
+    <p>Big-O notation <span class="hl">sabse zyada time</span> batata hai — matlab algorithm kabhi bhi isse zyada time nahi lega. Interview mein hamesha Big-O pucha jata hai kyunki yeh <span class="hl">upper bound</span> provide karta hai.</p>
+    <p style="margin-top:8px;font-size:11px;color:#555;"><strong>Example:</strong> Agar T.C. = n³ hai, toh Big-O = O(n³). Algorithm n³ se zyada time nahi lega.</p>
+</div>
+
+<div class="notation-card omega">
+    <div class="notation-title">
+        <span class="notation-symbol">Ω</span>
+        <span>Omega (Lower Bound)</span>
+    </div>
+    <p>Omega notation <span class="hl">sabse kam time</span> batata hai — matlab algorithm itna time toh minimum lega hi. Yeh <span class="hl">lower bound</span> hota hai. Agar T.C. = n³ hai, toh Ω(n³) bhi hoga kyunki kam se kam itna time toh lagega.</p>
+    <p style="margin-top:8px;font-size:11px;color:#555;"><strong>Example:</strong> Ω(n³) ka matlab algorithm n³ se kam time mein complete nahi ho sakta.</p>
+</div>
+
+<div class="notation-card theta">
+    <div class="notation-title">
+        <span class="notation-symbol">Θ</span>
+        <span>Theta (Tight Bound)</span>
+    </div>
+    <p>Theta tab use hota hai jab <span class="hl">exact time complexity</span> pata ho. Jab upper bound aur lower bound same hote hain, tab Theta use karte hain. Lekin practically, <span class="hl">Theta sirf tab use karte hain jab T.C. exactly known ho</span>.</p>
+    <p style="margin-top:8px;font-size:11px;color:#555;"><strong>Real World:</strong> Mostly Big-O hi use hota hai kyunki exact bound nikaalna mushkil hota hai.</p>
+</div>
+
+<div class="box box-important">
+    <span class="box-label">Important</span>
+    <p>Teen notations — Big-O, Omega, Theta — mainly <span class="hl">confusion ke liye</span> rakhe gaye hain. Interview aur competitive programming mein <span class="hl">sirf Big-O</span> hi use karte hain. Kyunki Big-O mein hum hamesha <span class="hl">upper bound</span> consider karte hain, jo sabse safe estimate hota hai.</p>
+</div>
+
+<h3>Notation Summary Table</h3>
+<div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Notation</th>
+                <th>Name</th>
+                <th>Bound Type</th>
+                <th>Meaning</th>
+                <th>Usage</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><span class="math-inline">O</span></td>
+                <td>Big-O</td>
+                <td>Upper Bound</td>
+                <td>Sabse zyada time (equal ya usse zyada)</td>
+                <td>Interviews, CP</td>
+            </tr>
+            <tr>
+                <td><span class="math-inline">Ω</span></td>
+                <td>Omega</td>
+                <td>Lower Bound</td>
+                <td>Sabse kam time (equal ya usse kam nahi)</td>
+                <td>Theoretical analysis</td>
+            </tr>
+            <tr>
+                <td><span class="math-inline">Θ</span></td>
+                <td>Theta</td>
+                <td>Tight Bound</td>
+                <td>Exact time complexity</td>
+                <td>Jab exact pata ho</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="key-insight">
+    <strong>Key Insight:</strong> <span class="hl">O(n) &lt; O(n²) &lt; O(n³)</span> — yeh growth order hai. Graph mein dekh sakte hain ki n³ sabse tezi se upar ja raha hai. Isliye jab bhi complexity compare karo, toh sabse bade exponent wale term ko pakdo.
+</div>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<h2>Complexity Comparison Cheat Sheet</h2>
+
+<div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Loop Pattern</th>
+                <th>Code Structure</th>
+                <th>Time Complexity</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Single linear loop</td>
+                <td><span class="math-inline">for(i=0; i&lt;n; i++)</span></td>
+                <td><span class="badge badge-on">O(n)</span></td>
+            </tr>
+            <tr>
+                <td>Double nested loop</td>
+                <td><span class="math-inline">for(i) { for(j) }</span></td>
+                <td><span class="badge badge-on2">O(n²)</span></td>
+            </tr>
+            <tr>
+                <td>Triple nested loop</td>
+                <td><span class="math-inline">for(i) { for(j) { for(k) } }</span></td>
+                <td><span class="badge badge-on3">O(n³)</span></td>
+            </tr>
+            <tr>
+                <td>Exponential increment (×2)</td>
+                <td><span class="math-inline">i = i * 2</span></td>
+                <td><span class="badge badge-olog">O(log₂ n)</span></td>
+            </tr>
+            <tr>
+                <td>Exponential increment (×3)</td>
+                <td><span class="math-inline">i = i * 3</span></td>
+                <td><span class="badge badge-olog">O(log₃ n)</span></td>
+            </tr>
+            <tr>
+                <td>Halving decrement</td>
+                <td><span class="math-inline">i = i / 2</span></td>
+                <td><span class="badge badge-olog">O(log₂ n)</span></td>
+            </tr>
+            <tr>
+                <td>Variable inner loop</td>
+                <td><span class="math-inline">j &lt; i*i</span></td>
+                <td><span class="badge badge-on3">O(n³)</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<h2>Interview Tips & Common Pitfalls</h2>
+
+<div class="box box-interview">
+    <span class="box-label">Interview Tip</span>
+    <ul>
+        <li><span class="hl">Hamesha worst case complexity</span> batana — interviewer ko yeh pasand hai.</li>
+        <li>Nested loops ke case mein <span class="hl">multiply</span> karo iterations ko, add nahi.</li>
+        <li>Exponential loops (×2, ×3, /2) ka base matter nahi karta class ke liye — sab <span class="math-inline">O(log n)</span> mein aate hain.</li>
+        <li>Sum of squares formula yaad rakho: <span class="math-inline">Σk² = n(n+1)(2n+1)/6</span></li>
+        <li>Big-O, Omega, Theta mein sirf <span class="hl">Big-O</span> hi practically use hota hai.</li>
+    </ul>
+</div>
+
+<div class="box box-edge">
+    <span class="box-label">Edge Case</span>
+    <ul>
+        <li>Agar <span class="math-inline">n = 0</span> ho toh loop kabhi execute nahi hoga — complexity technically <span class="math-inline">O(1)</span> (constant time check).</li>
+        <li>Integer overflow ka dhyan rakho: <span class="math-inline">i = i * 2</span> mein agar <span class="math-inline">i</span> int hai toh overflow ho sakta hai bahut bade n ke liye.</li>
+        <li><span class="math-inline">while(i &gt; 0)</span> mein agar <span class="math-inline">i</span> negative ho jaye toh infinite loop — isliye unsigned ya proper check zaroori hai.</li>
+    </ul>
+</div>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<h2>Key Takeaways</h2>
+
+<div class="box box-takeaway">
+    <span class="box-label">Takeaway</span>
+    <ol>
+        <li><span class="hl">Loop analysis</span> ka basic rule: har iteration ka cost 1 maan ke total iterations count karo.</li>
+        <li>Exponential increment/decrement loops (<span class="math-inline">×2, ×3, /2</span>) dete hain <span class="math-inline">O(log n)</span> complexity.</li>
+        <li>Nested independent loops multiply hote hain: <span class="math-inline">n × n × n = O(n³)</span>.</li>
+        <li>Dependent inner loops mein <span class="hl">series sum</span> nikaal ke highest degree term pakdo.</li>
+        <li><span class="hl">Sabse badi value ko pakad ke chalna</span> — lower order terms aur constants ko ignore karo.</li>
+        <li>Interview mein hamesha <span class="hl">Worst Case + Big-O</span> batana.</li>
+        <li>Big-O = Upper Bound, Omega = Lower Bound, Theta = Tight Bound. Practically sirf Big-O use hota hai.</li>
+    </ol>
+</div>
+
+<div class="signature">MADE BY HARSHAL CHAUHAN</div>
+
+</body>
+</html>
