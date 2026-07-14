@@ -1,73 +1,113 @@
-int missingNumber(int arr[], int n) {
+class Solution {
+public:
+    int missingNumber(vector<int>& arr) {
 
-    int size = n + 1;
+        // Approach -->
+        // Ham 0 se n tak har expected number ko check karege
+        // Fir us number ko poore array me search karege
+        // Jo number array me nahi milega wahi hamara missing number hoga
 
-    // 1 se size tak check karo
-    for (int i = 1; i <= size; i++) {
+        int n = arr.size();
 
-        bool found = false;
+        // 0 se n tak saare expected numbers check karo
+        for (int i = 0; i <= n; i++) {
 
-        // Current number ko array me search karo
-        for (int j = 0; j < n; j++) {
+            // Maan lo abhi ye number array me nahi mila hai
+            bool found = false;
 
-            if (arr[j] == i) {
-                found = true;
-                break;
+            // Current expected number ko poore array me search karo
+            for (int j = 0; j < n; j++) {
+
+                // Agar number mil gaya to found true kar do
+                // Aur aage search karne ki zarurat nahi hai
+                if (arr[j] == i) {
+                    found = true;
+                    break;
+                }
+            }
+
+            // Agar poora array check karne ke baad bhi number nahi mila
+            // To wahi hamara missing number hai
+            if (!found) {
+                return i;
             }
         }
 
-        // Agar number nahi mila
-        // wahi missing number hai
-        if (!found) {
-            return i;
-        }
+        // Ye line valid input me kabhi execute nahi hogi
+        return -1;
     }
+};
 
-    return -1;
-}
 
 
 
 // Approach 2 
 
-int missingNumber(int arr[], int n) {
+class Solution {
+public:
+    int missingNumber(vector<int>& arr) {
 
-    int size = n + 1;
+        // Approach:
+        // 1. Calculate the sum of all elements present in the array (ActualSum).
+        // 2. Calculate the sum of numbers from 0 to n (totalSum).
+        // 3. The difference between totalSum and ActualSum
+        //    will be the missing number.
 
-    // Expected Sum
-    int expectedSum = size * (size + 1) / 2;
+        int n = arr.size();
+        int ActualSum = 0;
+        int totalSum = 0;
 
-    // Array ka Actual Sum
-    int actualSum = 0;
+        // Calculate Actual Sum
+        for (int i = 0; i < n; i++) {
+            ActualSum += arr[i];
+        }
 
-    for (int i = 0; i < n; i++) {
-        actualSum += arr[i];
+        // Calculate Expected Sum (0 to n)
+        totalSum = n * (n + 1) / 2;
+
+        // Missing Number = Expected Sum - Actual Sum
+        return totalSum - ActualSum;
     }
+};
 
-    // Difference hi missing number hai
-    return expectedSum - actualSum;
-}
+// Time Complexity  : O(n)
+// Space Complexity : O(1)
 
 
 
 // Approach 3 
 
 
-int missingNumberXOR(int arr[], int n) {
+class Solution {
+public:
+    int missingNumber(vector<int>& arr) {
 
-    int size = n + 1;
+        // Approach -->
+        // Ham XOR ki help se same numbers ko cancel kar dege.
+        // Ek taraf Expected Numbers (0 to n) ka XOR karege.
+        // Dusri taraf Array ke Actual Numbers ka XOR karege.
+        // Jo number sirf ek baar bachega wahi missing number hoga.
 
-    int ans = 0;
+        int n = arr.size();
 
-    // 1 se size tak XOR karo
-    for (int i = 1; i <= size; i++) {
-        ans ^= i;
+        // ans ko n se initialize kar diya,
+        // taki expected numbers me last number (n) cover ho jaye
+        // aur loop sirf 0 se n-1 tak chalana pade.
+        int ans = n;
+
+        // Ek hi loop me Expected Numbers aur Actual Numbers
+        // dono ka XOR kar rahe hai.
+        for (int i = 0; i < n; i++) {
+
+            // Expected Number ka XOR
+            ans ^= i;
+
+            // Actual Number ka XOR
+            ans ^= arr[i];
+        }
+
+        // Saare common numbers cancel ho jayenge,
+        // sirf missing number bachega.
+        return ans;
     }
-
-    // Array ke saare elements XOR karo
-    for (int i = 0; i < n; i++) {
-        ans ^= arr[i];
-    }
-
-    return ans;
-}
+};

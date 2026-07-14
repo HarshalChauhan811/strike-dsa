@@ -1,81 +1,36 @@
-#include <iostream>
-using namespace std;
+// GFG Problem --> Reverse an Array
 
-// Reverse Array
-
+// Approach -->
 // Array ko reverse karne ke liye
 // first element ko last element se,
-// second ko second last se
-// swap karte hain.
+// second element ko second last se,
+// aur aise hi opposite elements ko swap karte jayenge.
 
-void reverseArray(int arr[], int n) {
+class Solution {
+public:
 
-    // Sirf n/2 tak hi loop chalega.
+    void reverseArray(int arr[], int n) {
 
-    // Agar poora array traverse karenge
-    // to elements dobara swap ho jayenge
-    // aur array wapas original ban jayega.
+        // Sirf n/2 tak hi loop chalega.
 
-    for (int i = 0; i < n / 2; i++) {
+        // Kyunki ek swap me 2 elements apni correct position par aa jate hai.
+        // Agar n/2 ke baad bhi swap karenge,
+        // to wahi elements dobara swap ho jayenge
+        // aur array wapas original order me aa jayega.
 
-        // Current element ko
-        // uske opposite element se swap karo.
+        for (int i = 0; i < n / 2; i++) {
 
-        int temp = arr[i];
-        arr[i] = arr[n - 1 - i];
-        arr[n - 1 - i] = temp;
+            // Current element ko
+            // uske opposite element se swap karo.
+
+            int temp = arr[i];
+            arr[i] = arr[n - 1 - i];
+            arr[n - 1 - i] = temp;
+        }
     }
-}
-
-int main() {
-
-    int arr[5] = {10, 15, 18, 22, 28};
-
-    cout << "Before Reversing : ";
-
-    for (int i = 0; i < 5; i++) {
-        cout << arr[i] << " ";
-    }
-
-    cout << endl;
-
-    // Function Call
-    reverseArray(arr, 5);
-
-    cout << "After Reversing : ";
-
-    for (int i = 0; i < 5; i++) {
-        cout << arr[i] << " ";
-    }
-
-    cout << endl;
-
-    return 0;
-}
+};
 
 /*
-Dry Run
-
-Array = [10, 15, 18, 22, 28]
-
-i = 0
-
-10 <-> 28
-
-[28, 15, 18, 22, 10]
-
-i = 1
-
-15 <-> 22
-
-[28, 22, 18, 15, 10]
-
-i = 2
-
-Loop Stop
-
-Final Answer
-
-[28, 22, 18, 15, 10]
-
+Time Complexity  : O(n)
+Space Complexity : O(1)
 */

@@ -1,47 +1,37 @@
-#include <iostream>
-using namespace std;
+// GFG Problem --> Search an Element in an Array
 
-// Linear Search
-
+// Approach -->
 // Array ke har element ko
-// ek-ek karke check karte hain.
+// ek-ek karke check karege.
+//
+// Agar current element target ke equal mil gaya
+// to uska index return kar dege.
+//
+// Agar poora array traverse karne ke baad bhi
+// target nahi mila
+// to -1 return kar dege.
 
-// Agar target mil jaye
-// to uska index return kar dete hain.
+class Solution {
+public:
 
-// Agar target na mile
-// to -1 return karte hain.
+    int search(int arr[], int n, int target) {
 
-int linearSearch(int arr[], int n, int target) {
+        // Array ke saare elements ko traverse karo
+        for (int i = 0; i < n; i++) {
 
-    // Array ke saare elements ko traverse karo
-    for (int i = 0; i < n; i++) {
-
-        // Agar target mil gaya
-        if (arr[i] == target) {
-            return i;
+            // Agar target mil gaya
+            // to uska index return kar do.
+            if (arr[i] == target) {
+                return i;
+            }
         }
+
+        // Agar target poore array me nahi mila
+        return -1;
     }
+};
 
-    // Target array me nahi mila
-    return -1;
-}
-
-int main() {
-
-    int arr[5] = {2, 4, 5, 8, 10};
-    int target = 10;
-
-    // Function Call
-    int result = linearSearch(arr, 5, target);
-
-    if (result == -1) {
-        cout << "Element is not present in the Array." << endl;
-    }
-    else {
-        cout << "Element found at Index : " << result << endl;
-    }
-
-    return 0;
-}
-
+/*
+Time Complexity  : O(n)
+Space Complexity : O(1)
+*/

@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture 09: Problem Solving in Array Part 2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 0;
+            @top-right-corner {
+                content: "Harshal Chauhan";
+                font: 9px 'Poppins', sans-serif;
+                color: #8C8C8C;
+                opacity: 0.3;
+            }
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            padding: 22mm 22mm 22mm 28mm;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            background: #FBFBF9;
+            font-family: 'Poppins', sans-serif;
+            color: #1A1A1A;
+            font-size: 12.5px;
+            line-height: 1.75;
+            margin: 0;
+            background-image: 
+                linear-gradient( rgba(0,0,0,0.008) 1px, transparent 1px ),
+                linear-gradient( 90deg, rgba(0,0,0,0.008) 1px, transparent 1px );
+            background-size: 20px 20px;
+        }
+
+        h1 {
+            font-size: 44px;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            color: #0B1A2E;
+            letter-spacing: -0.5px;
+            border-bottom: 3px solid #B49450;
+            padding-bottom: 10px;
+            margin-bottom: 16px;
+            margin-top: 0;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            color: #B49450;
+            border-bottom: 2px solid #B49450;
+            padding-bottom: 6px;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        h3 {
+            font-size: 19px;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            color: #1A4A4A;
+            margin-top: 22px;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        h4 {
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            color: #7A3B4A;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+
+        h5 {
+            font-size: 12.5px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            color: #3C3C3C;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 12px;
+            margin-bottom: 6px;
+        }
+
+        p, li {
+            font-size: 12.5px;
+            font-weight: 400;
+            font-family: 'Poppins', sans-serif;
+            color: #1A1A1A;
+            line-height: 1.75;
+            margin-bottom: 10px;
+        }
+
+        .lead {
+            font-size: 13.5px;
+            line-height: 1.8;
+            color: #2C2C2C;
+        }
+
+        .hl {
+            background: #F4E9D8;
+            color: #7A5C3A;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12.5px;
+        }
+
+        .golden-insight {
+            border-left: 6px solid #B49450;
+            background: #FDF9F2;
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin: 16px 0;
+            font-weight: 500;
+            font-style: italic;
+            color: #5C4033;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            page-break-inside: avoid;
+        }
+
+        .box {
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin-bottom: 18px;
+            background: #FFFFFF;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03);
+            page-break-inside: avoid;
+            border-left: 6px solid;
+        }
+
+        .box-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 10px;
+            color: inherit;
+        }
+
+        .box-pattern { border-left-color: #3A5F80; background: #FFFFFF; }
+        .box-pattern .box-label { color: #3A5F80; }
+
+        .box-intuition { border-left-color: #C4924A; background: #F9FBF9; }
+        .box-intuition .box-label { color: #C4924A; }
+
+        .box-workflow { border-left-color: #2E6B5A; background: #F9FBF9; }
+        .box-workflow .box-label { color: #2E6B5A; }
+
+        .box-important { border-left-color: #A53F3F; background: #FDF8F8; }
+        .box-important .box-label { color: #A53F3F; }
+
+        .box-interview { border-left-color: #5E4B7A; background: #F8F7FC; }
+        .box-interview .box-label { color: #5E4B7A; }
+
+        .box-takeaway { border-left-color: #2E6B5A; background: #F9FBF9; }
+        .box-takeaway .box-label { color: #2E6B5A; }
+
+        .box-edge { border-left-color: #A53F3F; background: #FDF8F8; }
+        .box-edge .box-label { color: #A53F3F; }
+
+        .box-best { border-left-color: #2E6B5A; background: #F9FBF9; }
+        .box-best .box-label { color: #2E6B5A; }
+
+        .box-performance { border-left-color: #0B1A2E; background: #FFFFFF; }
+        .box-performance .box-label { color: #0B1A2E; }
+
+        .code-block {
+            background: #111824;
+            border: 1px solid #2A3240;
+            border-radius: 12px;
+            padding: 20px 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            page-break-inside: avoid;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #E0E0E0;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        .syn-kw { color: #F88C6C; font-weight: bold; }
+        .syn-str { color: #9CDCFE; }
+        .syn-cm { color: #6A9955; font-style: italic; }
+        .syn-fn { color: #DCDCAA; }
+        .syn-num { color: #B5CEA8; }
+        .syn-op { color: #89DDFF; }
+        .syn-type { color: #FFD700; }
+        .syn-tag { color: #D67E7E; }
+        .syn-attr { color: #9CDCFE; }
+
+        table {
+            width: 100%;
+            border: 1px solid #E3DED5;
+            border-radius: 12px;
+            overflow: hidden;
+            page-break-inside: avoid;
+            margin: 18px 0;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        th {
+            background: #F7F3EC;
+            color: #0B1A2E;
+            font-weight: 700;
+            font-size: 11.5px;
+            padding: 12px 14px;
+            border-bottom: 2px solid #B49450;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px 14px;
+            font-size: 11.5px;
+            background: #FFFFFF;
+            border-bottom: 1px solid #E3DED5;
+        }
+
+        tr:nth-child(even) td { background: #FBFBF9; }
+        tr:last-child td { border-bottom: none; }
+
+        .diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin: 16px 0;
+            padding: 16px;
+            background: #F7F7F5;
+            border-radius: 12px;
+            border: 1px solid #E3DED5;
+            page-break-inside: avoid;
+            flex-wrap: wrap;
+        }
+
+        .diagram-box {
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 11.5px;
+            font-weight: 600;
+            text-align: center;
+            min-width: 40px;
+        }
+
+        .diagram-arrow {
+            color: #B49450;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .diagram-label {
+            width: 100%;
+            text-align: center;
+            font-size: 10.5px;
+            color: #8C8C8C;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            color: #B49450;
+            font-size: 20px;
+            letter-spacing: 8px;
+        }
+
+        ul, ol {
+            margin: 10px 0;
+            padding-left: 24px;
+        }
+
+        li { margin-bottom: 6px; }
+
+        .caption {
+            font-size: 10.5px;
+            font-weight: 500;
+            color: #8C8C8C;
+            text-align: center;
+            margin-top: 6px;
+        }
+
+        .warning-inline {
+            background: #FDF0ED;
+            color: #A53F3F;
+            font-weight: 600;
+            padding: 1px 4px;
+            border-radius: 2px;
+        }
+
+        .approach-tab {
+            display: inline-block;
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-size: 10.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .tab-basic { background: #EDF2F7; border: 1px solid #3A5F80; color: #3A5F80; }
+        .tab-intermediate { background: #F2F5EF; border: 1px solid #2E6B5A; color: #2E6B5A; }
+        .tab-advanced { background: #F0F0F5; border: 1px solid #0B1A2E; color: #0B1A2E; }
+
+        .problem-box {
+            background: #F7F3EC;
+            border: 1px solid #E3DED5;
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin: 16px 0;
+            page-break-inside: avoid;
+        }
+
+        .problem-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0B1A2E;
+            margin-bottom: 8px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .problem-meta {
+            font-size: 11px;
+            color: #8C8C8C;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .io-box {
+            background: #111824;
+            border: 1px solid #2A3240;
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin: 10px 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 11.5px;
+            line-height: 1.6;
+            color: #D4D4D4;
+            page-break-inside: avoid;
+        }
+
+        .io-label {
+            color: #6A9955;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Lecture 09: Problem Solving in Array Part 2</h1>
+
+<p class="lead">Is lecture mein hum <span class="hl">Array Rotation</span>, <span class="hl">Unique Elements Sum</span>, <span class="hl">Second Largest</span>, <span class="hl">Segregate 0s and 1s</span>, aur <span class="hl">Majority Element</span> jaise core problems solve karenge. Har problem ke <strong>multiple approaches</strong> cover kiye gaye hain: Brute Force se lekar Optimal tak. Ye concepts <strong>interview preparation</strong> ke liye critical hain.</p>
+
+<div class="divider">&#10022; &#10022; &#10022;</div>
+
+<!-- ==================== PROBLEM 1: ROTATE ARRAY BY K ==================== -->
+
+<h2>Problem 1: Rotate Array by k Positions</h2>
+
+<div class="problem-box">
+    <div class="problem-title">LeetCode 189 | GFG: Rotate Array</div>
+    <div class="problem-meta">Difficulty: Medium | Array Manipulation | In-Place</div>
+
+    <p><strong>Problem Statement:</strong></p>
+    <p>Given an integer array <code>nums</code>, rotate the array to the right by <code>k</code> steps, where <code>k</code> is non-negative.</p>
+
+    <p><strong>Constraints:</strong></p>
+    <ul>
+        <li>1 <= nums.length <= 10<sup>5</sup></li>
+        <li>-2<sup>31</sup> <= nums[i] <= 2<sup>31</sup> - 1</li>
+        <li>0 <= k <= 10<sup>5</sup></li>
+    </ul>
+
+    <div class="io-box">
+        <span class="io-label">// Example 1</span>
+        <span style="color:#89DDFF;">Input:</span>  nums = [1, 2, 3, 4, 5, 6, 7], k = 3
+        <span style="color:#89DDFF;">Output:</span> [5, 6, 7, 1, 2, 3, 4]
+        <span style="color:#6A9955;">// Explanation: rotate 1 step to the right: [7,1,2,3,4,5,6]</span>
+        <span style="color:#6A9955;">// rotate 2 steps to the right: [6,7,1,2,3,4,5]</span>
+        <span style="color:#6A9955;">// rotate 3 steps to the right: [5,6,7,1,2,3,4]</span>
+    </div>
+
+    <div class="io-box">
+        <span class="io-label">// Example 2</span>
+        <span style="color:#89DDFF;">Input:</span>  nums = [-1, -100, 3, 99], k = 2
+        <span style="color:#89DDFF;">Output:</span> [3, 99, -1, -100]
+        <span style="color:#6A9955;">// Explanation: rotate 1 step to the right: [99,-1,-100,3]</span>
+        <span style="color:#6A9955;">// rotate 2 steps to the right: [3,99,-1,-100]</span>
+    </div>
+
+    <div class="io-box">
+        <span class="io-label">// Example 3 (k > n)</span>
+        <span style="color:#89DDFF;">Input:</span>  nums = [1, 2], k = 3
+        <span style="color:#89DDFF;">Output:</span> [2, 1]
+        <span style="color:#6A9955;">// Explanation: k = 3 % 2 = 1 effective rotation</span>
+    </div>
+</div>
+
+<div class="box box-pattern">
+    <span class="box-label">Pattern</span>
+    <strong>Array Manipulation</strong> &mdash; Right Rotation, Reversal Algorithm, In-Place
+</div>
+
+<h3>Introduction</h3>
+<p>Is problem mein array ke elements ko <span class="hl">right side</span> se k positions rotate karna hai. Right rotation ka matlab hai ki last ke k elements front mein aa jayenge. Example: <code>[1, 2, 3, 4, 5]</code> ko k=2 se rotate karne par <code>[4, 5, 1, 2, 3]</code> ban jayega. Is problem ko solve karne ke <strong>teen approaches</strong> hain.</p>
+
+<div class="golden-insight">
+    <strong style="color:#B49450;">Key Insight:</strong> Agar <span class="hl">k &gt; n</span>, toh extra rotations ka koi fayda nahi. Effective rotations <span class="hl">k = k % n</span> honge. Example: n=5, k=7 ke liye sirf 2 rotations kaam aayengi.
+</div>
+
+<h3>Approach 1: Brute Force (Rotate by One, k Times)</h3>
+<span class="approach-tab tab-basic">Basic</span>
+
+<p>Ek baar rotate karna pata hai &mdash; last element ko save karo, baaki elements ko right shift karo, aur saved element ko front mein rakho. Ye process <span class="hl">k baar repeat</span> karo.</p>
+
+<div class="box box-workflow">
+    <span class="box-label">Workflow</span>
+    <strong>Step 1:</strong> k = k % n (effective rotations).<br>
+    <strong>Step 2:</strong> Outer loop i = 0 to k-1.<br>
+    <strong>Step 3:</strong> Save last element.<br>
+    <strong>Step 4:</strong> Right shift all elements by one.<br>
+    <strong>Step 5:</strong> Put saved element at index 0.
+</div>
+
+<div class="code-block"><span class="syn-cm">// Approach 1: Brute Force -- Rotate by One, k Times</span>
+<span class="syn-kw">class</span> <span class="syn-type">Solution</span> {
+<span class="syn-kw">public</span>:
+    <span class="syn-type">void</span> <span class="syn-fn">rotate</span>(<span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt;&amp; nums, <span class="syn-type">int</span> k) {
+
+        <span class="syn-type">int</span> n = nums.<span class="syn-fn">size</span>();
+
+        <span class="syn-cm">// Effective rotations nikal lo</span>
+        k = k % n;
+
+        <span class="syn-cm">// Rotate by One, k times</span>
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i &lt; k; i++) {
+
+            <span class="syn-cm">// Last element ko save kar lo</span>
+            <span class="syn-type">int</span> last = nums[n - <span class="syn-num">1</span>];
+
+            <span class="syn-cm">// Saare elements ko ek position right shift karo</span>
+            <span class="syn-kw">for</span> (<span class="syn-type">int</span> j = n - <span class="syn-num">1</span>; j &gt; <span class="syn-num">0</span>; j--) {
+                nums[j] = nums[j - <span class="syn-num">1</span>];
+            }
+
+            <span class="syn-cm">// Saved last element ko first position par rakh do</span>
+            nums[<span class="syn-num">0</span>] = last;
+        }
+    }
+};</div>
+
+<table>
+    <tr><th>Time</th><th>Space</th><th>Drawback</th></tr>
+    <tr><td><span class="hl">O(n * k)</span></td><td><span class="hl">O(1)</span></td><td>Nested loop ki wajah se very slow for large k.</td></tr>
+</table>
+
+<h3>Approach 2: Using Temporary Array</h3>
+<span class="approach-tab tab-intermediate">Intermediate</span>
+
+<p>Har element ki new position calculate karo: <span class="hl">newIndex = (currentIndex + k) % n</span>. Saare elements ko temporary array mein unki new positions pe rakho, phir temporary array ko original mein copy karo.</p>
+
+<div class="box box-workflow">
+    <span class="box-label">Workflow</span>
+    <strong>Formula:</strong> newPosition = (i + k) % n.<br>
+    <strong>Step 1:</strong> Create temp array of size n.<br>
+    <strong>Step 2:</strong> temp[(i + k) % n] = nums[i] for all i.<br>
+    <strong>Step 3:</strong> Copy temp back to nums.
+</div>
+
+<div class="code-block"><span class="syn-cm">// Approach 2: Using Temporary Array</span>
+<span class="syn-kw">class</span> <span class="syn-type">Solution</span> {
+<span class="syn-kw">public</span>:
+    <span class="syn-type">void</span> <span class="syn-fn">rotate</span>(<span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt;&amp; nums, <span class="syn-type">int</span> k) {
+
+        <span class="syn-type">int</span> n = nums.<span class="syn-fn">size</span>();
+        k = k % n;
+
+        <span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt; <span class="syn-fn">temp</span>(n);
+
+        <span class="syn-cm">// Har element ko uski new position par rakho</span>
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i &lt; n; i++) {
+            temp[(i + k) % n] = nums[i];
+        }
+
+        <span class="syn-cm">// Temp array ko original array me copy karo</span>
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i &lt; n; i++) {
+            nums[i] = temp[i];
+        }
+    }
+};</div>
+
+<table>
+    <tr><th>Time</th><th>Space</th><th>Drawback</th></tr>
+    <tr><td><span class="hl">O(n)</span></td><td><span class="hl">O(n)</span></td><td>Extra array required, not space optimal.</td></tr>
+</table>
+
+<h3>Approach 3: Reverse Algorithm (Optimal)</h3>
+<span class="approach-tab tab-advanced">Advanced</span>
+
+<p>Ye approach <span class="hl">three reversals</span> se kaam karti hai. Pehle poore array ko reverse karo, phir first k elements ko reverse karo, aur last me remaining elements ko reverse karo. Isse array right rotate ho jata hai.</p>
+
+<div class="box box-workflow">
+    <span class="box-label">Workflow</span>
+    <strong>Initial:</strong> [1, 2, 3, 4, 5], k = 2<br>
+    <strong>Step 1:</strong> Reverse all &rarr; [5, 4, 3, 2, 1]<br>
+    <strong>Step 2:</strong> Reverse first k &rarr; [4, 5, 3, 2, 1]<br>
+    <strong>Step 3:</strong> Reverse remaining &rarr; [4, 5, 1, 2, 3]<br>
+    <strong>Result:</strong> Right rotated by k positions.
+</div>
+
+<div class="code-block"><span class="syn-cm">// Approach 3: Reverse Algorithm (Optimal)</span>
+<span class="syn-kw">class</span> <span class="syn-type">Solution</span> {
+<span class="syn-kw">public</span>:
+    <span class="syn-type">void</span> <span class="syn-fn">rotate</span>(<span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt;&amp; nums, <span class="syn-type">int</span> k) {
+
+        <span class="syn-type">int</span> n = nums.<span class="syn-fn">size</span>();
+        k = k % n;
+
+        <span class="syn-cm">// Step 1: Reverse complete array</span>
+        <span class="syn-fn">reverse</span>(nums.<span class="syn-fn">begin</span>(), nums.<span class="syn-fn">end</span>());
+
+        <span class="syn-cm">// Step 2: Reverse first k elements</span>
+        <span class="syn-fn">reverse</span>(nums.<span class="syn-fn">begin</span>(), nums.<span class="syn-fn">begin</span>() + k);
+
+        <span class="syn-cm">// Step 3: Reverse remaining elements</span>
+        <span class="syn-fn">reverse</span>(nums.<span class="syn-fn">begin</span>() + k, nums.<span class="syn-fn">end</span>());
+    }
+};</div>
+
+<h4>Custom Reverse Function Implementation</h4>
+<p>Agar built-in <code>reverse</code> function use nahi karna, toh custom Two Pointer reverse function bhi likh sakte hain:</p>
+
+<div class="code-block"><span class="syn-cm">// Custom Reverse Function</span>
+<span class="syn-kw">class</span> <span class="syn-type">Solution</span> {
+<span class="syn-kw">public</span>:
+    <span class="syn-type">void</span> <span class="syn-fn">reverseArray</span>(<span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt;&amp; nums, <span class="syn-type">int</span> left, <span class="syn-type">int</span> right) {
+
+        <span class="syn-cm">// Jab tak Left aur Right cross na kare</span>
+        <span class="syn-kw">while</span> (left &lt; right) {
+
+            <span class="syn-type">int</span> temp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = temp;
+
+            left++;
+            right--;
+        }
+    }
+
+    <span class="syn-type">void</span> <span class="syn-fn">rotate</span>(<span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt;&amp; nums, <span class="syn-type">int</span> k) {
+
+        <span class="syn-type">int</span> n = nums.<span class="syn-fn">size</span>();
+        k = k % n;
+
+        <span class="syn-cm">// Step 1: Poora array reverse karo</span>
+        <span class="syn-fn">reverseArray</span>(nums, <span class="syn-num">0</span>, n - <span class="syn-num">1</span>);
+
+        <span class="syn-cm">// Step 2: First k elements reverse karo</span>
+        <span class="syn-fn">reverseArray</span>(nums, <span class="syn-num">0</span>, k - <span class="syn-num">1</span>);
+
+        <span class="syn-cm">// Step 3: Remaining elements reverse karo</span>
+        <span class="syn-fn">reverseArray</span>(nums, k, n - <span class="syn-num">1</span>);
+    }
+};</div>
+
+<table>
+    <tr><th>Time</th><th>Space</th><th>Advantage</th></tr>
+    <tr><td><span class="hl">O(n)</span></td><td><span class="hl">O(1)</span></td><td>In-place, no extra array, most efficient.</td></tr>
+</table>
+
+<div class="box box-interview">
+    <span class="box-label">Interview Tip</span>
+    Reverse Algorithm <strong>interview mein most expected</strong> approach hai. Iska logic samajhna zaroori hai: <span class="hl">reverse all &rarr; reverse first k &rarr; reverse remaining</span>. Is pattern ko yaad rakho kyunki ye <strong>String Rotation</strong> problems mein bhi use hota hai. Custom reverse function likhna seekho taaki built-in functions pe dependent na raho.
+</div>
+
+<div class="box box-takeaway">
+    <span class="box-label">Key Takeaways</span>
+    <ul>
+        <li><span class="hl">k = k % n</span> hamesha karo taaki extra rotations avoid ho.</li>
+        <li>Brute Force <strong>O(n * k)</strong> time leta hai, avoid karo.</li>
+        <li>Temporary Array <strong>O(n)</strong> time lekin <strong>O(n)</strong> space leta hai.</li>
+        <li>Reverse Algorithm <strong>O(n) time, O(1) space</strong> &mdash; optimal solution.</li>
+        <li>Custom reverse function Two Pointer technique se likh sakte hain.</li>
+    </ul>
+</div>
+
+<div class="divider">&#10022; &#10022; &#10022;</div>
+
+<!-- ==================== PROBLEM 2: CYCLIC ROTATE BY ONE ==================== -->
+
+<h2>Problem 2: Cyclically Rotate Array by One</h2>
+
+<div class="problem-box">
+    <div class="problem-title">GFG: Cyclically Rotate an Array by One</div>
+    <div class="problem-meta">Difficulty: Easy | Array Manipulation | Right Rotation</div>
+
+    <p><strong>Problem Statement:</strong></p>
+    <p>Given an array, rotate the array by one position in clockwise direction (right rotation by 1).</p>
+
+    <p><strong>Constraints:</strong></p>
+    <ul>
+        <li>1 <= arr.size() <= 10<sup>4</sup></li>
+        <li>0 <= arr[i] <= 10<sup>5</sup></li>
+    </ul>
+
+    <div class="io-box">
+        <span class="io-label">// Example 1</span>
+        <span style="color:#89DDFF;">Input:</span>  arr = [1, 2, 3, 4, 5]
+        <span style="color:#89DDFF;">Output:</span> [5, 1, 2, 3, 4]
+        <span style="color:#6A9955;">// Explanation: Last element (5) moves to front, rest shift right</span>
+    </div>
+
+    <div class="io-box">
+        <span class="io-label">// Example 2</span>
+        <span style="color:#89DDFF;">Input:</span>  arr = [9, 8, 7, 6, 4, 2, 1, 3]
+        <span style="color:#89DDFF;">Output:</span> [3, 9, 8, 7, 6, 4, 2, 1]
+        <span style="color:#6A9955;">// Explanation: Last element (3) moves to front</span>
+    </div>
+
+    <div class="io-box">
+        <span class="io-label">// Example 3 (Single Element)</span>
+        <span style="color:#89DDFF;">Input:</span>  arr = [42]
+        <span style="color:#89DDFF;">Output:</span> [42]
+        <span style="color:#6A9955;">// Explanation: Single element, no change</span>
+    </div>
+</div>
+
+<div class="box box-pattern">
+    <span class="box-label">Pattern</span>
+    <strong>Array Manipulation</strong> &mdash; Right Rotation by 1, Single Pass
+</div>
+
+<h3>Introduction</h3>
+<p>Ye problem <span class="hl">Rotate Array by k</span> ka special case hai jahan <strong>k = 1</strong>. Sirf ek position right rotate karna hai. Last element front mein aa jayega aur baaki sab ek step right shift honge.</p>
+
+<h3>How It Works Internally</h3>
+<ol>
+    <li>Last element ko <span class="hl">save</span> karo.</li>
+    <li>Array ke elements ko <span class="hl">right se shift</span> karo.</li>
+    <li>Saved element ko <span class="hl">index 0</span> pe rakh do.</li>
+</ol>
+
+<div class="box box-workflow">
+    <span class="box-label">Workflow</span>
+    <strong>Initial:</strong> [1, 2, 3, 4, 5]<br>
+    <strong>Save:</strong> last = 5<br>
+    <strong>Shift:</strong> [1, 1, 2, 3, 4] &rarr; right se shift karte hue overwrite hota hai<br>
+    <strong>Place:</strong> [5, 1, 2, 3, 4]<br>
+    <strong>Result:</strong> Array right rotated by 1.
+</div>
+
+<h3>Code Implementation</h3>
+<div class="code-block"><span class="syn-cm">// GFG: Cyclically Rotate an Array by One</span>
+<span class="syn-kw">class</span> <span class="syn-type">Solution</span> {
+<span class="syn-kw">public</span>:
+    <span class="syn-type">void</span> <span class="syn-fn">rotate</span>(<span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt; &amp;arr) {
+
+        <span class="syn-type">int</span> n = arr.<span class="syn-fn">size</span>();
+        <span class="syn-type">int</span> last = arr[n - <span class="syn-num">1</span>];
+
+        <span class="syn-cm">// Right se shift karo taki data overwrite na ho</span>
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> i = n - <span class="syn-num">1</span>; i &gt; <span class="syn-num">0</span>; i--) {
+            arr[i] = arr[i - <span class="syn-num">1</span>];
+        }
+
+        <span class="syn-cm">// Saved last element ko front me rakh do</span>
+        arr[<span class="syn-num">0</span>] = last;
+    }
+};</div>
+
+<table>
+    <tr><th>Time</th><th>Space</th><th>Note</th></tr>
+    <tr><td><span class="hl">O(n)</span></td><td><span class="hl">O(1)</span></td><td>Single pass, right-to-left shift to avoid overwrite.</td></tr>
+</table>
+
+<div class="box box-takeaway">
+    <span class="box-label">Key Takeaways</span>
+    <ul>
+        <li>Right-to-left shift karo taaki data overwrite na ho.</li>
+        <li>Left-to-right shift karne se data loss ho jayega.</li>
+        <li>Time <strong>O(n)</strong>, Space <strong>O(1)</strong>.</li>
+    </ul>
+</div>
+
+<div class="divider">&#10022; &#10022; &#10022;</div>
+
+<!-- ==================== PROBLEM 3: SUM OF UNIQUE ELEMENTS ==================== -->
+
+<h2>Problem 3: Sum of Unique Elements</h2>
+
+<div class="problem-box">
+    <div class="problem-title">LeetCode 1748: Sum of Unique Elements</div>
+    <div class="problem-meta">Difficulty: Easy | Frequency Counting | Hashing</div>
+
+    <p><strong>Problem Statement:</strong></p>
+    <p>You are given an integer array <code>nums</code>. The unique elements of an array are the elements that appear exactly once in the array. Return the sum of all the unique elements of <code>nums</code>.</p>
+
+    <p><strong>Constraints:</strong></p>
+    <ul>
+        <li>1 <= nums.length <= 100</li>
+        <li>1 <= nums[i] <= 100</li>
+    </ul>
+
+    <div class="io-box">
+        <span class="io-label">// Example 1</span>
+        <span style="color:#89DDFF;">Input:</span>  nums = [1, 2, 3, 2]
+        <span style="color:#89DDFF;">Output:</span> 4
+        <span style="color:#6A9955;">// Explanation: Unique elements are 1 and 3. Sum = 1 + 3 = 4</span>
+    </div>
+
+    <div class="io-box">
+        <span class="io-label">// Example 2</span>
+        <span style="color:#89DDFF;">Input:</span>  nums = [1, 1, 1, 1, 1]
+        <span style="color:#89DDFF;">Output:</span> 0
+        <span style="color:#6A9955;">// Explanation: No unique elements. Sum = 0</span>
+    </div>
+
+    <div class="io-box">
+        <span class="io-label">// Example 3</span>
+        <span style="color:#89DDFF;">Input:</span>  nums = [1, 2, 3, 4, 5]
+        <span style="color:#89DDFF;">Output:</span> 15
+        <span style="color:#6A9955;">// Explanation: All elements are unique. Sum = 1+2+3+4+5 = 15</span>
+    </div>
+</div>
+
+<div class="box box-pattern">
+    <span class="box-label">Pattern</span>
+    <strong>Frequency Counting</strong> &mdash; Hashing, Brute Force, Array Constraints
+</div>
+
+<h3>Introduction</h3>
+<p>Is problem mein array ke un elements ka sum nikalna hai jo <span class="hl">sirf ek baar</span> appear hote hain. Duplicates ko ignore karna hai. Iske liye <strong>do approaches</strong> hain: Brute Force aur Hashing.</p>
+
+<h3>Approach 1: Brute Force (Nested Loops)</h3>
+<span class="approach-tab tab-basic">Basic</span>
+
+<p>Har element ki frequency poore array mein count karo. Agar frequency <strong>1</strong> hai, toh usse sum mein add karo.</p>
+
+<div class="code-block"><span class="syn-cm">// Approach 1: Brute Force</span>
+<span class="syn-kw">class</span> <span class="syn-type">Solution</span> {
+<span class="syn-kw">public</span>:
+    <span class="syn-type">int</span> <span class="syn-fn">sumOfUnique</span>(<span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt;&amp; nums) {
+
+        <span class="syn-type">int</span> n = nums.<span class="syn-fn">size</span>();
+        <span class="syn-type">int</span> sum = <span class="syn-num">0</span>;
+
+        <span class="syn-cm">// Har element ke liye frequency count karo</span>
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i &lt; n; i++) {
+
+            <span class="syn-type">int</span> freq = <span class="syn-num">0</span>;
+
+            <span class="syn-kw">for</span> (<span class="syn-type">int</span> j = <span class="syn-num">0</span>; j &lt; n; j++) {
+                <span class="syn-kw">if</span> (nums[i] == nums[j]) {
+                    freq++;
+                }
+            }
+
+            <span class="syn-cm">// Agar sirf ek baar aaya hai to answer me add kar do</span>
+            <span class="syn-kw">if</span> (freq == <span class="syn-num">1</span>) {
+                sum += nums[i];
+            }
+        }
+
+        <span class="syn-kw">return</span> sum;
+    }
+};</div>
+
+<table>
+    <tr><th>Time</th><th>Space</th><th>Drawback</th></tr>
+    <tr><td><span class="hl">O(n&sup2;)</span></td><td><span class="hl">O(1)</span></td><td>Nested loops, very slow for large arrays.</td></tr>
+</table>
+
+<h3>Approach 2: Hashing (Frequency Array)</h3>
+<span class="approach-tab tab-intermediate">Intermediate</span>
+
+<p>Since LeetCode 1748 mein values <span class="hl">1 se 100</span> ke beech hain, hum fixed-size frequency array use kar sakte hain. Pehle frequency count karo, phir unique elements ka sum nikalo.</p>
+
+<div class="code-block"><span class="syn-cm">// Approach 2: Hashing (Frequency Array)</span>
+<span class="syn-kw">class</span> <span class="syn-type">Solution</span> {
+<span class="syn-kw">public</span>:
+    <span class="syn-type">int</span> <span class="syn-fn">sumOfUnique</span>(<span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt;&amp; nums) {
+
+        <span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt; <span class="syn-fn">freq</span>(<span class="syn-num">101</span>, <span class="syn-num">0</span>);
+
+        <span class="syn-cm">// Frequency count karo</span>
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i &lt; nums.<span class="syn-fn">size</span>(); i++) {
+            freq[nums[i]]++;
+        }
+
+        <span class="syn-type">int</span> sum = <span class="syn-num">0</span>;
+
+        <span class="syn-cm">// Unique elements ka sum nikalo</span>
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i &lt; nums.<span class="syn-fn">size</span>(); i++) {
+            <span class="syn-kw">if</span> (freq[nums[i]] == <span class="syn-num">1</span>) {
+                sum += nums[i];
+            }
+        }
+
+        <span class="syn-kw">return</span> sum;
+    }
+};</div>
+
+<table>
+    <tr><th>Time</th><th>Space</th><th>Advantage</th></tr>
+    <tr><td><span class="hl">O(n)</span></td><td><span class="hl">O(1)</span></td><td>Fixed size freq array, two linear passes.</td></tr>
+</table>
+
+<div class="box box-interview">
+    <span class="box-label">Interview Tip</span>
+    Agar constraints nahi pata hain, toh <span class="hl">unordered_map</span> use karo. Lekin jab range known ho (jaise 1-100), toh <span class="hl">array-based hashing</span> faster aur simpler hota hai. Interviewer ko batana ki aap constraints ke hisaab se approach optimize karte ho.
+</div>
+
+<div class="box box-takeaway">
+    <span class="box-label">Key Takeaways</span>
+    <ul>
+        <li>Brute Force <strong>O(n&sup2;)</strong> time leta hai, avoid karo.</li>
+        <li>Hashing se time <strong>O(n)</strong> mein optimize hota hai.</li>
+        <li>Known range pe array-based frequency count <strong>O(1) space</strong> mein kaam karta hai.</li>
+        <li>unordered_map generic solution hai jab range unknown ho.</li>
+    </ul>
+</div>
+
+<div class="divider">&#10022; &#10022; &#10022;</div>
+
+<!-- ==================== PROBLEM 4: SECOND LARGEST ELEMENT ==================== -->
+
+<h2>Problem 4: Second Largest Element</h2>
+
+<div class="problem-box">
+    <div class="problem-title">GFG: Second Largest Element</div>
+    <div class="problem-meta">Difficulty: Easy | Array Traversal | Without Sorting</div>
+
+    <p><strong>Problem Statement:</strong></p>
+    <p>Given an array of positive integers arr[], return the second largest element from the array. If the second largest element does not exist then return -1.</p>
+
+    <p><strong>Constraints:</strong></p>
+    <ul>
+        <li>1 <= arr.size() <= 10<sup>5</sup></li>
+        <li>1 <= arr[i] <= 10<sup>5</sup></li>
+    </ul>
+
+    <div class="io-box">
+        <span class="io-label">// Example 1</span>
+        <span style="color:#89DDFF;">Input:</span>  arr = [12, 35, 1, 10, 34, 1]
+        <span style="color:#89DDFF;">Output:</span> 34
+        <span style="color:#6A9955;">// Explanation: Largest = 35, Second Largest = 34</span>
+    </div>
+
+    <div class="io-box">
+        <span class="io-label">// Example 2</span>
+        <span style="color:#89DDFF;">Input:</span>  arr = [10, 5, 10]
+        <span style="color:#89DDFF;">Output:</span> 5
+        <span style="color:#6A9955;">// Explanation: Largest = 10, Second Largest = 5</span>
+    </div>
+
+    <div class="io-box">
+        <span class="io-label">// Example 3 (All Same)</span>
+        <span style="color:#89DDFF;">Input:</span>  arr = [10, 10, 10]
+        <span style="color:#89DDFF;">Output:</span> -1
+        <span style="color:#6A9955;">// Explanation: No second largest element exists</span>
+    </div>
+</div>
+
+<div class="box box-pattern">
+    <span class="box-label">Pattern</span>
+    <strong>Array Traversal</strong> &mdash; Two Passes, Without Sorting, Linear Time
+</div>
+
+<h3>Introduction</h3>
+<p>Array mein <span class="hl">second largest</span> element dhoondhna hai bina sort kiye. Iske liye <strong>do traversals</strong> use karte hain: pehle largest find karo, phir largest se chhota aur sabse bada element find karo.</p>
+
+<h3>How It Works Internally</h3>
+<ol>
+    <li><strong>Pass 1:</strong> Array traverse karke <span class="hl">largest element</span> find karo.</li>
+    <li><strong>Pass 2:</strong> Dubara array traverse karo. <span class="hl">Largest se chhota</span> aur <span class="hl">sabse bada</span> element second largest hoga.</li>
+</ol>
+
+<div class="box box-workflow">
+    <span class="box-label">Workflow</span>
+    <strong>Pass 1:</strong> largest = max(arr[0..n-1]).<br>
+    <strong>Pass 2:</strong> secondLargest = max(arr[i] where arr[i] &lt; largest).<br>
+    <strong>Return:</strong> secondLargest. Agar nahi mila toh -1.
+</div>
+
+<h3>Code Implementation</h3>
+<div class="code-block"><span class="syn-cm">// GFG: Second Largest Element</span>
+<span class="syn-kw">class</span> <span class="syn-type">Solution</span> {
+<span class="syn-kw">public</span>:
+    <span class="syn-type">int</span> <span class="syn-fn">getSecondLargest</span>(<span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt; &amp;arr) {
+
+        <span class="syn-type">int</span> n = arr.<span class="syn-fn">size</span>();
+
+        <span class="syn-type">int</span> largest = arr[<span class="syn-num">0</span>];
+
+        <span class="syn-cm">// Step 1: Largest Find Karo</span>
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i &lt; n; i++) {
+            <span class="syn-kw">if</span> (arr[i] &gt; largest) {
+                largest = arr[i];
+            }
+        }
+
+        <span class="syn-type">int</span> secondLargest = -<span class="syn-num">1</span>;
+
+        <span class="syn-cm">// Step 2: Second Largest Find Karo</span>
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i &lt; n; i++) {
+            <span class="syn-kw">if</span> (arr[i] &lt; largest &amp;&amp; arr[i] &gt; secondLargest) {
+                secondLargest = arr[i];
+            }
+        }
+
+        <span class="syn-kw">return</span> secondLargest;
+    }
+};</div>
+
+<table>
+    <tr><th>Time</th><th>Space</th><th>Note</th></tr>
+    <tr><td><span class="hl">O(n)</span></td><td><span class="hl">O(1)</span></td><td>Two linear passes, no sorting needed.</td></tr>
+</table>
+
+<div class="box box-best">
+    <span class="box-label">Best Practice</span>
+    Single pass mein bhi solve kiya ja sakta hai: <span class="hl">largest</span> aur <span class="hl">secondLargest</span> dono ko ek hi loop mein update karo. Lekin two-pass approach <strong>cleaner</strong> aur <strong>easier to understand</strong> hai. Interviews mein pehle two-pass batana, phir single-pass optimization batana.
+</div>
+
+<div class="box box-takeaway">
+    <span class="box-label">Key Takeaways</span>
+    <ul>
+        <li>Two traversals mein second largest mil jata hai bina sort kiye.</li>
+        <li>Time <strong>O(n)</strong>, Space <strong>O(1)</strong>.</li>
+        <li>Single pass optimization possible hai lekin readability kam hoti hai.</li>
+        <li>All duplicates case handle karo: secondLargest -1 return hoga.</li>
+    </ul>
+</div>
+
+<div class="divider">&#10022; &#10022; &#10022;</div>
+
+<!-- ==================== PROBLEM 5: SEGREGATE 0S AND 1S ==================== -->
+
+<h2>Problem 5: Segregate 0s and 1s</h2>
+
+<div class="problem-box">
+    <div class="problem-title">GFG: Segregate 0s and 1s</div>
+    <div class="problem-meta">Difficulty: Easy | Two Pointers | In-Place Partition</div>
+
+    <p><strong>Problem Statement:</strong></p>
+    <p>Given an array of length n consisting of only 0s and 1s in random order, modify the array in-place to segregate 0s on the left side and 1s on the right side of the array.</p>
+
+    <p><strong>Constraints:</strong></p>
+    <ul>
+        <li>1 <= arr.size() <= 10<sup>5</sup></li>
+        <li>0 <= arr[i] <= 1</li>
+    </ul>
+
+    <div class="io-box">
+        <span class="io-label">// Example 1</span>
+        <span style="color:#89DDFF;">Input:</span>  arr = [0, 1, 0, 1, 1, 0, 0, 1]
+        <span style="color:#89DDFF;">Output:</span> [0, 0, 0, 0, 1, 1, 1, 1]
+        <span style="color:#6A9955;">// Explanation: All 0s moved to left, all 1s moved to right</span>
+    </div>
+
+    <div class="io-box">
+        <span class="io-label">// Example 2</span>
+        <span style="color:#89DDFF;">Input:</span>  arr = [1, 1, 1, 0, 0, 0]
+        <span style="color:#89DDFF;">Output:</span> [0, 0, 0, 1, 1, 1]
+    </div>
+
+    <div class="io-box">
+        <span class="io-label">// Example 3 (Already Sorted)</span>
+        <span style="color:#89DDFF;">Input:</span>  arr = [0, 0, 0, 0]
+        <span style="color:#89DDFF;">Output:</span> [0, 0, 0, 0]
+    </div>
+</div>
+
+<div class="box box-pattern">
+    <span class="box-label">Pattern</span>
+    <strong>Two Pointers</strong> &mdash; Dutch National Flag Variant, In-Place Partition
+</div>
+
+<h3>Introduction</h3>
+<p>Array mein sirf <span class="hl">0s aur 1s</span> hain. Humein saare 0s ko left side aur saare 1s ko right side mein arrange karna hai. Is problem ko <strong>teen approaches</strong> se solve kiya ja sakta hai.</p>
+
+<h3>Approach 1: Brute Force (Temporary Array)</h3>
+<span class="approach-tab tab-basic">Basic</span>
+
+<p>Ek temporary array banayo. Pehle saare 0s store karo, phir saare 1s store karo. Last mein temporary array ko original mein copy karo.</p>
+
+<div class="code-block"><span class="syn-cm">// Approach 1: Brute Force (Temporary Array)</span>
+<span class="syn-kw">class</span> <span class="syn-type">Solution</span> {
+<span class="syn-kw">public</span>:
+    <span class="syn-type">void</span> <span class="syn-fn">segregate0and1</span>(<span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt; &amp;arr) {
+
+        <span class="syn-type">int</span> n = arr.<span class="syn-fn">size</span>();
+        <span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt; <span class="syn-fn">temp</span>(n);
+
+        <span class="syn-type">int</span> index = <span class="syn-num">0</span>;
+
+        <span class="syn-cm">// Step 1: Pehle saare 0 store karo</span>
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i &lt; n; i++) {
+            <span class="syn-kw">if</span> (arr[i] == <span class="syn-num">0</span>) {
+                temp[index] = arr[i];
+                index++;
+            }
+        }
+
+        <span class="syn-cm">// Step 2: Fir saare 1 store karo</span>
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i &lt; n; i++) {
+            <span class="syn-kw">if</span> (arr[i] == <span class="syn-num">1</span>) {
+                temp[index] = arr[i];
+                index++;
+            }
+        }
+
+        <span class="syn-cm">// Step 3: Temporary array ko original array me copy karo</span>
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i &lt; n; i++) {
+            arr[i] = temp[i];
+        }
+    }
+};</div>
+
+<table>
+    <tr><th>Time</th><th>Space</th><th>Drawback</th></tr>
+    <tr><td><span class="hl">O(n)</span></td><td><span class="hl">O(n)</span></td><td>Extra array required, not space optimal.</td></tr>
+</table>
+
+<h3>Approach 2: Counting Method</h3>
+<span class="approach-tab tab-intermediate">Intermediate</span>
+
+<p>Pehle total number of 0s count karo. Fir array ke starting mein utne 0s fill karo aur baaki positions pe 1s fill karo.</p>
+
+<div class="code-block"><span class="syn-cm">// Approach 2: Counting Method</span>
+<span class="syn-kw">class</span> <span class="syn-type">Solution</span> {
+<span class="syn-kw">public</span>:
+    <span class="syn-type">void</span> <span class="syn-fn">segregate0and1</span>(<span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt; &amp;arr) {
+
+        <span class="syn-type">int</span> n = arr.<span class="syn-fn">size</span>();
+        <span class="syn-type">int</span> countZero = <span class="syn-num">0</span>;
+
+        <span class="syn-cm">// Step 1: Count total number of 0s</span>
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i &lt; n; i++) {
+            <span class="syn-kw">if</span> (arr[i] == <span class="syn-num">0</span>) {
+                countZero++;
+            }
+        }
+
+        <span class="syn-cm">// Step 2: First countZero positions par 0 fill karo</span>
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i &lt; countZero; i++) {
+            arr[i] = <span class="syn-num">0</span>;
+        }
+
+        <span class="syn-cm">// Step 3: Remaining positions par 1 fill karo</span>
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> i = countZero; i &lt; n; i++) {
+            arr[i] = <span class="syn-num">1</span>;
+        }
+    }
+};</div>
+
+<table>
+    <tr><th>Time</th><th>Space</th><th>Advantage</th></tr>
+    <tr><td><span class="hl">O(n)</span></td><td><span class="hl">O(1)</span></td><td>In-place, no extra array, three linear passes.</td></tr>
+</table>
+
+<h3>Approach 3: Two Pointers (Optimal)</h3>
+<span class="approach-tab tab-advanced">Advanced</span>
+
+<p>Left pointer ko 0 chahiye, Right pointer ko 1 chahiye. Agar dono apni correct position par hain toh move karo. Agar dono wrong position par hain toh swap karo.</p>
+
+<div class="box box-workflow">
+    <span class="box-label">Workflow</span>
+    <strong>Left</strong> wants 0, <strong>Right</strong> wants 1.<br>
+    <strong>Case 1:</strong> arr[left] == 0 &rarr; left++ (correct).<br>
+    <strong>Case 2:</strong> arr[right] == 1 &rarr; right-- (correct).<br>
+    <strong>Case 3:</strong> Both wrong &rarr; swap(arr[left], arr[right]), then move both.
+</div>
+
+<div class="code-block"><span class="syn-cm">// Approach 3: Two Pointers (Optimal)</span>
+<span class="syn-kw">class</span> <span class="syn-type">Solution</span> {
+<span class="syn-kw">public</span>:
+    <span class="syn-type">void</span> <span class="syn-fn">segregate0and1</span>(<span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt; &amp;arr) {
+
+        <span class="syn-type">int</span> left = <span class="syn-num">0</span>;
+        <span class="syn-type">int</span> right = arr.<span class="syn-fn">size</span>() - <span class="syn-num">1</span>;
+
+        <span class="syn-kw">while</span> (left &lt; right) {
+
+            <span class="syn-cm">// Left already correct hai</span>
+            <span class="syn-kw">if</span> (arr[left] == <span class="syn-num">0</span>) {
+                left++;
+            }
+
+            <span class="syn-cm">// Right already correct hai</span>
+            <span class="syn-kw">else if</span> (arr[right] == <span class="syn-num">1</span>) {
+                right--;
+            }
+
+            <span class="syn-cm">// Dono wrong position par hai</span>
+            <span class="syn-kw">else</span> {
+                <span class="syn-fn">swap</span>(arr[left], arr[right]);
+                left++;
+                right--;
+            }
+        }
+    }
+};</div>
+
+<table>
+    <tr><th>Time</th><th>Space</th><th>Advantage</th></tr>
+    <tr><td><span class="hl">O(n)</span></td><td><span class="hl">O(1)</span></td><td>Single pass, in-place, most elegant solution.</td></tr>
+</table>
+
+<div class="box box-interview">
+    <span class="box-label">Interview Tip</span>
+    Two Pointer approach <strong>Dutch National Flag</strong> problem ka simplified version hai. Is pattern ko yaad rakho kyunki ye <strong>sort colors (0, 1, 2)</strong> aur <strong>partition problems</strong> mein bhi use hota hai. Interviewer ko pehle counting approach batana, phir Two Pointer optimization batana.
+</div>
+
+<div class="box box-takeaway">
+    <span class="box-label">Key Takeaways</span>
+    <ul>
+        <li>Brute Force temporary array se <strong>O(n)</strong> space leta hai.</li>
+        <li>Counting method <strong>O(n) time, O(1) space</strong> mein kaam karta hai.</li>
+        <li>Two Pointer <strong>single pass</strong> mein solve karta hai, most elegant.</li>
+        <li>Ye pattern <strong>Sort Colors (0, 1, 2)</strong> problem mein extend hota hai.</li>
+    </ul>
+</div>
+
+<div class="divider">&#10022; &#10022; &#10022;</div>
+
+<!-- ==================== PROBLEM 6: MAJORITY ELEMENT ==================== -->
+
+<h2>Problem 6: Majority Element</h2>
+
+<div class="problem-box">
+    <div class="problem-title">LeetCode 169: Majority Element</div>
+    <div class="problem-meta">Difficulty: Easy | Boyer-Moore Voting | Hashing</div>
+
+    <p><strong>Problem Statement:</strong></p>
+    <p>Given an array nums of size n, return the majority element. The majority element is the element that appears more than n/2 times. You may assume that the majority element always exists in the array.</p>
+
+    <p><strong>Constraints:</strong></p>
+    <ul>
+        <li>n == nums.length</li>
+        <li>1 <= n <= 5 * 10<sup>4</sup></li>
+        <li>-10<sup>9</sup> <= nums[i] <= 10<sup>9</sup></li>
+    </ul>
+
+    <div class="io-box">
+        <span class="io-label">// Example 1</span>
+        <span style="color:#89DDFF;">Input:</span>  nums = [3, 2, 3]
+        <span style="color:#89DDFF;">Output:</span> 3
+        <span style="color:#6A9955;">// Explanation: 3 appears 2 times out of 3. 2 > 3/2</span>
+    </div>
+
+    <div class="io-box">
+        <span class="io-label">// Example 2</span>
+        <span style="color:#89DDFF;">Input:</span>  nums = [2, 2, 1, 1, 1, 2, 2]
+        <span style="color:#89DDFF;">Output:</span> 2
+        <span style="color:#6A9955;">// Explanation: 2 appears 4 times out of 7. 4 > 7/2</span>
+    </div>
+
+    <div class="io-box">
+        <span class="io-label">// Example 3 (Single Element)</span>
+        <span style="color:#89DDFF;">Input:</span>  nums = [1]
+        <span style="color:#89DDFF;">Output:</span> 1
+    </div>
+</div>
+
+<div class="box box-pattern">
+    <span class="box-label">Pattern</span>
+    <strong>Frequency / Voting</strong> &mdash; Moore's Voting Algorithm, Hashing, Brute Force
+</div>
+
+<h3>Introduction</h3>
+<p>Majority Element wo element hai jo array mein <span class="hl">more than n/2 times</span> appear karta hai. Is problem ko solve karne ke <strong>teen approaches</strong> hain: Brute Force, Hashing, aur Moore's Voting Algorithm.</p>
+
+<h3>Approach 1: Brute Force</h3>
+<span class="approach-tab tab-basic">Basic</span>
+
+<p>Har element ki frequency poore array mein count karo. Agar kisi element ki frequency <strong>n/2 se zyada</strong> hui, toh wahi Majority Element hai.</p>
+
+<div class="code-block"><span class="syn-cm">// Approach 1: Brute Force</span>
+<span class="syn-kw">class</span> <span class="syn-type">Solution</span> {
+<span class="syn-kw">public</span>:
+    <span class="syn-type">int</span> <span class="syn-fn">majorityElement</span>(<span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt;&amp; nums) {
+
+        <span class="syn-type">int</span> n = nums.<span class="syn-fn">size</span>();
+
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i &lt; n; i++) {
+
+            <span class="syn-type">int</span> freq = <span class="syn-num">0</span>;
+
+            <span class="syn-kw">for</span> (<span class="syn-type">int</span> j = <span class="syn-num">0</span>; j &lt; n; j++) {
+                <span class="syn-kw">if</span> (nums[i] == nums[j]) {
+                    freq++;
+                }
+            }
+
+            <span class="syn-cm">// Majority Element mil gaya</span>
+            <span class="syn-kw">if</span> (freq &gt; n / <span class="syn-num">2</span>) {
+                <span class="syn-kw">return</span> nums[i];
+            }
+        }
+
+        <span class="syn-kw">return</span> -<span class="syn-num">1</span>;
+    }
+};</div>
+
+<table>
+    <tr><th>Time</th><th>Space</th><th>Drawback</th></tr>
+    <tr><td><span class="hl">O(n&sup2;)</span></td><td><span class="hl">O(1)</span></td><td>Nested loops, very slow for large arrays.</td></tr>
+</table>
+
+<h3>Approach 2: Hashing</h3>
+<span class="approach-tab tab-intermediate">Intermediate</span>
+
+<p>Hash Map mein har element ki frequency store karo. Phir traverse karke wo element dhoondo jiski frequency n/2 se zyada hai.</p>
+
+<div class="code-block"><span class="syn-cm">// Approach 2: Hashing</span>
+<span class="syn-kw">class</span> <span class="syn-type">Solution</span> {
+<span class="syn-kw">public</span>:
+    <span class="syn-type">int</span> <span class="syn-fn">majorityElement</span>(<span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt;&amp; nums) {
+
+        <span class="syn-type">int</span> n = nums.<span class="syn-fn">size</span>();
+        <span class="syn-type">unordered_map</span>&lt;<span class="syn-type">int</span>, <span class="syn-type">int</span>&gt; freq;
+
+        <span class="syn-cm">// Step 1: Frequency Count Karo</span>
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i &lt; n; i++) {
+            freq[nums[i]]++;
+        }
+
+        <span class="syn-cm">// Step 2: Majority Element Find Karo</span>
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i &lt; n; i++) {
+            <span class="syn-kw">if</span> (freq[nums[i]] &gt; n / <span class="syn-num">2</span>) {
+                <span class="syn-kw">return</span> nums[i];
+            }
+        }
+
+        <span class="syn-kw">return</span> -<span class="syn-num">1</span>;
+    }
+};</div>
+
+<table>
+    <tr><th>Time</th><th>Space</th><th>Drawback</th></tr>
+    <tr><td><span class="hl">O(n)</span></td><td><span class="hl">O(n)</span></td><td>Extra space for hash map required.</td></tr>
+</table>
+
+<h3>Approach 3: Moore's Voting Algorithm (Optimal)</h3>
+<span class="approach-tab tab-advanced">Advanced</span>
+
+<p>Ye algorithm ek <span class="hl">candidate</span> aur <span class="hl">count</span> variable maintain karta hai. Count 0 hone par current element ko naya candidate bana diya jata hai. Same element milne par count badhaya jata hai, different element milne par count ghata diya jata hai. Final candidate hi majority element hota hai.</p>
+
+<div class="golden-insight">
+    <strong style="color:#B49450;">Key Insight:</strong> Moore's Voting Algorithm is based on the fact that if a majority element exists, its count will survive even after canceling out all other elements. <span class="hl">Majority element ka count &gt; n/2</span> hone ki wajah se baaki sab elements milke bhi usse cancel nahi kar sakte.
+</div>
+
+<div class="box box-workflow">
+    <span class="box-label">Workflow</span>
+    <strong>Initialize:</strong> candidate = 0, count = 0.<br>
+    <strong>Step 1:</strong> If count == 0, current element = new candidate.<br>
+    <strong>Step 2:</strong> If current == candidate, count++.<br>
+    <strong>Step 3:</strong> If current != candidate, count--.<br>
+    <strong>Result:</strong> Final candidate is the Majority Element.
+</div>
+
+<div class="code-block"><span class="syn-cm">// Approach 3: Moore's Voting Algorithm (Optimal)</span>
+<span class="syn-kw">class</span> <span class="syn-type">Solution</span> {
+<span class="syn-kw">public</span>:
+    <span class="syn-type">int</span> <span class="syn-fn">majorityElement</span>(<span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt;&amp; nums) {
+
+        <span class="syn-type">int</span> candidate = <span class="syn-num">0</span>;
+        <span class="syn-type">int</span> count = <span class="syn-num">0</span>;
+
+        <span class="syn-cm">// Poore array ko traverse karo</span>
+        <span class="syn-kw">for</span> (<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i &lt; nums.<span class="syn-fn">size</span>(); i++) {
+
+            <span class="syn-cm">// Agar candidate ke saare votes cancel ho gaye,</span>
+            <span class="syn-cm">// to current element ko naya candidate bana do</span>
+            <span class="syn-kw">if</span> (count == <span class="syn-num">0</span>) {
+                candidate = nums[i];
+            }
+
+            <span class="syn-cm">// Same candidate mila, to support badha do</span>
+            <span class="syn-kw">if</span> (nums[i] == candidate) {
+                count++;
+            }
+
+            <span class="syn-cm">// Different candidate mila, to ek support cancel ho jayega</span>
+            <span class="syn-kw">else</span> {
+                count--;
+            }
+        }
+
+        <span class="syn-cm">// Majority Element return karo</span>
+        <span class="syn-kw">return</span> candidate;
+    }
+};</div>
+
+<table>
+    <tr><th>Time</th><th>Space</th><th>Advantage</th></tr>
+    <tr><td><span class="hl">O(n)</span></td><td><span class="hl">O(1)</span></td><td>Single pass, no extra space, most elegant.</td></tr>
+</table>
+
+<div class="box box-interview">
+    <span class="box-label">Interview Tip</span>
+    Moore's Voting Algorithm <strong>interview mein must-know</strong> hai. Iska logic clear hona chahiye: <span class="hl">count == 0</span> hone par new candidate select karo, same element se count badhao, different se ghatao. Ye algorithm sirf <strong>majority element</strong> ke liye nahi, <strong>n/3 majority</strong> (Boyer-Moore Extended) mein bhi use hota hai. Interviewer ko batana ki aap <strong>verification pass</strong> bhi likh sakte ho agar majority element guaranteed na ho.
+</div>
+
+<div class="box box-takeaway">
+    <span class="box-label">Key Takeaways</span>
+    <ul>
+        <li>Brute Force <strong>O(n&sup2;)</strong> time leta hai, avoid karo.</li>
+        <li>Hashing <strong>O(n) time, O(n) space</strong> mein kaam karta hai.</li>
+        <li>Moore's Voting Algorithm <strong>O(n) time, O(1) space</strong> &mdash; optimal.</li>
+        <li>Algorithm ka core idea: <span class="hl">cancel out non-majority elements</span>.</li>
+        <li>Majority element guaranteed nahi hai toh verification pass add karo.</li>
+    </ul>
+</div>
+
+<div class="divider">&#10022; &#10022; &#10022;</div>
+
+<!-- ==================== LECTURE SUMMARY ==================== -->
+
+<h2>Lecture Summary</h2>
+
+<table>
+    <tr>
+        <th>Problem</th>
+        <th>Best Approach</th>
+        <th>Time</th>
+        <th>Space</th>
+        <th>Key Pattern</th>
+    </tr>
+    <tr>
+        <td><strong>Rotate Array by k</strong></td>
+        <td>Reverse Algorithm</td>
+        <td>O(n)</td>
+        <td>O(1)</td>
+        <td>3 Reversals</td>
+    </tr>
+    <tr>
+        <td><strong>Cyclic Rotate by 1</strong></td>
+        <td>Right Shift</td>
+        <td>O(n)</td>
+        <td>O(1)</td>
+        <td>Save Last, Shift Right</td>
+    </tr>
+    <tr>
+        <td><strong>Sum of Unique</strong></td>
+        <td>Hashing / Freq Array</td>
+        <td>O(n)</td>
+        <td>O(1)</td>
+        <td>Frequency Count</td>
+    </tr>
+    <tr>
+        <td><strong>Second Largest</strong></td>
+        <td>Two Passes</td>
+        <td>O(n)</td>
+        <td>O(1)</td>
+        <td>Max then Second Max</td>
+    </tr>
+    <tr>
+        <td><strong>Segregate 0s and 1s</strong></td>
+        <td>Two Pointers</td>
+        <td>O(n)</td>
+        <td>O(1)</td>
+        <td>Dutch National Flag</td>
+    </tr>
+    <tr>
+        <td><strong>Majority Element</strong></td>
+        <td>Moore's Voting</td>
+        <td>O(n)</td>
+        <td>O(1)</td>
+        <td>Cancel Votes</td>
+    </tr>
+</table>
+
+<div class="box box-takeaway">
+    <span class="box-label">Lecture Takeaways</span>
+    <ul>
+        <li><span class="hl">Reverse Algorithm</span> array rotation ka standard optimal solution hai &mdash; rote learn karo.</li>
+        <li><span class="hl">Two Pointer</span> technique segregate, partition, aur two-sum problems mein universally use hoti hai.</li>
+        <li><span class="hl">Moore's Voting Algorithm</span> majority element problems ka O(1) space solution hai.</li>
+        <li>Har problem ke <strong>multiple approaches</strong> socho: Brute &rarr; Better &rarr; Optimal.</li>
+        <li><span class="hl">k = k % n</span> hamesha yaad rakho rotation problems mein.</li>
+        <li>Code likhne se pehle <strong>dry run</strong> karo. Paper pe chalao, tabhi bugs catch honge.</li>
+    </ul>
+</div>
+
+<div style="text-align:center; margin-top:40px; border-top:1px solid #E3DED5; padding-top:24px; color:#8C8C8C; font-size:11px; font-weight:500; letter-spacing:1px;">MADE BY HARSHAL CHAUHAN</div>
+
+</body>
+</html>
