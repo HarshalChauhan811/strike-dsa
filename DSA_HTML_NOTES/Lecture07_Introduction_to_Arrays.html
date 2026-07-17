@@ -3,46 +3,96 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lecture 07 — Introduction to Arrays</title>
+<title>Lecture07 — Introduction to Arrays</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 @page { size: A4 portrait; margin: 0; }
-@page { @top-right-corner { content: "Harshal Chauhan"; font: 9px 'Poppins', sans-serif; color: #8C8C8C; opacity: 0.3; } }
+* { box-sizing: border-box; }
 body {
-    padding: 22mm 22mm 22mm 28mm;
+    padding: 18mm 20mm 18mm 24mm;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
-    background: #FBFBF9;
+    background: #FAFAF8;
     font-family: 'Poppins', sans-serif;
-    color: #1A1A1A;
-    font-size: 12.5px;
-    line-height: 1.75;
+    color: #1C1C1C;
+    font-size: 12px;
+    line-height: 1.65;
     margin: 0;
-    background-image: linear-gradient(rgba(0,0,0,0.008) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.008) 1px, transparent 1px);
-    background-size: 20px 20px;
+    background-image: 
+        linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+    background-size: 25px 25px;
 }
-h1 { font-size: 44px; font-weight: 700; font-family: 'Poppins', sans-serif; color: #0B1A2E; letter-spacing: -0.5px; border-bottom: 3px solid #B49450; padding-bottom: 10px; margin-bottom: 16px; margin-top: 0; }
-h2 { font-size: 26px; font-weight: 700; font-family: 'Poppins', sans-serif; color: #B49450; border-bottom: 2px solid #B49450; padding-bottom: 6px; margin-top: 32px; margin-bottom: 16px; }
-h3 { font-size: 19px; font-weight: 700; font-family: 'Poppins', sans-serif; color: #1A4A4A; margin-top: 22px; margin-bottom: 12px; }
-h4 { font-size: 15px; font-weight: 600; font-family: 'Poppins', sans-serif; color: #7A3B4A; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 16px; margin-bottom: 8px; }
-h5 { font-size: 12.5px; font-weight: 600; font-family: 'Poppins', sans-serif; color: #3C3C3C; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 12px; margin-bottom: 6px; }
-.lead { font-size: 13.5px; line-height: 1.8; color: #2C2C2C; }
-.caption { font-size: 10.5px; font-weight: 500; font-family: 'Poppins', sans-serif; color: #8C8C8C; }
-.hl { background: #F4E9D8; color: #7A5C3A; font-weight: 600; padding: 2px 6px; border-radius: 3px; font-size: 12.5px; }
-.golden-insight { border-left: 6px solid #B49450; background: #FDF9F2; border-radius: 10px; padding: 14px 18px; margin: 16px 0; font-weight: 500; font-style: italic; color: #5C4033; box-shadow: 0 1px 4px rgba(0,0,0,0.04); page-break-inside: avoid; }
-.golden-insight strong { color: #B49450; font-style: normal; }
-.code-block { background: #111824; border: 1px solid #2A3240; border-radius: 12px; padding: 20px 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); page-break-inside: avoid; font-family: 'Fira Code', monospace; font-size: 12px; line-height: 1.5; color: #E0E0E0; white-space: pre-wrap; overflow-x: auto; margin: 16px 0; }
-.syn-kw { color: #F88C6C; font-weight: bold; }
-.syn-str { color: #9CDCFE; }
-.syn-cm { color: #6A9955; font-style: italic; }
-.syn-fn { color: #DCDCAa; }
-.syn-num { color: #B5CEA8; }
-.syn-op { color: #89DDFF; }
-.syn-type { color: #FFD700; }
-.syn-tag { color: #D67E7E; }
-.syn-attr { color: #9CDCFE; }
-.box { border-radius: 12px; padding: 18px 22px; margin-bottom: 18px; background: #FFFFFF; box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03); page-break-inside: avoid; border-left: 6px solid; }
-.box-label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; color: inherit; }
+
+/* ========== TYPOGRAPHY ========== */
+h1 {
+    font-size: 38px; font-weight: 700; color: #0B1A2E;
+    border-bottom: 3px solid #C4924A; padding-bottom: 6px;
+    margin-bottom: 12px; margin-top: 0; line-height: 1.2;
+}
+h2 {
+    font-size: 22px; font-weight: 700; color: #C4924A;
+    border-bottom: 2px solid #C4924A; margin-top: 24px;
+    margin-bottom: 12px; padding-bottom: 4px; line-height: 1.3;
+}
+h3 {
+    font-size: 16px; font-weight: 700; color: #1A4A4A;
+    margin-top: 18px; margin-bottom: 8px; line-height: 1.3;
+}
+h4 {
+    font-size: 13px; font-weight: 700; color: #2D6A4F;
+    text-transform: uppercase; letter-spacing: 0.6px;
+    margin-top: 14px; margin-bottom: 6px;
+}
+h5 {
+    font-size: 11.5px; font-weight: 700; color: #3C3C3C;
+    margin-top: 10px; margin-bottom: 4px;
+}
+p { margin: 6px 0; }
+.lead { color: #2C2C2C; font-weight: 500; }
+.caption { color: #8C8C8C; font-size: 10.5px; }
+
+/* ========== ORNAMENT ========== */
+.ornament {
+    text-align: center; margin: 22px 0;
+    color: #C4924A; font-size: 18px; letter-spacing: 6px;
+}
+
+/* ========== CODE BLOCKS ========== */
+.code-block {
+    background: #111824; border: 1px solid #2A3240;
+    border-radius: 10px; padding: 14px 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    page-break-inside: avoid;
+    font-family: 'Fira Code', monospace;
+    font-size: 11.5px; line-height: 1.45;
+    color: #E0E0E0; white-space: pre-wrap;
+    overflow-x: auto; margin: 12px 0;
+}
+.code-block .kw { color: #C586C0; font-weight: bold; }
+.code-block .str { color: #CE9178; }
+.code-block .cm { color: #6A9955; font-style: italic; }
+.code-block .fn { color: #DCDCAA; }
+.code-block .num { color: #B5CEA8; }
+.code-block .type { color: #4EC9B0; }
+.code-block .op { color: #D4D4D4; }
+
+/* ========== PREMIUM BOXES ========== */
+.box {
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px; margin-bottom: 12px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03);
+    page-break-inside: avoid;
+    border-left: 5px solid;
+}
+.box-label {
+    text-transform: uppercase; font-weight: 700;
+    font-size: 10px; letter-spacing: 0.8px;
+    margin-bottom: 8px;
+}
+.box-pattern { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-pattern .box-label { color: #3A5F80; }
 .box-intuition { border-left-color: #C4924A; background: #F9FBF9; }
 .box-intuition .box-label { color: #C4924A; }
 .box-workflow { border-left-color: #2E6B5A; background: #F9FBF9; }
@@ -53,548 +103,588 @@ h5 { font-size: 12.5px; font-weight: 600; font-family: 'Poppins', sans-serif; co
 .box-interview .box-label { color: #5E4B7A; }
 .box-takeaway { border-left-color: #2E6B5A; background: #F9FBF9; }
 .box-takeaway .box-label { color: #2E6B5A; }
+.box-warning { border-left-color: #C4924A; background: #FDFBF5; }
+.box-warning .box-label { color: #C4924A; }
 .box-edge { border-left-color: #A53F3F; background: #FDF8F8; }
 .box-edge .box-label { color: #A53F3F; }
 .box-best { border-left-color: #2E6B5A; background: #F9FBF9; }
 .box-best .box-label { color: #2E6B5A; }
-.table-luxe { border: 1px solid #E3DED5; border-radius: 12px; overflow: hidden; page-break-inside: avoid; margin: 18px 0; width: 100%; border-collapse: collapse; }
-.table-luxe th { background: #F7F3EC; color: #0B1A2E; font-weight: 700; font-size: 11.5px; padding: 12px 14px; border-bottom: 2px solid #B49450; text-align: left; }
-.table-luxe td { padding: 12px 14px; font-size: 11.5px; background: #FFFFFF; border-bottom: 1px solid #E3DED5; }
-.table-luxe tr:nth-child(even) td { background: #FBFBF9; }
-.table-luxe tr:last-child td { border-bottom: none; }
-.ornament { text-align: center; margin: 30px 0; color: #B49450; font-size: 20px; letter-spacing: 8px; }
-.signature { text-align: center; margin-top: 40px; border-top: 1px solid #E3DED5; padding-top: 24px; color: #8C8C8C; font-size: 11px; font-weight: 500; letter-spacing: 1px; }
-ul, ol { margin: 8px 0; padding-left: 22px; }
-li { margin-bottom: 6px; }
-p { margin: 8px 0; }
+.box-code { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-code .box-label { color: #3A5F80; }
+.box-dryrun { border-left-color: #B49450; background: #FFFBF5; }
+.box-dryrun .box-label { color: #B49450; }
+.box-complexity { border-left-color: #4F46E5; background: #FFFFFF; }
+.box-complexity .box-label { color: #4F46E5; }
+.box-problem { border-left-color: #65A30D; background: #FFFFFF; }
+.box-problem .box-label { color: #65A30D; }
+.box-transfer { border-left-color: #7E22CE; background: #F8F7FC; }
+.box-transfer .box-label { color: #7E22CE; }
 
-/* Memory Diagram Styles */
-.memory-container { background: #F7F7F5; border: 2px solid #0B1A2E; border-radius: 12px; padding: 20px; margin: 14px 0; page-break-inside: avoid; }
-.memory-title { text-align: center; font-weight: 700; color: #0B1A2E; margin-bottom: 16px; font-size: 14px; }
-.memory-table { width: 100%; border-collapse: collapse; font-family: 'Fira Code', monospace; font-size: 12px; }
-.memory-table td, .memory-table th { border: 2px solid #0B1A2E; padding: 10px 8px; text-align: center; }
-.memory-table th { background: #0B1A2E; color: #B49450; font-weight: 700; }
-.memory-table td { background: #FFFFFF; color: #0B1A2E; }
-.mem-addr { color: #8C8C8C; font-size: 10px; display: block; }
-.mem-value { font-weight: 700; font-size: 13px; }
-.mem-index { background: #1A4A4A; color: #FBFBF9; font-weight: 700; }
-.mem-data { background: #F4E9D8; color: #7A5C3A; font-weight: 700; }
-.mem-highlight { background: #FDF9F2; border: 2px solid #B49450; }
-.mem-changed { background: #FDF0ED; color: #A53F3F; font-weight: 700; }
-.mem-arrow { color: #B49450; font-size: 18px; font-weight: bold; }
-
-/* Array visual */
-.array-box { display: flex; justify-content: center; gap: 0; margin: 14px 0; }
-.array-cell { width: 60px; height: 50px; border: 2px solid #0B1A2E; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #FFFFFF; font-family: 'Fira Code', monospace; }
-.array-cell:first-child { border-radius: 8px 0 0 8px; }
-.array-cell:last-child { border-radius: 0 8px 8px 0; }
-.array-index { font-size: 10px; color: #8C8C8C; background: #F7F3EC; width: 100%; text-align: center; padding: 2px 0; border-bottom: 1px solid #E3DED5; }
-.array-value { font-size: 14px; font-weight: 700; color: #0B1A2E; padding: 4px 0; }
-.array-addr { font-size: 9px; color: #8C8C8C; }
-
-/* Comparison side by side */
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 14px 0; }
-
-@media print {
-    body { background: #FBFBF9 !important; }
-    .code-block { white-space: pre-wrap !important; }
+/* ========== INLINE HIGHLIGHT ========== */
+.hl {
+    background: #F4E9D8; color: #7A5C3A;
+    padding: 1px 5px; border-radius: 4px;
+    font-weight: 600; font-size: 11px;
 }
+
+/* ========== TABLES ========== */
+table {
+    width: 100%; border-collapse: collapse;
+    margin: 10px 0; font-size: 11.5px;
+    page-break-inside: avoid;
+}
+th {
+    background: #F7F3EC; color: #0B1A2E;
+    font-weight: 600; text-align: left;
+    padding: 8px 10px; border-bottom: 2px solid #C4924A;
+}
+td {
+    padding: 7px 10px; border-bottom: 1px solid #E8E4DC;
+}
+tr:last-child td { border-bottom: none; }
+
+/* ========== EXCALIDRAW DIAGRAMS ========== */
+.diag {
+    border: 1px solid #C4924A;
+    border-left: 4px solid #C4924A;
+    background: #FFFBF5; padding: 12px 16px;
+    margin: 16px 0; overflow-x: auto;
+    page-break-inside: avoid;
+}
+.diag-box {
+    display: inline-block; background: #FFFFFF;
+    border: 2px solid #0B1A2E; border-radius: 6px;
+    padding: 4px 10px; font-size: 10px; font-weight: 700;
+    margin: 2px; min-width: 32px; text-align: center;
+}
+.diag-group {
+    display: inline-block; border: 1.5px dashed #0B1A2E;
+    border-radius: 8px; padding: 6px 10px; margin: 4px;
+}
+.diag-label {
+    font-size: 9px; color: #8C8C8C;
+    text-align: center; margin-top: 2px;
+}
+.diag-arrow {
+    color: #C4924A; font-size: 16px; font-weight: 700;
+    margin: 0 4px;
+}
+.diag-row { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; margin: 6px 0; }
+
+/* ========== CHEATSHEET ========== */
+.cheatsheet {
+    border: 2px solid #C4924A;
+    background: #F9F8F5; border-radius: 10px;
+    padding: 16px; margin: 24px 0;
+    page-break-inside: avoid;
+}
+.cheatsheet h3 {
+    text-align: center; margin-top: 0;
+    color: #0B1A2E; font-size: 15px;
+}
+.cheatsheet-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px; margin-top: 12px;
+}
+.cs-item {
+    background: #FFFFFF; border-radius: 6px;
+    padding: 8px 10px; border-left: 3px solid #C4924A;
+    font-size: 10px; line-height: 1.5;
+}
+.cs-item strong { color: #0B1A2E; font-size: 10.5px; }
+.cs-red { border-left-color: #A53F3F; }
+.cs-green { border-left-color: #2D6A4F; }
+.cs-purple { border-left-color: #7E22CE; }
+
+/* ========== WATERMARK & SIGNATURE ========== */
+.watermark {
+    text-align: right; margin: 20px 0 5px 0;
+    color: #9CA3AF; font-size: 8px; opacity: 0.4;
+}
+.signature {
+    text-align: center; margin-top: 30px;
+    border-top: 1px solid #E0D8CC; padding-top: 18px;
+    color: #8C8C8C; font-size: 10px;
+    font-weight: 500; letter-spacing: 1px;
+}
+
+/* ========== PRINT SAFE ========== */
+.page-break { page-break-before: always; }
 </style>
 </head>
 <body>
 
-<h1>Lecture 07: Introduction to Arrays</h1>
+<!-- ==================== TITLE ==================== -->
+<h1>Lecture 07 — Introduction to Arrays</h1>
+<div class="caption" style="margin-bottom:16px;">DSA Mastery Series &nbsp;|&nbsp; C++ Focused &nbsp;|&nbsp; Arrays, Strings & Two Pointers Track</div>
 
-<p class="lead">Is lecture mein hum <span class="hl">Arrays</span> ko bilkul shuru se samajhenge — kya hai, kyun zaroori hai, memory mein kaise store hote hain, aur kaise use karte hain. Array programming ka sabse important data structure hai. Agar aap first time arrays padh rahe ho, toh ye notes aapke liye perfect hai.</p>
-
-<div class="ornament">❦ ❦ ❦</div>
-
-<h2>The Problem — Why We Need Arrays</h2>
-
-<p>Socho aapko <span class="hl">5 students ke marks</span> store karne hain. Bina array ke aapko 5 alag-alag variables banane padenge:</p>
-
-<div class="code-block"><span class="syn-type">int</span> marks1 = <span class="syn-num">70</span>;
-<span class="syn-type">int</span> marks2 = <span class="syn-num">40</span>;
-<span class="syn-type">int</span> marks3 = <span class="syn-num">80</span>;
-<span class="syn-type">int</span> marks4 = <span class="syn-num">14</span>;
-<span class="syn-type">int</span> marks5 = <span class="syn-num">18</span>;
-
-<span class="syn-cm">// Print karna ho toh 5 baar cout</span>
-<span class="syn-fn">cout</span> << marks1 << <span class="syn-fn">endl</span>;
-<span class="syn-fn">cout</span> << marks2 << <span class="syn-fn">endl</span>;
-<span class="syn-cm">// ... aur aage 3 aur lines</span></div>
-
-<div class="box box-important">
-<span class="box-label">Important</span>
-Ab socho <span class="hl">100 students</span> ke marks store karne hain! Bina array ke <span class="hl">100 variables</span> banane padenge — <code>marks1, marks2, marks3... marks100</code>. Ye impossible hai. Isliye <span class="hl">Array</span> aata hai bachane.
-</div>
-
-<div class="golden-insight">
-<strong>Key Insight:</strong> Array ek aisa container hai jisme <span class="hl">ek hi type ke multiple values</span> ek saath store ho sakti hain — aur unhe ek <span class="hl">index number</span> se access kiya ja sakta hai.
-</div>
-
-<div class="ornament">❦ ❦ ❦</div>
-
+<!-- ==================== WHAT IS ARRAY ==================== -->
 <h2>What is an Array?</h2>
 
-<p>Array ek <span class="hl">collection of similar data types</span> hai jo <span class="hl">continuous memory locations</span> mein store hote hain. Har element ko ek <span class="hl">index number</span> se access kiya ja sakta hai.</p>
-
 <div class="box box-intuition">
-<span class="box-label">Intuition</span>
-Array ko ek <span class="hl">building ki floors</span> ki tarah samjho. Har floor pe ek family rehti hai (value). Ground floor = 0, First floor = 1, Second floor = 2... Har floor ka ek <span class="hl">unique number</span> hai jisse aap directly us floor pe pahunch sakte ho. Array mein ye number <span class="hl">index</span> hota hai.
+    <div class="box-label">Core Intuition</div>
+    <p><strong>Array ek <span class="hl">Similar Data Type</span> ka Collection hota hai jo <span class="hl">Continuous Memory Locations</span> me store hota hai.</strong></p>
+    <p style="margin-top:8px;">Socho ek school me 100 students hain aur har student ka marks store karna hai. Agar 100 alag-alag variables banayein (<code>marks1, marks2, ... marks100</code>) to code manage karna impossible ho jayega. Array isi problem ko solve karta hai — ek hi naam se multiple values ko ek jagah store kar leta hai.</p>
 </div>
 
-<h3>Array Declaration</h3>
-
-<div class="code-block"><span class="syn-type">int</span> marks[<span class="syn-num">5</span>];  <span class="syn-cm">// 5 integers ka array declare kiya</span></div>
-
-<p>Is line ka matlab:</p>
-<ul>
-<li><code>int</code> → Array mein integers store honge</li>
-<li><code>marks</code> → Array ka naam</li>
-<li><code>[5]</code> → Array mein 5 elements aa sakte hain</li>
-</ul>
-
-<h3>Visual Representation</h3>
-
-<div class="memory-container">
-<p class="memory-title">🔷 ARRAY VISUAL: marks[5]</p>
-<div class="array-box">
-<div class="array-cell"><div class="array-index">Index 0</div><div class="array-value">70</div><div class="array-addr">0x1000</div></div>
-<div class="array-cell"><div class="array-index">Index 1</div><div class="array-value">40</div><div class="array-addr">0x1004</div></div>
-<div class="array-cell"><div class="array-index">Index 2</div><div class="array-value">80</div><div class="array-addr">0x1008</div></div>
-<div class="array-cell"><div class="array-index">Index 3</div><div class="array-value">14</div><div class="array-addr">0x100C</div></div>
-<div class="array-cell"><div class="array-index">Index 4</div><div class="array-value">18</div><div class="array-addr">0x1010</div></div>
+<div class="diag">
+    <div style="font-weight:700; font-size:11px; color:#0B1A2E; margin-bottom:8px;">Memory Visualization — Array of 5 Integers</div>
+    <div class="diag-row">
+        <div class="diag-group">
+            <div class="diag-row">
+                <div class="diag-box" style="border-color:#2E6B5A;">50<br><span style="font-size:8px;color:#8C8C8C;">Index 0</span></div>
+                <div class="diag-box" style="border-color:#2E6B5A;">60<br><span style="font-size:8px;color:#8C8C8C;">Index 1</span></div>
+                <div class="diag-box" style="border-color:#2E6B5A;">70<br><span style="font-size:8px;color:#8C8C8C;">Index 2</span></div>
+                <div class="diag-box" style="border-color:#2E6B5A;">80<br><span style="font-size:8px;color:#8C8C8C;">Index 3</span></div>
+                <div class="diag-box" style="border-color:#2E6B5A;">90<br><span style="font-size:8px;color:#8C8C8C;">Index 4</span></div>
+            </div>
+            <div class="diag-label">Continuous Memory Block</div>
+        </div>
+    </div>
+    <div class="diag-row" style="margin-top:6px;">
+        <span style="font-size:10px;color:#0B1A2E;">Base Address</span>
+        <span class="diag-arrow">→</span>
+        <span class="diag-box" style="min-width:60px;">0x61ff00</span>
+        <span class="diag-arrow">→</span>
+        <span class="diag-box" style="min-width:60px;">0x61ff04</span>
+        <span class="diag-arrow">→</span>
+        <span class="diag-box" style="min-width:60px;">0x61ff08</span>
+        <span class="diag-arrow">→</span>
+        <span class="diag-box" style="min-width:60px;">0x61ff0c</span>
+        <span class="diag-arrow">→</span>
+        <span class="diag-box" style="min-width:60px;">0x61ff10</span>
+    </div>
+    <div class="diag-label" style="text-align:left; margin-top:4px;">Har integer 4 bytes leta hai → address +4 se badhta hai</div>
 </div>
-<p style="text-align: center; margin-top: 10px; color: #2E6B5A; font-weight: 600;">✅ Continuous memory — har element 4 bytes door</p>
+
+<!-- ==================== WHY ARRAY ==================== -->
+<h2>Why Array?</h2>
+
+<div class="box box-pattern">
+    <div class="box-label">The Problem</div>
+    <p>Agar 5 students ke marks store karne ho to 5 variables chahiye:</p>
 </div>
 
-<div class="ornament">❦ ❦ ❦</div>
+<div class="code-block">int marks1 = 50;
+int marks2 = 60;
+int marks3 = 70;
+int marks4 = 80;
+int marks5 = 90;</div>
 
+<div class="box box-important">
+    <div class="box-label">Critical Insight</div>
+    <p>Agar <strong>100 students</strong> ke marks store karne ho to <span class="hl">100 variables banana practical nahi hai</span>. Code bulky, unreadable aur unmaintainable ho jayega. Isliye <strong>Array</strong> ka use karte hain — ek naam, multiple values.</p>
+</div>
+
+<!-- ==================== DECLARATION ==================== -->
+<h2>Array Declaration</h2>
+
+<div class="box box-workflow">
+    <div class="box-label">Syntax</div>
+    <p><span class="hl">data_type array_name[size];</span></p>
+    <p style="margin-top:6px;">Size compile time pe fix ho jata hai. Ye batata hai ki array me kitne elements store ho sakte hain.</p>
+</div>
+
+<div class="code-block"><span class="cm">// Size = 5 → Index: 0, 1, 2, 3, 4</span>
+<span class="type">int</span> marks[<span class="num">5</span>];
+
+<span class="cm">// Memory me 5 contiguous blocks reserve ho gaye</span>
+<span class="cm">// Output visual: [ _, _, _, _, _ ]</span></div>
+
+<div class="box box-warning">
+    <div class="box-label">Caution</div>
+    <p>C++ me <span class="hl">array ka size compile-time constant</span> hona chahiye (static array ke case me). Agar variable size chahiye to <code>vector</code> use karo ya dynamic allocation (<code>new int[n]</code>) karo.</p>
+</div>
+
+<!-- ==================== INITIALIZATION ==================== -->
 <h2>Array Initialization</h2>
 
-<h4>Method 1: Index by Index</h4>
-
-<div class="code-block"><span class="syn-type">int</span> marks[<span class="syn-num">5</span>];     <span class="syn-cm">// Array declare</span>
-
-marks[<span class="syn-num">0</span>] = <span class="syn-num">70</span>;     <span class="syn-cm">// Index 0 pe 70 daala</span>
-marks[<span class="syn-num">1</span>] = <span class="syn-num">40</span>;     <span class="syn-cm">// Index 1 pe 40 daala</span>
-marks[<span class="syn-num">2</span>] = <span class="syn-num">80</span>;     <span class="syn-cm">// Index 2 pe 80 daala</span>
-marks[<span class="syn-num">3</span>] = <span class="syn-num">14</span>;     <span class="syn-cm">// Index 3 pe 14 daala</span>
-marks[<span class="syn-num">4</span>] = <span class="syn-num">18</span>;     <span class="syn-cm">// Index 4 pe 18 daala</span></div>
-
-<h4>Method 2: Direct Initialization</h4>
-
-<div class="code-block"><span class="syn-type">int</span> marks[<span class="syn-num">5</span>] = {<span class="syn-num">70</span>, <span class="syn-num">40</span>, <span class="syn-num">80</span>, <span class="syn-num">14</span>, <span class="syn-num">18</span>};
-
-<span class="syn-cm">// Ya phir size bhi chhod sakte ho</span>
-<span class="syn-type">int</span> marks[] = {<span class="syn-num">70</span>, <span class="syn-num">40</span>, <span class="syn-num">80</span>, <span class="syn-num">14</span>, <span class="syn-num">18</span>};  <span class="syn-cm">// Compiler khud size 5 le lega</span></div>
-
-<div class="box box-workflow">
-<span class="box-label">Workflow</span>
-<ul>
-<li><strong>Step 1:</strong> Array declare karo — <code>int marks[5];</code></li>
-<li><strong>Step 2:</strong> Values daalo — <code>marks[0] = 70;</code></li>
-<li><strong>Step 3:</strong> Values access karo — <code>cout << marks[0];</code></li>
-</ul>
-</div>
-
-<div class="ornament">❦ ❦ ❦</div>
-
-<h2>0-Based Indexing — Very Important</h2>
-
-<div class="box box-important">
-<span class="box-label">Important</span>
-C++ mein array <span class="hl">hamesha 0 se start hota hai</span>. Agar aapne <code>int arr[5]</code> declare kiya, toh valid indexes hain: <span class="hl">0, 1, 2, 3, 4</span>. <code>arr[5]</code> access karna <span class="hl">galat hai</span> — ye array ke bahar hai.
-</div>
-
-<div class="memory-container">
-<p class="memory-title">🔷 0-BASED INDEXING</p>
-<div class="array-box">
-<div class="array-cell"><div class="array-index">0</div><div class="array-value">70</div></div>
-<div class="array-cell"><div class="array-index">1</div><div class="array-value">40</div></div>
-<div class="array-cell"><div class="array-index">2</div><div class="array-value">80</div></div>
-<div class="array-cell"><div class="array-index">3</div><div class="array-value">14</div></div>
-<div class="array-cell"><div class="array-index">4</div><div class="array-value">18</div></div>
-</div>
-<p style="text-align: center; margin-top: 10px; color: #A53F3F; font-weight: 600;">⚠️ arr[5] = ❌ OUT OF BOUNDS! (Index 5 exist nahi karta)</p>
-</div>
-
-<div class="golden-insight">
-<strong>Key Insight:</strong> Agar array ka size <code>n</code> hai, toh last valid index <span class="hl"><code>n-1</code></span> hota hai. <code>int arr[5]</code> ke liye last index <code>4</code> hai, <code>5</code> nahi. Ye sabse common beginner mistake hai.
-</div>
-
-<div class="ornament">❦ ❦ ❦</div>
-
-<h2>Traversing an Array (Loop se)</h2>
-
-<p>Array ke sabhi elements ko ek-ek karke access karna <span class="hl">traversing</span> kehlata hai. Iske liye <code>for</code> loop sabse best hai.</p>
-
-<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
-<span class="syn-kw">using namespace</span> std;
-
-<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
-    <span class="syn-type">int</span> marks[<span class="syn-num">5</span>] = {<span class="syn-num">70</span>, <span class="syn-num">40</span>, <span class="syn-num">80</span>, <span class="syn-num">14</span>, <span class="syn-num">18</span>};
-
-    <span class="syn-cm">// Array ko traverse kar rahe hain</span>
-    <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i < <span class="syn-num">5</span>; i++) {
-        <span class="syn-fn">cout</span> << <span class="syn-str">"marks["</span> << i << <span class="syn-str">"] = "</span> << marks[i] << <span class="syn-fn">endl</span>;
-    }
-
-    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
-}</div>
-
-<div class="box box-workflow">
-<span class="box-label">Workflow — Loop Execution</span>
-<table class="table-luxe" style="margin:0">
-<thead>
-<tr><th>Iteration</th><th>i</th><th>marks[i]</th><th>Output</th></tr>
-</thead>
-<tbody>
-<tr><td>1</td><td>0</td><td>marks[0]</td><td>70</td></tr>
-<tr><td>2</td><td>1</td><td>marks[1]</td><td>40</td></tr>
-<tr><td>3</td><td>2</td><td>marks[2]</td><td>80</td></tr>
-<tr><td>4</td><td>3</td><td>marks[3]</td><td>14</td></tr>
-<tr><td>5</td><td>4</td><td>marks[4]</td><td>18</td></tr>
-</tbody>
-</table>
-</div>
-
-<div class="ornament">❦ ❦ ❦</div>
-
-<h2>Array Input and Output</h2>
-
-<h4>User se Input Lena</h4>
-
-<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
-<span class="syn-kw">using namespace</span> std;
-
-<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
-    <span class="syn-type">int</span> n;
-
-    <span class="syn-fn">cout</span> << <span class="syn-str">"Tell me the size of an Array: "</span>;
-    <span class="syn-fn">cin</span> >> n;
-
-    <span class="syn-type">int</span> arr[n];  <span class="syn-cm">// User ke bataye size ka array</span>
-
-    <span class="syn-fn">cout</span> << <span class="syn-str">"Enter the values in an Array:"</span> << <span class="syn-fn">endl</span>;
-
-    <span class="syn-cm">// Input loop</span>
-    <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i < n; i++) {
-        <span class="syn-fn">cin</span> >> arr[i];
-    }
-
-    <span class="syn-cm">// Output loop</span>
-    <span class="syn-fn">cout</span> << <span class="syn-str">"Array elements are:"</span> << <span class="syn-fn">endl</span>;
-    <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i < n; i++) {
-        <span class="syn-fn">cout</span> << arr[i] << <span class="syn-str">" "</span>;
-    }
-
-    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
-}</div>
-
-<div class="box box-edge">
-<span class="box-label">Edge Case</span>
-<span class="hl">Warning:</span> Kuch compilers mein <code>int arr[n];</code> (variable size) allow nahi hota. Isliye <span class="hl">constant size</span> use karo — <code>int arr[100];</code> aur phir actual <code>n</code> elements hi input lo. Ya phir <span class="hl">dynamic allocation</span> use karo (baad mein padhenge).
-</div>
-
-<div class="ornament">❦ ❦ ❦</div>
-
-<h2>Memory Layout — How Array is Stored</h2>
-
-<p>Array <span class="hl">continuous memory locations</span> mein store hota hai. Har element ka address pichle element ke address se <span class="hl">data type ke size</span> jitna door hota hai.</p>
-
-<h4>int Array (4 bytes each)</h4>
-
-<div class="memory-container">
-<p class="memory-title">🔷 MEMORY LAYOUT: int arr[5] — Each int = 4 bytes</p>
-<table class="memory-table">
-<tr>
-<th>Index</th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-</tr>
-<tr>
-<td class="mem-index">Address</td>
-<td>0x1000</td>
-<td>0x1004</td>
-<td>0x1008</td>
-<td>0x100C</td>
-<td>0x1010</td>
-</tr>
-<tr>
-<td class="mem-index">Value</td>
-<td class="mem-data">70</td>
-<td class="mem-data">40</td>
-<td class="mem-data">80</td>
-<td class="mem-data">14</td>
-<td class="mem-data">18</td>
-</tr>
-<tr>
-<td class="mem-index">Size</td>
-<td colspan="5" style="background: #F4E9D8; color: #7A5C3A;">Total = 5 × 4 = 20 bytes</td>
-</tr>
-</table>
-</div>
-
-<h4>Address Calculation Formula</h4>
-
-<div class="box box-intuition">
-<span class="box-label">Intuition</span>
-Kisi bhi element ka address nikalne ka formula:<br><br>
-<span class="hl">Address of arr[i] = Base Address + (i × Size of Data Type)</span><br><br>
-Jaise <code>arr[3]</code> ka address: <code>1000 + (3 × 4) = 1000 + 12 = 1012 (0x100C)</code>
-</div>
-
-<h4>double Array (8 bytes each)</h4>
-
-<div class="memory-container">
-<p class="memory-title">🔷 MEMORY LAYOUT: double salary[5] — Each double = 8 bytes</p>
-<table class="memory-table">
-<tr>
-<th>Index</th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-</tr>
-<tr>
-<td class="mem-index">Address</td>
-<td>0x2000</td>
-<td>0x2008</td>
-<td>0x2010</td>
-<td>0x2018</td>
-<td>0x2020</td>
-</tr>
-<tr>
-<td class="mem-index">Value</td>
-<td class="mem-data">50000.0</td>
-<td class="mem-data">60000.0</td>
-<td class="mem-data">45000.0</td>
-<td class="mem-data">70000.0</td>
-<td class="mem-data">55000.0</td>
-</tr>
-<tr>
-<td class="mem-index">Size</td>
-<td colspan="5" style="background: #F4E9D8; color: #7A5C3A;">Total = 5 × 8 = 40 bytes</td>
-</tr>
-</table>
-<p style="text-align: center; margin-top: 10px; color: #2E6B5A; font-weight: 600;">Har element 8 bytes door hai — kyunki double 8 bytes ka hota hai</p>
-</div>
-
-<div class="ornament">❦ ❦ ❦</div>
-
-<h2>1-Based Indexing Problem</h2>
-
-<p>Kuch languages (jaise MATLAB, R) mein array <span class="hl">1 se start</span> hota hai. Lekin C++ mein <span class="hl">hamesha 0 se start</span> hota hai. Is difference ko samajhna zaroori hai.</p>
-
-<div class="two-col">
-<div class="memory-container" style="margin:0;">
-<p class="memory-title" style="color: #1A4A4A;">✅ C++ (0-Based)</p>
-<table class="memory-table" style="font-size: 11px;">
-<tr><th>Index</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr>
-<tr><td>Value</td><td>70</td><td>40</td><td>80</td><td>14</td><td>18</td></tr>
-</table>
-<p style="text-align: center; margin-top: 8px; font-size: 11px;">arr[0] = 70 (First element)</p>
-</div>
-<div class="memory-container" style="margin:0;">
-<p class="memory-title" style="color: #7A3B4A;">❌ 1-Based (Other Languages)</p>
-<table class="memory-table" style="font-size: 11px;">
-<tr><th>Index</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
-<tr><td>Value</td><td>70</td><td>40</td><td>80</td><td>14</td><td>18</td></tr>
-</table>
-<p style="text-align: center; margin-top: 8px; font-size: 11px;">arr[1] = 70 (First element)</p>
-</div>
-</div>
-
-<div class="box box-important">
-<span class="box-label">Important</span>
-C++ mein <span class="hl">hamesha 0 se start</span> karo. <code>for(int i = 0; i < n; i++)</code> — ye pattern yaad kar lo. <code>i < n</code> isliye kyunki last index <code>n-1</code> hota hai.
-</div>
-
-<div class="ornament">❦ ❦ ❦</div>
-
-<h2>Memory Address Print Karna</h2>
-
-<p>Aap <code>&</code> operator se kisi bhi variable ya array element ka <span class="hl">memory address</span> print kar sakte ho.</p>
-
-<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
-<span class="syn-kw">using namespace</span> std;
-
-<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
-    <span class="syn-type">int</span> a = <span class="syn-num">10</span>;
-    <span class="syn-fn">cout</span> << <span class="syn-str">"Address of a: "</span> << &a << <span class="syn-fn">endl</span>;
-
-    <span class="syn-type">int</span> arr[<span class="syn-num">5</span>] = {<span class="syn-num">70</span>, <span class="syn-num">40</span>, <span class="syn-num">80</span>, <span class="syn-num">14</span>, <span class="syn-num">18</span>};
-
-    <span class="syn-cm">// Har element ka address print karo</span>
-    <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i < <span class="syn-num">5</span>; i++) {
-        <span class="syn-fn">cout</span> << <span class="syn-str">"Address of arr["</span> << i << <span class="syn-str">"]: "</span> << &arr[i] << <span class="syn-fn">endl</span>;
-    }
-
-    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
-}</div>
-
-<div class="box box-workflow">
-<span class="box-label">Workflow — Expected Output</span>
-<table class="table-luxe" style="margin:0">
-<thead>
-<tr><th>Output</th><th>Difference</th></tr>
-</thead>
-<tbody>
-<tr><td>Address of arr[0]: 0x1000</td><td>—</td></tr>
-<tr><td>Address of arr[1]: 0x1004</td><td>+4 bytes</td></tr>
-<tr><td>Address of arr[2]: 0x1008</td><td>+4 bytes</td></tr>
-<tr><td>Address of arr[3]: 0x100C</td><td>+4 bytes</td></tr>
-<tr><td>Address of arr[4]: 0x1010</td><td>+4 bytes</td></tr>
-</tbody>
-</table>
-</div>
-
-<div class="ornament">❦ ❦ ❦</div>
-
-<h2>Problem 1: Find Highest Element</h2>
-
-<div class="box box-intuition">
-<span class="box-label">Intuition</span>
-Sabse pehle maan lo <span class="hl">pehla element sabse bada hai</span>. Phir baaki sab elements se compare karo. Agar koi element current highest se bada hai, toh usse new highest bana do.
-</div>
-
-<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
-<span class="syn-kw">using namespace</span> std;
-
-<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
-    <span class="syn-type">int</span> marks[<span class="syn-num">5</span>] = {<span class="syn-num">70</span>, <span class="syn-num">80</span>, <span class="syn-num">40</span>, <span class="syn-num">90</span>, <span class="syn-num">20</span>};
-
-    <span class="syn-cm">// Step 1: Maan lo pehla element highest hai</span>
-    <span class="syn-type">int</span> highest = marks[<span class="syn-num">0</span>];
-
-    <span class="syn-cm">// Step 2: Baaki elements se compare karo</span>
-    <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">1</span>; i < <span class="syn-num">5</span>; i++) {
-        <span class="syn-kw">if</span>(marks[i] > highest) {
-            highest = marks[i];  <span class="syn-cm">// New highest mil gaya</span>
-        }
-    }
-
-    <span class="syn-fn">cout</span> << <span class="syn-str">"Highest marks: "</span> << highest << <span class="syn-fn">endl</span>;
-
-    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
-}</div>
-
-<div class="box box-workflow">
-<span class="box-label">Workflow — Step by Step</span>
-<table class="table-luxe" style="margin:0">
-<thead>
-<tr><th>Iteration</th><th>i</th><th>marks[i]</th><th>highest</th><th>Comparison</th></tr>
-</thead>
-<tbody>
-<tr><td>Initial</td><td>—</td><td>—</td><td>70</td><td>—</td></tr>
-<tr><td>1</td><td>1</td><td>80</td><td>80</td><td>80 > 70 ✓ Update</td></tr>
-<tr><td>2</td><td>2</td><td>40</td><td>80</td><td>40 > 80 ✗ No change</td></tr>
-<tr><td>3</td><td>3</td><td>90</td><td>90</td><td>90 > 80 ✓ Update</td></tr>
-<tr><td>4</td><td>4</td><td>20</td><td>90</td><td>20 > 90 ✗ No change</td></tr>
-</tbody>
-</table>
-</div>
-
-<div class="ornament">❦ ❦ ❦</div>
-
-<h2>Problem 2: Search in an Array (Linear Search)</h2>
-
-<div class="box box-intuition">
-<span class="box-label">Intuition</span>
-Array ke har element ko ek-ek karke check karo. Agar target element mil jaye, toh "Found" print karo aur loop se bahar niklo. Agar pura array check karne ke baad bhi na mile, toh "Not Found".
-</div>
-
-<div class="code-block"><span class="syn-kw">#include</span> &lt;iostream&gt;
-<span class="syn-kw">using namespace</span> std;
-
-<span class="syn-type">int</span> <span class="syn-fn">main</span>() {
-    <span class="syn-type">int</span> arr[<span class="syn-num">5</span>] = {<span class="syn-num">70</span>, <span class="syn-num">80</span>, <span class="syn-num">40</span>, <span class="syn-num">90</span>, <span class="syn-num">20</span>};
-    <span class="syn-type">int</span> search = <span class="syn-num">90</span>;
-
-    <span class="syn-kw">for</span>(<span class="syn-type">int</span> i = <span class="syn-num">0</span>; i < <span class="syn-num">5</span>; i++) {
-        <span class="syn-kw">if</span>(arr[i] == search) {
-            <span class="syn-fn">cout</span> << <span class="syn-str">"YES, Element found at index "</span> << i << <span class="syn-fn">endl</span>;
-            <span class="syn-kw">return</span> <span class="syn-num">0</span>;  <span class="syn-cm">// Program yahin khatam</span>
-        }
-    }
-
-    <span class="syn-cm">// Agar loop complete ho gaya aur element nahi mila</span>
-    <span class="syn-fn">cout</span> << <span class="syn-str">"NO, Element not found"</span> << <span class="syn-fn">endl</span>;
-
-    <span class="syn-kw">return</span> <span class="syn-num">0</span>;
-}</div>
-
-<div class="box box-workflow">
-<span class="box-label">Workflow — Search for 90</span>
-<table class="table-luxe" style="margin:0">
-<thead>
-<tr><th>Iteration</th><th>i</th><th>arr[i]</th><th>arr[i] == 90?</th><th>Action</th></tr>
-</thead>
-<tbody>
-<tr><td>1</td><td>0</td><td>70</td><td>No</td><td>Continue</td></tr>
-<tr><td>2</td><td>1</td><td>80</td><td>No</td><td>Continue</td></tr>
-<tr><td>3</td><td>2</td><td>40</td><td>No</td><td>Continue</td></tr>
-<tr><td>4</td><td>3</td><td>90</td><td>Yes ✓</td><td>Found! return 0</td></tr>
-</tbody>
-</table>
-</div>
+<h3>Method 1: Index-wise (One by One)</h3>
+<div class="code-block">marks[<span class="num">0</span>] = <span class="num">50</span>;     <span class="cm">// [50,  _,  _,  _,  _]</span>
+marks[<span class="num">1</span>] = <span class="num">60</span>;     <span class="cm">// [50, 60,  _,  _,  _]</span>
+marks[<span class="num">2</span>] = <span class="num">70</span>;     <span class="cm">// [50, 60, 70,  _,  _]</span>
+marks[<span class="num">3</span>] = <span class="num">80</span>;     <span class="cm">// [50, 60, 70, 80,  _]</span>
+marks[<span class="num">4</span>] = <span class="num">90</span>;     <span class="cm">// [50, 60, 70, 80, 90]</span></div>
+
+<h3>Method 2: Direct Initialization</h3>
+<div class="code-block"><span class="type">int</span> mark[<span class="num">5</span>] = {<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span>, <span class="num">50</span>};
+<span class="cm">// Output: [10, 20, 30, 40, 50]</span></div>
+
+<h3>Method 3: Compiler Auto-Size</h3>
+<div class="code-block"><span class="type">int</span> arr1[] = {<span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span>, <span class="num">50</span>, <span class="num">60</span>};
+<span class="cm">// Compiler automatically size = 5 decide kar lega</span></div>
 
 <div class="box box-best">
-<span class="box-label">Best Practice</span>
-Element milne ke baad <span class="hl"><code>return 0;</code></span> se program end karo — isse unnecessary iterations bachte hain. Agar <code>return</code> nahi karte, toh loop pura chalega chahe element mil gaya ho.
+    <div class="box-label">Best Practice</div>
+    <p>Agar elements pehle se pata hain to <strong>direct initialization</strong> prefer karo. Agar runtime pe input lena hai to <strong>index-wise</strong> ya <strong>loop se input</strong> lo.</p>
 </div>
 
-<div class="ornament">❦ ❦ ❦</div>
+<!-- ==================== 0-BASED INDEXING ==================== -->
+<h2>0-Based Indexing</h2>
 
+<div class="box box-intuition">
+    <div class="box-label">Key Insight</div>
+    <p>Array me <strong>pehla element Index 0</strong> pe hota hai aur <strong>last element Index (n-1)</strong> pe. Ye 0-based indexing kehlaata hai.</p>
+</div>
+
+<table>
+    <tr><th>Property</th><th>Formula</th></tr>
+    <tr><td>Array Size</td><td><code>n</code></td></tr>
+    <tr><td>First Index</td><td><code>0</code></td></tr>
+    <tr><td>Last Index</td><td><code>n - 1</code></td></tr>
+    <tr><td>Total Elements</td><td><code>n</code></td></tr>
+</table>
+
+<h3>Why 0-Based Indexing?</h3>
+
+<div class="box box-workflow">
+    <div class="box-label">Memory Address Formula</div>
+    <p style="font-size:13px; font-weight:600; color:#0B1A2E;">Address of arr[i] = Base Address + (i × Size of Data Type)</p>
+    <p style="margin-top:8px;">Agar 1-based indexing hoti to formula me <code>(i - 1)</code> extra calculation karni padti — ek subtraction har access pe. 0-based indexing se CPU directly offset calculate kar sakta hai bina kisi extra operation ke. Ye <strong>performance optimization</strong> hai.</p>
+</div>
+
+<div class="diag">
+    <div style="font-weight:700; font-size:11px; color:#0B1A2E; margin-bottom:8px;">Address Calculation — int arr[5] at Base = 1000</div>
+    <div class="diag-row">
+        <span class="diag-box">arr[0]</span>
+        <span class="diag-arrow">=</span>
+        <span class="diag-box">1000 + (0×4)</span>
+        <span class="diag-arrow">=</span>
+        <span class="diag-box" style="border-color:#2D6A4F;">1000</span>
+    </div>
+    <div class="diag-row">
+        <span class="diag-box">arr[1]</span>
+        <span class="diag-arrow">=</span>
+        <span class="diag-box">1000 + (1×4)</span>
+        <span class="diag-arrow">=</span>
+        <span class="diag-box" style="border-color:#2D6A4F;">1004</span>
+    </div>
+    <div class="diag-row">
+        <span class="diag-box">arr[2]</span>
+        <span class="diag-arrow">=</span>
+        <span class="diag-box">1000 + (2×4)</span>
+        <span class="diag-arrow">=</span>
+        <span class="diag-box" style="border-color:#2D6A4F;">1008</span>
+    </div>
+    <div class="diag-row">
+        <span class="diag-box">arr[3]</span>
+        <span class="diag-arrow">=</span>
+        <span class="diag-box">1000 + (3×4)</span>
+        <span class="diag-arrow">=</span>
+        <span class="diag-box" style="border-color:#2D6A4F;">1012</span>
+    </div>
+    <div class="diag-row">
+        <span class="diag-box">arr[4]</span>
+        <span class="diag-arrow">=</span>
+        <span class="diag-box">1000 + (4×4)</span>
+        <span class="diag-arrow">=</span>
+        <span class="diag-box" style="border-color:#2D6A4F;">1016</span>
+    </div>
+</div>
+
+<!-- ==================== TRAVERSING ==================== -->
+<h2>Traversing an Array</h2>
+
+<div class="box box-workflow">
+    <div class="box-label">Algorithm</div>
+    <p>Loop chalao <code>i = 0</code> se <code>i < n</code> tak. Har iteration me <code>arr[i]</code> ko access karo. Ye <strong>O(n)</strong> time me complete hota hai.</p>
+</div>
+
+<div class="code-block"><span class="type">int</span> mark[<span class="num">5</span>] = {<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span>, <span class="num">50</span>};
+
+cout &lt;&lt; <span class="str">"Array Elements: "</span>;
+
+<span class="kw">for</span> (<span class="type">int</span> i = <span class="num">0</span>; i &lt; <span class="num">5</span>; i++) {
+    cout &lt;&lt; mark[i] &lt;&lt; <span class="str">" "</span>;
+}
+
+<span class="cm">// Output: Array Elements: 10 20 30 40 50</span></div>
+
+<div class="box box-edge">
+    <div class="box-label">Edge Case / Pitfall</div>
+    <p>Loop condition me <span class="hl">hamesha <code>i < n</code> rakho</code></span>, <code>i <= n</code> mat rakho — ye <strong>out-of-bounds</strong> access hoga aur <strong>undefined behavior</strong> milega ya program crash ho jayega.</p>
+</div>
+
+<!-- ==================== USER INPUT ==================== -->
+<h2>User Input in Array</h2>
+
+<div class="box box-workflow">
+    <div class="box-label">Two-Step Process</div>
+    <p><strong>Step 1:</strong> User se size <code>n</code> lo.<br>
+    <strong>Step 2:</strong> Loop chalake <code>n</code> elements input lo, phir <code>n</code> elements output karo.</p>
+</div>
+
+<div class="code-block"><span class="type">int</span> n;
+cout &lt;&lt; <span class="str">"Tell me the Size of the Array: "</span>;
+cin &gt;&gt; n;
+
+<span class="type">int</span> arr[n];     <span class="cm">// VLA (Variable Length Array) — GCC supports, not standard C++</span>
+
+cout &lt;&lt; <span class="str">"Enter "</span> &lt;&lt; n &lt;&lt; <span class="str">" Elements:"</span> &lt;&lt; endl;
+
+<span class="cm">// Input</span>
+<span class="kw">for</span> (<span class="type">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+    cin &gt;&gt; arr[i];
+}
+
+<span class="cm">// Output</span>
+cout &lt;&lt; <span class="str">"Array Elements: "</span>;
+<span class="kw">for</span> (<span class="type">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+    cout &lt;&lt; arr[i] &lt;&lt; <span class="str">" "</span>;
+}</div>
+
+<div class="box box-warning">
+    <div class="box-label">Warning</div>
+    <p><code>int arr[n]</code> jaha <code>n</code> runtime variable hai — ye <strong>VLA (Variable Length Array)</strong> hai. GCC me chalta hai par <strong>standard C++ me allowed nahi hai</strong>. Production code me <code>vector&lt;int&gt; arr(n)</code> use karo.</p>
+</div>
+
+<div class="ornament">◈ ◈ ◈</div>
+
+<!-- ==================== PROBLEM 1 ==================== -->
+<h2>Problem 1 — Find Highest Element</h2>
+
+<div class="box box-problem">
+    <div class="box-label">Problem Statement</div>
+    <p><strong>Input:</strong> <code>[70, 30, 40, 30, 20]</code><br>
+    <strong>Output:</strong> <code>Highest Element : 70</code></p>
+</div>
+
+<h3>Core Intuition</h3>
+<div class="box box-intuition">
+    <div class="box-label">Intuition / Insight</div>
+    <p>Pehle element ko <strong>"sabse bada"</strong> maan lo. Phir pure array me traverse karo — agar koi element current highest se bada mile to usse highest bana do. Last tak pahunchne pe jo bachega wahi answer hai.</p>
+</div>
+
+<h3>Approach — Linear Scan (Optimal)</h3>
+<div class="box box-best">
+    <div class="box-label">Best Practice / Optimization</div>
+    <p>Single pass me kaam ho jata hai. <span class="hl">No extra space</span> chahiye. Ye <strong>Kadane-like greedy thinking</strong> hai — har step pe best answer maintain karo.</p>
+</div>
+
+<div class="code-block"><span class="cm">// Find Highest Element in Array</span>
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> arr[] = {<span class="num">70</span>, <span class="num">30</span>, <span class="num">40</span>, <span class="num">30</span>, <span class="num">20</span>};
+
+    <span class="type">int</span> highest = arr[<span class="num">0</span>];   <span class="cm">// first element ko highest maan liya</span>
+
+    <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">0</span>; i &lt; <span class="num">5</span>; i++) {
+        <span class="kw">if</span> (arr[i] &gt; highest) {
+            highest = arr[i];   <span class="cm">// bada mila to update</span>
+        }
+    }
+
+    cout &lt;&lt; <span class="str">"Highest Element: "</span> &lt;&lt; highest;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+
+<h3>Step-by-Step Dry Run</h3>
+<div class="box box-dryrun">
+    <div class="box-label">Dry Run / Visualization</div>
+    <p><strong>Array:</strong> <code>[70, 30, 40, 30, 20]</code> &nbsp;|&nbsp; <strong>Initial highest = 70</strong></p>
+    <table style="margin-top:8px;">
+        <tr><th>i</th><th>arr[i]</th><th>arr[i] > highest?</th><th>Action</th><th>highest</th></tr>
+        <tr><td>0</td><td>70</td><td>70 > 70 → <span style="color:#A53F3F;">No</span></td><td>Skip</td><td>70</td></tr>
+        <tr><td>1</td><td>30</td><td>30 > 70 → <span style="color:#A53F3F;">No</span></td><td>Skip</td><td>70</td></tr>
+        <tr><td>2</td><td>40</td><td>40 > 70 → <span style="color:#A53F3F;">No</span></td><td>Skip</td><td>70</td></tr>
+        <tr><td>3</td><td>30</td><td>30 > 70 → <span style="color:#A53F3F;">No</span></td><td>Skip</td><td>70</td></tr>
+        <tr><td>4</td><td>20</td><td>20 > 70 → <span style="color:#A53F3F;">No</span></td><td>Skip</td><td>70</td></tr>
+    </table>
+    <p style="margin-top:8px; font-weight:600; color:#2D6A4F;">✓ Final Answer: 70</p>
+</div>
+
+<div class="box box-complexity">
+    <div class="box-label">Complexity Analysis</div>
+    <table>
+        <tr><th>Metric</th><th>Value</th><th>Reason</th></tr>
+        <tr><td>Time Complexity</td><td><span class="hl">O(n)</span></td><td>Har element ek baar check hota hai</td></tr>
+        <tr><td>Space Complexity</td><td><span class="hl">O(1)</span></td><td>Extra variable sirf <code>highest</code></td></tr>
+    </table>
+</div>
+
+<!-- ==================== PROBLEM 2 ==================== -->
+<h2>Problem 2 — Linear Search</h2>
+
+<div class="box box-problem">
+    <div class="box-label">Problem Statement</div>
+    <p>Array me ek specific element search karna hai. Agar mil jaye to uska <strong>index</strong> print karo, nahi to <strong>"not present"</strong> message do.</p>
+    <p style="margin-top:6px;"><strong>Example 1:</strong> Array = [10,20,30,40,50], Search = 30 → <span style="color:#2D6A4F;">Index: 2</span><br>
+    <strong>Example 2:</strong> Array = [10,70,56,80,90], Search = 40 → <span style="color:#A53F3F;">Element is not present</span></p>
+</div>
+
+<h3>Core Intuition</h3>
+<div class="box box-intuition">
+    <div class="box-label">Intuition / Insight</div>
+    <p>Linear Search me hum array ke <strong>har element ko ek-ek karke check</strong> karte hain jab tak element mil na jaye ya pura array khatam na ho jaye. Jaise ek drawer me cheezein dhoondh rahe ho — ek-ek karke har drawer kholte jao.</p>
+</div>
+
+<h3>Approach — Sequential Scan</h3>
+<div class="box box-workflow">
+    <div class="box-label">Algorithm</div>
+    <p>1. <code>found = false</code> flag set karo.<br>
+    2. Loop se har <code>arr[i]</code> ko <code>search</code> se compare karo.<br>
+    3. Match milte hi <code>found = true</code> karo, result print karo, aur <code>break</code> karo.<br>
+    4. Loop ke baad agar <code>found == false</code> hai to "not present" print karo.</p>
+</div>
+
+<div class="code-block"><span class="cm">// Linear Search in Array</span>
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> arr[] = {<span class="num">10</span>, <span class="num">70</span>, <span class="num">56</span>, <span class="num">80</span>, <span class="num">90</span>};
+    <span class="type">int</span> search = <span class="num">40</span>;
+    <span class="type">bool</span> found = <span class="kw">false</span>;
+
+    <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">0</span>; i &lt; <span class="num">5</span>; i++) {
+        <span class="kw">if</span> (arr[i] == search) {
+            cout &lt;&lt; <span class="str">"Search Element: "</span> &lt;&lt; arr[i] &lt;&lt; endl;
+            cout &lt;&lt; <span class="str">"Index: "</span> &lt;&lt; i &lt;&lt; endl;
+            found = <span class="kw">true</span>;
+            <span class="kw">break</span>;   <span class="cm">// mil gaya, aage check karne ki zaroorat nahi</span>
+        }
+    }
+
+    <span class="kw">if</span> (!found) {
+        cout &lt;&lt; <span class="str">"Element is not present in the Array"</span>;
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+
+<h3>Step-by-Step Dry Run</h3>
+<div class="box box-dryrun">
+    <div class="box-label">Dry Run / Visualization</div>
+    <p><strong>Array:</strong> <code>[10, 70, 56, 80, 90]</code> &nbsp;|&nbsp; <strong>Search:</strong> <code>40</code></p>
+    <table style="margin-top:8px;">
+        <tr><th>i</th><th>arr[i]</th><th>arr[i] == 40?</th><th>Action</th></tr>
+        <tr><td>0</td><td>10</td><td>10 == 40 → <span style="color:#A53F3F;">No</span></td><td>Continue</td></tr>
+        <tr><td>1</td><td>70</td><td>70 == 40 → <span style="color:#A53F3F;">No</span></td><td>Continue</td></tr>
+        <tr><td>2</td><td>56</td><td>56 == 40 → <span style="color:#A53F3F;">No</span></td><td>Continue</td></tr>
+        <tr><td>3</td><td>80</td><td>80 == 40 → <span style="color:#A53F3F;">No</span></td><td>Continue</td></tr>
+        <tr><td>4</td><td>90</td><td>90 == 40 → <span style="color:#A53F3F;">No</span></td><td>Continue</td></tr>
+    </table>
+    <p style="margin-top:8px; font-weight:600; color:#A53F3F;">✗ Loop khatam → found = false → "Element is not present in the Array"</p>
+</div>
+
+<div class="box box-complexity">
+    <div class="box-label">Complexity Analysis</div>
+    <table>
+        <tr><th>Case</th><th>Time Complexity</th><th>Explanation</th></tr>
+        <tr><td>Best Case</td><td><span class="hl">O(1)</span></td><td>Element pehle position pe mil jaye</td></tr>
+        <tr><td>Worst Case</td><td><span class="hl">O(n)</span></td><td>Element last pe ho ya present hi na ho</td></tr>
+        <tr><td>Average Case</td><td><span class="hl">O(n)</span></td><td>Random position pe element</td></tr>
+        <tr><td>Space</td><td><span class="hl">O(1)</span></td><td>Extra space nahi lagti</td></tr>
+    </table>
+</div>
+
+<div class="box box-interview">
+    <div class="box-label">Interview Tip</div>
+    <p>Interviewer pooch sakta hai: <em>"Sorted array me search karna ho to kya use karoge?"</em> → Answer: <strong>Binary Search (O(log n))</strong>. Linear Search sirf <strong>unsorted data</strong> ke liye suitable hai.</p>
+</div>
+
+<div class="ornament">◈ ◈ ◈</div>
+
+<!-- ==================== EDGE CASES ==================== -->
+<h2>Edge Cases & Gotchas</h2>
+
+<div class="box box-edge">
+    <div class="box-label">Edge Case / Pitfall</div>
+    <ul style="margin:4px 0; padding-left:18px;">
+        <li><strong>Empty Array:</strong> <code>n = 0</code> ho to loop execute hi nahi hoga. Highest/Search ka logic pehle se handle kare.</li>
+        <li><strong>Single Element:</strong> <code>arr[0]</code> hi answer hoga — logic automatically handle karta hai.</li>
+        <li><strong>All Same Elements:</strong> Highest = koi bhi element. Search = pehla match return hoga (because of <code>break</code>).</li>
+        <li><strong>Negative Numbers:</strong> <code>INT_MIN</code> se initialize karna safe hota hai agar <code>arr[0]</code> na maan sakein.</li>
+        <li><strong>Out of Bounds:</strong> <code>arr[n]</code> access karna → undefined behavior. Hamesha <code>i < n</code> rakho.</li>
+    </ul>
+</div>
+
+<!-- ==================== PATTERN TRANSFER ==================== -->
+<h2>Pattern Transfer / Related Problems</h2>
+
+<div class="box box-transfer">
+    <div class="box-label">Pattern Transfer</div>
+    <table>
+        <tr><th>Problem</th><th>Approach</th><th>Complexity</th></tr>
+        <tr><td>Find Minimum Element</td><td>Same as Highest, <code>&lt;</code> comparison</td><td>O(n)</td></tr>
+        <tr><td>Find Second Highest</td><td>Two variables track karo</td><td>O(n)</td></tr>
+        <tr><td>Count Occurrences</td><td>Counter variable, no <code>break</code></td><td>O(n)</td></tr>
+        <tr><td>Find All Indices</td><td>Vector me indices store karo</td><td>O(n)</td></tr>
+        <tr><td>Binary Search</td><td>Sorted array pe mid compare</td><td>O(log n)</td></tr>
+    </table>
+</div>
+
+<!-- ==================== KEY TAKEAWAYS ==================== -->
 <h2>Key Takeaways</h2>
 
 <div class="box box-takeaway">
-<span class="box-label">Takeaway</span>
-<ul>
-<li><strong>Array Definition:</strong> Same type ke elements ka collection jo continuous memory mein store hote hain.</li>
-<li><strong>Declaration:</strong> <code>int arr[5];</code> — 5 integers ka array.</li>
-<li><strong>0-Based Indexing:</strong> Array hamesha 0 se start hota hai. Last index = size - 1.</li>
-<li><strong>Initialization:</strong> <code>int arr[] = {1, 2, 3};</code> — compiler size khud le leta hai.</li>
-<li><strong>Memory Layout:</strong> Continuous addresses. Har element <code>sizeof(data_type)</code> bytes door.</li>
-<li><strong>Address Formula:</strong> <code>Base Address + (index × size)</code></li>
-<li><strong>Traversal:</strong> <code>for(int i = 0; i < n; i++)</code> — sabse common pattern.</li>
-<li><strong>Input/Output:</strong> Loop se <code>cin >> arr[i]</code> aur <code>cout << arr[i]</code></li>
-<li><strong>Highest Element:</strong> Pehle element ko highest maan lo, phir compare karte jao.</li>
-<li><strong>Linear Search:</strong> Har element check karo, milne pe <code>return</code> kar do.</li>
-</ul>
+    <div class="box-label">Takeaway / Summary</div>
+    <ul style="margin:4px 0; padding-left:18px;">
+        <li>Array <strong>same data type</strong> ke elements ka <strong>continuous memory</strong> collection hai.</li>
+        <li>Indexing <strong>0-based</strong> hoti hai: First = 0, Last = n-1.</li>
+        <li>Memory address formula: <code>Base + (i × sizeof(type))</code></li>
+        <li>Traversal hamesha <code>for (i=0; i&lt;n; i++)</code> se karo.</li>
+        <li>Highest/Minimum — <strong>single pass greedy</strong> approach, O(n) time, O(1) space.</li>
+        <li>Linear Search — <strong>unsorted data</strong> ke liye, O(n) worst case.</li>
+        <li><code>break</code> se early exit possible jab element mil jaye.</li>
+    </ul>
 </div>
 
-<table class="table-luxe">
-<thead>
-<tr><th>Concept</th><th>Syntax / Formula</th><th>Example</th></tr>
-</thead>
-<tbody>
-<tr><td>Declaration</td><td><code>int arr[5];</code></td><td>5 integers ka array</td></tr>
-<tr><td>Initialization</td><td><code>int arr[] = {1,2,3};</code></td><td>Auto size = 3</td></tr>
-<tr><td>Access</td><td><code>arr[index]</code></td><td><code>arr[0] = 70</code></td></tr>
-<tr><td>First Index</td><td>0</td><td><code>arr[0]</code> = first element</td></tr>
-<tr><td>Last Index</td><td>n - 1</td><td><code>arr[4]</code> for size 5</td></tr>
-<tr><td>Address</td><td><code>Base + (i × size)</code></td><td>1000 + (2 × 4) = 1008</td></tr>
-<tr><td>Traverse</td><td><code>for(i=0; i&lt;n; i++)</code></td><td>All elements access</td></tr>
-<tr><td>Linear Search</td><td>Compare each element</td><td>O(n) complexity</td></tr>
-</tbody>
-</table>
-
-<div class="box box-interview">
-<span class="box-label">Interview Tip</span>
-Interview mein sabse common question: <span class="hl">"Array ka size runtime pe kyun nahi badh sakta?"</span> Answer: Kyunki array <span class="hl">stack memory</span> mein allocate hota hai aur uski size <span class="hl">compile time</span> pe fix ho jati hai. Isliye dynamic arrays (Vectors) aate hain — wo baad mein padhenge.
+<!-- ==================== QUICK REVISION CHEATSHEET ==================== -->
+<div class="cheatsheet">
+    <h3>◆ QUICK REVISION CHEATSHEET ◆</h3>
+    <div class="cheatsheet-grid">
+        <div class="cs-item cs-green">
+            <strong>Array Definition</strong><br>
+            Same data type ka collection, continuous memory me store hota hai.
+        </div>
+        <div class="cs-item">
+            <strong>Declaration</strong><br>
+            <code>int arr[5];</code> → 5 integers reserve
+        </div>
+        <div class="cs-item">
+            <strong>Initialization</strong><br>
+            Index-wise: <code>arr[0]=10;</code><br>
+            Direct: <code>int arr[]={10,20,30};</code>
+        </div>
+        <div class="cs-item cs-green">
+            <strong>0-Based Indexing</strong><br>
+            First = 0, Last = n-1<br>
+            Address = Base + (i × sizeof(type))
+        </div>
+        <div class="cs-item">
+            <strong>Traversal</strong><br>
+            <code>for(int i=0; i&lt;n; i++)</code><br>
+            cout &lt;&lt; arr[i];
+        </div>
+        <div class="cs-item">
+            <strong>Input/Output</strong><br>
+            <code>cin &gt;&gt; arr[i];</code><br>
+            <code>cout &lt;&lt; arr[i];</code>
+        </div>
+        <div class="cs-item cs-green">
+            <strong>Find Highest</strong><br>
+            <code>highest = arr[0];</code><br>
+            <code>if(arr[i] &gt; highest) update;</code>
+        </div>
+        <div class="cs-item cs-green">
+            <strong>Linear Search</strong><br>
+            <code>bool found=false;</code><br>
+            Match milte hi <code>break;</code><br>
+            TC: O(n) &nbsp; SC: O(1)
+        </div>
+        <div class="cs-item cs-red">
+            <strong>Common Mistakes</strong><br>
+            • <code>i &lt;= n</code> → Out of Bounds<br>
+            • VLA <code>int arr[n]</code> → Not standard C++<br>
+            • Highest = 0 se init → fails on negatives
+        </div>
+        <div class="cs-item cs-purple">
+            <strong>Interview Qs</strong><br>
+            • Sorted array me search? → Binary Search<br>
+            • Duplicate elements? → Count karo, vector store karo<br>
+            • 2D array? → Row-major order me store hota hai
+        </div>
+    </div>
 </div>
 
-<div class="golden-insight">
-<strong>Key Insight:</strong> Array programming ka <span class="hl">foundation</span> hai. Bina array ke data structures jaise Strings, 2D Arrays, Vectors, Stacks, Queues — kuch bhi samajhna mushkil hai. Array ke concepts ko <span class="hl">strong karo</span>, baaki sab aasan lagega.
-</div>
-
+<!-- ==================== WATERMARK & SIGNATURE ==================== -->
+<div class="watermark">Harshal Chauhan</div>
 <div class="signature">MADE BY HARSHAL CHAUHAN</div>
 
 </body>

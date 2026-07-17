@@ -9,20 +9,84 @@ using namespace std;
 
 Problem Statement
 ----------------------------------------------------
-Given a sorted array of integers nums and a target
-value, return the first and last position of the
-target in the array.
+Given a sorted array of integers nums and a target,
+return the first and last position of the target.
 
 If the target is not present, return [-1, -1].
 
-Example
 ----------------------------------------------------
+Examples
+----------------------------------------------------
+
+Example 1
+
 Input:
 nums = [5,7,7,8,8,10]
 target = 8
 
 Output:
 [3,4]
+
+Reason:
+Target first appears at index 3
+and last appears at index 4.
+
+----------------------------------------------------
+
+Example 2
+
+Input:
+nums = [5,7,7,8,8,10]
+target = 6
+
+Output:
+[-1,-1]
+
+Reason:
+Target does not exist in the array.
+
+----------------------------------------------------
+
+Example 3
+
+Input:
+nums = []
+target = 0
+
+Output:
+[-1,-1]
+
+Reason:
+The array is empty.
+
+----------------------------------------------------
+
+Example 4
+
+Input:
+nums = [2,2]
+target = 2
+
+Output:
+[0,1]
+
+Reason:
+The target occupies the entire array.
+
+----------------------------------------------------
+
+Example 5
+
+Input:
+nums = [1]
+target = 1
+
+Output:
+[0,0]
+
+Reason:
+Only one element exists,
+and it matches the target.
 
 ----------------------------------------------------
 Approach
@@ -33,45 +97,23 @@ Idea:
 - Perform Binary Search twice.
 - First Binary Search finds the first occurrence.
 - Second Binary Search finds the last occurrence.
-- Whenever target is found:
-    • Save the index.
-    • Continue searching in the required direction.
-
-First Occurrence:
-- Move towards the left half.
-
-Last Occurrence:
-- Move towards the right half.
 
 ----------------------------------------------------
 Algorithm
 ----------------------------------------------------
-Step 1:
-Run Binary Search to find the first occurrence.
-If target is found:
-    - Store the index.
-    - Continue searching on the left.
-
-Step 2:
-Run Binary Search again to find the last occurrence.
-If target is found:
-    - Store the index.
-    - Continue searching on the right.
-
-Step 3:
-Return {first, last}.
+1. Find the first occurrence.
+2. Reset the search space.
+3. Find the last occurrence.
+4. Return both indices.
 
 ----------------------------------------------------
-Why Two Binary Searches?
+Why Binary Search?
 ----------------------------------------------------
-Binary Search normally stops after finding
-the target.
+The array is already sorted.
 
-Here, we need:
-✔ Leftmost occurrence.
-✔ Rightmost occurrence.
-
-Therefore, we perform Binary Search twice.
+Binary Search reduces the search space by half
+after every comparison, making it much faster
+than Linear Search.
 
 ----------------------------------------------------
 Time Complexity
@@ -102,64 +144,56 @@ class Solution {
 public:
     vector<int> searchRange(vector<int>& nums, int target) {
 
-        int first = -1;
-        int last = -1;
+        vector<int> ans(2, -1);
 
-        // -------------------------------
+        int start = 0;
+        int end = nums.size() - 1;
+
         // Find First Occurrence
-        // -------------------------------
-        int low = 0;
-        int high = nums.size() - 1;
+        while (start <= end) {
 
-        while (low <= high) {
-
-            int mid = low + (high - low) / 2;
+            int mid = start + (end - start) / 2;
 
             if (nums[mid] == target) {
 
-                first = mid;
-
-                // Search towards left
-                high = mid - 1;
+                ans[0] = mid;      // Store possible answer
+                end = mid - 1;     // Search on left side
             }
             else if (nums[mid] < target) {
 
-                low = mid + 1;
+                start = mid + 1;
             }
             else {
 
-                high = mid - 1;
+                end = mid - 1;
             }
         }
 
-        // -------------------------------
+        // Reset search space
+        start = 0;
+        end = nums.size() - 1;
+
         // Find Last Occurrence
-        // -------------------------------
-        low = 0;
-        high = nums.size() - 1;
+        while (start <= end) {
 
-        while (low <= high) {
-
-            int mid = low + (high - low) / 2;
+            int mid = start + (end - start) / 2;
 
             if (nums[mid] == target) {
 
-                last = mid;
-
-                // Search towards right
-                low = mid + 1;
+                ans[1] = mid;      // Store possible answer
+                start = mid + 1;   // Search on right side
             }
             else if (nums[mid] < target) {
 
-                low = mid + 1;
+                start = mid + 1;
             }
             else {
 
-                high = mid - 1;
+                end = mid - 1;
             }
         }
 
-        return {first, last};
+        return ans;
     }
 };
 
@@ -169,6 +203,7 @@ Summary
 ----------------------------------------------------
 Algorithm        : Binary Search
 LeetCode Problem : 34
+
 Time Complexity  : O(log n)
 Space Complexity : O(1)
 
@@ -176,5 +211,5 @@ Concepts Used:
 ✔ Binary Search
 ✔ First Occurrence
 ✔ Last Occurrence
-✔ Search Space Reduction
+✔ Answer Search
 */
