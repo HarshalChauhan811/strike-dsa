@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture 13 – Selection, Bubble & Insertion Sort</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@page { size: A4 portrait; margin: 0; }
+* { box-sizing: border-box; }
+body {
+    padding: 18mm 20mm 18mm 24mm;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: #FAFAF8;
+    font-family: 'Poppins', sans-serif;
+    color: #1C1C1C;
+    font-size: 12px;
+    line-height: 1.65;
+    margin: 0;
+    background-image: 
+        linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+    background-size: 25px 25px;
+}
+
+h1 {
+    font-size: 38px; font-weight: 700; color: #0B1A2E;
+    border-bottom: 3px solid #C4924A; padding-bottom: 6px;
+    margin-bottom: 12px; margin-top: 0;
+}
+h2 {
+    font-size: 22px; font-weight: 700; color: #C4924A;
+    border-bottom: 2px solid #C4924A; margin-top: 24px; margin-bottom: 12px;
+}
+h3 {
+    font-size: 16px; font-weight: 700; color: #1A4A4A;
+    margin-top: 18px; margin-bottom: 8px;
+}
+h4 {
+    font-size: 13px; font-weight: 700; color: #2D6A4F;
+    text-transform: uppercase; letter-spacing: 0.6px; margin-top: 14px; margin-bottom: 6px;
+}
+h5 {
+    font-size: 11.5px; font-weight: 700; color: #3C3C3C; margin-bottom: 4px;
+}
+
+.box {
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03);
+    page-break-inside: avoid;
+    border-left: 5px solid;
+}
+.box-label {
+    text-transform: uppercase; font-weight: 700; font-size: 10px;
+    letter-spacing: 0.8px; margin-bottom: 8px; display: block;
+}
+
+.box-pattern { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-pattern .box-label { color: #3A5F80; }
+.box-intuition { border-left-color: #C4924A; background: #F9FBF9; }
+.box-intuition .box-label { color: #C4924A; }
+.box-workflow { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-workflow .box-label { color: #2E6B5A; }
+.box-important { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-important .box-label { color: #A53F3F; }
+.box-interview { border-left-color: #5E4B7A; background: #F8F7FC; }
+.box-interview .box-label { color: #5E4B7A; }
+.box-takeaway { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-takeaway .box-label { color: #2E6B5A; }
+.box-warning { border-left-color: #C4924A; background: #FDFBF5; }
+.box-warning .box-label { color: #C4924A; }
+.box-edge { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-edge .box-label { color: #A53F3F; }
+.box-best { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-best .box-label { color: #2E6B5A; }
+.box-code { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-code .box-label { color: #3A5F80; }
+.box-dryrun { border-left-color: #B49450; background: #FFFFFF; }
+.box-dryrun .box-label { color: #B49450; }
+.box-complexity { border-left-color: #4F46E5; background: #FFFFFF; }
+.box-complexity .box-label { color: #4F46E5; }
+.box-problem { border-left-color: #65A30D; background: #FFFFFF; }
+.box-problem .box-label { color: #65A30D; }
+.box-transfer { border-left-color: #7E22CE; background: #F8F7FC; }
+.box-transfer .box-label { color: #7E22CE; }
+
+.code-block {
+    background: #111824;
+    border: 1px solid #2A3240;
+    border-radius: 10px;
+    padding: 14px 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    page-break-inside: avoid;
+    font-family: 'Fira Code', monospace;
+    color: #E0E0E0;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    font-size: 11.5px;
+    line-height: 1.45;
+    margin: 12px 0;
+}
+.code-block .kw { color: #C586C0; font-weight: bold; }
+.code-block .str { color: #CE9178; }
+.code-block .cm { color: #6A9955; font-style: italic; }
+.code-block .fn { color: #DCDCAA; }
+.code-block .num { color: #B5CEA8; }
+.code-block .type { color: #4EC9B0; }
+.code-block .var { color: #9CDCFE; }
+
+.diagram {
+    border: 1px solid #C4924A;
+    border-left: 4px solid #C4924A;
+    background: #FFFBF5;
+    padding: 12px 16px;
+    margin: 16px 0;
+    overflow-x: auto;
+    page-break-inside: avoid;
+}
+.diagram-box {
+    display: inline-block;
+    background: #FFFFFF;
+    border: 2px solid #0B1A2E;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    margin: 2px;
+    text-align: center;
+    min-width: 32px;
+}
+.diagram-box.sorted { border-color: #2D6A4F; color: #2D6A4F; background: #F0FAF5; }
+.diagram-box.unsorted { border-color: #A53F3F; color: #A53F3F; background: #FDF8F8; }
+.diagram-box.active { border-color: #C4924A; color: #C4924A; background: #FFF8E7; }
+.diagram-box.min { border-color: #4F46E5; color: #4F46E5; background: #EEF2FF; }
+.diagram-arrow { color: #C4924A; font-size: 16px; font-weight: bold; margin: 0 4px; }
+.diagram-label { font-size: 9px; color: #8C8C8C; margin-top: 4px; text-align: center; }
+.diagram-group {
+    border: 1.5px dashed #0B1A2E;
+    border-radius: 8px;
+    padding: 6px 10px;
+    display: inline-block;
+    margin: 4px;
+}
+.diagram-group-label { font-size: 9px; color: #0B1A2E; font-weight: 600; text-align: center; margin-bottom: 4px; }
+
+.table-wrap { overflow-x: auto; margin: 12px 0; }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11.5px;
+    page-break-inside: avoid;
+}
+th {
+    background: #F7F3EC;
+    color: #0B1A2E;
+    font-weight: 600;
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 2px solid #C4924A;
+}
+td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #E8E4DC;
+}
+tr:nth-child(even) { background: #FAFAF8; }
+
+.highlight {
+    background: #F4E9D8;
+    color: #7A5C3A;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.ornament {
+    text-align: center;
+    margin: 22px 0;
+    color: #C4924A;
+    font-size: 18px;
+    letter-spacing: 6px;
+}
+
+.cheatsheet {
+    border: 2px solid #C4924A;
+    background: #F9F8F5;
+    border-radius: 10px;
+    padding: 16px;
+    margin: 24px 0;
+    page-break-inside: avoid;
+}
+.cheatsheet-title {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1A4A4A;
+    margin-bottom: 12px;
+}
+.cheatsheet-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+.cheatsheet-item {
+    background: #FFFFFF;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 9.5px;
+    line-height: 1.5;
+    border-left: 3px solid #C4924A;
+}
+.cheatsheet-item strong { color: #0B1A2E; }
+
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 600;
+    margin-left: 6px;
+}
+.badge-green { background: #DCFCE7; color: #166534; }
+.badge-red { background: #FEE2E2; color: #991B1B; }
+.badge-amber { background: #FEF3C7; color: #92400E; }
+.badge-blue { background: #DBEAFE; color: #1E40AF; }
+
+ul { margin: 6px 0; padding-left: 18px; }
+li { margin-bottom: 4px; }
+
+.watermark {
+    text-align: right;
+    margin: 20px 0 5px 0;
+    color: #9CA3AF;
+    font-size: 8px;
+    opacity: 0.4;
+}
+.signature {
+    text-align: center;
+    margin-top: 30px;
+    border-top: 1px solid #E0D8CC;
+    padding-top: 18px;
+    color: #8C8C8C;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.pass-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0;
+    flex-wrap: wrap;
+}
+.pass-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: #0B1A2E;
+    min-width: 70px;
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== HEADER ==================== -->
+<h1>Lecture 13 – Selection, Bubble & Insertion Sort</h1>
+<div style="color:#8C8C8C; font-size:11px; margin-bottom:16px;">
+    <strong>DSA MASTERY SERIES</strong> &nbsp;|&nbsp; LeetCode 912 &nbsp;|&nbsp; C++ Focused &nbsp;|&nbsp; Print-Ready A4
+</div>
+
+<!-- ==================== PROBLEM STATEMENT ==================== -->
+<div class="box box-problem">
+    <span class="box-label">Problem Statement</span>
+    <p style="margin:0; font-weight:600; color:#0B1A2E;">LeetCode 912 – Sort an Array</p>
+    <p style="margin:6px 0 0 0;">Ek integer array <code>nums</code> diya gaya hai. Task hai array ko <strong>ascending order</strong> me sort karna aur sorted array return karna.</p>
+</div>
+
+<div class="box box-pattern">
+    <span class="box-label">Examples</span>
+    <p style="margin:0;"><strong>Example 1:</strong> Input: <code>[5, 2, 3, 1]</code> &nbsp;→&nbsp; Output: <code>[1, 2, 3, 5]</code></p>
+    <p style="margin:6px 0 0 0;"><strong>Example 2:</strong> Input: <code>[5, 1, 1, 2, 0, 0]</code> &nbsp;→&nbsp; Output: <code>[0, 0, 1, 1, 2, 5]</code></p>
+    <p style="margin:6px 0 0 0;"><strong>Example 3:</strong> Input: <code>[3, 2, 1]</code> &nbsp;→&nbsp; Output: <code>[1, 2, 3]</code></p>
+</div>
+
+<div class="ornament">◈ ◈ ◈</div>
+
+<!-- ==================== SECTION 1: SELECTION SORT ==================== -->
+<h2>1. Selection Sort</h2>
+
+<div class="box box-intuition">
+    <span class="box-label">Intuition & Real-Life Analogy</span>
+    <p style="margin:0;"><strong>Analogy:</strong> Socho tumhe ek line me khade 10 students me se sabse chhote (shortest) student ko line ke start me bhejna hai. Phir bache hue 9 me se sabse chhote ko second position par, aur aise hi continue karna hai.</p>
+    <p style="margin:8px 0 0 0;">Har baar <span class="highlight">unsorted part se minimum element</span> dhundh kar usse current position par place karte hain. Ye <strong>"select and place"</strong> strategy hai — isliye naam <em>Selection Sort</em> hai.</p>
+</div>
+
+<div class="box box-workflow">
+    <span class="box-label">Algorithm Workflow</span>
+    <ol style="margin:0; padding-left:18px;">
+        <li>Array ko do parts me divide karo: <strong>Sorted Part</strong> (left side) aur <strong>Unsorted Part</strong> (right side).</li>
+        <li>Current index <code>i</code> ko minimum maan lo.</li>
+        <li>Unsorted part me actual minimum element find karo (index <code>minIndex</code>).</li>
+        <li>Minimum element ko current index <code>i</code> ke saath <strong>swap</strong> kar do.</li>
+        <li>Step 2-4 har position <code>i = 0</code> se <code>n-2</code> tak repeat karo.</li>
+    </ol>
+</div>
+
+<div class="diagram">
+    <div class="diagram-group-label" style="font-size:11px; color:#0B1A2E; font-weight:700; margin-bottom:8px;">Visual: Selection Sort Concept</div>
+    <div class="pass-row">
+        <span class="pass-label">Initial:</span>
+        <div class="diagram-box unsorted">5</div>
+        <div class="diagram-box unsorted">2</div>
+        <div class="diagram-box unsorted">3</div>
+        <div class="diagram-box unsorted">1</div>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">Pass 1:</span>
+        <div class="diagram-box min">1</div>
+        <span class="diagram-arrow">←</span>
+        <span style="font-size:10px; color:#4F46E5; font-weight:600;">min found</span>
+        <span style="margin-left:12px;"></span>
+        <div class="diagram-box unsorted">2</div>
+        <div class="diagram-box unsorted">3</div>
+        <div class="diagram-box unsorted">5</div>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">After Swap:</span>
+        <div class="diagram-box sorted">1</div>
+        <div class="diagram-box unsorted">2</div>
+        <div class="diagram-box unsorted">3</div>
+        <div class="diagram-box unsorted">5</div>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">Pass 2:</span>
+        <div class="diagram-box sorted">1</div>
+        <div class="diagram-box sorted">2</div>
+        <div class="diagram-box unsorted">3</div>
+        <div class="diagram-box unsorted">5</div>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">Pass 3:</span>
+        <div class="diagram-box sorted">1</div>
+        <div class="diagram-box sorted">2</div>
+        <div class="diagram-box sorted">3</div>
+        <div class="diagram-box sorted">5</div>
+    </div>
+    <div class="diagram-label">Green = Sorted &nbsp;|&nbsp; Red = Unsorted &nbsp;|&nbsp; Purple = Minimum Found</div>
+</div>
+
+<h3>C++ Implementation</h3>
+<div class="code-block"><span class="cm">// Selection Sort - LeetCode 912</span>
+<span class="kw">class</span> <span class="type">Solution</span> {
+<span class="kw">public</span>:
+    <span class="type">vector</span>&lt;<span class="type">int</span>&gt; <span class="fn">sortArray</span>(<span class="type">vector</span>&lt;<span class="type">int</span>&gt;&amp; <span class="var">nums</span>) {
+        <span class="type">int</span> <span class="var">n</span> = <span class="var">nums</span>.<span class="fn">size</span>();
+
+        <span class="cm">// Traverse complete array</span>
+        <span class="kw">for</span> (<span class="type">int</span> <span class="var">i</span> = <span class="num">0</span>; <span class="var">i</span> &lt; <span class="var">n</span> - <span class="num">1</span>; <span class="var">i</span>++) {
+
+            <span class="cm">// Assume current index has minimum element</span>
+            <span class="type">int</span> <span class="var">minIndex</span> = <span class="var">i</span>;
+
+            <span class="cm">// Find actual minimum in unsorted part</span>
+            <span class="kw">for</span> (<span class="type">int</span> <span class="var">j</span> = <span class="var">i</span> + <span class="num">1</span>; <span class="var">j</span> &lt; <span class="var">n</span>; <span class="var">j</span>++) {
+                <span class="kw">if</span> (<span class="var">nums</span>[<span class="var">j</span>] &lt; <span class="var">nums</span>[<span class="var">minIndex</span>]) {
+                    <span class="var">minIndex</span> = <span class="var">j</span>;
+                }
+            }
+
+            <span class="cm">// Place minimum at its correct position</span>
+            <span class="fn">swap</span>(<span class="var">nums</span>[<span class="var">i</span>], <span class="var">nums</span>[<span class="var">minIndex</span>]);
+        }
+
+        <span class="kw">return</span> <span class="var">nums</span>;
+    }
+};</div>
+
+<div class="box box-dryrun">
+    <span class="box-label">Step-by-Step Dry Run</span>
+    <p style="margin:0; font-weight:600;">Input: nums = [5, 2, 3, 1]</p>
+    <div style="margin-top:10px;">
+        <p style="margin:4px 0; font-size:11px;"><strong>Pass 1 (i = 0):</strong> minIndex starts at 0 (value 5). j=1 → 2&lt;5, minIndex=1. j=2 → 3&lt;2? No. j=3 → 1&lt;2, minIndex=3. <strong>Swap nums[0]↔nums[3]:</strong> [1, 2, 3, 5]</p>
+        <p style="margin:4px 0; font-size:11px;"><strong>Pass 2 (i = 1):</strong> minIndex=1 (value 2). j=2 → 3&lt;2? No. j=3 → 5&lt;2? No. <strong>No swap needed.</strong> Array: [1, 2, 3, 5]</p>
+        <p style="margin:4px 0; font-size:11px;"><strong>Pass 3 (i = 2):</strong> minIndex=2 (value 3). j=3 → 5&lt;3? No. <strong>No swap needed.</strong> Array: [1, 2, 3, 5]</p>
+        <p style="margin:4px 0; font-size:11px; color:#2D6A4F; font-weight:600;">Final Output: [1, 2, 3, 5]</p>
+    </div>
+</div>
+
+<div class="box box-complexity">
+    <span class="box-label">Complexity Analysis</span>
+    <div class="table-wrap">
+        <table>
+            <tr><th>Case</th><th>Time Complexity</th><th>Reason</th></tr>
+            <tr><td>Best Case</td><td>O(n²)</td><td>Har baar nested loop chalega, chahe array sorted ho ya na ho</td></tr>
+            <tr><td>Average Case</td><td>O(n²)</td><td>Approximately n²/2 comparisons hote hain</td></tr>
+            <tr><td>Worst Case</td><td>O(n²)</td><td>Reverse sorted array me bhi same comparisons</td></tr>
+        </table>
+    </div>
+    <p style="margin:8px 0 0 0;"><strong>Space Complexity:</strong> O(1) — In-place sorting, extra memory nahi lagti.</p>
+</div>
+
+<div class="box box-edge">
+    <span class="box-label">Edge Cases & Gotchas</span>
+    <ul>
+        <li><strong>Empty array / Single element:</strong> Loop nahi chalega, directly return hoga. Handle ho jata hai.</li>
+        <li><strong>Duplicate elements:</strong> Selection Sort <strong>stable nahi hai</strong> — equal elements ka relative order change ho sakta hai swap ke wajah se.</li>
+        <li><strong>Already sorted array:</strong> Phir bhi O(n²) comparisons honge — adaptive nahi hai.</li>
+    </ul>
+</div>
+
+<div class="box box-interview">
+    <span class="box-label">Interview Tip</span>
+    <p style="margin:0;">Interviewer pooch sakta hai: <em>"Selection Sort ko stable kaise banaoge?"</em> — Answer: Minimum element ko swap karne ke bajaye, <strong>shift karke insert</strong> karo. Lekin phir wo Insertion Sort ban jayega!</p>
+</div>
+
+<div class="ornament">◈ ◈ ◈</div>
+
+<!-- ==================== SECTION 2: BUBBLE SORT ==================== -->
+<h2>2. Bubble Sort</h2>
+
+<div class="box box-intuition">
+    <span class="box-label">Intuition & Real-Life Analogy</span>
+    <p style="margin:0;"><strong>Analogy:</strong> Socho ek fish tank me bubbles hain — halki (light) bubbles paani ke upar ki taraf udti hain. Similarly, Bubble Sort me <span class="highlight">chhote elements left ki taraf "bubble up" hote hain</span> aur bade elements right side settle ho jate hain.</p>
+    <p style="margin:8px 0 0 0;">Har pass me adjacent elements compare karte hain. Agar left wala bada hai, to swap kar do. Har complete pass ke baad, <strong>sabse bada element apni correct position par pahunch jata hai</strong> — jaise bubble upar jaati hai.</p>
+</div>
+
+<div class="box box-workflow">
+    <span class="box-label">Algorithm Workflow</span>
+    <ol style="margin:0; padding-left:18px;">
+        <li>Outer loop: <code>i = 0</code> se <code>n-2</code> tak — total <code>n-1</code> passes.</li>
+        <li>Har pass me inner loop: <code>j = 0</code> se <code>n-i-2</code> tak — last <code>i</code> elements already sorted hain.</li>
+        <li><code>nums[j]</code> aur <code>nums[j+1]</code> ko compare karo.</li>
+        <li>Agar <code>nums[j] &gt; nums[j+1]</code>, to dono ko <strong>swap</strong> kar do.</li>
+        <li>Har pass ke end me, largest element apni final position par hota hai.</li>
+    </ol>
+</div>
+
+<div class="diagram">
+    <div class="diagram-group-label" style="font-size:11px; color:#0B1A2E; font-weight:700; margin-bottom:8px;">Visual: Bubble Sort - Bubbles Rising to Surface</div>
+    <div class="pass-row">
+        <span class="pass-label">Initial:</span>
+        <div class="diagram-box unsorted">5</div>
+        <div class="diagram-box unsorted">2</div>
+        <div class="diagram-box unsorted">3</div>
+        <div class="diagram-box unsorted">1</div>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">Pass 1:</span>
+        <div class="diagram-box unsorted">2</div>
+        <div class="diagram-box unsorted">3</div>
+        <div class="diagram-box unsorted">1</div>
+        <div class="diagram-box sorted">5</div>
+        <span style="font-size:10px; color:#2D6A4F; margin-left:6px;">← 5 settled</span>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">Pass 2:</span>
+        <div class="diagram-box unsorted">2</div>
+        <div class="diagram-box unsorted">1</div>
+        <div class="diagram-box sorted">3</div>
+        <div class="diagram-box sorted">5</div>
+        <span style="font-size:10px; color:#2D6A4F; margin-left:6px;">← 3 settled</span>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">Pass 3:</span>
+        <div class="diagram-box sorted">1</div>
+        <div class="diagram-box sorted">2</div>
+        <div class="diagram-box sorted">3</div>
+        <div class="diagram-box sorted">5</div>
+        <span style="font-size:10px; color:#2D6A4F; margin-left:6px;">← All sorted!</span>
+    </div>
+    <div class="diagram-label">Green = Sorted/Settled &nbsp;|&nbsp; Red = Still Bubbling</div>
+</div>
+
+<h3>C++ Implementation</h3>
+<div class="code-block"><span class="cm">// Bubble Sort - LeetCode 912</span>
+<span class="kw">class</span> <span class="type">Solution</span> {
+<span class="kw">public</span>:
+    <span class="type">vector</span>&lt;<span class="type">int</span>&gt; <span class="fn">sortArray</span>(<span class="type">vector</span>&lt;<span class="type">int</span>&gt;&amp; <span class="var">nums</span>) {
+        <span class="type">int</span> <span class="var">n</span> = <span class="var">nums</span>.<span class="fn">size</span>();
+
+        <span class="cm">// Total n - 1 passes</span>
+        <span class="kw">for</span> (<span class="type">int</span> <span class="var">i</span> = <span class="num">0</span>; <span class="var">i</span> &lt; <span class="var">n</span> - <span class="num">1</span>; <span class="var">i</span>++) {
+
+            <span class="cm">// Compare adjacent elements</span>
+            <span class="cm">// Last i elements already sorted hain</span>
+            <span class="kw">for</span> (<span class="type">int</span> <span class="var">j</span> = <span class="num">0</span>; <span class="var">j</span> &lt; <span class="var">n</span> - <span class="var">i</span> - <span class="num">1</span>; <span class="var">j</span>++) {
+
+                <span class="cm">// Swap if wrong order me hain</span>
+                <span class="kw">if</span> (<span class="var">nums</span>[<span class="var">j</span>] &gt; <span class="var">nums</span>[<span class="var">j</span> + <span class="num">1</span>]) {
+                    <span class="fn">swap</span>(<span class="var">nums</span>[<span class="var">j</span>], <span class="var">nums</span>[<span class="var">j</span> + <span class="num">1</span>]);
+                }
+            }
+        }
+
+        <span class="kw">return</span> <span class="var">nums</span>;
+    }
+};</div>
+
+<div class="box box-dryrun">
+    <span class="box-label">Step-by-Step Dry Run</span>
+    <p style="margin:0; font-weight:600;">Input: nums = [5, 2, 3, 1]</p>
+    <div style="margin-top:10px;">
+        <p style="margin:4px 0; font-size:11px;"><strong>Pass 1:</strong> [5,2,3,1] → Swap(5,2) → [2,5,3,1] → Swap(5,3) → [2,3,5,1] → Swap(5,1) → <strong>[2,3,1,5]</strong> (5 settled at end)</p>
+        <p style="margin:4px 0; font-size:11px;"><strong>Pass 2:</strong> [2,3,1,5] → 2&lt;3? Yes, no swap → 3&gt;1? Yes, Swap(3,1) → <strong>[2,1,3,5]</strong> (3 settled)</p>
+        <p style="margin:4px 0; font-size:11px;"><strong>Pass 3:</strong> [2,1,3,5] → 2&gt;1? Yes, Swap(2,1) → <strong>[1,2,3,5]</strong> (2 settled)</p>
+        <p style="margin:4px 0; font-size:11px; color:#2D6A4F; font-weight:600;">Final Output: [1, 2, 3, 5]</p>
+    </div>
+</div>
+
+<div class="box box-complexity">
+    <span class="box-label">Complexity Analysis</span>
+    <div class="table-wrap">
+        <table>
+            <tr><th>Case</th><th>Time Complexity</th><th>Reason</th></tr>
+            <tr><td>Best Case</td><td>O(n²)</td><td>Basic implementation me har baar nested loop chalega</td></tr>
+            <tr><td>Average Case</td><td>O(n²)</td><td>Approximately n²/2 comparisons and swaps</td></tr>
+            <tr><td>Worst Case</td><td>O(n²)</td><td>Reverse sorted array me maximum swaps</td></tr>
+        </table>
+    </div>
+    <p style="margin:8px 0 0 0;"><strong>Space Complexity:</strong> O(1) — In-place sorting.</p>
+    <p style="margin:6px 0 0 0; font-size:11px; color:#5E4B7A;"><strong>Optimization Tip:</strong> Agar kisi pass me <strong>zero swaps</strong> hue, matlab array sorted hai. Ek <code>swapped</code> flag add karke Best Case O(n) banaya ja sakta hai!</p>
+</div>
+
+<div class="box box-edge">
+    <span class="box-label">Edge Cases & Gotchas</span>
+    <ul>
+        <li><strong>Optimization opportunity:</strong> <code>swapped</code> flag se early termination possible — already sorted array me O(n) ho jayega.</li>
+        <li><strong>Stable Sort:</strong> Haan, Bubble Sort <strong>stable</strong> hai — equal elements ka relative order change nahi hota.</li>
+        <li><strong>Adaptive:</strong> Optimized version me partially sorted data pe better performance deta hai.</li>
+    </ul>
+</div>
+
+<div class="box box-interview">
+    <span class="box-label">Interview Tip</span>
+    <p style="margin:0;">Interviewer aksar poochta hai: <em>"Bubble Sort ko optimize kaise karoge?"</em> — <code>swapped</code> flag lagao. Agar koi pass me swap nahi hua, loop break kar do. Isse Best Case O(n) ho jata hai. Ye small detail badi difference create karti hai!</p>
+</div>
+
+<div class="ornament">◈ ◈ ◈</div>
+
+<!-- ==================== SECTION 3: INSERTION SORT ==================== -->
+<h2>3. Insertion Sort</h2>
+
+<div class="box box-intuition">
+    <span class="box-label">Intuition & Real-Life Analogy</span>
+    <p style="margin:0;"><strong>Analogy:</strong> Socho tumhe playing cards sort karna hai. Pehla card already sorted maan lo. Dusra card uthao aur pehle ke saath compare karke sahi jagah pe rakh do. Teesra card uthao aur already sorted cards me uski correct position dhundh ke insert kar do.</p>
+    <p style="margin:8px 0 0 0;">Insertion Sort bhi exactly aise hi kaam karta hai — <span class="highlight">har iteration me current element ko already sorted part me uski correct position par insert karte hain</span>. Left side hamesha sorted rehta hai, right side unsorted.</p>
+</div>
+
+<div class="box box-workflow">
+    <span class="box-label">Algorithm Workflow</span>
+    <ol style="margin:0; padding-left:18px;">
+        <li>Pehla element (<code>i = 0</code>) ko already sorted maan lo.</li>
+        <li>Current element <code>nums[i]</code> ko uthao (<code>i = 1</code> se start).</li>
+        <li>Sorted part (left side) me backward move karo: <code>j = i</code> se <code>1</code> tak.</li>
+        <li>Agars <code>nums[j] &lt; nums[j-1]</code>, to swap karte raho.</li>
+        <li>Jab <code>nums[j] &gt;= nums[j-1]</code> mile, correct position mil gayi — break kar do.</li>
+        <li>Step 2-5 har element ke liye repeat karo.</li>
+    </ol>
+</div>
+
+<div class="diagram">
+    <div class="diagram-group-label" style="font-size:11px; color:#0B1A2E; font-weight:700; margin-bottom:8px;">Visual: Insertion Sort - Like Sorting Playing Cards</div>
+    <div class="pass-row">
+        <span class="pass-label">Initial:</span>
+        <div class="diagram-box unsorted">5</div>
+        <div class="diagram-box unsorted">2</div>
+        <div class="diagram-box unsorted">3</div>
+        <div class="diagram-box unsorted">1</div>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">i=1 (2):</span>
+        <div class="diagram-box sorted">2</div>
+        <div class="diagram-box sorted">5</div>
+        <div class="diagram-box unsorted">3</div>
+        <div class="diagram-box unsorted">1</div>
+        <span style="font-size:10px; color:#2D6A4F; margin-left:6px;">← 2 inserted before 5</span>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">i=2 (3):</span>
+        <div class="diagram-box sorted">2</div>
+        <div class="diagram-box sorted">3</div>
+        <div class="diagram-box sorted">5</div>
+        <div class="diagram-box unsorted">1</div>
+        <span style="font-size:10px; color:#2D6A4F; margin-left:6px;">← 3 inserted between 2 & 5</span>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">i=3 (1):</span>
+        <div class="diagram-box sorted">1</div>
+        <div class="diagram-box sorted">2</div>
+        <div class="diagram-box sorted">3</div>
+        <div class="diagram-box sorted">5</div>
+        <span style="font-size:10px; color:#2D6A4F; margin-left:6px;">← 1 inserted at start</span>
+    </div>
+    <div class="diagram-label">Green = Sorted Hand &nbsp;|&nbsp; Red = Cards Yet to Pick</div>
+</div>
+
+<h3>C++ Implementation</h3>
+<div class="code-block"><span class="cm">// Insertion Sort - LeetCode 912</span>
+<span class="kw">class</span> <span class="type">Solution</span> {
+<span class="kw">public</span>:
+    <span class="type">vector</span>&lt;<span class="type">int</span>&gt; <span class="fn">sortArray</span>(<span class="type">vector</span>&lt;<span class="type">int</span>&gt;&amp; <span class="var">nums</span>) {
+        <span class="type">int</span> <span class="var">n</span> = <span class="var">nums</span>.<span class="fn">size</span>();
+
+        <span class="cm">// Assume first element already sorted</span>
+        <span class="kw">for</span> (<span class="type">int</span> <span class="var">i</span> = <span class="num">1</span>; <span class="var">i</span> &lt; <span class="var">n</span>; <span class="var">i</span>++) {
+
+            <span class="cm">// Insert current element into sorted part</span>
+            <span class="kw">for</span> (<span class="type">int</span> <span class="var">j</span> = <span class="var">i</span>; <span class="var">j</span> &gt; <span class="num">0</span>; <span class="var">j</span>--) {
+
+                <span class="cm">// Move current element left until correct position</span>
+                <span class="kw">if</span> (<span class="var">nums</span>[<span class="var">j</span>] &lt; <span class="var">nums</span>[<span class="var">j</span> - <span class="num">1</span>]) {
+                    <span class="fn">swap</span>(<span class="var">nums</span>[<span class="var">j</span>], <span class="var">nums</span>[<span class="var">j</span> - <span class="num">1</span>]);
+                }
+                <span class="kw">else</span> {
+                    <span class="cm">// Correct position found, stop shifting</span>
+                    <span class="kw">break</span>;
+                }
+            }
+        }
+
+        <span class="kw">return</span> <span class="var">nums</span>;
+    }
+};</div>
+
+<div class="box box-dryrun">
+    <span class="box-label">Step-by-Step Dry Run</span>
+    <p style="margin:0; font-weight:600;">Input: nums = [5, 2, 3, 1]</p>
+    <div style="margin-top:10px;">
+        <p style="margin:4px 0; font-size:11px;"><strong>Initial:</strong> [5 | 2, 3, 1] — 5 sorted maana, baaki unsorted</p>
+        <p style="margin:4px 0; font-size:11px;"><strong>i=1 (element 2):</strong> 2 &lt; 5? Yes → Swap → <strong>[2, 5 | 3, 1]</strong></p>
+        <p style="margin:4px 0; font-size:11px;"><strong>i=2 (element 3):</strong> 3 &lt; 5? Yes → Swap → [2, 3, 5 | 1] → 3 &lt; 2? No → Break → <strong>[2, 3, 5 | 1]</strong></p>
+        <p style="margin:4px 0; font-size:11px;"><strong>i=3 (element 1):</strong> 1 &lt; 5? Yes → Swap → [2, 3, 1, 5] → 1 &lt; 3? Yes → Swap → [2, 1, 3, 5] → 1 &lt; 2? Yes → Swap → <strong>[1, 2, 3, 5]</strong></p>
+        <p style="margin:4px 0; font-size:11px; color:#2D6A4F; font-weight:600;">Final Output: [1, 2, 3, 5]</p>
+    </div>
+</div>
+
+<div class="box box-complexity">
+    <span class="box-label">Complexity Analysis</span>
+    <div class="table-wrap">
+        <table>
+            <tr><th>Case</th><th>Time Complexity</th><th>Reason</th></tr>
+            <tr><td>Best Case</td><td>O(n)</td><td>Already sorted array — har element ek hi comparison, break ho jata hai</td></tr>
+            <tr><td>Average Case</td><td>O(n²)</td><td>Random data me approximately n²/4 shifts hote hain</td></tr>
+            <tr><td>Worst Case</td><td>O(n²)</td><td>Reverse sorted array me har element ko start tak shift karna padta hai</td></tr>
+        </table>
+    </div>
+    <p style="margin:8px 0 0 0;"><strong>Space Complexity:</strong> O(1) — In-place sorting, sirf variables use hote hain.</p>
+</div>
+
+<div class="box box-edge">
+    <span class="box-label">Edge Cases & Gotchas</span>
+    <ul>
+        <li><strong>Best performer for small arrays:</strong> Insertion Sort small data pe sabse fast hota hai in practice — isliye hybrid algorithms (Timsort, Introsort) isse use karte hain.</li>
+        <li><strong>Stable Sort:</strong> Haan, equal elements ka order preserve hota hai — <strong>stable</strong> hai.</li>
+        <li><strong>Adaptive:</strong> Haan, partially sorted data pe bahut accha performance deta hai.</li>
+        <li><strong>Online algorithm:</strong> Data stream me elements aate ja rahe hain — Insertion Sort real-time sorting ke liye best hai.</li>
+    </ul>
+</div>
+
+<div class="box box-interview">
+    <span class="box-label">Interview Tip</span>
+    <p style="margin:0;">Interviewer pooch sakta hai: <em>"Insertion Sort ko optimize kaise karoge swaps kam karke?"</em> — Answer: Swap karne ke bajaye, <strong>current element ko store karo</strong> aur sorted elements ko right shift karo. Jab correct position mile, tab directly insert karo. Isse assignments kam hote hain!</p>
+</div>
+
+<div class="ornament">◈ ◈ ◈</div>
+
+<!-- ==================== COMPARISON TABLE ==================== -->
+<h2>4. Algorithm Comparison</h2>
+
+<div class="box box-pattern">
+    <span class="box-label">Head-to-Head Comparison</span>
+    <div class="table-wrap">
+        <table>
+            <tr>
+                <th>Property</th>
+                <th>Selection Sort</th>
+                <th>Bubble Sort</th>
+                <th>Insertion Sort</th>
+            </tr>
+            <tr>
+                <td><strong>Time (Best)</strong></td>
+                <td>O(n²)</td>
+                <td>O(n²) <span style="font-size:9px; color:#8C8C8C;">(O(n) optimized)</span></td>
+                <td><strong style="color:#2D6A4F;">O(n)</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Time (Worst)</strong></td>
+                <td>O(n²)</td>
+                <td>O(n²)</td>
+                <td>O(n²)</td>
+            </tr>
+            <tr>
+                <td><strong>Space</strong></td>
+                <td>O(1)</td>
+                <td>O(1)</td>
+                <td>O(1)</td>
+            </tr>
+            <tr>
+                <td><strong>Stable?</strong></td>
+                <td><span class="badge badge-red">No</span></td>
+                <td><span class="badge badge-green">Yes</span></td>
+                <td><span class="badge badge-green">Yes</span></td>
+            </tr>
+            <tr>
+                <td><strong>In-Place?</strong></td>
+                <td><span class="badge badge-green">Yes</span></td>
+                <td><span class="badge badge-green">Yes</span></td>
+                <td><span class="badge badge-green">Yes</span></td>
+            </tr>
+            <tr>
+                <td><strong>Adaptive?</strong></td>
+                <td><span class="badge badge-red">No</span></td>
+                <td><span class="badge badge-amber">Partially</span></td>
+                <td><span class="badge badge-green">Yes</span></td>
+            </tr>
+            <tr>
+                <td><strong>Swaps</strong></td>
+                <td>O(n)</td>
+                <td>O(n²)</td>
+                <td>O(n²)</td>
+            </tr>
+            <tr>
+                <td><strong>Real-Life Use</strong></td>
+                <td>Memory write kam karna ho</td>
+                <td>Teaching purposes</td>
+                <td>Small / nearly sorted data</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="box box-transfer">
+    <span class="box-label">Pattern Transfer & Related Problems</span>
+    <ul style="margin:0;">
+        <li><strong>LeetCode 912</strong> — Sort an Array (Base problem)</li>
+        <li><strong>LeetCode 148</strong> — Sort List (Linked List pe sorting)</li>
+        <li><strong>LeetCode 75</strong> — Sort Colors (Dutch National Flag — counting sort pattern)</li>
+        <li><strong>LeetCode 147</strong> — Insertion Sort List (Insertion Sort on Linked List)</li>
+        <li><strong>LeetCode 215</strong> — Kth Largest Element (Selection Sort concept se kth element nikaal sakte hain)</li>
+    </ul>
+</div>
+
+<div class="box box-takeaway">
+    <span class="box-label">Key Takeaways</span>
+    <ul style="margin:0;">
+        <li><strong>Selection Sort:</strong> Minimum dhundho aur place karo. Simple but slow. <strong>Swaps kam</strong> karta hai — O(n) swaps only.</li>
+        <li><strong>Bubble Sort:</strong> Adjacent compare karke bubble up karo. <strong>Stable</strong> hai. Optimized version me Best Case O(n).</li>
+        <li><strong>Insertion Sort:</strong> Cards jaisa sort karo. <strong>Best for small / nearly sorted data.</strong> Stable + Adaptive + Online.</li>
+        <li><strong>Sabhi O(n²) hain</strong> — large data ke liye Merge Sort, Quick Sort, ya Heap Sort use karo.</li>
+        <li><strong>Interview me:</strong> In algorithms ka intuition + complexity + stability + adaptiveness yaad rakhna must hai.</li>
+    </ul>
+</div>
+
+<div class="ornament">◈ ◈ ◈</div>
+
+<!-- ==================== QUICK REVISION CHEATSHEET ==================== -->
+<div class="cheatsheet">
+    <div class="cheatsheet-title">QUICK REVISION CHEATSHEET</div>
+    <div class="cheatsheet-grid">
+        <div class="cheatsheet-item">
+            <strong>Selection Sort</strong><br>
+            Strategy: Min find karo → Swap karo<br>
+            Time: O(n²) all cases<br>
+            Space: O(1) | Stable: <span style="color:#A53F3F;">No</span><br>
+            Analogy: Sabse chhote student ko front pe bhejna
+        </div>
+        <div class="cheatsheet-item">
+            <strong>Bubble Sort</strong><br>
+            Strategy: Adjacent compare → Swap → Bubble up<br>
+            Time: O(n²) | Best(opt): <span style="color:#2D6A4F;">O(n)</span><br>
+            Space: O(1) | Stable: <span style="color:#2D6A4F;">Yes</span><br>
+            Analogy: Halki bubbles paani ke upar udti hain
+        </div>
+        <div class="cheatsheet-item">
+            <strong>Insertion Sort</strong><br>
+            Strategy: Current element ko sorted part me insert karo<br>
+            Time: Best O(n) | Worst O(n²)<br>
+            Space: O(1) | Stable: <span style="color:#2D6A4F;">Yes</span> | Adaptive: <span style="color:#2D6A4F;">Yes</span><br>
+            Analogy: Playing cards ko haath me sort karna
+        </div>
+        <div class="cheatsheet-item">
+            <strong>Common Mistakes</strong><br>
+            <span style="color:#A53F3F;">×</span> Bubble Sort ko O(n) best case batana bhool jana<br>
+            <span style="color:#A53F3F;">×</span> Selection Sort ko stable batana (galat!)<br>
+            <span style="color:#A53F3F;">×</span> Inner loop bounds galat likhna<br>
+            <span style="color:#A53F3F;">×</span> Already sorted array pe complexity confuse hona
+        </div>
+        <div class="cheatsheet-item">
+            <strong>Must Remember Code</strong><br>
+            Selection: <code>for(j=i+1; j&lt;n; j++)</code><br>
+            Bubble: <code>for(j=0; j&lt;n-i-1; j++)</code><br>
+            Insertion: <code>for(j=i; j&gt;0; j--)</code><br>
+            <span style="color:#4F46E5;">Loop bounds hi sabse important hai!</span>
+        </div>
+        <div class="cheatsheet-item">
+            <strong>Interview Questions</strong><br>
+            Q1: Kaunsa sort stable hai?<br>
+            → Bubble & Insertion: Yes | Selection: No<br><br>
+            Q2: Nearly sorted array pe best kaunsa?<br>
+            → <strong>Insertion Sort</strong> — O(n) time<br><br>
+            Q3: Minimum swaps kisme hote hain?<br>
+            → Selection Sort — exactly n-1 swaps
+        </div>
+    </div>
+</div>
+
+<!-- ==================== FOOTER ==================== -->
+<div class="watermark">Harshal Chauhan</div>
+<div class="signature">MADE BY HARSHAL CHAUHAN</div>
+
+</body>
+</html>
