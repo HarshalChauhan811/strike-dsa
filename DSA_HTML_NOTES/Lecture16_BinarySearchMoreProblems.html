@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Lecture16_BinarySearchMoreProblems.html</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@page { size: A4 portrait; margin: 0; }
+* { box-sizing: border-box; }
+body {
+    padding: 18mm 20mm 18mm 24mm;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: #FAFAF8;
+    font-family: 'Poppins', sans-serif;
+    color: #1C1C1C;
+    font-size: 12px;
+    line-height: 1.65;
+    margin: 0;
+    background-image:
+        linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+    background-size: 25px 25px;
+}
+
+h1 { font-size: 38px; font-weight: 700; color: #0B1A2E; border-bottom: 3px solid #C4924A; padding-bottom: 6px; margin-bottom: 12px; margin-top: 0; }
+h2 { font-size: 22px; font-weight: 700; color: #C4924A; border-bottom: 2px solid #C4924A; margin-top: 24px; margin-bottom: 12px; padding-bottom: 4px; }
+h3 { font-size: 16px; font-weight: 700; color: #1A4A4A; margin-top: 18px; margin-bottom: 8px; }
+h4 { font-size: 13px; font-weight: 700; color: #2D6A4F; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; }
+h5 { font-size: 11.5px; font-weight: 700; color: #3C3C3C; margin-bottom: 4px; }
+p { margin: 0 0 10px 0; }
+ul, ol { margin: 6px 0; padding-left: 20px; }
+li { margin-bottom: 4px; }
+
+pre.code-block {
+    background: #111824; border: 1px solid #2A3240; border-radius: 10px;
+    padding: 14px 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    page-break-inside: avoid; font-family: 'Fira Code', monospace;
+    color: #E0E0E0; white-space: pre-wrap; overflow-x: auto;
+    font-size: 11.5px; line-height: 1.45; margin: 12px 0;
+}
+code { font-family: 'Fira Code', monospace; font-size: 11px; background: #F0EDE8; padding: 1px 5px; border-radius: 4px; color: #7A5C3A; }
+pre.code-block code { background: transparent; padding: 0; color: inherit; }
+.kw { color: #C586C0; font-weight: bold; }
+.str { color: #CE9178; }
+.cmt { color: #6A9955; font-style: italic; }
+.fn { color: #DCDCAA; }
+.num { color: #B5CEA8; }
+.ty { color: #4EC9B0; }
+
+.box {
+    border-radius: 0 10px 10px 0; padding: 14px 18px; margin-bottom: 12px;
+    background: #FFFFFF; box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03);
+    page-break-inside: avoid; border-left: 5px solid;
+}
+.box-label { text-transform: uppercase; font-weight: 700; font-size: 10px; letter-spacing: 0.8px; margin-bottom: 8px; display: block; }
+
+.box-pattern    { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-pattern .box-label { color: #3A5F80; }
+.box-intuition  { border-left-color: #C4924A; background: #F9FBF9; }
+.box-intuition .box-label { color: #C4924A; }
+.box-workflow   { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-workflow .box-label { color: #2E6B5A; }
+.box-important  { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-important .box-label { color: #A53F3F; }
+.box-interview  { border-left-color: #5E4B7A; background: #F8F7FC; }
+.box-interview .box-label { color: #5E4B7A; }
+.box-takeaway   { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-takeaway .box-label { color: #2E6B5A; }
+.box-warning    { border-left-color: #C4924A; background: #FDFBF5; }
+.box-warning .box-label { color: #C4924A; }
+.box-edge       { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-edge .box-label { color: #A53F3F; }
+.box-best       { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-best .box-label { color: #2E6B5A; }
+.box-code       { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-code .box-label { color: #3A5F80; }
+.box-dryrun     { border-left-color: #B49450; background: #FDFBF5; }
+.box-dryrun .box-label { color: #B49450; }
+.box-complexity { border-left-color: #4F46E5; background: #FFFFFF; }
+.box-complexity .box-label { color: #4F46E5; }
+.box-problem    { border-left-color: #65A30D; background: #FFFFFF; }
+.box-problem .box-label { color: #65A30D; }
+.box-transfer   { border-left-color: #7E22CE; background: #F8F7FC; }
+.box-transfer .box-label { color: #7E22CE; }
+
+.hl { background: #F4E9D8; color: #7A5C3A; padding: 1px 5px; border-radius: 4px; font-weight: 500; }
+
+.comp-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 11.5px; page-break-inside: avoid; }
+.comp-table th { background: #F7F3EC; color: #0B1A2E; font-weight: 600; text-align: left; padding: 8px 12px; border-bottom: 2px solid #C4924A; }
+.comp-table td { padding: 7px 12px; border-bottom: 1px solid #E8E4DC; }
+.comp-table tr:nth-child(even) { background: #FAFAF8; }
+
+.diagram {
+    border: 1px solid #C4924A; border-left: 4px solid #C4924A;
+    background: #FFFBF5; padding: 12px 16px; margin: 16px 0;
+    overflow-x: auto; font-size: 10px; page-break-inside: avoid;
+}
+.diag-box {
+    display: inline-block; background: #FFFFFF; border: 2px solid #0B1A2E;
+    border-radius: 6px; padding: 4px 10px; font-weight: 700; font-size: 10px;
+    margin: 2px; text-align: center; min-width: 30px;
+}
+.diag-group {
+    display: inline-block; border: 1.5px dashed #0B1A2E;
+    border-radius: 6px; padding: 6px 10px; margin: 2px;
+}
+.diag-label { font-size: 9px; color: #8C8C8C; text-align: center; margin-top: 2px; }
+.diag-arrow { color: #C4924A; font-size: 16px; font-weight: bold; margin: 0 4px; }
+.diag-peak { background: #FFF3E0; border-color: #C4924A; }
+.diag-min  { background: #E8F5E9; border-color: #2D6A4F; }
+.diag-sorted { background: #E3F2FD; border-color: #3A5F80; }
+
+.ornament { text-align: center; margin: 22px 0; color: #C4924A; font-size: 18px; letter-spacing: 6px; }
+
+.cheatsheet {
+    border: 2px solid #C4924A; background: #F9F8F5; border-radius: 10px;
+    padding: 16px; margin: 24px 0; page-break-inside: avoid;
+}
+.cheatsheet-title { text-align: center; font-size: 16px; font-weight: 700; color: #1A4A4A; margin-bottom: 12px; }
+.cheatsheet-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cheatsheet-item { background: #FFFFFF; border-radius: 6px; padding: 8px 10px; font-size: 9.5px; line-height: 1.5; border-left: 3px solid #C4924A; }
+.cheatsheet-item b { color: #0B1A2E; font-size: 10px; }
+
+.watermark { text-align: right; margin: 20px 0 5px 0; color: #9CA3AF; font-size: 8px; opacity: 0.4; }
+.signature { text-align: center; margin-top: 30px; border-top: 1px solid #E0D8CC; padding-top: 18px; color: #8C8C8C; font-size: 10px; font-weight: 500; letter-spacing: 1px; }
+
+pre, table, .box, .diagram, .cheatsheet { page-break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<h1>Lecture 16 : Binary Search More Problems</h1>
+<p style="color:#8C8C8C; font-size:11px; margin-bottom:16px;">Pattern Focus: Rotated Sorted Array | Find Minimum (Unique + Duplicates) | Search Target | C++ | Print-Ready</p>
+
+<div class="ornament">&#9670; &#9670; &#9670;</div>
+
+<!-- ============================================================ -->
+<!-- PROBLEM 1: LC 153 -->
+<!-- ============================================================ -->
+
+<h2>Problem 1 : Find Minimum in Rotated Sorted Array [LeetCode 153]</h2>
+
+<div class="box box-problem">
+<span class="box-label">Problem Statement</span>
+<b>Given:</b> Ek array jisme <b>unique integers</b> hain, pehle ascending order mein sorted tha, phir kisi unknown pivot par <b>rotate</b> kar diya gaya.<br>
+<b>Task:</b> Us array ka <b>minimum element</b> return karna hai.<br>
+<b>Constraint:</b> Solution <b>O(log n)</b> time mein chalna chahiye.
+</div>
+
+<div class="box box-pattern">
+<span class="box-label">Examples</span>
+<table class="comp-table">
+<tr><th>Input</th><th>Output</th><th>Explanation</th></tr>
+<tr><td>[3,4,5,1,2]</td><td>1</td><td>Array 5 ke baad rotate hua. 1 sabse chota.</td></tr>
+<tr><td>[4,5,6,7,0,1,2]</td><td>0</td><td>0 minimum element hai.</td></tr>
+<tr><td>[11,13,15,17]</td><td>11</td><td>Array rotate nahi hua. First element minimum.</td></tr>
+<tr><td>[2,1]</td><td>1</td><td>Rotation ke baad 1 minimum ban gaya.</td></tr>
+</table>
+</div>
+
+<h3>Core Intuition</h3>
+<div class="box box-intuition">
+<span class="box-label">Intuition / Insight</span>
+Rotated sorted array ko samjho: ek sorted array ko kisi pivot se rotate karne se <b>do sorted halves</b> ban jaate hain. Jaise <code>[4,5,6,7,0,1,2]</code> mein <code>[4,5,6,7]</code> left sorted half hai aur <code>[0,1,2]</code> right sorted half hai.<br><br>
+<b>Key Observation:</b> Agar <code>nums[mid] > nums[end]</code> hai, toh <b>minimum hamesha right half mein</b> hoga. Kyunki mid se end tak ek "drop" hai — wahi rotation point hai. Agar <code>nums[mid] < nums[end]</code> hai, toh <b>minimum mid ya uske left mein</b> hoga.<br><br>
+Yeh property hume har step pe half search space discard karne deti hai.
+</div>
+
+<div class="diagram">
+<div style="text-align:center; margin-bottom:8px; font-weight:bold; color:#0B1A2E;">Rotated Sorted Array Structure</div>
+<div style="text-align:center;">
+<span class="diag-box diag-sorted">4</span>
+<span class="diag-box diag-sorted">5</span>
+<span class="diag-box diag-sorted">6</span>
+<span class="diag-box diag-sorted">7</span>
+<span class="diag-box diag-min">0</span>
+<span class="diag-box">1</span>
+<span class="diag-box">2</span>
+</div>
+<div style="text-align:center; margin-top:6px;">
+<span style="color:#3A5F80; font-weight:bold;">Left Sorted Half</span>
+<span class="diag-arrow">&#8594;</span>
+<span style="color:#2D6A4F; font-weight:bold;">MINIMUM (Pivot)</span>
+<span class="diag-arrow">&#8594;</span>
+<span style="color:#3A5F80; font-weight:bold;">Right Sorted Half</span>
+</div>
+</div>
+
+<h3>Approach 1 : Brute Force (Linear Scan)</h3>
+<div class="box box-workflow">
+<span class="box-label">Workflow / Algorithm</span>
+<ol>
+<li>First element ko minimum assume karo.</li>
+<li>Array ko traverse karo.</li>
+<li>Har element ko current minimum se compare karo.</li>
+<li>Chota element milne pe update karo.</li>
+<li>End mein minimum return karo.</li>
+</ol>
+</div>
+
+<pre class="code-block"><code><span class="cmt">// Brute Force: O(n)</span>
+<span class="ty">class</span> <span class="fn">Solution</span> {
+<span class="kw">public</span>:
+    <span class="ty">int</span> <span class="fn">findMin</span>(<span class="ty">vector</span>&lt;<span class="ty">int</span>&gt;& nums) {
+        <span class="ty">int</span> minimum = nums[<span class="num">0</span>];
+        <span class="kw">for</span> (<span class="ty">int</span> num : nums) {
+            minimum = min(minimum, num);
+        }
+        <span class="kw">return</span> minimum;
+    }
+};</code></pre>
+
+<div class="box box-complexity">
+<span class="box-label">Complexity Analysis</span>
+<table class="comp-table">
+<tr><th>Metric</th><th>Value</th><th>Reason</th></tr>
+<tr><td>Time</td><td><b>O(n)</b></td><td>Har element ek baar check hota hai</td></tr>
+<tr><td>Space</td><td><b>O(1)</b></td><td>Single variable extra space</td></tr>
+</table>
+</div>
+
+<div class="box box-warning">
+<span class="box-label">Why Not Brute Force?</span>
+Array ki <b>sorted structure</b> ka fayda nahi uthaya. Binary Search se har comparison ke baad <b>half search space discard</b> kar sakte hain. O(n) se O(log n) mein optimize hota hai.
+</div>
+
+<h3>Approach 2 : Optimal (Binary Search)</h3>
+
+<div class="box box-intuition">
+<span class="box-label">Key Insight</span>
+<b>Compare nums[mid] with nums[end]:</b>
+<ul>
+<li><b>nums[mid] > nums[end]</b> &rarr; Ek "drop" mid aur end ke beech mein hai. Minimum <b>right side</b> mein hoga. <code>start = mid + 1</code>.</li>
+<li><b>nums[mid] < nums[end]</b> &rarr; Right side sorted hai. Minimum <b>mid ya left</b> mein hoga. <code>end = mid</code>.</li>
+</ul>
+<b>Condition:</b> <code>while(start < end)</code> — jab <code>start == end</code>, wohi minimum element ka index hai.
+</div>
+
+<div class="box box-workflow">
+<span class="box-label">Algorithm Steps</span>
+<ol>
+<li><code>start = 0, end = n - 1</code> initialize karo.</li>
+<li><code>while (start < end)</code> loop chalao.</li>
+<li><code>mid = start + (end - start) / 2</code> calculate karo.</li>
+<li><code>nums[mid]</code> ko <code>nums[end]</code> se compare karo:
+    <ul>
+    <li><code>nums[mid] > nums[end]</code> &rarr; <code>start = mid + 1</code> (right mein jao).</li>
+    <li><code>nums[mid] < nums[end]</code> &rarr; <code>end = mid</code> (mid ko include karke left mein jao).</li>
+    </ul>
+</li>
+<li>Jab <code>start == end</code>, return <code>nums[start]</code>.</li>
+</ol>
+</div>
+
+<pre class="code-block"><code><span class="cmt">// Optimal: Binary Search on Rotated Array - O(log n)</span>
+<span class="ty">class</span> <span class="fn">Solution</span> {
+<span class="kw">public</span>:
+    <span class="ty">int</span> <span class="fn">findMin</span>(<span class="ty">vector</span>&lt;<span class="ty">int</span>&gt;& nums) {
+        <span class="ty">int</span> start = <span class="num">0</span>;
+        <span class="ty">int</span> end = nums.size() - <span class="num">1</span>;
+
+        <span class="kw">while</span> (start < end) {           <span class="cmt">// Note: start < end</span>
+            <span class="ty">int</span> mid = start + (end - start) / <span class="num">2</span>;
+
+            <span class="cmt">// Drop exists between mid and end -> min on right</span>
+            <span class="kw">if</span> (nums[mid] > nums[end]) {
+                start = mid + <span class="num">1</span>;
+            }
+            <span class="cmt">// Right side sorted -> min at mid or left</span>
+            <span class="kw">else</span> {
+                end = mid;              <span class="cmt">// mid ko discard nahi karte!</span>
+            }
+        }
+        <span class="kw">return</span> nums[start];         <span class="cmt">// start == end == min index</span>
+    }
+};</code></pre>
+
+<h3>Step-by-Step Dry Run</h3>
+<div class="box box-dryrun">
+<span class="box-label">Dry Run / Visualization</span>
+<p><b>Input:</b> nums = [4, 5, 6, 7, 0, 1, 2]</p>
+
+<div class="diagram">
+<div style="margin-bottom:8px;"><b>Initial:</b> start = 0, end = 6</div>
+
+<div style="margin-bottom:6px;"><b>Iteration 1:</b></div>
+<div style="margin-left:10px;">
+mid = 0 + (6-0)/2 = <span class="diag-box">3</span><br>
+nums[3] = 7, nums[6] = 2<br>
+7 > 2 &rarr; <span style="color:#A53F3F; font-weight:bold;">Drop exists! Minimum right mein.</span><br>
+start = 3 + 1 = <span class="diag-box">4</span>
+</div>
+
+<div style="margin:6px 0;"><b>Iteration 2:</b></div>
+<div style="margin-left:10px;">
+start = 4, end = 6<br>
+mid = 4 + (6-4)/2 = <span class="diag-box">5</span><br>
+nums[5] = 1, nums[6] = 2<br>
+1 < 2 &rarr; <span style="color:#2D6A4F; font-weight:bold;">Right sorted! Min mid ya left mein.</span><br>
+end = mid = <span class="diag-box">5</span>
+</div>
+
+<div style="margin:6px 0;"><b>Iteration 3:</b></div>
+<div style="margin-left:10px;">
+start = 4, end = 5<br>
+mid = 4 + (5-4)/2 = <span class="diag-box">4</span><br>
+nums[4] = 0, nums[5] = 1<br>
+0 < 1 &rarr; <span style="color:#2D6A4F; font-weight:bold;">Right sorted! Min mid ya left mein.</span><br>
+end = mid = <span class="diag-box">4</span>
+</div>
+
+<div style="margin-top:8px; padding-top:6px; border-top:1px dashed #C4924A;">
+<b>Loop ends</b> (start = 4, end = 4)<br>
+<b>Return nums[4] = 0</b>
+</div>
+</div>
+</div>
+
+<div class="box box-complexity">
+<span class="box-label">Complexity Analysis</span>
+<table class="comp-table">
+<tr><th>Metric</th><th>Brute Force</th><th>Optimal (Binary Search)</th></tr>
+<tr><td>Time</td><td>O(n)</td><td><b>O(log n)</b></td></tr>
+<tr><td>Space</td><td>O(1)</td><td><b>O(1)</b></td></tr>
+</table>
+</div>
+
+<div class="box box-edge">
+<span class="box-label">Edge Cases & Gotchas</span>
+<ul>
+<li><b>Array not rotated:</b> Jaise <code>[11,13,15,17]</code> — <code>nums[mid] < nums[end]</code> hamesha true hoga, end left ki taraf shift hota rahega, finally start=0 pe minimum milega.</li>
+<li><b>Single element:</b> <code>[1]</code> — loop nahi chalega, directly <code>nums[0]</code> return hoga.</li>
+<li><b>while(start < end) vs while(start <= end):</b> Yaha <code>start < end</code> use karte hain kyunki <code>end = mid</code> karne pe mid ko include karte hain. <code><=</code> use karne se infinite loop ho sakta hai.</li>
+<li><b>end = mid (not mid - 1):</b> Kyunki <code>mid</code> khud minimum ho sakta hai, isliye usse discard nahi karte.</li>
+</ul>
+</div>
+
+<div class="ornament">&#9670; &#9670; &#9670;</div>
+
+<!-- ============================================================ -->
+<!-- PROBLEM 2: LC 154 -->
+<!-- ============================================================ -->
+
+<h2>Problem 2 : Find Minimum in Rotated Sorted Array II [LeetCode 154]</h2>
+
+<div class="box box-problem">
+<span class="box-label">Problem Statement</span>
+<b>Given:</b> Ek array sorted ascending order mein tha, phir rotate kar diya gaya. Is baar array mein <b>duplicate elements</b> ho sakte hain.<br>
+<b>Task:</b> Array ka <b>minimum element</b> return karna hai.<br>
+<b>Difference from LC 153:</b> Yaha unique elements ki guarantee <b>nahi</b> hai.
+</div>
+
+<div class="box box-pattern">
+<span class="box-label">Examples</span>
+<table class="comp-table">
+<tr><th>Input</th><th>Output</th><th>Explanation</th></tr>
+<tr><td>[1,3,5]</td><td>1</td><td>Array rotate nahi hua. First element minimum.</td></tr>
+<tr><td>[2,2,2,0,1]</td><td>0</td><td>Duplicates ke saath 0 minimum hai.</td></tr>
+<tr><td>[3,3,1,3]</td><td>1</td><td>Duplicates hone ke baad bhi 1 minimum.</td></tr>
+<tr><td>[10,1,10,10,10]</td><td>1</td><td>Duplicates search direction ambiguous banate hain.</td></tr>
+<tr><td>[2,2,2,2,2]</td><td>2</td><td>Sab same hain. Koi bhi element minimum.</td></tr>
+</table>
+</div>
+
+<h3>Core Intuition</h3>
+<div class="box box-intuition">
+<span class="box-label">Intuition / Insight</span>
+LC 153 ka logic yaha bhi kaam karega, lekin ek <b>new problem</b> aa jata hai: <b>duplicates</b>. Jab <code>nums[mid] == nums[end]</code> hota hai, toh hum decide nahi kar sakte ki minimum kis side mein hai.<br><br>
+Example: <code>[3,3,1,3]</code> mein <code>mid=1 (value 3), end=3 (value 3)</code>. Kya minimum left mein hai ya right mein? Pata nahi! Dono side same value hai.<br><br>
+<b>Solution:</b> Jab <code>nums[mid] == nums[end]</code>, toh <b>ek duplicate safely remove</b> kar do — <code>end--</code>. Minimum element remove nahi hoga kyunki agar <code>nums[end]</code> minimum tha, toh <code>nums[mid]</code> bhi wahi value ka tha (equal hai na!).
+</div>
+
+<div class="diagram">
+<div style="text-align:center; margin-bottom:8px; font-weight:bold; color:#0B1A2E;">Duplicate Ambiguity Example</div>
+<div style="text-align:center;">
+<span class="diag-box">3</span>
+<span class="diag-box">3</span>
+<span class="diag-box diag-min">1</span>
+<span class="diag-box">3</span>
+</div>
+<div style="text-align:center; margin-top:6px; font-size:9px; color:#8C8C8C;">
+mid = 1 (value 3) &nbsp;|&nbsp; end = 3 (value 3) &nbsp;|&nbsp; Equal! Direction ambiguous.
+</div>
+<div style="text-align:center; margin-top:4px; color:#A53F3F; font-weight:bold;">
+&#8595; Safely shrink from right: end--
+</div>
+</div>
+
+<h3>Approach 1 : Brute Force (Linear Scan)</h3>
+<div class="box box-workflow">
+<span class="box-label">Workflow / Algorithm</span>
+Same as LC 153 — traverse karke minimum nikaal lo. O(n) time, O(1) space.
+</div>
+
+<pre class="code-block"><code><span class="cmt">// Brute Force: O(n)</span>
+<span class="ty">class</span> <span class="fn">Solution</span> {
+<span class="kw">public</span>:
+    <span class="ty">int</span> <span class="fn">findMin</span>(<span class="ty">vector</span>&lt;<span class="ty">int</span>&gt;& nums) {
+        <span class="ty">int</span> minimum = nums[<span class="num">0</span>];
+        <span class="kw">for</span> (<span class="ty">int</span> num : nums) {
+            minimum = min(minimum, num);
+        }
+        <span class="kw">return</span> minimum;
+    }
+};</code></pre>
+
+<h3>Approach 2 : Optimal (Modified Binary Search)</h3>
+
+<div class="box box-intuition">
+<span class="box-label">Key Insight</span>
+Three cases compare <code>nums[mid]</code> with <code>nums[end]</code>:<br>
+<ul>
+<li><b>nums[mid] > nums[end]</b> &rarr; Minimum <b>right side</b> mein. <code>start = mid + 1</code>.</li>
+<li><b>nums[mid] < nums[end]</b> &rarr; Minimum <b>mid ya left</b> mein. <code>end = mid</code>.</li>
+<li><b>nums[mid] == nums[end]</b> &rarr; <b>Ambiguous!</b> Ek duplicate safely hatao. <code>end--</code>.</li>
+</ul>
+</div>
+
+<div class="box box-workflow">
+<span class="box-label">Algorithm Steps</span>
+<ol>
+<li><code>start = 0, end = n - 1</code> initialize karo.</li>
+<li><code>while (start < end)</code> loop chalao.</li>
+<li><code>mid = start + (end - start) / 2</code> calculate karo.</li>
+<li>Three-way comparison:
+    <ul>
+    <li><code>nums[mid] > nums[end]</code> &rarr; <code>start = mid + 1</code>.</li>
+    <li><code>nums[mid] < nums[end]</code> &rarr; <code>end = mid</code>.</li>
+    <li><code>nums[mid] == nums[end]</code> &rarr; <code>end--</code> (shrink by 1).</li>
+    </ul>
+</li>
+<li>Return <code>nums[start]</code>.</li>
+</ol>
+</div>
+
+<pre class="code-block"><code><span class="cmt">// Optimal: Modified Binary Search - O(log n) avg, O(n) worst</span>
+<span class="ty">class</span> <span class="fn">Solution</span> {
+<span class="kw">public</span>:
+    <span class="ty">int</span> <span class="fn">findMin</span>(<span class="ty">vector</span>&lt;<span class="ty">int</span>&gt;& nums) {
+        <span class="ty">int</span> start = <span class="num">0</span>;
+        <span class="ty">int</span> end = nums.size() - <span class="num">1</span>;
+
+        <span class="kw">while</span> (start < end) {
+            <span class="ty">int</span> mid = start + (end - start) / <span class="num">2</span>;
+
+            <span class="cmt">// Case 1: Drop on right side</span>
+            <span class="kw">if</span> (nums[mid] > nums[end]) {
+                start = mid + <span class="num">1</span>;
+            }
+            <span class="cmt">// Case 2: Min at mid or left</span>
+            <span class="kw">else if</span> (nums[mid] < nums[end]) {
+                end = mid;
+            }
+            <span class="cmt">// Case 3: Duplicate! Shrink safely</span>
+            <span class="kw">else</span> {
+                end--;                  <span class="cmt">// Remove one duplicate</span>
+            }
+        }
+        <span class="kw">return</span> nums[start];
+    }
+};</code></pre>
+
+<h3>Step-by-Step Dry Run</h3>
+<div class="box box-dryrun">
+<span class="box-label">Dry Run / Visualization</span>
+<p><b>Input:</b> nums = [2, 2, 2, 0, 1]</p>
+
+<div class="diagram">
+<div style="margin-bottom:8px;"><b>Initial:</b> start = 0, end = 4</div>
+
+<div style="margin-bottom:6px;"><b>Iteration 1:</b></div>
+<div style="margin-left:10px;">
+mid = 0 + (4-0)/2 = <span class="diag-box">2</span><br>
+nums[2] = 2, nums[4] = 1<br>
+2 > 1 &rarr; <span style="color:#A53F3F; font-weight:bold;">Drop exists! Minimum right mein.</span><br>
+start = 2 + 1 = <span class="diag-box">3</span>
+</div>
+
+<div style="margin:6px 0;"><b>Iteration 2:</b></div>
+<div style="margin-left:10px;">
+start = 3, end = 4<br>
+mid = 3 + (4-3)/2 = <span class="diag-box">3</span><br>
+nums[3] = 0, nums[4] = 1<br>
+0 < 1 &rarr; <span style="color:#2D6A4F; font-weight:bold;">Right sorted! Min mid ya left.</span><br>
+end = mid = <span class="diag-box">3</span>
+</div>
+
+<div style="margin-top:8px; padding-top:6px; border-top:1px dashed #C4924A;">
+<b>Loop ends</b> (start = 3, end = 3)<br>
+<b>Return nums[3] = 0</b>
+</div>
+</div>
+
+<p style="margin-top:12px;"><b>Duplicate Case Dry Run:</b> nums = [10, 1, 10, 10, 10]</p>
+
+<div class="diagram">
+<div style="margin-bottom:8px;"><b>Initial:</b> start = 0, end = 4</div>
+
+<div style="margin-bottom:6px;"><b>Iteration 1:</b></div>
+<div style="margin-left:10px;">
+mid = 0 + (4-0)/2 = <span class="diag-box">2</span><br>
+nums[2] = 10, nums[4] = 10<br>
+10 == 10 &rarr; <span style="color:#C4924A; font-weight:bold;">Ambiguous! Duplicate shrink.</span><br>
+end = 4 - 1 = <span class="diag-box">3</span>
+</div>
+
+<div style="margin:6px 0;"><b>Iteration 2:</b></div>
+<div style="margin-left:10px;">
+start = 0, end = 3<br>
+mid = 0 + (3-0)/2 = <span class="diag-box">1</span><br>
+nums[1] = 1, nums[3] = 10<br>
+1 < 10 &rarr; <span style="color:#2D6A4F; font-weight:bold;">Right sorted! Min mid ya left.</span><br>
+end = mid = <span class="diag-box">1</span>
+</div>
+
+<div style="margin-top:8px; padding-top:6px; border-top:1px dashed #C4924A;">
+<b>Loop ends</b> (start = 0, end = 1... wait, let me recheck)<br>
+Actually start=0, end=1. mid=0. nums[0]=10, nums[1]=1. 10>1 &rarr; start=1.<br>
+Now start=1, end=1. <b>Return nums[1] = 1</b>
+</div>
+</div>
+</div>
+
+<div class="box box-complexity">
+<span class="box-label">Complexity Analysis</span>
+<table class="comp-table">
+<tr><th>Case</th><th>Time</th><th>Reason</th></tr>
+<tr><td>Best</td><td><b>O(1)</b></td><td>Pehli hi comparison mein mil jaye</td></tr>
+<tr><td>Average</td><td><b>O(log n)</b></td><td>Mostly binary search behavior</td></tr>
+<tr><td>Worst</td><td><b>O(n)</b></td><td>Sab duplicates ho toh har step pe sirf 1 element shrink</td></tr>
+<tr><td>Space</td><td><b>O(1)</b></td><td>Extra variables only</td></tr>
+</table>
+</div>
+
+<div class="box box-edge">
+<span class="box-label">Edge Cases & Gotchas</span>
+<ul>
+<li><b>All elements same:</b> <code>[2,2,2,2,2]</code> — har step pe <code>end--</code> hoga, linear ban jayega. Return 2.</li>
+<li><b>Why end-- and not start++?</b> Kyunki <code>nums[end]</code> duplicate ho sakta hai, lekin <code>nums[mid]</code> bhi same value ka hai. <code>end--</code> se minimum safe rehta hai kyunki same value ka ek aur copy bachi hai.</li>
+<li><b>Worst case O(n) kyun?</b> Jab sab elements equal hain, toh har iteration mein sirf 1 element shrink hota hai. Binary Search degrade ho ke linear search ban jata hai.</li>
+</ul>
+</div>
+
+<div class="ornament">&#9670; &#9670; &#9670;</div>
+
+<!-- ============================================================ -->
+<!-- PROBLEM 3: LC 33 -->
+<!-- ============================================================ -->
+
+<h2>Problem 3 : Search in Rotated Sorted Array [LeetCode 33]</h2>
+
+<div class="box box-problem">
+<span class="box-label">Problem Statement</span>
+<b>Given:</b> Ek integer array ascending order mein sorted tha, phir kisi unknown pivot par <b>rotate</b> kar diya gaya. Array mein <b>unique elements</b> hain.<br>
+<b>Task:</b> Given <code>target</code> value ka <b>index</b> return karna hai. Agar target exist nahi karta, toh <code>-1</code> return karna hai.<br>
+<b>Constraint:</b> Solution <b>O(log n)</b> time mein chalna chahiye.
+</div>
+
+<div class="box box-pattern">
+<span class="box-label">Examples</span>
+<table class="comp-table">
+<tr><th>Input</th><th>Target</th><th>Output</th><th>Explanation</th></tr>
+<tr><td>[4,5,6,7,0,1,2]</td><td>0</td><td>4</td><td>Target 0 index 4 par hai.</td></tr>
+<tr><td>[4,5,6,7,0,1,2]</td><td>3</td><td>-1</td><td>Target exist nahi karta.</td></tr>
+<tr><td>[1]</td><td>0</td><td>-1</td><td>Single element, target nahi hai.</td></tr>
+<tr><td>[6,7,8,1,2,3,4,5]</td><td>3</td><td>5</td><td>Target right sorted half mein hai.</td></tr>
+</table>
+</div>
+
+<h3>Core Intuition</h3>
+<div class="box box-intuition">
+<span class="box-label">Intuition / Insight</span>
+Rotated sorted array mein <b>har iteration pe ek half hamesha sorted</b> rehta hai. Yeh property sabse important hai!<br><br>
+Jaise <code>[4,5,6,7,0,1,2]</code> mein agar mid = 3 (value 7) hai, toh left half <code>[4,5,6,7]</code> sorted hai. Agar mid = 5 (value 1) hai, toh right half <code>[0,1,2]</code> sorted hai.<br><br>
+<b>Strategy:</b> Pehle sorted half identify karo. Phir check karo ki target us sorted half mein lie karta hai ya nahi. Agar haan, toh usi half mein search karo. Nahi toh dusre half mein jao.
+</div>
+
+<div class="diagram">
+<div style="text-align:center; margin-bottom:8px; font-weight:bold; color:#0B1A2E;">Identifying Sorted Half</div>
+<div style="text-align:center;">
+<span class="diag-box diag-sorted">4</span>
+<span class="diag-box diag-sorted">5</span>
+<span class="diag-box diag-sorted">6</span>
+<span class="diag-box diag-sorted">7</span>
+<span class="diag-box">0</span>
+<span class="diag-box">1</span>
+<span class="diag-box">2</span>
+</div>
+<div style="text-align:center; margin-top:6px; font-size:9px;">
+<span style="color:#3A5F80; font-weight:bold;">LEFT HALF SORTED</span> (nums[start] <= nums[mid])
+</div>
+<div style="text-align:center; margin-top:10px;">
+<span class="diag-box">6</span>
+<span class="diag-box">7</span>
+<span class="diag-box">8</span>
+<span class="diag-box">1</span>
+<span class="diag-box diag-sorted">2</span>
+<span class="diag-box diag-sorted">3</span>
+<span class="diag-box diag-sorted">4</span>
+<span class="diag-box diag-sorted">5</span>
+</div>
+<div style="text-align:center; margin-top:6px; font-size:9px;">
+<span style="color:#3A5F80; font-weight:bold;">RIGHT HALF SORTED</span> (nums[mid] < nums[start])
+</div>
+</div>
+
+<h3>Approach 1 : Brute Force (Linear Search)</h3>
+<div class="box box-workflow">
+<span class="box-label">Workflow / Algorithm</span>
+<ol>
+<li>Array ko traverse karo.</li>
+<li>Har element ko target se compare karo.</li>
+<li>Match milne pe index return karo.</li>
+<li>End tak nahi mila toh <code>-1</code> return karo.</li>
+</ol>
+</div>
+
+<pre class="code-block"><code><span class="cmt">// Brute Force: O(n)</span>
+<span class="ty">class</span> <span class="fn">Solution</span> {
+<span class="kw">public</span>:
+    <span class="ty">int</span> <span class="fn">search</span>(<span class="ty">vector</span>&lt;<span class="ty">int</span>&gt;& nums, <span class="ty">int</span> target) {
+        <span class="kw">for</span> (<span class="ty">int</span> i = <span class="num">0</span>; i < nums.size(); i++) {
+            <span class="kw">if</span> (nums[i] == target) {
+                <span class="kw">return</span> i;
+            }
+        }
+        <span class="kw">return</span> -<span class="num">1</span>;
+    }
+};</code></pre>
+
+<h3>Approach 2 : Optimal (Modified Binary Search)</h3>
+
+<div class="box box-intuition">
+<span class="box-label">Key Insight</span>
+Har iteration pe do cases:<br>
+<ul>
+<li><b>Left half sorted</b> (<code>nums[start] <= nums[mid]</code>):
+    <ul>
+    <li>Target <code>[nums[start], nums[mid])</code> range mein hai? &rarr; <code>end = mid - 1</code>.</li>
+    <li>Nahi? &rarr; <code>start = mid + 1</code>.</li>
+    </ul>
+</li>
+<li><b>Right half sorted</b> (else case):
+    <ul>
+    <li>Target <code>(nums[mid], nums[end]]</code> range mein hai? &rarr; <code>start = mid + 1</code>.</li>
+    <li>Nahi? &rarr; <code>end = mid - 1</code>.</li>
+    </ul>
+</li>
+</ul>
+<b>Note:</b> Pehle <code>nums[mid] == target</code> check karte hain — agar match ho gaya toh directly return.
+</div>
+
+<div class="box box-workflow">
+<span class="box-label">Algorithm Steps</span>
+<ol>
+<li><code>start = 0, end = n - 1</code> initialize karo.</li>
+<li><code>while (start <= end)</code> loop chalao (classic BS).</li>
+<li><code>mid = start + (end - start) / 2</code> calculate karo.</li>
+<li><b>Base case:</b> <code>nums[mid] == target</code> &rarr; return <code>mid</code>.</li>
+<li><b>Left half sorted?</b> <code>nums[start] <= nums[mid]</code>:
+    <ul>
+    <li><code>target >= nums[start] && target < nums[mid]</code> &rarr; <code>end = mid - 1</code> (left mein search).</li>
+    <li>Else &rarr; <code>start = mid + 1</code> (right mein search).</li>
+    </ul>
+</li>
+<li><b>Right half sorted</b> (else):
+    <ul>
+    <li><code>target > nums[mid] && target <= nums[end]</code> &rarr; <code>start = mid + 1</code> (right mein search).</li>
+    <li>Else &rarr; <code>end = mid - 1</code> (left mein search).</li>
+    </ul>
+</li>
+<li>Loop end pe <code>-1</code> return karo (target nahi mila).</li>
+</ol>
+</div>
+
+<pre class="code-block"><code><span class="cmt">// Optimal: Modified Binary Search - O(log n)</span>
+<span class="ty">class</span> <span class="fn">Solution</span> {
+<span class="kw">public</span>:
+    <span class="ty">int</span> <span class="fn">search</span>(<span class="ty">vector</span>&lt;<span class="ty">int</span>&gt;& nums, <span class="ty">int</span> target) {
+        <span class="ty">int</span> start = <span class="num">0</span>;
+        <span class="ty">int</span> end = nums.size() - <span class="num">1</span>;
+
+        <span class="kw">while</span> (start <= end) {          <span class="cmt">// Classic BS: start <= end</span>
+            <span class="ty">int</span> mid = start + (end - start) / <span class="num">2</span>;
+
+            <span class="cmt">// Target found!</span>
+            <span class="kw">if</span> (nums[mid] == target) {
+                <span class="kw">return</span> mid;
+            }
+
+            <span class="cmt">// Left half is sorted</span>
+            <span class="kw">if</span> (nums[start] <= nums[mid]) {
+
+                <span class="cmt">// Target lies in left sorted half</span>
+                <span class="kw">if</span> (nums[start] <= target && target < nums[mid]) {
+                    end = mid - <span class="num">1</span>;
+                }
+                <span class="kw">else</span> {
+                    start = mid + <span class="num">1</span>;
+                }
+            }
+            <span class="cmt">// Right half is sorted</span>
+            <span class="kw">else</span> {
+
+                <span class="cmt">// Target lies in right sorted half</span>
+                <span class="kw">if</span> (nums[mid] < target && target <= nums[end]) {
+                    start = mid + <span class="num">1</span>;
+                }
+                <span class="kw">else</span> {
+                    end = mid - <span class="num">1</span>;
+                }
+            }
+        }
+        <span class="kw">return</span> -<span class="num">1</span>;                   <span class="cmt">// Target not found</span>
+    }
+};</code></pre>
+
+<h3>Step-by-Step Dry Run</h3>
+<div class="box box-dryrun">
+<span class="box-label">Dry Run / Visualization</span>
+<p><b>Input:</b> nums = [4, 5, 6, 7, 0, 1, 2], target = 0</p>
+
+<div class="diagram">
+<div style="margin-bottom:8px;"><b>Initial:</b> start = 0, end = 6</div>
+
+<div style="margin-bottom:6px;"><b>Iteration 1:</b></div>
+<div style="margin-left:10px;">
+mid = 0 + (6-0)/2 = <span class="diag-box">3</span><br>
+nums[3] = 7, target = 0. 7 != 0.<br>
+nums[0]=4 <= nums[3]=7 &rarr; <span style="color:#3A5F80; font-weight:bold;">Left half sorted!</span><br>
+Target 0 <b>not in</b> [4, 7) range.<br>
+start = 3 + 1 = <span class="diag-box">4</span>
+</div>
+
+<div style="margin:6px 0;"><b>Iteration 2:</b></div>
+<div style="margin-left:10px;">
+start = 4, end = 6<br>
+mid = 4 + (6-4)/2 = <span class="diag-box">5</span><br>
+nums[5] = 1, target = 0. 1 != 0.<br>
+nums[4]=0 <= nums[5]=1 &rarr; <span style="color:#3A5F80; font-weight:bold;">Left half sorted!</span><br>
+Target 0 <b>not in</b> [0, 1) range (0 < 0 false).<br>
+start = 5 + 1 = <span class="diag-box">6</span>
+</div>
+
+<div style="margin:6px 0;"><b>Iteration 3:</b></div>
+<div style="margin-left:10px;">
+start = 6, end = 6<br>
+mid = <span class="diag-box">6</span><br>
+nums[6] = 2, target = 0. 2 != 0.<br>
+nums[6]=2 <= nums[6]=2 &rarr; Left half sorted.<br>
+Target 0 <b>not in</b> [2, 2) range.<br>
+start = 6 + 1 = <span class="diag-box">7</span>
+</div>
+
+<div style="margin-top:8px; padding-top:6px; border-top:1px dashed #C4924A;">
+<b>Loop ends</b> (start=7 > end=6)<br>
+<b>Return -1</b><br>
+<span style="color:#A53F3F; font-size:9px;">Wait — target 0 is at index 4! Let me re-check Iteration 2...</span>
+</div>
+</div>
+
+<p style="margin-top:12px; color:#A53F3F; font-weight:bold;">Correction in Iteration 2:</p>
+<div class="diagram">
+<div style="margin-left:10px;">
+start = 4, end = 6, mid = 5<br>
+nums[5] = 1. nums[4]=0 <= nums[5]=1 &rarr; Left sorted.<br>
+Check: <code>nums[4] <= target(0) && target(0) < nums[5](1)</code><br>
+0 <= 0 <b>true</b> && 0 < 1 <b>true</b> &rarr; <span style="color:#2D6A4F; font-weight:bold;">Target IN left half!</span><br>
+end = 5 - 1 = <span class="diag-box">4</span>
+</div>
+
+<div style="margin:6px 0;"><b>Iteration 3 (corrected):</b></div>
+<div style="margin-left:10px;">
+start = 4, end = 4<br>
+mid = <span class="diag-box">4</span><br>
+nums[4] = 0 == target(0) &rarr; <span style="color:#2D6A4F; font-weight:bold;">FOUND!</span><br>
+<b>Return 4</b>
+</div>
+</div>
+</div>
+
+<div class="box box-complexity">
+<span class="box-label">Complexity Analysis</span>
+<table class="comp-table">
+<tr><th>Metric</th><th>Brute Force</th><th>Optimal (Binary Search)</th></tr>
+<tr><td>Time</td><td>O(n)</td><td><b>O(log n)</b></td></tr>
+<tr><td>Space</td><td>O(1)</td><td><b>O(1)</b></td></tr>
+</table>
+</div>
+
+<div class="box box-edge">
+<span class="box-label">Edge Cases & Gotchas</span>
+<ul>
+<li><b>Single element:</b> <code>[1]</code> with target 1 &rarr; mid=0, match, return 0. Target 0 &rarr; loop ends, return -1.</li>
+<li><b>Target at pivot:</b> <code>[4,5,6,7,0,1,2]</code> target=7 &rarr; Iteration 1 mein hi mid=3 pe match.</li>
+<li><b>Array not rotated:</b> <code>[1,2,3,4,5]</code> &rarr; Left half hamesha sorted, normal binary search behave karega.</li>
+<li><b>Boundary conditions:</b> <code>target == nums[start]</code> ya <code>target == nums[end]</code> ka case properly handle karo. Conditions mein <code><=</code> aur <code><</code> carefully use karo.</li>
+<li><b>Why start <= end?</b> Is problem mein target exact index pe milna chahiye. <code>start < end</code> use karne se last element miss ho sakta hai.</li>
+</ul>
+</div>
+
+<div class="box box-interview">
+<span class="box-label">Interview Tips / Follow-up Questions</span>
+<ul>
+<li><b>Q:</b> Is problem ko recursive binary search se kaise solve karoge?<br><b>A:</b> Base case: <code>start > end</code> &rarr; return -1. Mid pe target check, phir sorted half identify karke recursive call.</li>
+<li><b>Q:</b> Agar duplicates allowed ho toh?<br><b>A:</b> LeetCode 81 — jab <code>nums[start] == nums[mid] == nums[end]</code>, toh <code>start++</code> aur <code>end--</code> karo. Worst case O(n) ho jayega.</li>
+<li><b>Q:</b> Pivot index kaise nikaaloge?<br><b>A:</b> Minimum element ka index hi pivot hai. LC 153 ka logic use karo.</li>
+<li><b>Q:</b> Agar multiple rotations ho?<br><b>A:</b> Array ko kitni baar bhi rotate karo, structure same rehta hai — ek sorted half hamesha milta hai.</li>
+</ul>
+</div>
+
+<div class="ornament">&#9670; &#9670; &#9670;</div>
+
+<!-- ============================================================ -->
+<!-- COMPARISON & PATTERN TRANSFER -->
+<!-- ============================================================ -->
+
+<h2>Rotated Sorted Array Pattern Comparison</h2>
+
+<div class="box box-transfer">
+<span class="box-label">Pattern Transfer / Related Problems</span>
+<table class="comp-table">
+<tr><th>Aspect</th><th>LC 153 (Min, Unique)</th><th>LC 154 (Min, Duplicates)</th><th>LC 33 (Search Target)</th></tr>
+<tr><td>Array Property</td><td>Unique elements</td><td>Duplicates allowed</td><td>Unique elements</td></tr>
+<tr><td>Goal</td><td>Find minimum</td><td>Find minimum</td><td>Find target index</td></tr>
+<tr><td>Compare With</td><td>nums[mid] vs nums[end]</td><td>nums[mid] vs nums[end]</td><td>nums[start] vs nums[mid]</td></tr>
+<tr><td>Loop Condition</td><td>while(start < end)</td><td>while(start < end)</td><td>while(start <= end)</td></tr>
+<tr><td>On Match</td><td>N/A</td><td>N/A</td><td>Return mid immediately</td></tr>
+<tr><td>On Greater</td><td>start = mid + 1</td><td>start = mid + 1</td><td>Depends on sorted half</td></tr>
+<tr><td>On Lesser</td><td>end = mid</td><td>end = mid</td><td>Depends on sorted half</td></tr>
+<tr><td>On Equal</td><td>Not possible (unique)</td><td>end-- (shrink)</td><td>Not possible (unique)</td></tr>
+<tr><td>Time</td><td>O(log n)</td><td>O(log n) avg, O(n) worst</td><td>O(log n)</td></tr>
+<tr><td>Space</td><td>O(1)</td><td>O(1)</td><td>O(1)</td></tr>
+</table>
+</div>
+
+<div class="box box-transfer">
+<span class="box-label">Related Problems to Practice</span>
+<ul>
+<li><b>LeetCode 81</b> — Search in Rotated Sorted Array II (Duplicates ke saath target search)</li>
+<li><b>LeetCode 852</b> — Peak Index in a Mountain Array (Slope-based binary search)</li>
+<li><b>LeetCode 162</b> — Find Peak Element (Boundary peaks allowed)</li>
+<li><b>LeetCode 704</b> — Binary Search (Classic template revision)</li>
+<li><b>LeetCode 69</b> — Sqrt(x) (Answer search pattern)</li>
+</ul>
+</div>
+
+<div class="ornament">&#9670; &#9670; &#9670;</div>
+
+<!-- ============================================================ -->
+<!-- QUICK REVISION CHEATSHEET -->
+<!-- ============================================================ -->
+
+<div class="cheatsheet">
+<div class="cheatsheet-title">&#9670; QUICK REVISION CHEATSHEET &#9670;</div>
+<div class="cheatsheet-grid">
+
+<div class="cheatsheet-item">
+<b>LC 153: Find Min (Unique)</b><br>
+&#8226; Compare nums[mid] with nums[end]<br>
+&#8226; nums[mid] > nums[end] &rarr; start = mid + 1<br>
+&#8226; nums[mid] < nums[end] &rarr; end = mid<br>
+&#8226; <span style="color:#A53F3F;">Loop:</span> while(start < end)<br>
+&#8226; <span style="color:#A53F3F;">end = mid</span> (not mid-1)<br>
+&#8226; Time: O(log n) | Space: O(1)
+</div>
+
+<div class="cheatsheet-item">
+<b>LC 154: Find Min (Duplicates)</b><br>
+&#8226; Same as 153 + ek extra case<br>
+&#8226; nums[mid] == nums[end] &rarr; end--<br>
+&#8226; <span style="color:#A53F3F;">Worst case O(n)</span> — sab same ho toh<br>
+&#8226; Safely shrink: duplicate remove karo<br>
+&#8226; Min element kabhi remove nahi hoga<br>
+&#8226; Time: O(log n) avg, O(n) worst
+</div>
+
+<div class="cheatsheet-item">
+<b>LC 33: Search Target</b><br>
+&#8226; Pehle check: nums[mid] == target?<br>
+&#8226; Identify sorted half first<br>
+&#8226; Left sorted? target in [start, mid) &rarr; left<br>
+&#8226; Right sorted? target in (mid, end] &rarr; right<br>
+&#8226; <span style="color:#A53F3F;">Loop:</span> while(start <= end)<br>
+&#8226; Time: O(log n) | Space: O(1)
+</div>
+
+<div class="cheatsheet-item">
+<b>Common Mistakes (Red Flags)</b><br>
+&#8226; <span style="color:#A53F3F;">Min problems mein <= mat use karo</span><br>
+&#8226; <span style="color:#A53F3F;">Search problem mein < mat use karo</span><br>
+&#8226; Min mein end = mid (mid discard nahi)<br>
+&#8226; Search mein end = mid - 1 (normal BS)<br>
+&#8226; mid = start + (end-start)/2 (overflow safe)
+</div>
+
+<div class="cheatsheet-item">
+<b>Key Formulas / Snippets</b><br>
+<code>mid = start + (end - start) / 2;</code><br>
+<code>if (nums[mid] > nums[end]) start=mid+1;</code><br>
+<code>else end = mid;</code><br>
+<code>if (nums[start] <= nums[mid]) // left sorted</code><br>
+<code>if (nums[start] <= t && t < nums[mid])</code>
+</div>
+
+<div class="cheatsheet-item">
+<b>Interview Quick Questions</b><br>
+&#8226; Q: Duplicates mein worst case? A: O(n)<br>
+&#8226; Q: Pivot kaise nikale? A: Min element index<br>
+&#8226; Q: Recursive? A: Base: start > end<br>
+&#8226; Q: Why one half always sorted? A: Rotation property<br>
+&#8226; Q: LC 81 difference? A: start++ end-- on equal
+</div>
+
+</div>
+</div>
+
+<div class="watermark">Harshal Chauhan</div>
+<div class="signature">MADE BY HARSHAL CHAUHAN</div>
+
+</body>
+</html>
