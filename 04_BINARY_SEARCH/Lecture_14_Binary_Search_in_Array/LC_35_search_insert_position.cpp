@@ -1,136 +1,62 @@
-#include <bits/stdc++.h>
+#include <vector>
 using namespace std;
 
 /*
 ====================================================
-        LeetCode 35 - Search Insert Position
-          (Lower Bound Implementation)
+      LeetCode 35 - Search Insert Position
 ====================================================
 
-Problem Statement
+Problem
 ----------------------------------------------------
-Given a sorted array of distinct integers and a
-target value, return the index if the target is
-found.
+Given a sorted array of distinct integers `nums`
+and an integer `target`, return the index if the
+target is found.
 
-If the target is not found, return the index where
-it should be inserted to maintain the sorted order.
+Otherwise, return the index where it should be
+inserted to maintain the sorted order.
 
 ----------------------------------------------------
 Examples
 ----------------------------------------------------
 
 Example 1
-
-Input:
-nums = [1,3,5,6]
-target = 5
-
-Output:
-2
-
-Reason:
-Target exists at index 2.
-
-----------------------------------------------------
+Input : nums = [1,3,5,6], target = 5
+Output: 2
 
 Example 2
+Input : nums = [1,3,5,6], target = 2
+Output: 1
 
-Input:
-nums = [1,3,5,6]
-target = 2
-
-Output:
-1
-
-Reason:
-2 should be inserted before 3.
-
-----------------------------------------------------
-
-Example 3
-
-Input:
-nums = [1,3,5,6]
-target = 7
-
-Output:
-4
-
-Reason:
-Target is greater than every element,
-so it will be inserted at the end.
-
-----------------------------------------------------
-
-Example 4
-
-Input:
-nums = [1,3,5,6]
-target = 0
-
-Output:
-0
-
-Reason:
-Target is smaller than every element,
-so it will be inserted at the beginning.
-
-----------------------------------------------------
-
-Example 5
-
-Input:
-nums = [1]
-target = 1
-
-Output:
-0
-
-Reason:
-Target already exists in the array.
+Example 3 (Edge Case)
+Input : nums = [1,3,5,6], target = 7
+Output: 4
 
 ----------------------------------------------------
 Approach
 ----------------------------------------------------
-Lower Bound using Binary Search
+Use Binary Search to find the Lower Bound.
 
-Idea:
-- Find the first element that is greater than or
-  equal to the target.
-- Store every possible answer.
-- Continue searching on the left to find the
-  earliest valid position.
+The Lower Bound is the first element that is
+greater than or equal to the target.
+
+Whenever nums[mid] >= target:
+• Store the current index as a possible answer.
+• Continue searching on the Left.
+
+Otherwise:
+• Search on the Right.
 
 ----------------------------------------------------
 Algorithm
 ----------------------------------------------------
-1. Initialize:
-   start = 0
-   end = n - 1
-   answer = n
-
-2. Find the middle element.
-
+1. Initialize answer = nums.size().
+2. Perform Binary Search.
 3. If nums[mid] >= target:
-      - Store current index.
-      - Search on the left.
-
+      • Store current index.
+      • Search Left.
 4. Otherwise:
-      - Search on the right.
-
+      • Search Right.
 5. Return answer.
-
-----------------------------------------------------
-Why Binary Search?
-----------------------------------------------------
-The array is already sorted.
-
-Binary Search removes half of the search space
-after every comparison.
-
-The first element that is greater than or equal
-to the target is called the Lower Bound.
 
 ----------------------------------------------------
 Time Complexity
@@ -146,14 +72,16 @@ Space Complexity
 ----------------------------------------------------
 O(1)
 
-Reason:
-Only a few extra variables are used.
-
 ----------------------------------------------------
 Pattern
 ----------------------------------------------------
-Binary Search
-Lower Bound
+✔ Binary Search
+✔ Lower Bound
+✔ Answer Search
+
+====================================================
+                      CODE
+====================================================
 */
 
 class Solution {
@@ -175,12 +103,12 @@ public:
 
                 answer = mid;
 
-                // Search on the left
+                // Search Left
                 end = mid - 1;
             }
             else {
 
-                // Search on the right
+                // Search Right
                 start = mid + 1;
             }
         }
@@ -190,18 +118,54 @@ public:
 };
 
 /*
-----------------------------------------------------
-Summary
-----------------------------------------------------
-Algorithm        : Binary Search (Lower Bound)
-LeetCode Problem : 35 - Search Insert Position
+====================================================
+                  SHORT DRY RUN
+====================================================
 
-Time Complexity  : O(log n)
-Space Complexity : O(1)
+Input:
+nums   = [1,3,5,6]
+target = 2
 
-Concepts Used:
-✔ Binary Search
-✔ Lower Bound
-✔ Search Space Reduction
-✔ Answer Search
+----------------------------------------------------
+Iteration 1
+
+start = 0
+end = 3
+
+mid = 1
+
+nums[mid] = 3
+
+3 >= 2
+
+answer = 1
+
+Search Left
+
+end = 0
+
+----------------------------------------------------
+Iteration 2
+
+start = 0
+end = 0
+
+mid = 0
+
+nums[mid] = 1
+
+1 < 2
+
+Search Right
+
+start = 1
+
+----------------------------------------------------
+Loop Ends
+
+start > end
+
+Return answer = 1
+
+====================================================
 */

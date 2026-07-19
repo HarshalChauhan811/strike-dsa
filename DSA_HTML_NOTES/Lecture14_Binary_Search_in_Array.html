@@ -1,941 +1,944 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecture 14: Binary Search in Array</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        @page {
-            size: A4 portrait;
-            margin: 0;
-            @top-right-corner {
-                content: "Harshal Chauhan";
-                font: 9px 'Poppins', sans-serif;
-                color: #8C8C8C;
-                opacity: 0.3;
-            }
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture 14 – Binary Search in Array</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@page { size: A4 portrait; margin: 0; }
+* { box-sizing: border-box; }
+body {
+    padding: 18mm 20mm 18mm 24mm;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: #FAFAF8;
+    font-family: 'Poppins', sans-serif;
+    color: #1C1C1C;
+    font-size: 12px;
+    line-height: 1.65;
+    margin: 0;
+    background-image: 
+        linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+    background-size: 25px 25px;
+}
 
-        * { box-sizing: border-box; }
+h1 {
+    font-size: 38px; font-weight: 700; color: #0B1A2E;
+    border-bottom: 3px solid #C4924A; padding-bottom: 6px;
+    margin-bottom: 12px; margin-top: 0;
+}
+h2 {
+    font-size: 22px; font-weight: 700; color: #C4924A;
+    border-bottom: 2px solid #C4924A; margin-top: 24px; margin-bottom: 12px;
+}
+h3 {
+    font-size: 16px; font-weight: 700; color: #1A4A4A;
+    margin-top: 18px; margin-bottom: 8px;
+}
+h4 {
+    font-size: 13px; font-weight: 700; color: #2D6A4F;
+    text-transform: uppercase; letter-spacing: 0.6px; margin-top: 14px; margin-bottom: 6px;
+}
+h5 {
+    font-size: 11.5px; font-weight: 700; color: #3C3C3C; margin-bottom: 4px;
+}
 
-        body {
-            padding: 22mm 22mm 22mm 28mm;
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-            background: #FBFBF9;
-            font-family: 'Poppins', sans-serif;
-            color: #1A1A1A;
-            font-size: 12.5px;
-            line-height: 1.75;
-            margin: 0;
-            background-image: 
-                linear-gradient( rgba(0,0,0,0.008) 1px, transparent 1px ),
-                linear-gradient( 90deg, rgba(0,0,0,0.008) 1px, transparent 1px );
-            background-size: 20px 20px;
-        }
+.box {
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03);
+    page-break-inside: avoid;
+    border-left: 5px solid;
+}
+.box-label {
+    text-transform: uppercase; font-weight: 700; font-size: 10px;
+    letter-spacing: 0.8px; margin-bottom: 8px; display: block;
+}
 
-        h1 {
-            font-size: 44px;
-            font-weight: 700;
-            font-family: 'Poppins', sans-serif;
-            color: #0B1A2E;
-            letter-spacing: -0.5px;
-            border-bottom: 3px solid #B49450;
-            padding-bottom: 10px;
-            margin-bottom: 16px;
-            margin-top: 0;
-            line-height: 1.2;
-        }
+.box-pattern { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-pattern .box-label { color: #3A5F80; }
+.box-intuition { border-left-color: #C4924A; background: #F9FBF9; }
+.box-intuition .box-label { color: #C4924A; }
+.box-workflow { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-workflow .box-label { color: #2E6B5A; }
+.box-important { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-important .box-label { color: #A53F3F; }
+.box-interview { border-left-color: #5E4B7A; background: #F8F7FC; }
+.box-interview .box-label { color: #5E4B7A; }
+.box-takeaway { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-takeaway .box-label { color: #2E6B5A; }
+.box-warning { border-left-color: #C4924A; background: #FDFBF5; }
+.box-warning .box-label { color: #C4924A; }
+.box-edge { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-edge .box-label { color: #A53F3F; }
+.box-best { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-best .box-label { color: #2E6B5A; }
+.box-code { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-code .box-label { color: #3A5F80; }
+.box-dryrun { border-left-color: #B49450; background: #FFFFFF; }
+.box-dryrun .box-label { color: #B49450; }
+.box-complexity { border-left-color: #4F46E5; background: #FFFFFF; }
+.box-complexity .box-label { color: #4F46E5; }
+.box-problem { border-left-color: #65A30D; background: #FFFFFF; }
+.box-problem .box-label { color: #65A30D; }
+.box-transfer { border-left-color: #7E22CE; background: #F8F7FC; }
+.box-transfer .box-label { color: #7E22CE; }
 
-        h2 {
-            font-size: 26px;
-            font-weight: 700;
-            font-family: 'Poppins', sans-serif;
-            color: #B49450;
-            border-bottom: 2px solid #B49450;
-            padding-bottom: 6px;
-            margin-top: 32px;
-            margin-bottom: 16px;
-            line-height: 1.3;
-        }
+.code-block {
+    background: #111824;
+    border: 1px solid #2A3240;
+    border-radius: 10px;
+    padding: 14px 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    page-break-inside: avoid;
+    font-family: 'Fira Code', monospace;
+    color: #E0E0E0;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    font-size: 11.5px;
+    line-height: 1.45;
+    margin: 12px 0;
+}
+.code-block .kw { color: #C586C0; font-weight: bold; }
+.code-block .str { color: #CE9178; }
+.code-block .cm { color: #6A9955; font-style: italic; }
+.code-block .fn { color: #DCDCAA; }
+.code-block .num { color: #B5CEA8; }
+.code-block .type { color: #4EC9B0; }
+.code-block .var { color: #9CDCFE; }
 
-        h3 {
-            font-size: 19px;
-            font-weight: 700;
-            font-family: 'Poppins', sans-serif;
-            color: #1A4A4A;
-            margin-top: 22px;
-            margin-bottom: 12px;
-            line-height: 1.3;
-        }
+.diagram {
+    border: 1px solid #C4924A;
+    border-left: 4px solid #C4924A;
+    background: #FFFBF5;
+    padding: 12px 16px;
+    margin: 16px 0;
+    overflow-x: auto;
+    page-break-inside: avoid;
+}
+.diagram-box {
+    display: inline-block;
+    background: #FFFFFF;
+    border: 2px solid #0B1A2E;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    margin: 2px;
+    text-align: center;
+    min-width: 32px;
+}
+.diagram-box.sorted { border-color: #2D6A4F; color: #2D6A4F; background: #F0FAF5; }
+.diagram-box.unsorted { border-color: #A53F3F; color: #A53F3F; background: #FDF8F8; }
+.diagram-box.active { border-color: #C4924A; color: #C4924A; background: #FFF8E7; }
+.diagram-box.min { border-color: #4F46E5; color: #4F46E5; background: #EEF2FF; }
+.diagram-box.found { border-color: #2D6A4F; color: #FFFFFF; background: #2D6A4F; }
+.diagram-arrow { color: #C4924A; font-size: 16px; font-weight: bold; margin: 0 4px; }
+.diagram-label { font-size: 9px; color: #8C8C8C; margin-top: 4px; text-align: center; }
+.diagram-group {
+    border: 1.5px dashed #0B1A2E;
+    border-radius: 8px;
+    padding: 6px 10px;
+    display: inline-block;
+    margin: 4px;
+}
+.diagram-group-label { font-size: 9px; color: #0B1A2E; font-weight: 600; text-align: center; margin-bottom: 4px; }
 
-        h4 {
-            font-size: 15px;
-            font-weight: 600;
-            font-family: 'Poppins', sans-serif;
-            color: #7A3B4A;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-top: 16px;
-            margin-bottom: 8px;
-        }
+.table-wrap { overflow-x: auto; margin: 12px 0; }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11.5px;
+    page-break-inside: avoid;
+}
+th {
+    background: #F7F3EC;
+    color: #0B1A2E;
+    font-weight: 600;
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 2px solid #C4924A;
+}
+td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #E8E4DC;
+}
+tr:nth-child(even) { background: #FAFAF8; }
 
-        h5 {
-            font-size: 12.5px;
-            font-weight: 600;
-            font-family: 'Poppins', sans-serif;
-            color: #3C3C3C;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 12px;
-            margin-bottom: 6px;
-        }
+.highlight {
+    background: #F4E9D8;
+    color: #7A5C3A;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-weight: 600;
+}
 
-        p, li {
-            font-size: 12.5px;
-            font-weight: 400;
-            font-family: 'Poppins', sans-serif;
-            color: #1A1A1A;
-            line-height: 1.75;
-            margin-bottom: 10px;
-        }
+.ornament {
+    text-align: center;
+    margin: 22px 0;
+    color: #C4924A;
+    font-size: 18px;
+    letter-spacing: 6px;
+}
 
-        .lead {
-            font-size: 13.5px;
-            line-height: 1.8;
-            color: #2C2C2C;
-        }
+.cheatsheet {
+    border: 2px solid #C4924A;
+    background: #F9F8F5;
+    border-radius: 10px;
+    padding: 16px;
+    margin: 24px 0;
+    page-break-inside: avoid;
+}
+.cheatsheet-title {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1A4A4A;
+    margin-bottom: 12px;
+}
+.cheatsheet-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+.cheatsheet-item {
+    background: #FFFFFF;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 9.5px;
+    line-height: 1.5;
+    border-left: 3px solid #C4924A;
+}
+.cheatsheet-item strong { color: #0B1A2E; }
 
-        .hl {
-            background: #F4E9D8;
-            color: #7A5C3A;
-            font-weight: 600;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 12.5px;
-        }
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 600;
+    margin-left: 6px;
+}
+.badge-green { background: #DCFCE7; color: #166534; }
+.badge-red { background: #FEE2E2; color: #991B1B; }
+.badge-amber { background: #FEF3C7; color: #92400E; }
+.badge-blue { background: #DBEAFE; color: #1E40AF; }
 
-        .golden-insight {
-            border-left: 6px solid #B49450;
-            background: #FDF9F2;
-            border-radius: 10px;
-            padding: 14px 18px;
-            margin: 16px 0;
-            font-weight: 500;
-            font-style: italic;
-            color: #5C4033;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-            page-break-inside: avoid;
-        }
+ul { margin: 6px 0; padding-left: 18px; }
+li { margin-bottom: 4px; }
 
-        .box {
-            border-radius: 12px;
-            padding: 18px 22px;
-            margin-bottom: 18px;
-            background: #FFFFFF;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03);
-            page-break-inside: avoid;
-            border-left: 6px solid;
-        }
+.pass-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0;
+    flex-wrap: wrap;
+}
+.pass-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: #0B1A2E;
+    min-width: 90px;
+}
 
-        .box-label {
-            display: block;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 10px;
-            color: inherit;
-        }
+.watermark {
+    text-align: right;
+    margin: 20px 0 5px 0;
+    color: #9CA3AF;
+    font-size: 8px;
+    opacity: 0.4;
+}
+.signature {
+    text-align: center;
+    margin-top: 30px;
+    border-top: 1px solid #E0D8CC;
+    padding-top: 18px;
+    color: #8C8C8C;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
 
-        .box-pattern { border-left-color: #3A5F80; background: #FFFFFF; }
-        .box-pattern .box-label { color: #3A5F80; }
-
-        .box-intuition { border-left-color: #C4924A; background: #F9FBF9; }
-        .box-intuition .box-label { color: #C4924A; }
-
-        .box-workflow { border-left-color: #2E6B5A; background: #F9FBF9; }
-        .box-workflow .box-label { color: #2E6B5A; }
-
-        .box-important { border-left-color: #A53F3F; background: #FDF8F8; }
-        .box-important .box-label { color: #A53F3F; }
-
-        .box-interview { border-left-color: #5E4B7A; background: #F8F7FC; }
-        .box-interview .box-label { color: #5E4B7A; }
-
-        .box-takeaway { border-left-color: #2E6B5A; background: #F9FBF9; }
-        .box-takeaway .box-label { color: #2E6B5A; }
-
-        .box-edge { border-left-color: #A53F3F; background: #FDF8F8; }
-        .box-edge .box-label { color: #A53F3F; }
-
-        .box-best { border-left-color: #2E6B5A; background: #F9FBF9; }
-        .box-best .box-label { color: #2E6B5A; }
-
-        .box-performance { border-left-color: #0B1A2E; background: #FFFFFF; }
-        .box-performance .box-label { color: #0B1A2E; }
-
-        .code-block {
-            background: #111824;
-            border: 1px solid #2A3240;
-            border-radius: 12px;
-            padding: 20px 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            page-break-inside: avoid;
-            font-family: 'Fira Code', monospace;
-            font-size: 12px;
-            line-height: 1.5;
-            color: #E0E0E0;
-            white-space: pre-wrap;
-            overflow-x: auto;
-            margin: 16px 0;
-        }
-
-        .syn-kw { color: #F88C6C; font-weight: bold; }
-        .syn-str { color: #9CDCFE; }
-        .syn-cm { color: #6A9955; font-style: italic; }
-        .syn-fn { color: #DCDCAA; }
-        .syn-num { color: #B5CEA8; }
-        .syn-op { color: #89DDFF; }
-        .syn-type { color: #FFD700; }
-        .syn-tag { color: #D67E7E; }
-        .syn-attr { color: #9CDCFE; }
-
-        table {
-            width: 100%;
-            border: 1px solid #E3DED5;
-            border-radius: 12px;
-            overflow: hidden;
-            page-break-inside: avoid;
-            margin: 18px 0;
-            border-collapse: separate;
-            border-spacing: 0;
-        }
-
-        th {
-            background: #F7F3EC;
-            color: #0B1A2E;
-            font-weight: 700;
-            font-size: 11.5px;
-            padding: 12px 14px;
-            border-bottom: 2px solid #B49450;
-            text-align: left;
-        }
-
-        td {
-            padding: 12px 14px;
-            font-size: 11.5px;
-            background: #FFFFFF;
-            border-bottom: 1px solid #E3DED5;
-        }
-
-        tr:nth-child(even) td { background: #FBFBF9; }
-        tr:last-child td { border-bottom: none; }
-
-        .diagram {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin: 16px 0;
-            padding: 16px;
-            background: #F7F7F5;
-            border-radius: 12px;
-            border: 1px solid #E3DED5;
-            page-break-inside: avoid;
-            flex-wrap: wrap;
-        }
-
-        .diagram-box {
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-size: 11.5px;
-            font-weight: 600;
-            text-align: center;
-            min-width: 40px;
-        }
-
-        .diagram-arrow {
-            color: #B49450;
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .diagram-label {
-            width: 100%;
-            text-align: center;
-            font-size: 10.5px;
-            color: #8C8C8C;
-            margin-top: 8px;
-            font-weight: 500;
-        }
-
-        .divider {
-            text-align: center;
-            margin: 30px 0;
-            color: #B49450;
-            font-size: 20px;
-            letter-spacing: 8px;
-        }
-
-        ul, ol {
-            margin: 10px 0;
-            padding-left: 24px;
-        }
-
-        li { margin-bottom: 6px; }
-
-        .caption {
-            font-size: 10.5px;
-            font-weight: 500;
-            color: #8C8C8C;
-            text-align: center;
-            margin-top: 6px;
-        }
-
-        .warning-inline {
-            background: #FDF0ED;
-            color: #A53F3F;
-            font-weight: 600;
-            padding: 1px 4px;
-            border-radius: 2px;
-        }
-
-        .problem-box {
-            background: #F7F3EC;
-            border: 1px solid #E3DED5;
-            border-radius: 12px;
-            padding: 18px 22px;
-            margin: 16px 0;
-            page-break-inside: avoid;
-        }
-
-        .problem-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #0B1A2E;
-            margin-bottom: 8px;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .problem-meta {
-            font-size: 11px;
-            color: #8C8C8C;
-            margin-bottom: 10px;
-            font-weight: 500;
-        }
-
-        .io-box {
-            background: #111824;
-            border: 1px solid #2A3240;
-            border-radius: 10px;
-            padding: 14px 18px;
-            margin: 10px 0;
-            font-family: 'Fira Code', monospace;
-            font-size: 11.5px;
-            line-height: 1.6;
-            color: #D4D4D4;
-            page-break-inside: avoid;
-        }
-
-        .io-label {
-            color: #6A9955;
-            font-weight: 600;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .step-box {
-            background: #FFFFFF;
-            border: 1px solid #E3DED5;
-            border-left: 4px solid #B49450;
-            border-radius: 8px;
-            padding: 12px 16px;
-            margin: 8px 0;
-            page-break-inside: avoid;
-        }
-
-        .step-num {
-            display: inline-block;
-            background: #0B1A2E;
-            color: #FFFFFF;
-            font-size: 11px;
-            font-weight: 700;
-            width: 24px;
-            height: 24px;
-            line-height: 24px;
-            text-align: center;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
-    </style>
+.compare-table td:first-child { font-weight: 600; color: #0B1A2E; }
+</style>
 </head>
 <body>
 
-<h1>Lecture 14: Binary Search in Array</h1>
+<!-- ==================== HEADER ==================== -->
+<h1>Lecture 14 – Binary Search in Array</h1>
+<div style="color:#8C8C8C; font-size:11px; margin-bottom:16px;">
+    <strong>DSA MASTERY SERIES</strong> &nbsp;|&nbsp; LeetCode 704, 34, 35 &nbsp;|&nbsp; C++ Focused &nbsp;|&nbsp; Print-Ready A4
+</div>
 
-<p class="lead">Is lecture mein hum <span class="hl">Binary Search</span> ke advanced variations cover karenge. Basic Binary Search se aage badhte hue hum <strong>First Occurrence</strong>, <strong>Last Occurrence</strong>, aur <strong>Search Insert Position</strong> jaise problems solve karenge. Ye variations interviews mein <strong>sabse zyada puche jate hain</strong> aur inka template rote learn hona chahiye har developer ko.</p>
+<!-- ==================== PART 0: WHY BINARY SEARCH ==================== -->
+<h2>0. Why Binary Search?</h2>
 
-<div class="divider">&#10022; &#10022; &#10022;</div>
-
-<!-- ==================== BINARY SEARCH TEMPLATE RECAP ==================== -->
-
-<h2>Binary Search Template Recap</h2>
+<div class="box box-intuition">
+    <span class="box-label">The Problem That Created Binary Search</span>
+    <p style="margin:0;"><strong>Socho:</strong> Ek dictionary me ek word dhoondhna hai. Agar tum pehle page se shuru karke ek-ek page turn karoge (Linear Search), to 1000 pages ki dictionary me average 500 pages dekhne padenge. Ye bahut slow hai!</p>
+    <p style="margin:8px 0 0 0;">Lekin agar tum <span class="highlight">middle page</span> kholo aur dekho ki word alphabetically usse pehle hai ya baad me, to tum <strong>aadhe pages ko turant discard</strong> kar sakte ho. Baar-baar aisa karte raho — har baar search space half ho jata hai. Bas 10 steps me 1000 pages se 1 page par aa jate ho!</p>
+    <p style="margin:8px 0 0 0; font-weight:600; color:#2D6A4F;">Yehi Binary Search ka core idea hai — "Divide and Conquer".</p>
+</div>
 
 <div class="box box-pattern">
-    <span class="box-label">Pattern</span>
-    <strong>Binary Search</strong> &mdash; Divide & Conquer, Sorted Array, Logarithmic Time
-</div>
-
-<h3>Standard Binary Search</h3>
-<p>Binary Search ka basic template hum Lecture 13 mein already cover kar chuke hain. Lekin advanced variations ke liye template ko thoda modify karna padta hai. Pehle standard template ko recall karte hain:</p>
-
-<div class="code-block"><span class="syn-cm">// Standard Binary Search Template</span>
-<span class="syn-type">int</span> <span class="syn-fn">binarySearch</span>(<span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt;&amp; nums, <span class="syn-type">int</span> target) {
-    <span class="syn-type">int</span> low = <span class="syn-num">0</span>;
-    <span class="syn-type">int</span> high = nums.<span class="syn-fn">size</span>() - <span class="syn-num">1</span>;
-
-    <span class="syn-kw">while</span> (low &lt;= high) {
-        <span class="syn-type">int</span> mid = low + (high - low) / <span class="syn-num">2</span>;
-
-        <span class="syn-kw">if</span> (nums[mid] == target)      <span class="syn-kw">return</span> mid;
-        <span class="syn-kw">else if</span> (nums[mid] &lt; target)  low = mid + <span class="syn-num">1</span>;
-        <span class="syn-kw">else</span>                          high = mid - <span class="syn-num">1</span>;
-    }
-
-    <span class="syn-kw">return</span> -<span class="syn-num">1</span>;
-}</div>
-
-<div class="golden-insight">
-    <strong style="color:#B49450;">Key Insight:</strong> Advanced Binary Search problems mein <span class="hl">target milne ke baad bhi search karna padta hai</span>. First Occurrence mein left side search karo, Last Occurrence mein right side. Ye standard template se alag hai jahan target milte hi return kar dete hain.
-</div>
-
-<div class="divider">&#10022; &#10022; &#10022;</div>
-
-<!-- ==================== PROBLEM 1: FIRST AND LAST POSITION ==================== -->
-
-<h2>Problem 1: Find First and Last Position of Element</h2>
-
-<div class="problem-box">
-    <div class="problem-title">LeetCode 34: Find First and Last Position of Element in Sorted Array</div>
-    <div class="problem-meta">Difficulty: Medium | Binary Search | First & Last Occurrence</div>
-
-    <p><strong>Problem Statement:</strong></p>
-    <p>Given an array of integers <code>nums</code> sorted in non-decreasing order, find the starting and ending position of a given <code>target</code> value. If <code>target</code> is not found in the array, return <code>[-1, -1]</code>.</p>
-
-    <p><strong>Constraints:</strong></p>
-    <ul>
-        <li>0 <= nums.length <= 10<sup>5</sup></li>
-        <li>-10<sup>9</sup> <= nums[i] <= 10<sup>9</sup></li>
-        <li>nums is a non-decreasing array</li>
-        <li>-10<sup>9</sup> <= target <= 10<sup>9</sup></li>
+    <span class="box-label">Real-World Use Cases</span>
+    <ul style="margin:0;">
+        <li><strong>Database Indexing:</strong> MySQL, PostgreSQL me B-Trees use hote hain — Binary Search ka advanced version. Billions of records me microseconds me data mil jata hai.</li>
+        <li><strong>Git Bisect:</strong> Git me <code>git bisect</code> command se bug wala commit dhundhte hain — har baar commit history half karke search karta hai.</li>
+        <li><strong>Auto-Complete / Spell Check:</strong> Sorted dictionary me word search — Binary Search se O(log n) me result.</li>
+        <li><strong>IP Routing:</strong> Routers sorted routing tables me destination IP search karte hain using Binary Search.</li>
+        <li><strong>Compilers:</strong> Symbol tables (variable names) ko sorted rakha jata hai — Binary Search se fast lookup.</li>
     </ul>
-
-    <div class="io-box">
-        <span class="io-label">// Example 1</span>
-        <span style="color:#89DDFF;">Input:</span>  nums = [5, 7, 7, 8, 8, 10], target = 8
-        <span style="color:#89DDFF;">Output:</span> [3, 4]
-        <span style="color:#6A9955;">// Explanation: 8 appears at index 3 and 4</span>
-    </div>
-
-    <div class="io-box">
-        <span class="io-label">// Example 2</span>
-        <span style="color:#89DDFF;">Input:</span>  nums = [5, 7, 7, 8, 8, 10], target = 6
-        <span style="color:#89DDFF;">Output:</span> [-1, -1]
-        <span style="color:#6A9955;">// Explanation: 6 is not present in the array</span>
-    </div>
-
-    <div class="io-box">
-        <span class="io-label">// Example 3 (Empty Array)</span>
-        <span style="color:#89DDFF;">Input:</span>  nums = [], target = 0
-        <span style="color:#89DDFF;">Output:</span> [-1, -1]
-    </div>
-
-    <div class="io-box">
-        <span class="io-label">// Example 4 (Single Element)</span>
-        <span style="color:#89DDFF;">Input:</span>  nums = [1], target = 1
-        <span style="color:#89DDFF;">Output:</span> [0, 0]
-    </div>
 </div>
 
-<h3>Introduction</h3>
-<p>Is problem mein humein sorted array mein <span class="hl">target ka first occurrence</span> aur <span class="hl">last occurrence</span> dono dhoondhna hai. Normal Binary Search target milte hi return kar deta hai, lekin yahan humein <strong>boundary positions</strong> chahiye. Isliye hum <strong>do alag Binary Searches</strong> lagayenge: ek first occurrence ke liye, ek last occurrence ke liye.</p>
-
-<h3>The Analogy</h3>
-<p>Socho aapke paas ek library mein books hain alphabetically sorted. Aapko ek specific book dhoondhni hai aur pata karna hai ki wo <strong>pehli baar kahan rakhi hai</strong> aur <strong>last baar kahan rakhi hai</strong>. Pehli search mein aap left side check karte ho, last search mein right side. Exactly aise hi do Binary Searches kaam karte hain.</p>
-
-<h3>How It Works Internally</h3>
-
-<div class="step-box">
-    <span class="step-num">1</span><strong>First Occurrence Search:</strong> Jab target mil jaye, us index ko save karo aur <span class="hl">left half</span> mein search karna continue karo. Kyunki first occurrence left side mein hi hoga.
+<div class="diagram">
+    <div class="diagram-group-label" style="font-size:11px; color:#0B1A2E; font-weight:700; margin-bottom:8px;">Visual: Linear Search vs Binary Search — Search Space Reduction</div>
+    <div class="pass-row">
+        <span class="pass-label">Linear:</span>
+        <div class="diagram-box">1</div>
+        <div class="diagram-box">2</div>
+        <div class="diagram-box">3</div>
+        <div class="diagram-box">4</div>
+        <div class="diagram-box">5</div>
+        <div class="diagram-box">6</div>
+        <div class="diagram-box">7</div>
+        <div class="diagram-box">8</div>
+        <span class="diagram-arrow">→</span>
+        <span style="font-size:10px; color:#A53F3F;">Check one by one — O(n)</span>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">Binary Step 1:</span>
+        <div class="diagram-box unsorted">1</div>
+        <div class="diagram-box unsorted">2</div>
+        <div class="diagram-box unsorted">3</div>
+        <div class="diagram-box active">4</div>
+        <div class="diagram-box unsorted">5</div>
+        <div class="diagram-box unsorted">6</div>
+        <div class="diagram-box unsorted">7</div>
+        <div class="diagram-box unsorted">8</div>
+        <span style="font-size:10px; color:#C4924A; margin-left:6px;">mid = 4, discard left or right</span>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">Binary Step 2:</span>
+        <div style="width:80px;"></div>
+        <div class="diagram-box unsorted">5</div>
+        <div class="diagram-box active">6</div>
+        <div class="diagram-box unsorted">7</div>
+        <div class="diagram-box unsorted">8</div>
+        <span style="font-size:10px; color:#C4924A; margin-left:6px;">mid = 6, again half!</span>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">Binary Step 3:</span>
+        <div style="width:140px;"></div>
+        <div class="diagram-box found">7</div>
+        <span style="font-size:10px; color:#2D6A4F; margin-left:6px;">Found in just 3 steps! — O(log n)</span>
+    </div>
+    <div class="diagram-label">Binary Search har step me search space ko half kar deta hai</div>
 </div>
 
-<div class="step-box">
-    <span class="step-num">2</span><strong>Last Occurrence Search:</strong> Jab target mil jaye, us index ko save karo aur <span class="hl">right half</span> mein search karna continue karo. Kyunki last occurrence right side mein hoga.
+<div class="box box-important">
+    <span class="box-label">Critical: Why (low + high) / 2 is DANGEROUS</span>
+    <p style="margin:0;">Jab <code>low</code> aur <code>high</code> bahut bade integers hote hain (jaise <code>INT_MAX</code> ke paas), to <code>low + high</code> ka result <strong>integer overflow</strong> kar sakta hai.</p>
+    <p style="margin:8px 0 0 0;"><strong>Example:</strong> <code>low = 2,000,000,000</code> aur <code>high = 2,000,000,000</code></p>
+    <p style="margin:4px 0 0 0; font-family:'Fira Code',monospace; font-size:11px; color:#A53F3F;">low + high = 4,000,000,000 → INT_MAX (2,147,483,647) se bada! → Overflow → Negative value!</p>
+    <p style="margin:8px 0 0 0;"><strong>Safe Formula:</strong> <code>mid = low + (high - low) / 2</code></p>
+    <p style="margin:4px 0 0 0;">Isme <code>high - low</code> kabhi overflow nahi karega kyunki <code>high >= low</code> hamesha hota hai. Ye formula mathematically same hai:</p>
+    <p style="margin:4px 0 0 0; font-family:'Fira Code',monospace; font-size:11px; color:#2D6A4F;">low + (high - low) / 2 = (2*low + high - low) / 2 = (low + high) / 2</p>
 </div>
 
-<div class="step-box">
-    <span class="step-num">3</span><strong>Return:</strong> Dono searches ke results ko combine karke <code>{first, last}</code> return karo.
+<div class="box box-warning">
+    <span class="box-label">While(start <= end) vs While(start < end)</span>
+    <div class="table-wrap">
+        <table class="compare-table">
+            <tr><th>Condition</th><th>Use When</th><th>Behavior</th></tr>
+            <tr>
+                <td><code>while (start <= end)</code></td>
+                <td>Target <strong>exactly find</strong> karna hai (LeetCode 704)</td>
+                <td>Loop tab tak chalega jab <code>start == end</code> (single element bachi ho). Agar target nahi mila, loop end hone ke baad <code>start > end</code> hoga.</td>
+            </tr>
+            <tr>
+                <td><code>while (start < end)</code></td>
+                <td><strong>Lower Bound / Upper Bound</strong> nikaalna hai (LeetCode 35)</td>
+                <td>Loop <code>start == end</code> hone se pehle hi ruk jata hai. Final answer <code>start</code> (ya <code>end</code>) me hota hai. Boundary search ke liye best hai.</td>
+            </tr>
+        </table>
+    </div>
+    <p style="margin:8px 0 0 0;"><strong>Rule of Thumb:</strong> Agar exact index return karna hai (found / not found), to <code><=</code> use karo. Agar insertion position ya boundary nikaalni hai, to <code><</code> use karo.</p>
+</div>
+
+<div class="ornament">◈ ◈ ◈</div>
+
+<!-- ==================== PROBLEM 1: BINARY SEARCH (704) ==================== -->
+<h2>1. LeetCode 704 – Binary Search</h2>
+
+<div class="box box-problem">
+    <span class="box-label">Problem Statement</span>
+    <p style="margin:0;">Ek <strong>sorted (ascending)</strong> integer array <code>nums</code> aur integer <code>target</code> diya gaya hai. Agar <code>target</code> array me exist karta hai, to uska <strong>index return karo</strong>. Nahi to <strong>-1 return karo</strong>.</p>
+    <p style="margin:8px 0 0 0;"><strong>Example 1:</strong> nums = [-1,0,3,5,9,12], target = 9 → Output: <strong>4</strong></p>
+    <p style="margin:4px 0 0 0;"><strong>Example 2:</strong> nums = [-1,0,3,5,9,12], target = 2 → Output: <strong>-1</strong></p>
+    <p style="margin:4px 0 0 0;"><strong>Example 3:</strong> nums = [5], target = 5 → Output: <strong>0</strong></p>
 </div>
 
 <div class="box box-workflow">
-    <span class="box-label">Workflow</span>
-    <strong>First Search:</strong> target == nums[mid] ? save index, go LEFT (high = mid - 1).<br>
-    <strong>Last Search:</strong> target == nums[mid] ? save index, go RIGHT (low = mid + 1).<br>
-    <strong>Key Difference:</strong> Target milne ke baad bhi search continue karna hai.
-</div>
-
-<h3>Visual Walkthrough</h3>
-
-<p><strong>Array:</strong> <code>[5, 7, 7, 8, 8, 10]</code>, <strong>Target:</strong> <code>8</code></p>
-
-<div class="diagram">
-    <div class="diagram-box" style="background:#F4E9D8; color:#7A5C3A; border:1px solid #B49450;">5</div>
-    <div class="diagram-box" style="background:#F4E9D8; color:#7A5C3A; border:1px solid #B49450;">7</div>
-    <div class="diagram-box" style="background:#F4E9D8; color:#7A5C3A; border:1px solid #B49450;">7</div>
-    <div class="diagram-box" style="background:#0B1A2E; color:#FFFFFF; border:1px solid #0B1A2E;">8</div>
-    <div class="diagram-box" style="background:#0B1A2E; color:#FFFFFF; border:1px solid #0B1A2E;">8</div>
-    <div class="diagram-box" style="background:#F4E9D8; color:#7A5C3A; border:1px solid #B49450;">10</div>
-    <div class="diagram-label">Indices: 0 &nbsp;&nbsp;1 &nbsp;&nbsp;2 &nbsp;&nbsp;3 &nbsp;&nbsp;4 &nbsp;&nbsp;5</div>
+    <span class="box-label">Algorithm Workflow</span>
+    <ol style="margin:0; padding-left:18px;">
+        <li>Do pointers initialize karo: <code>low = 0</code>, <code>high = n - 1</code></li>
+        <li>Middle index nikalo: <code>mid = low + (high - low) / 2</code> (overflow safe)</li>
+        <li><code>nums[mid]</code> ko <code>target</code> se compare karo:
+            <ul>
+                <li><code>nums[mid] == target</code> → <strong>Return mid</strong> (found!)</li>
+                <li><code>nums[mid] < target</code> → <strong>low = mid + 1</strong> (right half me search karo)</li>
+                <li><code>nums[mid] > target</code> → <strong>high = mid - 1</strong> (left half me search karo)</li>
+            </ul>
+        </li>
+        <li>Step 2-3 tab tak repeat karo jab tak <code>low <= high</code></li>
+        <li>Loop end hone par target nahi mila → <strong>Return -1</strong></li>
+    </ol>
 </div>
 
 <div class="diagram">
-    <div class="diagram-box" style="background:#2E6B5A; color:#FFFFFF; border:1px solid #2E6B5A;">First Search</div>
-    <div class="diagram-arrow">&#8594;</div>
-    <div class="diagram-box" style="background:#A53F3F; color:#FFFFFF; border:1px solid #A53F3F;">mid=2, val=7 &lt; 8</div>
-    <div class="diagram-arrow">&#8594;</div>
-    <div class="diagram-box" style="background:#A53F3F; color:#FFFFFF; border:1px solid #A53F3F;">mid=4, val=8 == 8</div>
-    <div class="diagram-arrow">&#8594;</div>
-    <div class="diagram-box" style="background:#0B1A2E; color:#FFFFFF; border:1px solid #0B1A2E;">save=4, go left</div>
-    <div class="diagram-arrow">&#8594;</div>
-    <div class="diagram-box" style="background:#0B1A2E; color:#FFFFFF; border:1px solid #0B1A2E;">mid=3, val=8 == 8</div>
-    <div class="diagram-arrow">&#8594;</div>
-    <div class="diagram-box" style="background:#0B1A2E; color:#FFFFFF; border:1px solid #0B1A2E;">save=3, go left</div>
-    <div class="diagram-arrow">&#8594;</div>
-    <div class="diagram-box" style="background:#0B1A2E; color:#FFFFFF; border:1px solid #0B1A2E;">low &gt; high, STOP</div>
-    <div class="diagram-label">First Occurrence = 3</div>
+    <div class="diagram-group-label" style="font-size:11px; color:#0B1A2E; font-weight:700; margin-bottom:8px;">Visual: Binary Search on nums = [-1, 0, 3, 5, 9, 12], target = 9</div>
+    <div class="pass-row">
+        <span class="pass-label">Step 1:</span>
+        <div class="diagram-box active">-1</div>
+        <div class="diagram-box active">0</div>
+        <div class="diagram-box active">3</div>
+        <div class="diagram-box active">5</div>
+        <div class="diagram-box active">9</div>
+        <div class="diagram-box active">12</div>
+        <span style="font-size:10px; color:#C4924A; margin-left:6px;">low=0, high=5, mid=2 (value 3)</span>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">Compare:</span>
+        <span style="font-size:10px;">3 < 9 → Right half me jao!</span>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">Step 2:</span>
+        <div style="width:120px;"></div>
+        <div class="diagram-box active">5</div>
+        <div class="diagram-box active">9</div>
+        <div class="diagram-box active">12</div>
+        <span style="font-size:10px; color:#C4924A; margin-left:6px;">low=3, high=5, mid=4 (value 9)</span>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">Compare:</span>
+        <span style="font-size:10px; color:#2D6A4F; font-weight:600;">9 == 9 → FOUND! Return 4</span>
+    </div>
+    <div class="diagram-label">Sirf 2 comparisons me target mil gaya — O(log n) power!</div>
 </div>
 
-<div class="diagram">
-    <div class="diagram-box" style="background:#2E6B5A; color:#FFFFFF; border:1px solid #2E6B5A;">Last Search</div>
-    <div class="diagram-arrow">&#8594;</div>
-    <div class="diagram-box" style="background:#A53F3F; color:#FFFFFF; border:1px solid #A53F3F;">mid=2, val=7 &lt; 8</div>
-    <div class="diagram-arrow">&#8594;</div>
-    <div class="diagram-box" style="background:#A53F3F; color:#FFFFFF; border:1px solid #A53F3F;">mid=4, val=8 == 8</div>
-    <div class="diagram-arrow">&#8594;</div>
-    <div class="diagram-box" style="background:#0B1A2E; color:#FFFFFF; border:1px solid #0B1A2E;">save=4, go right</div>
-    <div class="diagram-arrow">&#8594;</div>
-    <div class="diagram-box" style="background:#0B1A2E; color:#FFFFFF; border:1px solid #0B1A2E;">low &gt; high, STOP</div>
-    <div class="diagram-label">Last Occurrence = 4</div>
-</div>
+<h3>C++ Implementation</h3>
+<div class="code-block"><span class="cm">// LeetCode 704 - Binary Search</span>
+<span class="kw">class</span> <span class="type">Solution</span> {
+<span class="kw">public</span>:
+    <span class="type">int</span> <span class="fn">search</span>(<span class="type">vector</span>&lt;<span class="type">int</span>&gt;&amp; <span class="var">nums</span>, <span class="type">int</span> <span class="var">target</span>) {
 
-<h3>Code Implementation</h3>
-<div class="code-block"><span class="syn-cm">// LeetCode 34: Find First and Last Position</span>
-<span class="syn-kw">class</span> <span class="syn-type">Solution</span> {
-<span class="syn-kw">public</span>:
-    <span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt; <span class="syn-fn">searchRange</span>(<span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt;&amp; nums, <span class="syn-type">int</span> target) {
+        <span class="type">int</span> <span class="var">low</span> = <span class="num">0</span>;
+        <span class="type">int</span> <span class="var">high</span> = <span class="var">nums</span>.<span class="fn">size</span>() - <span class="num">1</span>;
 
-        <span class="syn-type">int</span> first = -<span class="syn-num">1</span>;
-        <span class="syn-type">int</span> last = -<span class="syn-num">1</span>;
+        <span class="kw">while</span> (<span class="var">low</span> <= <span class="var">high</span>) {
 
-        <span class="syn-cm">// ================================</span>
-        <span class="syn-cm">// Find First Occurrence</span>
-        <span class="syn-cm">// ================================</span>
-        <span class="syn-type">int</span> low = <span class="syn-num">0</span>;
-        <span class="syn-type">int</span> high = nums.<span class="syn-fn">size</span>() - <span class="syn-num">1</span>;
+            <span class="cm">// Overflow-safe middle index</span>
+            <span class="type">int</span> <span class="var">mid</span> = <span class="var">low</span> + (<span class="var">high</span> - <span class="var">low</span>) / <span class="num">2</span>;
 
-        <span class="syn-kw">while</span> (low &lt;= high) {
+            <span class="cm">// Target Found</span>
+            <span class="kw">if</span> (<span class="var">nums</span>[<span class="var">mid</span>] == <span class="var">target</span>)
+                <span class="kw">return</span> <span class="var">mid</span>;
 
-            <span class="syn-type">int</span> mid = low + (high - low) / <span class="syn-num">2</span>;
+            <span class="cm">// Target right half me hoga</span>
+            <span class="kw">if</span> (<span class="var">nums</span>[<span class="var">mid</span>] &lt; <span class="var">target</span>)
+                <span class="var">low</span> = <span class="var">mid</span> + <span class="num">1</span>;
 
-            <span class="syn-kw">if</span> (nums[mid] == target) {
-                first = mid;
-                <span class="syn-cm">// Search towards left</span>
-                high = mid - <span class="syn-num">1</span>;
-            }
-            <span class="syn-kw">else if</span> (nums[mid] &lt; target) {
-                low = mid + <span class="syn-num">1</span>;
-            }
-            <span class="syn-kw">else</span> {
-                high = mid - <span class="syn-num">1</span>;
-            }
+            <span class="cm">// Target left half me hoga</span>
+            <span class="kw">else</span>
+                <span class="var">high</span> = <span class="var">mid</span> - <span class="num">1</span>;
         }
 
-        <span class="syn-cm">// ================================</span>
-        <span class="syn-cm">// Find Last Occurrence</span>
-        <span class="syn-cm">// ================================</span>
-        low = <span class="syn-num">0</span>;
-        high = nums.<span class="syn-fn">size</span>() - <span class="syn-num">1</span>;
-
-        <span class="syn-kw">while</span> (low &lt;= high) {
-
-            <span class="syn-type">int</span> mid = low + (high - low) / <span class="syn-num">2</span>;
-
-            <span class="syn-kw">if</span> (nums[mid] == target) {
-                last = mid;
-                <span class="syn-cm">// Search towards right</span>
-                low = mid + <span class="syn-num">1</span>;
-            }
-            <span class="syn-kw">else if</span> (nums[mid] &lt; target) {
-                low = mid + <span class="syn-num">1</span>;
-            }
-            <span class="syn-kw">else</span> {
-                high = mid - <span class="syn-num">1</span>;
-            }
-        }
-
-        <span class="syn-kw">return</span> {first, last};
+        <span class="cm">// Target Not Found</span>
+        <span class="kw">return</span> -<span class="num">1</span>;
     }
 };</div>
 
-<h3>Complexity Analysis</h3>
-<table>
-    <tr>
-        <th>Case</th>
-        <th>Time Complexity</th>
-        <th>Reason</th>
-    </tr>
-    <tr>
-        <td><strong>First Search</strong></td>
-        <td><span class="hl">O(log n)</span></td>
-        <td>Binary Search on sorted array.</td>
-    </tr>
-    <tr>
-        <td><strong>Last Search</strong></td>
-        <td><span class="hl">O(log n)</span></td>
-        <td>Binary Search on sorted array.</td>
-    </tr>
-    <tr>
-        <td><strong>Total</strong></td>
-        <td><span class="hl">O(log n)</span></td>
-        <td>Two independent Binary Searches.</td>
-    </tr>
-    <tr>
-        <td><strong>Space</strong></td>
-        <td><span class="hl">O(1)</span></td>
-        <td>Sirf first, last, low, high, mid variables.</td>
-    </tr>
-</table>
+<div class="box box-dryrun">
+    <span class="box-label">Step-by-Step Dry Run</span>
+    <p style="margin:0; font-weight:600;">Input: nums = [-1, 0, 3, 5, 9, 12], target = 9</p>
+    <div style="margin-top:10px;">
+        <p style="margin:4px 0; font-size:11px;"><strong>Iteration 1:</strong> low=0, high=5 → mid = 0 + (5-0)/2 = <strong>2</strong> → nums[2] = 3 → 3 < 9 → <strong>low = 3</strong></p>
+        <p style="margin:4px 0; font-size:11px;"><strong>Iteration 2:</strong> low=3, high=5 → mid = 3 + (5-3)/2 = <strong>4</strong> → nums[4] = 9 → 9 == 9 → <strong style="color:#2D6A4F;">Return 4</strong></p>
+        <p style="margin:4px 0; font-size:11px; color:#2D6A4F; font-weight:600;">Total comparisons: 2 → O(log 6) ≈ 2.58 ✓</p>
+    </div>
+</div>
 
-<div class="box box-important">
-    <span class="box-label">Important</span>
-    <span class="warning-inline">Target milne ke baad bhi search karna hai.</span> First Occurrence mein <code>high = mid - 1</code> karo (left jao), Last Occurrence mein <code>low = mid + 1</code> karo (right jao). Ye standard Binary Search se alag hai jahan <code>return mid</code> karte hain.
+<div class="box box-complexity">
+    <span class="box-label">Complexity Analysis</span>
+    <div class="table-wrap">
+        <table>
+            <tr><th>Case</th><th>Time</th><th>Reason</th></tr>
+            <tr><td>Best Case</td><td>O(1)</td><td>Target exactly middle me ho — ek hi comparison</td></tr>
+            <tr><td>Average Case</td><td>O(log n)</td><td>Har step me search space half hota hai — log₂(n) steps</td></tr>
+            <tr><td>Worst Case</td><td>O(log n)</td><td>Target last possible position par ya absent ho</td></tr>
+        </table>
+    </div>
+    <p style="margin:8px 0 0 0;"><strong>Space Complexity:</strong> O(1) — Sirf 3 variables (low, high, mid) use hote hain.</p>
+</div>
+
+<div class="ornament">◈ ◈ ◈</div>
+
+<!-- ==================== PROBLEM 2: FIRST & LAST POSITION (34) ==================== -->
+<h2>2. LeetCode 34 – Find First and Last Position</h2>
+
+<div class="box box-problem">
+    <span class="box-label">Problem Statement</span>
+    <p style="margin:0;">Ek <strong>sorted</strong> integer array <code>nums</code> aur <code>target</code> diya gaya hai. Target ka <strong>first aur last occurrence</strong> return karo. Agar target nahi mila, to <code>[-1, -1]</code> return karo.</p>
+    <p style="margin:8px 0 0 0;"><strong>Example 1:</strong> nums = [5,7,7,8,8,10], target = 8 → Output: <strong>[3, 4]</strong></p>
+    <p style="margin:4px 0 0 0;"><strong>Example 2:</strong> nums = [5,7,7,8,8,10], target = 6 → Output: <strong>[-1, -1]</strong></p>
+    <p style="margin:4px 0 0 0;"><strong>Example 3:</strong> nums = [2,2], target = 2 → Output: <strong>[0, 1]</strong></p>
+</div>
+
+<div class="box box-intuition">
+    <span class="box-label">Intuition & Real-Life Analogy</span>
+    <p style="margin:0;"><strong>Analogy:</strong> Socho ek phone directory me "Sharma" naam ke kitne log hain aur sabse pehla aur sabse aakhri "Sharma" kahan hai. Tum pehle first "Sharma" dhundhoge — jab mil jaye, to uske <strong>left side</strong> aur check karoge ki koi aur "Sharma" hai kya. Phir last "Sharma" dhundhoge — jab mil jaye, to uske <strong>right side</strong> check karoge.</p>
+    <p style="margin:8px 0 0 0;">Binary Search <strong>do baar</strong> chalana hai — ek first occurrence ke liye, ek last occurrence ke liye. Target milne par turant return nahi karna; instead, <span class="highlight">answer store karo aur usi direction me search continue karo</span>.</p>
+</div>
+
+<div class="box box-workflow">
+    <span class="box-label">Algorithm Workflow</span>
+    <ol style="margin:0; padding-left:18px;">
+        <li>Answer array initialize karo: <code>ans = [-1, -1]</code></li>
+        <li><strong>First Occurrence ke liye Binary Search:</strong>
+            <ul>
+                <li><code>nums[mid] == target</code> → <code>ans[0] = mid</code> store karo, <strong>left me aur search karo</strong> (<code>end = mid - 1</code>)</li>
+                <li><code>nums[mid] < target</code> → <code>start = mid + 1</code></li>
+                <li><code>nums[mid] > target</code> → <code>end = mid - 1</code></li>
+            </ul>
+        </li>
+        <li>Search space reset karo: <code>start = 0, end = n - 1</code></li>
+        <li><strong>Last Occurrence ke liye Binary Search:</strong>
+            <ul>
+                <li><code>nums[mid] == target</code> → <code>ans[1] = mid</code> store karo, <strong>right me aur search karo</strong> (<code>start = mid + 1</code>)</li>
+                <li><code>nums[mid] < target</code> → <code>start = mid + 1</code></li>
+                <li><code>nums[mid] > target</code> → <code>end = mid - 1</code></li>
+            </ul>
+        </li>
+        <li><code>ans</code> return karo</li>
+    </ol>
+</div>
+
+<div class="diagram">
+    <div class="diagram-group-label" style="font-size:11px; color:#0B1A2E; font-weight:700; margin-bottom:8px;">Visual: First & Last Occurrence — nums = [5,7,7,8,8,10], target = 8</div>
+    <div style="margin-bottom:8px; font-size:10px; font-weight:600; color:#3A5F80;">Finding FIRST Occurrence:</div>
+    <div class="pass-row">
+        <span class="pass-label">Step 1:</span>
+        <div class="diagram-box">5</div>
+        <div class="diagram-box">7</div>
+        <div class="diagram-box active">7</div>
+        <div class="diagram-box">8</div>
+        <div class="diagram-box">8</div>
+        <div class="diagram-box">10</div>
+        <span style="font-size:10px; color:#C4924A; margin-left:6px;">mid=2, val=7 &lt; 8 → go right</span>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">Step 2:</span>
+        <div style="width:80px;"></div>
+        <div class="diagram-box">8</div>
+        <div class="diagram-box found">8</div>
+        <div class="diagram-box">10</div>
+        <span style="font-size:10px; color:#2D6A4F; margin-left:6px;">mid=4, val=8 → ans[0]=4, search LEFT</span>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">Step 3:</span>
+        <div style="width:80px;"></div>
+        <div class="diagram-box found">8</div>
+        <span style="font-size:10px; color:#2D6A4F; margin-left:6px;">mid=3, val=8 → ans[0]=3, search LEFT</span>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">Result:</span>
+        <span style="font-size:10px; color:#2D6A4F; font-weight:600;">First Occurrence = 3</span>
+    </div>
+    <div style="margin:10px 0 8px 0; font-size:10px; font-weight:600; color:#3A5F80;">Finding LAST Occurrence:</div>
+    <div class="pass-row">
+        <span class="pass-label">Step 1:</span>
+        <div class="diagram-box">5</div>
+        <div class="diagram-box">7</div>
+        <div class="diagram-box active">7</div>
+        <div class="diagram-box">8</div>
+        <div class="diagram-box">8</div>
+        <div class="diagram-box">10</div>
+        <span style="font-size:10px; color:#C4924A; margin-left:6px;">mid=2, val=7 &lt; 8 → go right</span>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">Step 2:</span>
+        <div style="width:80px;"></div>
+        <div class="diagram-box">8</div>
+        <div class="diagram-box found">8</div>
+        <div class="diagram-box">10</div>
+        <span style="font-size:10px; color:#2D6A4F; margin-left:6px;">mid=4, val=8 → ans[1]=4, search RIGHT</span>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">Step 3:</span>
+        <div style="width:160px;"></div>
+        <div class="diagram-box">10</div>
+        <span style="font-size:10px; color:#A53F3F; margin-left:6px;">mid=5, val=10 &gt; 8 → go left</span>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">Result:</span>
+        <span style="font-size:10px; color:#2D6A4F; font-weight:600;">Last Occurrence = 4</span>
+    </div>
+    <div class="diagram-label">Target milne ke baad bhi same direction me search continue karna hai!</div>
+</div>
+
+<h3>C++ Implementation</h3>
+<div class="code-block"><span class="cm">// LeetCode 34 - Find First and Last Position</span>
+<span class="kw">class</span> <span class="type">Solution</span> {
+<span class="kw">public</span>:
+    <span class="type">vector</span>&lt;<span class="type">int</span>&gt; <span class="fn">searchRange</span>(<span class="type">vector</span>&lt;<span class="type">int</span>&gt;&amp; <span class="var">nums</span>, <span class="type">int</span> <span class="var">target</span>) {
+
+        <span class="type">vector</span>&lt;<span class="type">int</span>&gt; <span class="var">ans</span>(<span class="num">2</span>, -<span class="num">1</span>);
+
+        <span class="type">int</span> <span class="var">start</span> = <span class="num">0</span>;
+        <span class="type">int</span> <span class="var">end</span> = <span class="var">nums</span>.<span class="fn">size</span>() - <span class="num">1</span>;
+
+        <span class="cm">// ========== First Occurrence ==========</span>
+        <span class="kw">while</span> (<span class="var">start</span> <= <span class="var">end</span>) {
+            <span class="type">int</span> <span class="var">mid</span> = <span class="var">start</span> + (<span class="var">end</span> - <span class="var">start</span>) / <span class="num">2</span>;
+
+            <span class="kw">if</span> (<span class="var">nums</span>[<span class="var">mid</span>] == <span class="var">target</span>) {
+                <span class="var">ans</span>[<span class="num">0</span>] = <span class="var">mid</span>;       <span class="cm">// Store answer</span>
+                <span class="var">end</span> = <span class="var">mid</span> - <span class="num">1</span>;      <span class="cm">// But keep searching LEFT</span>
+            }
+            <span class="kw">else if</span> (<span class="var">nums</span>[<span class="var">mid</span>] &lt; <span class="var">target</span>) {
+                <span class="var">start</span> = <span class="var">mid</span> + <span class="num">1</span>;
+            }
+            <span class="kw">else</span> {
+                <span class="var">end</span> = <span class="var">mid</span> - <span class="num">1</span>;
+            }
+        }
+
+        <span class="cm">// Reset search space for last occurrence</span>
+        <span class="var">start</span> = <span class="num">0</span>;
+        <span class="var">end</span> = <span class="var">nums</span>.<span class="fn">size</span>() - <span class="num">1</span>;
+
+        <span class="cm">// ========== Last Occurrence ==========</span>
+        <span class="kw">while</span> (<span class="var">start</span> <= <span class="var">end</span>) {
+            <span class="type">int</span> <span class="var">mid</span> = <span class="var">start</span> + (<span class="var">end</span> - <span class="var">start</span>) / <span class="num">2</span>;
+
+            <span class="kw">if</span> (<span class="var">nums</span>[<span class="var">mid</span>] == <span class="var">target</span>) {
+                <span class="var">ans</span>[<span class="num">1</span>] = <span class="var">mid</span>;       <span class="cm">// Store answer</span>
+                <span class="var">start</span> = <span class="var">mid</span> + <span class="num">1</span>;    <span class="cm">// But keep searching RIGHT</span>
+            }
+            <span class="kw">else if</span> (<span class="var">nums</span>[<span class="var">mid</span>] &lt; <span class="var">target</span>) {
+                <span class="var">start</span> = <span class="var">mid</span> + <span class="num">1</span>;
+            }
+            <span class="kw">else</span> {
+                <span class="var">end</span> = <span class="var">mid</span> - <span class="num">1</span>;
+            }
+        }
+
+        <span class="kw">return</span> <span class="var">ans</span>;
+    }
+};</div>
+
+<div class="box box-dryrun">
+    <span class="box-label">Step-by-Step Dry Run</span>
+    <p style="margin:0; font-weight:600;">Input: nums = [5,7,7,8,8,10], target = 8</p>
+    <div style="margin-top:10px;">
+        <p style="margin:4px 0; font-size:11px; color:#3A5F80; font-weight:600;">First Occurrence:</p>
+        <p style="margin:4px 0; font-size:11px;">start=0, end=5 → mid=2, nums[2]=7 &lt; 8 → start=3</p>
+        <p style="margin:4px 0; font-size:11px;">start=3, end=5 → mid=4, nums[4]=8 == 8 → <strong>ans[0]=4</strong>, end=3</p>
+        <p style="margin:4px 0; font-size:11px;">start=3, end=3 → mid=3, nums[3]=8 == 8 → <strong>ans[0]=3</strong>, end=2</p>
+        <p style="margin:4px 0; font-size:11px;">start=3, end=2 → Loop ends → <strong>First = 3</strong></p>
+        <p style="margin:8px 0 4px 0; font-size:11px; color:#3A5F80; font-weight:600;">Last Occurrence:</p>
+        <p style="margin:4px 0; font-size:11px;">start=0, end=5 → mid=2, nums[2]=7 &lt; 8 → start=3</p>
+        <p style="margin:4px 0; font-size:11px;">start=3, end=5 → mid=4, nums[4]=8 == 8 → <strong>ans[1]=4</strong>, start=5</p>
+        <p style="margin:4px 0; font-size:11px;">start=5, end=5 → mid=5, nums[5]=10 &gt; 8 → end=4</p>
+        <p style="margin:4px 0; font-size:11px;">start=5, end=4 → Loop ends → <strong>Last = 4</strong></p>
+        <p style="margin:6px 0 0 0; font-size:11px; color:#2D6A4F; font-weight:600;">Final Answer: [3, 4]</p>
+    </div>
+</div>
+
+<div class="box box-complexity">
+    <span class="box-label">Complexity Analysis</span>
+    <p style="margin:0;"><strong>Time Complexity:</strong> O(log n) + O(log n) = <strong>O(log n)</strong> — Do binary searches chal rahe hain, dono independent.</p>
+    <p style="margin:6px 0 0 0;"><strong>Space Complexity:</strong> O(1) — Sirf answer array aur pointers use hote hain.</p>
 </div>
 
 <div class="box box-edge">
-    <span class="box-label">Edge Case</span>
-    <ul>
-        <li><strong>Empty array:</strong> Directly return <code>[-1, -1]</code>.</li>
-        <li><strong>Single element:</strong> Agar target match kare toh <code>[0, 0]</code> return hoga.</li>
-        <li><strong>All same elements:</strong> First = 0, Last = n-1 return hoga.</li>
-        <li><strong>Target not present:</strong> <code>[-1, -1]</code> return hoga.</li>
+    <span class="box-label">Edge Cases & Gotchas</span>
+    <ul style="margin:0;">
+        <li><strong>Empty array:</strong> <code>nums.size() == 0</code> → dono loops nahi chalenge, <code>[-1, -1]</code> return hoga.</li>
+        <li><strong>Single element:</strong> <code>nums = [2], target = 2</code> → First = Last = 0. Reset ke baad second loop bhi same result dega.</li>
+        <li><strong>All elements same:</strong> <code>nums = [2,2,2,2]</code> → First loop left tak jayega (ans[0]=0), last loop right tak jayega (ans[1]=3).</li>
+        <li><strong>Target not present:</strong> Dono loops me <code>ans</code> update nahi hoga → <code>[-1, -1]</code> return hoga.</li>
     </ul>
 </div>
 
-<div class="box box-interview">
-    <span class="box-label">Interview Tip</span>
-    Ye problem <strong>interview mein bahut common</strong> hai. Hamesha <span class="hl">do alag functions</span> likhne ka socho: <code>findFirst()</code> aur <code>findLast()</code>. Isse code modular aur readable hota hai. Interviewer ko batana ki aap <strong>template-based approach</strong> follow karte ho &mdash; same Binary Search template ko modify karke different variations solve karte ho.
+<div class="ornament">◈ ◈ ◈</div>
+
+<!-- ==================== PROBLEM 3: SEARCH INSERT POSITION (35) ==================== -->
+<h2>3. LeetCode 35 – Search Insert Position</h2>
+
+<div class="box box-problem">
+    <span class="box-label">Problem Statement</span>
+    <p style="margin:0;">Ek <strong>sorted array of distinct integers</strong> <code>nums</code> aur <code>target</code> diya gaya hai. Agar target mil jaye, to uska <strong>index return karo</strong>. Nahi to wo <strong>index return karo</strong> jahan target insert hone par array sorted rahega.</p>
+    <p style="margin:8px 0 0 0;"><strong>Example 1:</strong> nums = [1,3,5,6], target = 5 → Output: <strong>2</strong></p>
+    <p style="margin:4px 0 0 0;"><strong>Example 2:</strong> nums = [1,3,5,6], target = 2 → Output: <strong>1</strong> (2 ko 1 aur 3 ke beech insert karna hai)</p>
+    <p style="margin:4px 0 0 0;"><strong>Example 3:</strong> nums = [1,3,5,6], target = 7 → Output: <strong>4</strong> (sabse end me insert karna hai)</p>
+</div>
+
+<div class="box box-intuition">
+    <span class="box-label">Intuition & Real-Life Analogy</span>
+    <p style="margin:0;"><strong>Analogy:</strong> Socho tumhe ek already sorted bookshelf me ek nayi book rakhni hai. Tum middle se shuru karke dekhte ho ki book alphabetically usse pehle hai ya baad me. Har baar aadhi shelf discard kar dete ho. Aakhir me tumhe exact position mil jati hai jahan book rakhni hai — chahe wahan pehle se book ho ya na ho.</p>
+    <p style="margin:8px 0 0 0;">Ye problem basically <span class="highlight">Lower Bound</span> nikaalna hai — <strong>pehla element jo target se bada ya equal hai</strong>. Binary Search se ye O(log n) me mil jata hai.</p>
+</div>
+
+<div class="box box-workflow">
+    <span class="box-label">Algorithm Workflow</span>
+    <ol style="margin:0; padding-left:18px;">
+        <li>Default answer set karo: <code>answer = nums.size()</code> (agar target sabse bada hua, to end me insert hoga)</li>
+        <li>Binary Search start karo: <code>start = 0, end = n - 1</code></li>
+        <li><code>nums[mid] >= target</code> → Ye possible answer hai!
+            <ul>
+                <li><code>answer = mid</code> store karo</li>
+                <li><strong>Left me aur search karo</strong> — shayad aur chhota valid index ho (<code>end = mid - 1</code>)</li>
+            </ul>
+        </li>
+        <li><code>nums[mid] < target</code> → Right me search karo (<code>start = mid + 1</code>)</li>
+        <li>Loop end hone par <code>answer</code> return karo</li>
+    </ol>
+</div>
+
+<div class="diagram">
+    <div class="diagram-group-label" style="font-size:11px; color:#0B1A2E; font-weight:700; margin-bottom:8px;">Visual: Search Insert Position — nums = [1,3,5,6], target = 2</div>
+    <div class="pass-row">
+        <span class="pass-label">Initial:</span>
+        <div class="diagram-box">1</div>
+        <div class="diagram-box">3</div>
+        <div class="diagram-box">5</div>
+        <div class="diagram-box">6</div>
+        <span style="font-size:10px; color:#8C8C8C; margin-left:6px;">ans = 4 (default: end me insert)</span>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">Step 1:</span>
+        <div class="diagram-box">1</div>
+        <div class="diagram-box active">3</div>
+        <div class="diagram-box">5</div>
+        <div class="diagram-box">6</div>
+        <span style="font-size:10px; color:#C4924A; margin-left:6px;">mid=1, val=3 ≥ 2 → ans=1, go LEFT</span>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">Step 2:</span>
+        <div class="diagram-box found">1</div>
+        <span style="font-size:10px; color:#C4924A; margin-left:6px;">mid=0, val=1 &lt; 2 → go RIGHT</span>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">Step 3:</span>
+        <span style="font-size:10px; color:#A53F3F;">start=1, end=0 → Loop ends</span>
+    </div>
+    <div class="pass-row">
+        <span class="pass-label">Answer:</span>
+        <span style="font-size:10px; color:#2D6A4F; font-weight:600;">Return ans = 1 → 2 should be inserted at index 1</span>
+    </div>
+    <div class="diagram-label">Lower Bound: First element ≥ target</div>
+</div>
+
+<h3>C++ Implementation</h3>
+<div class="code-block"><span class="cm">// LeetCode 35 - Search Insert Position</span>
+<span class="kw">class</span> <span class="type">Solution</span> {
+<span class="kw">public</span>:
+    <span class="type">int</span> <span class="fn">searchInsert</span>(<span class="type">vector</span>&lt;<span class="type">int</span>&gt;&amp; <span class="var">nums</span>, <span class="type">int</span> <span class="var">target</span>) {
+
+        <span class="type">int</span> <span class="var">start</span> = <span class="num">0</span>;
+        <span class="type">int</span> <span class="var">end</span> = <span class="var">nums</span>.<span class="fn">size</span>() - <span class="num">1</span>;
+
+        <span class="cm">// Default: target sabse bada hai → end me insert</span>
+        <span class="type">int</span> <span class="var">answer</span> = <span class="var">nums</span>.<span class="fn">size</span>();
+
+        <span class="kw">while</span> (<span class="var">start</span> <= <span class="var">end</span>) {
+
+            <span class="type">int</span> <span class="var">mid</span> = <span class="var">start</span> + (<span class="var">end</span> - <span class="var">start</span>) / <span class="num">2</span>;
+
+            <span class="cm">// Possible answer found!</span>
+            <span class="kw">if</span> (<span class="var">nums</span>[<span class="var">mid</span>] >= <span class="var">target</span>) {
+                <span class="var">answer</span> = <span class="var">mid</span>;           <span class="cm">// Store as potential answer</span>
+                <span class="var">end</span> = <span class="var">mid</span> - <span class="num">1</span>;      <span class="cm">// But check left for smaller index</span>
+            }
+            <span class="kw">else</span> {
+                <span class="cm">// Target abhi bhi bada hai → right me jao</span>
+                <span class="var">start</span> = <span class="var">mid</span> + <span class="num">1</span>;
+            }
+        }
+
+        <span class="kw">return</span> <span class="var">answer</span>;
+    }
+};</div>
+
+<div class="box box-dryrun">
+    <span class="box-label">Step-by-Step Dry Run</span>
+    <p style="margin:0; font-weight:600;">Input: nums = [1,3,5,6], target = 2</p>
+    <div style="margin-top:10px;">
+        <p style="margin:4px 0; font-size:11px;"><strong>Initial:</strong> start=0, end=3, answer=4 (default)</p>
+        <p style="margin:4px 0; font-size:11px;"><strong>Iter 1:</strong> mid=1, nums[1]=3 ≥ 2 → <strong>answer=1</strong>, end=0 (left me aur check karo)</p>
+        <p style="margin:4px 0; font-size:11px;"><strong>Iter 2:</strong> start=0, end=0 → mid=0, nums[0]=1 &lt; 2 → start=1 (right me jao)</p>
+        <p style="margin:4px 0; font-size:11px;"><strong>End:</strong> start=1, end=0 → Loop ends → <strong style="color:#2D6A4F;">Return answer = 1</strong></p>
+        <p style="margin:6px 0 0 0; font-size:11px; color:#8C8C8C;">Index 1 par 3 hai, 2 ko 1 ke baad insert karna hai → [1, <strong>2</strong>, 3, 5, 6]</p>
+    </div>
+</div>
+
+<div class="box box-complexity">
+    <span class="box-label">Complexity Analysis</span>
+    <div class="table-wrap">
+        <table>
+            <tr><th>Case</th><th>Time</th><th>Reason</th></tr>
+            <tr><td>Best Case</td><td>O(1)</td><td>Target exactly middle me ho</td></tr>
+            <tr><td>Average / Worst</td><td>O(log n)</td><td>Binary Search — har step me half</td></tr>
+        </table>
+    </div>
+    <p style="margin:8px 0 0 0;"><strong>Space Complexity:</strong> O(1) — Sirf 3 variables.</p>
+</div>
+
+<div class="box box-edge">
+    <span class="box-label">Edge Cases & Gotchas</span>
+    <ul style="margin:0;">
+        <li><strong>Target sabse chhota ho:</strong> <code>nums = [3,5,6], target = 1</code> → answer = 0 (start me insert)</li>
+        <li><strong>Target sabse bada ho:</strong> <code>nums = [1,3,5], target = 7</code> → answer = 3 (default, end me insert)</li>
+        <li><strong>Target already present ho:</strong> <code>nums = [1,3,5,6], target = 5</code> → answer = 2 (same index return)</li>
+        <li><strong>Empty array:</strong> <code>nums = [], target = 1</code> → answer = 0 (default size)</li>
+    </ul>
+</div>
+
+<div class="ornament">◈ ◈ ◈</div>
+
+<!-- ==================== COMPARISON & PATTERNS ==================== -->
+<h2>4. Pattern Summary & Comparison</h2>
+
+<div class="box box-pattern">
+    <span class="box-label">Binary Search Variations at a Glance</span>
+    <div class="table-wrap">
+        <table>
+            <tr>
+                <th>Problem</th>
+                <th>Condition on Match</th>
+                <th>Return What</th>
+                <th>Loop Condition</th>
+            </tr>
+            <tr>
+                <td>Standard Search (704)</td>
+                <td><code>nums[mid] == target</code> → <strong>return mid</strong></td>
+                <td>Index or -1</td>
+                <td><code>start <= end</code></td>
+            </tr>
+            <tr>
+                <td>First Occurrence (34)</td>
+                <td><code>nums[mid] == target</code> → <strong>store & go LEFT</strong></td>
+                <td>Leftmost index</td>
+                <td><code>start <= end</code></td>
+            </tr>
+            <tr>
+                <td>Last Occurrence (34)</td>
+                <td><code>nums[mid] == target</code> → <strong>store & go RIGHT</strong></td>
+                <td>Rightmost index</td>
+                <td><code>start <= end</code></td>
+            </tr>
+            <tr>
+                <td>Lower Bound (35)</td>
+                <td><code>nums[mid] >= target</code> → <strong>store & go LEFT</strong></td>
+                <td>Insert position</td>
+                <td><code>start <= end</code></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="box box-transfer">
+    <span class="box-label">Pattern Transfer & Related Problems</span>
+    <ul style="margin:0;">
+        <li><strong>LeetCode 704</strong> — Binary Search (Base)</li>
+        <li><strong>LeetCode 34</strong> — First & Last Position (Boundaries)</li>
+        <li><strong>LeetCode 35</strong> — Search Insert Position (Lower Bound)</li>
+        <li><strong>LeetCode 69</strong> — Sqrt(x) (Binary Search on answer)</li>
+        <li><strong>LeetCode 153</strong> — Find Minimum in Rotated Sorted Array (Modified BS)</li>
+        <li><strong>LeetCode 33</strong> — Search in Rotated Sorted Array (Modified BS)</li>
+        <li><strong>LeetCode 4</strong> — Median of Two Sorted Arrays (Binary Search on partitions)</li>
+        <li><strong>LeetCode 875</strong> — Koko Eating Bananas (Binary Search on answer space)</li>
+    </ul>
 </div>
 
 <div class="box box-takeaway">
     <span class="box-label">Key Takeaways</span>
-    <ul>
-        <li>First Occurrence ke liye target milne par <span class="hl">left side</span> search karo.</li>
-        <li>Last Occurrence ke liye target milne par <span class="hl">right side</span> search karo.</li>
-        <li>Total time <strong>O(log n)</strong>, space <strong>O(1)</strong>.</li>
-        <li>Ye template <strong>Lower Bound</strong> aur <strong>Upper Bound</strong> problems mein bhi use hota hai.</li>
+    <ul style="margin:0;">
+        <li><strong>Binary Search sirf sorted data pe kaam karta hai.</strong> Agar array sorted nahi hai, pehle sort karo (O(n log n)) ya different approach socho.</li>
+        <li><strong>Mid formula:</strong> Hamesha <code>low + (high - low) / 2</code> use karo — integer overflow se bachne ke liye.</li>
+        <li><strong>While condition:</strong> Exact index chahiye → <code><=</code>; Boundary/position chahiye → <code><</code> bhi chal sakta hai depending on implementation.</li>
+        <li><strong>Target milne ke baad bhi search continue</strong> karna padta hai jab first/last occurrence ya lower bound nikaalna ho.</li>
+        <li><strong>O(log n)</strong> ka matlab: 1 billion elements me sirf ~30 comparisons!</li>
     </ul>
 </div>
 
-<div class="divider">&#10022; &#10022; &#10022;</div>
+<div class="ornament">◈ ◈ ◈</div>
 
-<!-- ==================== PROBLEM 2: SEARCH INSERT POSITION ==================== -->
-
-<h2>Problem 2: Search Insert Position</h2>
-
-<div class="problem-box">
-    <div class="problem-title">LeetCode 35: Search Insert Position</div>
-    <div class="problem-meta">Difficulty: Easy | Binary Search | Lower Bound</div>
-
-    <p><strong>Problem Statement:</strong></p>
-    <p>Given a sorted array of distinct integers <code>nums</code> and a <code>target</code> value, return the index if the target is found. If not, return the index where it would be if it were inserted in order. You must write an algorithm with <strong>O(log n)</strong> runtime complexity.</p>
-
-    <p><strong>Constraints:</strong></p>
-    <ul>
-        <li>1 <= nums.length <= 10<sup>4</sup></li>
-        <li>-10<sup>4</sup> <= nums[i] <= 10<sup>4</sup></li>
-        <li>nums contains distinct values sorted in ascending order</li>
-        <li>-10<sup>4</sup> <= target <= 10<sup>4</sup></li>
-    </ul>
-
-    <div class="io-box">
-        <span class="io-label">// Example 1 (Target Found)</span>
-        <span style="color:#89DDFF;">Input:</span>  nums = [1, 3, 5, 6], target = 5
-        <span style="color:#89DDFF;">Output:</span> 2
-        <span style="color:#6A9955;">// Explanation: 5 is present at index 2</span>
+<!-- ==================== QUICK REVISION CHEATSHEET ==================== -->
+<div class="cheatsheet">
+    <div class="cheatsheet-title">QUICK REVISION CHEATSHEET</div>
+    <div class="cheatsheet-grid">
+        <div class="cheatsheet-item">
+            <strong>Why Binary Search?</strong><br>
+            Sorted data me O(log n) search.<br>
+            1 Billion elements = 30 steps only!<br>
+            Real use: DB indexing, Git bisect,<br>
+            IP routing, auto-complete
+        </div>
+        <div class="cheatsheet-item">
+            <strong>Mid Formula (CRITICAL)</strong><br>
+            <span style="color:#A53F3F;">Wrong:</span> <code>(low + high) / 2</code><br>
+            → Integer overflow risk!<br>
+            <span style="color:#2D6A4F;">Correct:</span> <code>low + (high-low)/2</code><br>
+            → Always safe, same result
+        </div>
+        <div class="cheatsheet-item">
+            <strong>While(start <= end) vs <</strong><br>
+            <code><=</code>: Exact index return karna ho<br>
+            → LeetCode 704, 34<br><br>
+            <code><</code>: Boundary/position nikaalna ho<br>
+            → Lower bound, upper bound patterns<br><br>
+            <span style="color:#4F46E5;">Rule: Exact → <= | Boundary → <</span>
+        </div>
+        <div class="cheatsheet-item">
+            <strong>Three Problems Pattern</strong><br>
+            <strong>704:</strong> Match → return immediately<br>
+            <strong>34-First:</strong> Match → store, go LEFT<br>
+            <strong>34-Last:</strong> Match → store, go RIGHT<br>
+            <strong>35:</strong> >= target → store, go LEFT<br>
+            (Lower Bound pattern)
+        </div>
+        <div class="cheatsheet-item">
+            <strong>Common Mistakes</strong><br>
+            <span style="color:#A53F3F;">×</span> (low+high)/2 → overflow<br>
+            <span style="color:#A53F3F;">×</span> First/Last me match pe return kar dena<br>
+            <span style="color:#A53F3F;">×</span> Loop condition galat → infinite loop<br>
+            <span style="color:#A53F3F;">×</span> mid-1 ya mid+1 bhool jana<br>
+            <span style="color:#A53F3F;">×</span> Array unsorted hone par BS lagana
+        </div>
+        <div class="cheatsheet-item">
+            <strong>Interview Questions</strong><br>
+            Q1: BS kyu O(log n)?<br>
+            → Har step search space half<br><br>
+            Q2: Overflow kaise avoid karein?<br>
+            → low + (high-low)/2<br><br>
+            Q3: First/Last occurrence ka logic?<br>
+            → Match pe store karo, same dir me continue<br><br>
+            Q4: Rotated array me BS?<br>
+            → Check which half is sorted
+        </div>
     </div>
-
-    <div class="io-box">
-        <span class="io-label">// Example 2 (Target Not Found - Insert in Middle)</span>
-        <span style="color:#89DDFF;">Input:</span>  nums = [1, 3, 5, 6], target = 2
-        <span style="color:#89DDFF;">Output:</span> 1
-        <span style="color:#6A9955;">// Explanation: 2 should be inserted at index 1 to maintain sorted order</span>
-    </div>
-
-    <div class="io-box">
-        <span class="io-label">// Example 3 (Target Not Found - Insert at End)</span>
-        <span style="color:#89DDFF;">Input:</span>  nums = [1, 3, 5, 6], target = 7
-        <span style="color:#89DDFF;">Output:</span> 4
-        <span style="color:#6A9955;">// Explanation: 7 should be inserted at the end (index 4)</span>
-    </div>
-
-    <div class="io-box">
-        <span class="io-label">// Example 4 (Target Not Found - Insert at Beginning)</span>
-        <span style="color:#89DDFF;">Input:</span>  nums = [1, 3, 5, 6], target = 0
-        <span style="color:#89DDFF;">Output:</span> 0
-        <span style="color:#6A9955;">// Explanation: 0 should be inserted at the beginning (index 0)</span>
-    </div>
 </div>
 
-<h3>Introduction</h3>
-<p>Is problem mein humein <span class="hl">Lower Bound</span> dhoondhna hai. Lower Bound wo <strong>pehla index</strong> hai jahan target insert kiya ja sakta hai taaki array sorted rahe. Agar target already present hai, toh uska index return karo. Nahi toh us position ka index return karo jahan target ko insert karna chahiye.</p>
-
-<div class="golden-insight">
-    <strong style="color:#B49450;">Key Insight:</strong> Search Insert Position actually <span class="hl">Lower Bound</span> find karna hai. Lower Bound = pehla element jo target se <strong>greater than or equal</strong> hai. Iska matlab agar target present hai toh uska index, nahi toh usse just bade element ka index.
-</div>
-
-<h3>The Analogy</h3>
-<p>Socho aapko ek class mein baithna hai roll number ke hisaab se. Aapka roll number 25 hai. Class mein 10, 20, 30, 40 roll numbers hain. Aap 20 ke baad aur 30 ke pehle baithoge &mdash; matlab <strong>index 2</strong> pe. Ye exactly Lower Bound ka concept hai.</p>
-
-<h3>How It Works Internally</h3>
-
-<div class="step-box">
-    <span class="step-num">1</span><strong>Initialize:</strong> <code>low = 0</code>, <code>high = n - 1</code>, <code>index = n</code> (default end mein insert karne ka position).
-</div>
-
-<div class="step-box">
-    <span class="step-num">2</span><strong>Binary Search:</strong> <code>mid</code> calculate karo aur compare karo.
-</div>
-
-<div class="step-box">
-    <span class="step-num">3</span><strong>Target Found:</strong> <code>nums[mid] == target</code> ? Directly <code>return mid</code>.
-</div>
-
-<div class="step-box">
-    <span class="step-num">4</span><strong>Target Greater:</strong> <code>nums[mid] &lt; target</code> ? Right half mein jao: <code>low = mid + 1</code>.
-</div>
-
-<div class="step-box">
-    <span class="step-num">5</span><strong>Target Smaller:</strong> <code>nums[mid] &gt; target</code> ? Ye possible insertion position hai. <code>index = mid</code> save karo aur left half mein jao: <code>high = mid - 1</code>.
-</div>
-
-<div class="step-box">
-    <span class="step-num">6</span><strong>Return:</strong> Loop end hone par <code>index</code> return karo.
-</div>
-
-<div class="box box-workflow">
-    <span class="box-label">Workflow</span>
-    <strong>Condition:</strong> nums[mid] &gt; target ? index = mid, high = mid - 1.<br>
-    <strong>Logic:</strong> Jab bhi nums[mid] target se bada mile, wo possible insertion position hai.<br>
-    <strong>Aur bhi chhota index mil sakta hai</strong>, isliye left side search karte raho.
-</div>
-
-<h3>Visual Walkthrough</h3>
-
-<p><strong>Array:</strong> <code>[1, 3, 5, 6]</code>, <strong>Target:</strong> <code>2</code></p>
-
-<div class="diagram">
-    <div class="diagram-box" style="background:#F4E9D8; color:#7A5C3A; border:1px solid #B49450;">1</div>
-    <div class="diagram-box" style="background:#0B1A2E; color:#FFFFFF; border:1px solid #0B1A2E;">3</div>
-    <div class="diagram-box" style="background:#F4E9D8; color:#7A5C3A; border:1px solid #B49450;">5</div>
-    <div class="diagram-box" style="background:#F4E9D8; color:#7A5C3A; border:1px solid #B49450;">6</div>
-    <div class="diagram-label">Indices: 0 &nbsp;&nbsp;1 &nbsp;&nbsp;2 &nbsp;&nbsp;3 &nbsp;&nbsp;|&nbsp;&nbsp; Target = 2 should be at index 1</div>
-</div>
-
-<div class="diagram">
-    <div class="diagram-box" style="background:#2E6B5A; color:#FFFFFF; border:1px solid #2E6B5A;">Step 1</div>
-    <div class="diagram-arrow">&#8594;</div>
-    <div class="diagram-box" style="background:#A53F3F; color:#FFFFFF; border:1px solid #A53F3F;">low=0, high=3, mid=1, val=3</div>
-    <div class="diagram-arrow">&#8594;</div>
-    <div class="diagram-box" style="background:#0B1A2E; color:#FFFFFF; border:1px solid #0B1A2E;">3 &gt; 2 ? YES</div>
-    <div class="diagram-arrow">&#8594;</div>
-    <div class="diagram-box" style="background:#0B1A2E; color:#FFFFFF; border:1px solid #0B1A2E;">index=1, high=0</div>
-</div>
-
-<div class="diagram">
-    <div class="diagram-box" style="background:#2E6B5A; color:#FFFFFF; border:1px solid #2E6B5A;">Step 2</div>
-    <div class="diagram-arrow">&#8594;</div>
-    <div class="diagram-box" style="background:#A53F3F; color:#FFFFFF; border:1px solid #A53F3F;">low=0, high=0, mid=0, val=1</div>
-    <div class="diagram-arrow">&#8594;</div>
-    <div class="diagram-box" style="background:#0B1A2E; color:#FFFFFF; border:1px solid #0B1A2E;">1 &gt; 2 ? NO</div>
-    <div class="diagram-arrow">&#8594;</div>
-    <div class="diagram-box" style="background:#0B1A2E; color:#FFFFFF; border:1px solid #0B1A2E;">1 &lt; 2 ? YES, low=1</div>
-</div>
-
-<div class="diagram">
-    <div class="diagram-box" style="background:#2E6B5A; color:#FFFFFF; border:1px solid #2E6B5A;">Step 3</div>
-    <div class="diagram-arrow">&#8594;</div>
-    <div class="diagram-box" style="background:#0B1A2E; color:#FFFFFF; border:1px solid #0B1A2E;">low=1 &gt; high=0, STOP</div>
-    <div class="diagram-arrow">&#8594;</div>
-    <div class="diagram-box" style="background:#B49450; color:#FFFFFF; border:1px solid #B49450;">Return index = 1</div>
-    <div class="diagram-label">2 should be inserted at index 1</div>
-</div>
-
-<h3>Code Implementation</h3>
-<div class="code-block"><span class="syn-cm">// LeetCode 35: Search Insert Position</span>
-<span class="syn-kw">class</span> <span class="syn-type">Solution</span> {
-<span class="syn-kw">public</span>:
-    <span class="syn-type">int</span> <span class="syn-fn">searchInsert</span>(<span class="syn-type">vector</span>&lt;<span class="syn-type">int</span>&gt;&amp; nums, <span class="syn-type">int</span> target) {
-
-        <span class="syn-type">int</span> low = <span class="syn-num">0</span>;
-        <span class="syn-type">int</span> high = nums.<span class="syn-fn">size</span>() - <span class="syn-num">1</span>;
-
-        <span class="syn-cm">// Default insertion position is at the end</span>
-        <span class="syn-type">int</span> index = nums.<span class="syn-fn">size</span>();
-
-        <span class="syn-kw">while</span> (low &lt;= high) {
-
-            <span class="syn-type">int</span> mid = low + (high - low) / <span class="syn-num">2</span>;
-
-            <span class="syn-cm">// Target found</span>
-            <span class="syn-kw">if</span> (nums[mid] == target) {
-                <span class="syn-kw">return</span> mid;
-            }
-
-            <span class="syn-cm">// Search in right half</span>
-            <span class="syn-kw">else if</span> (nums[mid] &lt; target) {
-                low = mid + <span class="syn-num">1</span>;
-            }
-
-            <span class="syn-cm">// Possible insertion position</span>
-            <span class="syn-kw">else</span> {
-                index = mid;
-                high = mid - <span class="syn-num">1</span>;
-            }
-        }
-
-        <span class="syn-kw">return</span> index;
-    }
-};</div>
-
-<h3>Complexity Analysis</h3>
-<table>
-    <tr>
-        <th>Case</th>
-        <th>Time Complexity</th>
-        <th>Reason</th>
-    </tr>
-    <tr>
-        <td><strong>Best</strong></td>
-        <td><span class="hl">O(1)</span></td>
-        <td>Target first mid pe hi mil jaye.</td>
-    </tr>
-    <tr>
-        <td><strong>Average</strong></td>
-        <td><span class="hl">O(log n)</span></td>
-        <td>Binary Search halves the search space each step.</td>
-    </tr>
-    <tr>
-        <td><strong>Worst</strong></td>
-        <td><span class="hl">O(log n)</span></td>
-        <td>Target not present, full Binary Search required.</td>
-    </tr>
-    <tr>
-        <td><strong>Space</strong></td>
-        <td><span class="hl">O(1)</span></td>
-        <td>Sirf low, high, mid, index variables.</td>
-    </tr>
-</table>
-
-<div class="box box-important">
-    <span class="box-label">Important</span>
-    <span class="warning-inline">Default index = n initialize karna mat bhoolna.</span> Agar target sabse bada hai, toh wo end mein insert hoga. Agar aap index = n nahi initialize karte, toh galat answer aa sakta hai. Ye edge case <strong>interviews mein test hota hai</strong>.
-</div>
-
-<div class="box box-edge">
-    <span class="box-label">Edge Case</span>
-    <ul>
-        <li><strong>Target smallest:</strong> index = 0 return hoga.</li>
-        <li><strong>Target largest:</strong> index = n return hoga (default).</li>
-        <li><strong>Target present:</strong> Direct index return hoga.</li>
-        <li><strong>Single element:</strong> Properly handle karta hai.</li>
-    </ul>
-</div>
-
-<div class="box box-interview">
-    <span class="box-label">Interview Tip</span>
-    Search Insert Position <strong>Lower Bound</strong> ka classic example hai. Interviewer hamesha <span class="hl">O(log n)</span> solution expect karta hai. Linear Search mat batana. Is problem ka concept <strong>C++ STL lower_bound()</strong> aur <strong>Java Arrays.binarySearch()</strong> mein bhi use hota hai. Ye template <strong>Floor</strong> aur <strong>Ceil</strong> problems mein bhi directly apply hota hai.
-</div>
-
-<div class="box box-takeaway">
-    <span class="box-label">Key Takeaways</span>
-    <ul>
-        <li>Search Insert Position = <span class="hl">Lower Bound</span> find karna.</li>
-        <li>Default <code>index = n</code> initialize karo (target sabse bada ho sakta hai).</li>
-        <li><code>nums[mid] &gt; target</code> hone par <code>index = mid</code> save karo aur left jao.</li>
-        <li>Time <strong>O(log n)</strong>, Space <strong>O(1)</strong>.</li>
-        <li>Ye template <strong>Floor</strong>, <strong>Ceil</strong>, aur <strong>Upper Bound</strong> mein bhi use hota hai.</li>
-    </ul>
-</div>
-
-<div class="divider">&#10022; &#10022; &#10022;</div>
-
-<!-- ==================== COMPARATIVE SUMMARY ==================== -->
-
-<h2>Comparative Summary: Binary Search Variations</h2>
-
-<table>
-    <tr>
-        <th>Problem</th>
-        <th>Core Concept</th>
-        <th>When Target Found</th>
-        <th>Return Value</th>
-        <th>Time</th>
-    </tr>
-    <tr>
-        <td><strong>Standard Binary Search</strong></td>
-        <td>Find any occurrence</td>
-        <td>Return immediately</td>
-        <td>mid index</td>
-        <td>O(log n)</td>
-    </tr>
-    <tr>
-        <td><strong>First Occurrence</strong></td>
-        <td>Leftmost position</td>
-        <td>Save index, go LEFT</td>
-        <td>saved first index</td>
-        <td>O(log n)</td>
-    </tr>
-    <tr>
-        <td><strong>Last Occurrence</strong></td>
-        <td>Rightmost position</td>
-        <td>Save index, go RIGHT</td>
-        <td>saved last index</td>
-        <td>O(log n)</td>
-    </tr>
-    <tr>
-        <td><strong>Search Insert Position</strong></td>
-        <td>Lower Bound</td>
-        <td>Return immediately</td>
-        <td>insertion index</td>
-        <td>O(log n)</td>
-    </tr>
-</table>
-
-<div class="box box-takeaway">
-    <span class="box-label">Lecture Takeaways</span>
-    <ul>
-        <li><span class="hl">Binary Search</span> ka basic template modify karke multiple variations solve kiye ja sakte hain.</li>
-        <li><span class="hl">First Occurrence</span> mein target milne ke baad <strong>left side</strong> search karo (<code>high = mid - 1</code>).</li>
-        <li><span class="hl">Last Occurrence</span> mein target milne ke baad <strong>right side</strong> search karo (<code>low = mid + 1</code>).</li>
-        <li><span class="hl">Search Insert Position</span> = <strong>Lower Bound</strong> find karna. Default index = n rakhna mat bhoolna.</li>
-        <li>Har variation ka <strong>template rote learn</strong> karo. Interviews mein directly apply hoga.</li>
-        <li>Code likhne se pehle <strong>dry run</strong> karo. Paper pe chalao, tabhi edge cases catch honge.</li>
-    </ul>
-</div>
-
-<div style="text-align:center; margin-top:40px; border-top:1px solid #E3DED5; padding-top:24px; color:#8C8C8C; font-size:11px; font-weight:500; letter-spacing:1px;">MADE BY HARSHAL CHAUHAN</div>
+<!-- ==================== FOOTER ==================== -->
+<div class="watermark">Harshal Chauhan</div>
+<div class="signature">MADE BY HARSHAL CHAUHAN</div>
 
 </body>
 </html>

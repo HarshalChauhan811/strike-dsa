@@ -1,119 +1,59 @@
-#include <bits/stdc++.h>
+#include <vector>
 using namespace std;
 
 /*
 ====================================================
       LeetCode 34 - Find First and Last Position
-            of Element in Sorted Array
+          of Element in Sorted Array
 ====================================================
 
-Problem Statement
+Problem
 ----------------------------------------------------
-Given a sorted array of integers nums and a target,
+Given a sorted integer array `nums` and a `target`,
 return the first and last position of the target.
 
-If the target is not present, return [-1, -1].
+If the target is not found, return [-1, -1].
 
 ----------------------------------------------------
 Examples
 ----------------------------------------------------
 
 Example 1
-
-Input:
-nums = [5,7,7,8,8,10]
-target = 8
-
-Output:
-[3,4]
-
-Reason:
-Target first appears at index 3
-and last appears at index 4.
-
-----------------------------------------------------
+Input : nums = [5,7,7,8,8,10], target = 8
+Output: [3,4]
 
 Example 2
+Input : nums = [5,7,7,8,8,10], target = 6
+Output: [-1,-1]
 
-Input:
-nums = [5,7,7,8,8,10]
-target = 6
-
-Output:
-[-1,-1]
-
-Reason:
-Target does not exist in the array.
-
-----------------------------------------------------
-
-Example 3
-
-Input:
-nums = []
-target = 0
-
-Output:
-[-1,-1]
-
-Reason:
-The array is empty.
-
-----------------------------------------------------
-
-Example 4
-
-Input:
-nums = [2,2]
-target = 2
-
-Output:
-[0,1]
-
-Reason:
-The target occupies the entire array.
-
-----------------------------------------------------
-
-Example 5
-
-Input:
-nums = [1]
-target = 1
-
-Output:
-[0,0]
-
-Reason:
-Only one element exists,
-and it matches the target.
+Example 3 (Edge Case)
+Input : nums = [2,2], target = 2
+Output: [0,1]
 
 ----------------------------------------------------
 Approach
 ----------------------------------------------------
-Binary Search
+Perform Binary Search twice.
 
-Idea:
-- Perform Binary Search twice.
-- First Binary Search finds the first occurrence.
-- Second Binary Search finds the last occurrence.
+• First Binary Search  -> Find First Occurrence.
+• Second Binary Search -> Find Last Occurrence.
+
+Whenever the target is found:
+
+• First Occurrence:
+  Store the answer and continue searching on the Left.
+
+• Last Occurrence:
+  Store the answer and continue searching on the Right.
 
 ----------------------------------------------------
 Algorithm
 ----------------------------------------------------
-1. Find the first occurrence.
-2. Reset the search space.
-3. Find the last occurrence.
-4. Return both indices.
-
-----------------------------------------------------
-Why Binary Search?
-----------------------------------------------------
-The array is already sorted.
-
-Binary Search reduces the search space by half
-after every comparison, making it much faster
-than Linear Search.
+1. Initialize answer as {-1, -1}.
+2. Find the First Occurrence.
+3. Reset the search space.
+4. Find the Last Occurrence.
+5. Return the answer.
 
 ----------------------------------------------------
 Time Complexity
@@ -122,22 +62,23 @@ First Binary Search  : O(log n)
 
 Second Binary Search : O(log n)
 
-Total Time           : O(log n)
+Overall              : O(log n)
 
 ----------------------------------------------------
 Space Complexity
 ----------------------------------------------------
 O(1)
 
-Reason:
-Only a few extra variables are used.
-
 ----------------------------------------------------
 Pattern
 ----------------------------------------------------
-Binary Search
-First Occurrence
-Last Occurrence
+✔ Binary Search
+✔ First Occurrence
+✔ Last Occurrence
+
+====================================================
+                      CODE
+====================================================
 */
 
 class Solution {
@@ -156,8 +97,8 @@ public:
 
             if (nums[mid] == target) {
 
-                ans[0] = mid;      // Store possible answer
-                end = mid - 1;     // Search on left side
+                ans[0] = mid;
+                end = mid - 1;
             }
             else if (nums[mid] < target) {
 
@@ -169,7 +110,7 @@ public:
             }
         }
 
-        // Reset search space
+        // Reset Search Space
         start = 0;
         end = nums.size() - 1;
 
@@ -180,8 +121,8 @@ public:
 
             if (nums[mid] == target) {
 
-                ans[1] = mid;      // Store possible answer
-                start = mid + 1;   // Search on right side
+                ans[1] = mid;
+                start = mid + 1;
             }
             else if (nums[mid] < target) {
 
@@ -198,18 +139,94 @@ public:
 };
 
 /*
-----------------------------------------------------
-Summary
-----------------------------------------------------
-Algorithm        : Binary Search
-LeetCode Problem : 34
+====================================================
+                  SHORT DRY RUN
+====================================================
 
-Time Complexity  : O(log n)
-Space Complexity : O(1)
+Input:
+nums   = [5,7,7,8,8,10]
+target = 8
 
-Concepts Used:
-✔ Binary Search
-✔ First Occurrence
-✔ Last Occurrence
-✔ Answer Search
+----------------------------------------------------
+Finding First Occurrence
+
+start = 0, end = 5
+
+mid = 2 -> nums[mid] = 7
+
+7 < 8
+
+Move Right
+
+start = 3
+
+-------------------------
+
+mid = 4 -> nums[mid] = 8
+
+Target Found
+
+ans[0] = 4
+
+Search Left
+
+end = 3
+
+-------------------------
+
+mid = 3 -> nums[mid] = 8
+
+Target Found
+
+ans[0] = 3
+
+Search Left
+
+end = 2
+
+First Occurrence = 3
+
+----------------------------------------------------
+Finding Last Occurrence
+
+start = 0, end = 5
+
+mid = 2 -> nums[mid] = 7
+
+7 < 8
+
+Move Right
+
+start = 3
+
+-------------------------
+
+mid = 4 -> nums[mid] = 8
+
+Target Found
+
+ans[1] = 4
+
+Search Right
+
+start = 5
+
+-------------------------
+
+mid = 5 -> nums[mid] = 10
+
+10 > 8
+
+Move Left
+
+end = 4
+
+Last Occurrence = 4
+
+----------------------------------------------------
+Final Answer
+
+[3,4]
+
+====================================================
 */
