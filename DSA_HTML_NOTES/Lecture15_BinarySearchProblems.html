@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Lecture15_BinarySearchProblems.html</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@page { size: A4 portrait; margin: 0; }
+
+* { box-sizing: border-box; }
+
+body {
+    padding: 18mm 20mm 18mm 24mm;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: #FAFAF8;
+    font-family: 'Poppins', sans-serif;
+    color: #1C1C1C;
+    font-size: 12px;
+    line-height: 1.65;
+    margin: 0;
+    background-image:
+        linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+    background-size: 25px 25px;
+}
+
+/* ---- TYPOGRAPHY ---- */
+h1 {
+    font-size: 38px; font-weight: 700; color: #0B1A2E;
+    border-bottom: 3px solid #C4924A; padding-bottom: 6px;
+    margin-bottom: 12px; margin-top: 0;
+}
+h2 {
+    font-size: 22px; font-weight: 700; color: #C4924A;
+    border-bottom: 2px solid #C4924A; margin-top: 24px; margin-bottom: 12px;
+    padding-bottom: 4px;
+}
+h3 {
+    font-size: 16px; font-weight: 700; color: #1A4A4A;
+    margin-top: 18px; margin-bottom: 8px;
+}
+h4 {
+    font-size: 13px; font-weight: 700; color: #2D6A4F;
+    text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px;
+}
+h5 {
+    font-size: 11.5px; font-weight: 700; color: #3C3C3C;
+    margin-bottom: 4px;
+}
+
+p { margin: 0 0 10px 0; }
+ul, ol { margin: 6px 0; padding-left: 20px; }
+li { margin-bottom: 4px; }
+
+/* ---- CODE BLOCKS ---- */
+pre.code-block {
+    background: #111824;
+    border: 1px solid #2A3240;
+    border-radius: 10px;
+    padding: 14px 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    page-break-inside: avoid;
+    font-family: 'Fira Code', monospace;
+    color: #E0E0E0;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    font-size: 11.5px;
+    line-height: 1.45;
+    margin: 12px 0;
+}
+code {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    background: #F0EDE8;
+    padding: 1px 5px;
+    border-radius: 4px;
+    color: #7A5C3A;
+}
+pre.code-block code {
+    background: transparent; padding: 0; color: inherit;
+}
+
+/* Syntax highlighting */
+.kw { color: #C586C0; font-weight: bold; }
+.str { color: #CE9178; }
+.cmt { color: #6A9955; font-style: italic; }
+.fn { color: #DCDCAA; }
+.num { color: #B5CEA8; }
+.ty { color: #4EC9B0; }
+
+/* ---- PREMIUM BOXES ---- */
+.box {
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03);
+    page-break-inside: avoid;
+    border-left: 5px solid;
+}
+.box-label {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.8px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.box-pattern    { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-pattern .box-label { color: #3A5F80; }
+.box-intuition  { border-left-color: #C4924A; background: #F9FBF9; }
+.box-intuition .box-label { color: #C4924A; }
+.box-workflow   { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-workflow .box-label { color: #2E6B5A; }
+.box-important  { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-important .box-label { color: #A53F3F; }
+.box-interview  { border-left-color: #5E4B7A; background: #F8F7FC; }
+.box-interview .box-label { color: #5E4B7A; }
+.box-takeaway   { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-takeaway .box-label { color: #2E6B5A; }
+.box-warning    { border-left-color: #C4924A; background: #FDFBF5; }
+.box-warning .box-label { color: #C4924A; }
+.box-edge       { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-edge .box-label { color: #A53F3F; }
+.box-best       { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-best .box-label { color: #2E6B5A; }
+.box-code       { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-code .box-label { color: #3A5F80; }
+.box-dryrun     { border-left-color: #B49450; background: #FDFBF5; }
+.box-dryrun .box-label { color: #B49450; }
+.box-complexity { border-left-color: #4F46E5; background: #FFFFFF; }
+.box-complexity .box-label { color: #4F46E5; }
+.box-problem    { border-left-color: #65A30D; background: #FFFFFF; }
+.box-problem .box-label { color: #65A30D; }
+.box-transfer   { border-left-color: #7E22CE; background: #F8F7FC; }
+.box-transfer .box-label { color: #7E22CE; }
+
+/* ---- INLINE HIGHLIGHT ---- */
+.hl {
+    background: #F4E9D8;
+    color: #7A5C3A;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+/* ---- TABLES ---- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 11.5px;
+    page-break-inside: avoid;
+}
+th {
+    background: #F7F3EC;
+    color: #0B1A2E;
+    font-weight: 600;
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 2px solid #C4924A;
+}
+td {
+    padding: 7px 12px;
+    border-bottom: 1px solid #E8E4DC;
+}
+tr:nth-child(even) { background: #FAFAF8; }
+
+/* ---- DIAGRAMS (Excalidraw style) ---- */
+.diagram {
+    border: 1px solid #C4924A;
+    border-left: 4px solid #C4924A;
+    background: #FFFBF5;
+    padding: 12px 16px;
+    margin: 16px 0;
+    overflow-x: auto;
+    font-size: 10px;
+    page-break-inside: avoid;
+}
+.diag-box {
+    display: inline-block;
+    background: #FFFFFF;
+    border: 2px solid #0B1A2E;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-weight: 700;
+    font-size: 10px;
+    margin: 2px;
+    text-align: center;
+    min-width: 30px;
+}
+.diag-group {
+    display: inline-block;
+    border: 1.5px dashed #0B1A2E;
+    border-radius: 6px;
+    padding: 6px 10px;
+    margin: 2px;
+}
+.diag-label {
+    font-size: 9px;
+    color: #8C8C8C;
+    text-align: center;
+    margin-top: 2px;
+}
+.diag-arrow {
+    color: #C4924A;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 4px;
+}
+
+/* ---- ORNAMENT ---- */
+.ornament {
+    text-align: center;
+    margin: 22px 0;
+    color: #C4924A;
+    font-size: 18px;
+    letter-spacing: 6px;
+}
+
+/* ---- CHEATSHEET ---- */
+.cheatsheet {
+    border: 2px solid #C4924A;
+    background: #F9F8F5;
+    border-radius: 10px;
+    padding: 16px;
+    margin: 24px 0;
+    page-break-inside: avoid;
+}
+.cheatsheet-title {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1A4A4A;
+    margin-bottom: 12px;
+}
+.cheatsheet-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+.cheatsheet-item {
+    background: #FFFFFF;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 9.5px;
+    line-height: 1.5;
+    border-left: 3px solid #C4924A;
+}
+.cheatsheet-item b {
+    color: #0B1A2E;
+    font-size: 10px;
+}
+
+/* ---- SIGNATURE & WATERMARK ---- */
+.watermark {
+    text-align: right;
+    margin: 20px 0 5px 0;
+    color: #9CA3AF;
+    font-size: 8px;
+    opacity: 0.4;
+}
+.signature {
+    text-align: center;
+    margin-top: 30px;
+    border-top: 1px solid #E0D8CC;
+    padding-top: 18px;
+    color: #8C8C8C;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+/* ---- PRINT SAFE ---- */
+pre, table, .box, .diagram, .cheatsheet {
+    page-break-inside: avoid;
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== HEADER ==================== -->
+<h1>Lecture 15 : Binary Search Problems</h1>
+<p style="color:#8C8C8C; font-size:11px; margin-bottom:16px;">Pattern Focus: Answer Search & Peak Element | C++ Implementation | Print-Ready Notes</p>
+
+<div class="ornament">&#9670; &#9670; &#9670;</div>
+
+<!-- ============================================================ -->
+<!-- PROBLEM 1: SQRT(X) -->
+<!-- ============================================================ -->
+
+<h2>Problem 1 : Sqrt(x) [LeetCode 69]</h2>
+
+<div class="box box-problem">
+<span class="box-label">Problem Statement</span>
+<b>Given:</b> Ek non-negative integer <code>x</code>.<br>
+<b>Task:</b> Us integer ka <b>floor square root</b> return karna hai — matlab sabse bada integer <code>ans</code> jisme <code>ans * ans <= x</code> ho.<br>
+<b>Constraint:</b> Built-in exponent function ya operator use nahi kar sakte.
+</div>
+
+<div class="box box-pattern">
+<span class="box-label">Examples</span>
+<table>
+<tr><th>Input (x)</th><th>Output</th><th>Explanation</th></tr>
+<tr><td>4</td><td>2</td><td>2 x 2 = 4, exact square root</td></tr>
+<tr><td>8</td><td>2</td><td>sqrt(8) = 2.828... floor = 2</td></tr>
+<tr><td>15</td><td>3</td><td>sqrt(15) = 3.872... floor = 3</td></tr>
+<tr><td>0</td><td>0</td><td>Edge case: zero ka square root zero hi hota hai</td></tr>
+<tr><td>1</td><td>1</td><td>Edge case: smallest positive integer</td></tr>
+</table>
+</div>
+
+<h3>Core Intuition</h3>
+<div class="box box-intuition">
+<span class="box-label">Intuition / Insight</span>
+Agar hum 0 se x tak har number ka square check karein, toh woh <b>Brute Force</b> hai. Lekin observe karo: agar <code>mid * mid <= x</code> hai, toh <code>mid</code> ek valid answer ho sakta hai. Aur kyunki <code>mid * mid</code> ka value <code>mid</code> ke saath <b>monotonically increase</b> hota hai, yeh search space <b>sorted</b> behave karta hai. Isliye <b>Binary Search</b> directly lag sakta hai "answer space" par.
+</div>
+
+<h3>Approach 1 : Brute Force (Linear Search)</h3>
+<div class="box box-workflow">
+<span class="box-label">Workflow / Algorithm</span>
+<ol>
+<li><code>i = 1</code> se start karo.</li>
+<li>Har step pe check karo: <code>i * i <= x</code>?</li>
+<li>Agar haan, toh <code>i++</code> karo aur aage badho.</li>
+<li>Jaise hi <code>i * i > x</code> ho jaye, loop break karo.</li>
+<li>Return <code>i - 1</code> (last valid number).</li>
+</ol>
+</div>
+
+<pre class="code-block"><code><span class="cmt">// Brute Force: O(sqrt(x))</span>
+<span class="ty">class</span> <span class="fn">Solution</span> {
+<span class="kw">public</span>:
+    <span class="ty">int</span> <span class="fn">mySqrt</span>(<span class="ty">int</span> x) {
+        <span class="kw">if</span> (x == <span class="num">0</span>) <span class="kw">return</span> <span class="num">0</span>;
+        <span class="ty">long long</span> i = <span class="num">1</span>;
+        <span class="kw">while</span> (i * i <= x) {
+            i++;
+        }
+        <span class="kw">return</span> i - <span class="num">1</span>;
+    }
+};</code></pre>
+
+<div class="box box-complexity">
+<span class="box-label">Complexity Analysis</span>
+<table>
+<tr><th>Metric</th><th>Value</th><th>Reason</th></tr>
+<tr><td>Time</td><td><b>O(sqrt(x))</b></td><td>Har number 1 se sqrt(x) tak check hota hai</td></tr>
+<tr><td>Space</td><td><b>O(1)</b></td><td>Extra variables hi use ho rahe hain</td></tr>
+</table>
+</div>
+
+<div class="box box-warning">
+<span class="box-label">Why Not Brute Force?</span>
+Jab <code>x = 2^31 - 1</code> (approx 2 billion) hota hai, tab loop 46,000+ iterations chalega. Binary Search mein sirf <b>~31 iterations</b> mein kaam ho jayega. Large inputs ke liye brute force <b>Time Limit Exceeded (TLE)</b> de sakta hai.
+</div>
+
+<h3>Approach 2 : Optimal (Binary Search on Answer Space)</h3>
+
+<div class="box box-intuition">
+<span class="box-label">Key Insight</span>
+Answer hamesha <b>[0, x]</b> range mein lie karega. Is range par Binary Search lagao. Har <code>mid</code> pe check karo:
+<ul>
+<li><b>mid * mid <= x</b> &rarr; <code>mid</code> valid answer hai. Isko store karo aur <b>right side</b> mein aur bada answer dhoondho.</li>
+<li><b>mid * mid > x</b> &rarr; <code>mid</code> bada hai. <b>Left side</b> mein search karo.</li>
+</ul>
+Yeh "<span class="hl">Answer Search</span>" pattern hai — jisme hum search space mein directly answer dhoondhte hain.
+</div>
+
+<div class="box box-workflow">
+<span class="box-label">Algorithm Steps</span>
+<ol>
+<li><code>start = 0, end = x, answer = 0</code> initialize karo.</li>
+<li><code>while (start <= end)</code> loop chalao.</li>
+<li><code>mid = start + (end - start) / 2</code> calculate karo.</li>
+<li><code>(long long)mid * mid <= x</code> check karo:
+    <ul>
+    <li>True &rarr; <code>answer = mid</code> store karo, <code>start = mid + 1</code> (bada answer dhoondho).</li>
+    <li>False &rarr; <code>end = mid - 1</code> (chota answer dhoondho).</li>
+    </ul>
+</li>
+<li>Loop end hone pe <code>answer</code> return karo.</li>
+</ol>
+</div>
+
+<pre class="code-block"><code><span class="cmt">// Optimal: Binary Search on Answer Space - O(log x)</span>
+<span class="ty">class</span> <span class="fn">Solution</span> {
+<span class="kw">public</span>:
+    <span class="ty">int</span> <span class="fn">mySqrt</span>(<span class="ty">int</span> x) {
+        <span class="ty">int</span> start = <span class="num">0</span>;
+        <span class="ty">int</span> end = x;
+        <span class="ty">int</span> answer = <span class="num">0</span>;
+
+        <span class="kw">while</span> (start <= end) {
+            <span class="ty">int</span> mid = start + (end - start) / <span class="num">2</span>;
+
+            <span class="cmt">// Overflow prevention ke liye long long cast</span>
+            <span class="kw">if</span> ((<span class="ty">long long</span>)mid * mid <= x) {
+                answer = mid;           <span class="cmt">// mid valid answer hai</span>
+                start = mid + <span class="num">1</span>;      <span class="cmt">// aur bada valid answer dhoondho</span>
+            } <span class="kw">else</span> {
+                end = mid - <span class="num">1</span>;        <span class="cmt">// mid bada hai, left mein jao</span>
+            }
+        }
+        <span class="kw">return</span> answer;
+    }
+};</code></pre>
+
+<h3>Step-by-Step Dry Run</h3>
+<div class="box box-dryrun">
+<span class="box-label">Dry Run / Visualization</span>
+<p><b>Input:</b> x = 8</p>
+
+<div class="diagram">
+<div style="margin-bottom:8px;"><b>Initial State:</b> start = 0, end = 8, answer = 0</div>
+
+<div style="margin-bottom:6px;"><b>Iteration 1:</b></div>
+<div style="margin-left:10px;">
+mid = 0 + (8-0)/2 = <span class="diag-box">4</span><br>
+4 x 4 = 16 > 8 &rarr; <span style="color:#A53F3F; font-weight:bold;">Too Big!</span><br>
+end = 4 - 1 = <span class="diag-box">3</span>
+</div>
+
+<div style="margin:6px 0;"><b>Iteration 2:</b></div>
+<div style="margin-left:10px;">
+mid = 0 + (3-0)/2 = <span class="diag-box">1</span><br>
+1 x 1 = 1 <= 8 &rarr; <span style="color:#2D6A4F; font-weight:bold;">Valid!</span><br>
+answer = 1, start = 1 + 1 = <span class="diag-box">2</span>
+</div>
+
+<div style="margin:6px 0;"><b>Iteration 3:</b></div>
+<div style="margin-left:10px;">
+mid = 2 + (3-2)/2 = <span class="diag-box">2</span><br>
+2 x 2 = 4 <= 8 &rarr; <span style="color:#2D6A4F; font-weight:bold;">Valid!</span><br>
+answer = 2, start = 2 + 1 = <span class="diag-box">3</span>
+</div>
+
+<div style="margin:6px 0;"><b>Iteration 4:</b></div>
+<div style="margin-left:10px;">
+mid = 3 + (3-3)/2 = <span class="diag-box">3</span><br>
+3 x 3 = 9 > 8 &rarr; <span style="color:#A53F3F; font-weight:bold;">Too Big!</span><br>
+end = 3 - 1 = <span class="diag-box">2</span>
+</div>
+
+<div style="margin-top:8px; padding-top:6px; border-top:1px dashed #C4924A;">
+<b>Loop ends</b> (start=3 > end=2)<br>
+<b>Return answer = 2</b>
+</div>
+</div>
+</div>
+
+<div class="box box-complexity">
+<span class="box-label">Complexity Analysis</span>
+<table>
+<tr><th>Metric</th><th>Brute Force</th><th>Optimal (Binary Search)</th></tr>
+<tr><td>Time</td><td>O(sqrt(x))</td><td><b>O(log x)</b></td></tr>
+<tr><td>Space</td><td>O(1)</td><td><b>O(1)</b></td></tr>
+</table>
+</div>
+
+<div class="box box-edge">
+<span class="box-label">Edge Cases & Gotchas</span>
+<ul>
+<li><b>x = 0:</b> Directly return 0. Binary Search mein bhi handle ho jata hai (0*0 = 0 <= 0).</li>
+<li><b>x = 1:</b> start=0, end=1. mid=0 &rarr; valid (answer=0), start=1. mid=1 &rarr; valid (answer=1), start=2. Loop ends. Return 1.</li>
+<li><b>Integer Overflow:</b> <code>mid * mid</code> mein agar <code>mid</code> int hai aur x = INT_MAX hai, toh <code>mid * mid</code> overflow kar sakta hai. <span class="hl">Hamesha (long long)mid * mid</span> use karo.</li>
+<li><b>x = INT_MAX (2147483647):</b> Correct answer = 46340. Binary Search sirf 31 iterations mein dega.</li>
+</ul>
+</div>
+
+<div class="box box-best">
+<span class="box-label">Best Practice / Optimization</span>
+<ul>
+<li><span class="hl">long long cast</span> zaroori hai overflow se bachne ke liye.</li>
+<li>Answer variable alag se maintain karo — har valid <code>mid</code> ko store karo before moving right.</li>
+<li>Yeh pattern "<b>Search on Answer Space</b>" kehlata hai — jab direct array sorted nahi hai, lekin answer ka range pata ho.</li>
+</ul>
+</div>
+
+<div class="ornament">&#9670; &#9670; &#9670;</div>
+
+<!-- ============================================================ -->
+<!-- PROBLEM 2: PEAK INDEX IN MOUNTAIN ARRAY -->
+<!-- ============================================================ -->
+
+<h2>Problem 2 : Peak Index in a Mountain Array [LeetCode 852]</h2>
+
+<div class="box box-problem">
+<span class="box-label">Problem Statement</span>
+<b>Given:</b> Ek <b>Mountain Array</b> — array jisme elements pehle <b>strictly increase</b> karte hain, ek <b>peak</b> par pahunchte hain, aur uske baad <b>strictly decrease</b> karte hain.<br>
+<b>Task:</b> Us <b>peak element ka index</b> return karna hai.<br>
+<b>Constraint:</b> Array mein exactly ek peak hoga, aur array length >= 3.
+</div>
+
+<div class="box box-pattern">
+<span class="box-label">Examples</span>
+<table>
+<tr><th>Input</th><th>Output</th><th>Explanation</th></tr>
+<tr><td>[0, 1, 0]</td><td>1</td><td>1 highest element hai</td></tr>
+<tr><td>[0, 2, 1, 0]</td><td>1</td><td>2 peak element hai</td></tr>
+<tr><td>[0, 10, 5, 2]</td><td>1</td><td>10 maximum element hai</td></tr>
+<tr><td>[3, 5, 3, 2, 0]</td><td>1</td><td>5 highest value hai</td></tr>
+<tr><td>[1, 2, 3, 4, 5, 3, 1]</td><td>4</td><td>5 peak par hai (index 4)</td></tr>
+</table>
+</div>
+
+<h3>Core Intuition</h3>
+<div class="box box-intuition">
+<span class="box-label">Intuition / Insight</span>
+Mountain array ka structure samjho: <b>Increasing &rarr; Peak &rarr; Decreasing</b>. Peak element hamesha <b>maximum element</b> hota hai. Brute force mein linear scan karke max nikaal sakte hain, lekin mountain array ki <b>sorted property</b> ka fayda utha ke hum <b>Binary Search</b> se O(log n) mein peak dhoondh sakte hain.<br><br>
+<b>Key Observation:</b> Kisi bhi <code>mid</code> pe, agar <code>arr[mid] < arr[mid+1]</code> hai, toh hum <b>increasing slope</b> par hain — peak <b>right side</b> mein hoga. Agar <code>arr[mid] > arr[mid+1]</code> hai, toh hum <b>decreasing slope</b> par hain — peak <b>mid ya uske left</b> mein hoga.
+</div>
+
+<div class="diagram">
+<div style="text-align:center; margin-bottom:8px; font-weight:bold; color:#0B1A2E;">Mountain Array Structure</div>
+<div style="text-align:center;">
+<span class="diag-box" style="background:#E8F5E9;">1</span>
+<span class="diag-box" style="background:#E8F5E9;">3</span>
+<span class="diag-box" style="background:#E8F5E9;">5</span>
+<span class="diag-box" style="background:#FFF3E0; border-color:#C4924A;">8</span>
+<span class="diag-box" style="background:#FFEBEE;">6</span>
+<span class="diag-box" style="background:#FFEBEE;">4</span>
+<span class="diag-box" style="background:#FFEBEE;">2</span>
+</div>
+<div style="text-align:center; margin-top:6px;">
+<span style="color:#2D6A4F; font-weight:bold;">Increasing</span>
+<span class="diag-arrow">&rarr;</span>
+<span style="color:#C4924A; font-weight:bold;">PEAK</span>
+<span class="diag-arrow">&rarr;</span>
+<span style="color:#A53F3F; font-weight:bold;">Decreasing</span>
+</div>
+</div>
+
+<h3>Approach 1 : Brute Force (Linear Scan)</h3>
+<div class="box box-workflow">
+<span class="box-label">Workflow / Algorithm</span>
+<ol>
+<li>Assume first element (<code>index 0</code>) peak hai.</li>
+<li>Array ko <code>i = 1</code> se traverse karo.</li>
+<li>Har element ko current peak se compare karo.</li>
+<li>Agar <code>arr[i] > arr[peakIndex]</code>, toh <code>peakIndex = i</code> update karo.</li>
+<li>End mein <code>peakIndex</code> return karo.</li>
+</ol>
+</div>
+
+<pre class="code-block"><code><span class="cmt">// Brute Force: O(n)</span>
+<span class="ty">class</span> <span class="fn">Solution</span> {
+<span class="kw">public</span>:
+    <span class="ty">int</span> <span class="fn">peakIndexInMountainArray</span>(<span class="ty">vector</span>&lt;<span class="ty">int</span>&gt;& arr) {
+        <span class="ty">int</span> peakIndex = <span class="num">0</span>;
+        <span class="kw">for</span> (<span class="ty">int</span> i = <span class="num">1</span>; i < arr.size(); i++) {
+            <span class="kw">if</span> (arr[i] > arr[peakIndex]) {
+                peakIndex = i;
+            }
+        }
+        <span class="kw">return</span> peakIndex;
+    }
+};</code></pre>
+
+<div class="box box-complexity">
+<span class="box-label">Complexity Analysis</span>
+<table>
+<tr><th>Metric</th><th>Value</th><th>Reason</th></tr>
+<tr><td>Time</td><td><b>O(n)</b></td><td>Har element ek baar check hota hai</td></tr>
+<tr><td>Space</td><td><b>O(1)</b></td><td>Single variable extra space</td></tr>
+</table>
+</div>
+
+<div class="box box-warning">
+<span class="box-label">Why Not Brute Force?</span>
+Mountain array ki <b>sorted nature</b> ka fayda nahi uthaya. Binary Search se hum har comparison ke baad <b>half search space discard</b> kar sakte hain. O(n) se O(log n) mein optimize ho jata hai.
+</div>
+
+<h3>Approach 2 : Optimal (Binary Search on Slope)</h3>
+
+<div class="box box-intuition">
+<span class="box-label">Key Insight</span>
+Mountain array mein <b>exactly one peak</b> hota hai. Har <code>mid</code> pe slope check karo:<br>
+<ul>
+<li><b>arr[mid] < arr[mid+1]</b> &rarr; Increasing slope par hain. Peak <b>right</b> mein hoga. <code>start = mid + 1</code>.</li>
+<li><b>arr[mid] > arr[mid+1]</b> &rarr; Decreasing slope par hain. Peak <b>mid ya left</b> mein hoga. <code>end = mid</code>.</li>
+</ul>
+<b>Condition:</b> <code>while (start < end)</code> — jab <code>start == end</code> ho jaye, wohi peak index hai.
+</div>
+
+<div class="box box-workflow">
+<span class="box-label">Algorithm Steps</span>
+<ol>
+<li><code>start = 0, end = n - 1</code> initialize karo.</li>
+<li><code>while (start < end)</code> loop chalao (notice: <b>&lt;</b> not &lt;=).</li>
+<li><code>mid = start + (end - start) / 2</code> calculate karo.</li>
+<li><code>arr[mid]</code> ko <code>arr[mid + 1]</code> se compare karo:
+    <ul>
+    <li><code>arr[mid] < arr[mid+1]</code> &rarr; <code>start = mid + 1</code> (right mein jao).</li>
+    <li><code>arr[mid] > arr[mid+1]</code> &rarr; <code>end = mid</code> (mid ko include karke left mein jao).</li>
+    </ul>
+</li>
+<li>Jab <code>start == end</code>, return <code>start</code> (ya <code>end</code>).</li>
+</ol>
+</div>
+
+<pre class="code-block"><code><span class="cmt">// Optimal: Binary Search on Slope - O(log n)</span>
+<span class="ty">class</span> <span class="fn">Solution</span> {
+<span class="kw">public</span>:
+    <span class="ty">int</span> <span class="fn">peakIndexInMountainArray</span>(<span class="ty">vector</span>&lt;<span class="ty">int</span>&gt;& arr) {
+        <span class="ty">int</span> start = <span class="num">0</span>;
+        <span class="ty">int</span> end = arr.size() - <span class="num">1</span>;
+
+        <span class="kw">while</span> (start < end) {           <span class="cmt">// Note: start < end (not <=)</span>
+            <span class="ty">int</span> mid = start + (end - start) / <span class="num">2</span>;
+
+            <span class="cmt">// Increasing slope -> peak right side mein hai</span>
+            <span class="kw">if</span> (arr[mid] < arr[mid + <span class="num">1</span>]) {
+                start = mid + <span class="num">1</span>;
+            }
+            <span class="cmt">// Decreasing slope -> peak mid ya left mein hai</span>
+            <span class="kw">else</span> {
+                end = mid;              <span class="cmt">// mid ko discard nahi karte!</span>
+            }
+        }
+        <span class="kw">return</span> start;               <span class="cmt">// start == end == peak index</span>
+    }
+};</code></pre>
+
+<h3>Step-by-Step Dry Run</h3>
+<div class="box box-dryrun">
+<span class="box-label">Dry Run / Visualization</span>
+<p><b>Input:</b> arr = [0, 2, 5, 3, 1]</p>
+
+<div class="diagram">
+<div style="margin-bottom:8px;"><b>Initial:</b> start = 0, end = 4</div>
+
+<div style="margin-bottom:6px;"><b>Iteration 1:</b></div>
+<div style="margin-left:10px;">
+mid = 0 + (4-0)/2 = <span class="diag-box">2</span><br>
+arr[2] = 5, arr[3] = 3<br>
+5 > 3 &rarr; <span style="color:#2D6A4F; font-weight:bold;">Decreasing Slope!</span> Peak mid ya left mein.<br>
+end = mid = <span class="diag-box">2</span>
+</div>
+
+<div style="margin:6px 0;"><b>Iteration 2:</b></div>
+<div style="margin-left:10px;">
+start = 0, end = 2<br>
+mid = 0 + (2-0)/2 = <span class="diag-box">1</span><br>
+arr[1] = 2, arr[2] = 5<br>
+2 < 5 &rarr; <span style="color:#C4924A; font-weight:bold;">Increasing Slope!</span> Peak right mein.<br>
+start = mid + 1 = <span class="diag-box">2</span>
+</div>
+
+<div style="margin-top:8px; padding-top:6px; border-top:1px dashed #C4924A;">
+<b>Loop ends</b> (start = 2, end = 2)<br>
+<b>Return 2</b> &rarr; arr[2] = 5 is the peak
+</div>
+</div>
+</div>
+
+<div class="box box-complexity">
+<span class="box-label">Complexity Analysis</span>
+<table>
+<tr><th>Metric</th><th>Brute Force</th><th>Optimal (Binary Search)</th></tr>
+<tr><td>Time</td><td>O(n)</td><td><b>O(log n)</b></td></tr>
+<tr><td>Space</td><td>O(1)</td><td><b>O(1)</b></td></tr>
+</table>
+</div>
+
+<div class="box box-edge">
+<span class="box-label">Edge Cases & Gotchas</span>
+<ul>
+<li><b>while(start < end) vs while(start <= end):</b> Yaha <code>start < end</code> use karte hain kyunki <code>end = mid</code> karne pe mid ko include karte hain. Agar <code><=</code> use kiya toh infinite loop ho sakta hai jab <code>start == end == mid</code> ho.</li>
+<li><b>end = mid (not mid - 1):</b> Kyunki <code>mid</code> khud peak ho sakta hai, isliye usse discard nahi karte. Sirf <code>start = mid + 1</code> karte hain jab sure hain ki peak right mein hai.</li>
+<li><b>Array length >= 3:</b> Constraints ensure ki peak hamesha exist karega.</li>
+<li><b>Strictly increasing/decreasing:</b> Equal adjacent elements nahi honge, isliye <code>arr[mid] == arr[mid+1]</code> ka case nahi aayega.</li>
+</ul>
+</div>
+
+<div class="box box-interview">
+<span class="box-label">Interview Tips / Follow-up Questions</span>
+<ul>
+<li><b>Q:</b> Agar array mein multiple peaks ho toh kya hoga?<br><b>A:</b> Yeh algorithm <b>any one peak</b> return karega. Multiple peaks ke liye modified binary search lagani padegi.</li>
+<li><b>Q:</b> Agar array boundary par peak ho (index 0 ya n-1)?<br><b>A:</b> LeetCode 162 (Find Peak Element) mein boundary peaks allowed hain. Waha <code>arr[-1] = arr[n] = -infinity</code> assume karte hain.</li>
+<li><b>Q:</b> Is problem ko recursive binary search se solve karo.<br><b>A:</b> Base case: <code>start == end</code>. Recursive step: slope check karke left/right call karo.</li>
+</ul>
+</div>
+
+<div class="ornament">&#9670; &#9670; &#9670;</div>
+
+<!-- ============================================================ -->
+<!-- COMPARISON & PATTERN TRANSFER -->
+<!-- ============================================================ -->
+
+<h2>Pattern Comparison : Answer Search vs Peak Element</h2>
+
+<div class="box box-transfer">
+<span class="box-label">Pattern Transfer / Related Problems</span>
+<table>
+<tr><th>Aspect</th><th>Sqrt(x) - Answer Search</th><th>Peak Index - Slope Search</th></tr>
+<tr><td>Search Space</td><td>[0, x] (answer range)</td><td>[0, n-1] (array indices)</td></tr>
+<tr><td>Condition Check</td><td>mid * mid <= x</td><td>arr[mid] vs arr[mid+1]</td></tr>
+<tr><td>Loop Condition</td><td>while(start <= end)</td><td>while(start < end)</td></tr>
+<tr><td>On Valid</td><td>Store answer, go right</td><td>Go right (start = mid+1)</td></tr>
+<tr><td>On Invalid</td><td>Go left (end = mid-1)</td><td>Keep mid, go left (end = mid)</td></tr>
+<tr><td>Key Trick</td><td>long long for overflow</td><td>end = mid (not mid-1)</td></tr>
+<tr><td>Return</td><td>answer variable</td><td>start (or end)</td></tr>
+</table>
+</div>
+
+<div class="box box-transfer">
+<span class="box-label">Related Problems to Practice</span>
+<ul>
+<li><b>LeetCode 162</b> - Find Peak Element (Boundary peaks allowed)</li>
+<li><b>LeetCode 1095</b> - Find in Mountain Array (Peak + Binary Search on both sides)</li>
+<li><b>LeetCode 153</b> - Find Minimum in Rotated Sorted Array (Rotated array BS)</li>
+<li><b>LeetCode 154</b> - Find Minimum in Rotated Sorted Array II (Duplicates ke saath)</li>
+<li><b>LeetCode 704</b> - Binary Search (Classic template)</li>
+</ul>
+</div>
+
+<div class="ornament">&#9670; &#9670; &#9670;</div>
+
+<!-- ============================================================ -->
+<!-- QUICK REVISION CHEATSHEET -->
+<!-- ============================================================ -->
+
+<div class="cheatsheet">
+<div class="cheatsheet-title">&#9670; QUICK REVISION CHEATSHEET &#9670;</div>
+<div class="cheatsheet-grid">
+
+<div class="cheatsheet-item">
+<b>Sqrt(x) - Answer Search</b><br>
+&#8226; Search space: [0, x]<br>
+&#8226; Valid? mid*mid <= x &rarr; store, go right<br>
+&#8226; Invalid? go left (end = mid-1)<br>
+&#8226; <span style="color:#A53F3F;">Overflow:</span> (long long)mid * mid<br>
+&#8226; Time: O(log x) | Space: O(1)
+</div>
+
+<div class="cheatsheet-item">
+<b>Peak Index - Slope Search</b><br>
+&#8226; Compare arr[mid] with arr[mid+1]<br>
+&#8226; Increasing? start = mid + 1<br>
+&#8226; Decreasing? end = mid (keep mid!)<br>
+&#8226; <span style="color:#A53F3F;">Loop:</span> while(start < end) not <=<br>
+&#8226; Time: O(log n) | Space: O(1)
+</div>
+
+<div class="cheatsheet-item">
+<b>Binary Search Template Differences</b><br>
+&#8226; Classic BS: while(start <= end), end = mid-1<br>
+&#8226; Answer Search: while(start <= end), store valid ans<br>
+&#8226; Peak/Slope: while(start < end), end = mid<br>
+&#8226; Lower Bound: while(start < end), end = mid
+</div>
+
+<div class="cheatsheet-item">
+<b>Common Mistakes (Red Flags)</b><br>
+&#8226; <span style="color:#A53F3F;">mid = (start+end)/2</span> &rarr; overflow risk<br>
+&#8226; <span style="color:#A53F3F;">Use mid = start + (end-start)/2</span><br>
+&#8226; Sqrt mein int overflow &rarr; long long cast<br>
+&#8226; Peak mein end = mid-1 mat karo<br>
+&#8226; Peak mein <= mat use karo, < use karo
+</div>
+
+<div class="cheatsheet-item">
+<b>Key Formulas / Snippets</b><br>
+<code>mid = start + (end - start) / 2;</code><br>
+<code>if ((ll)mid * mid <= x)</code><br>
+<code>if (arr[mid] < arr[mid+1]) start=mid+1;</code><br>
+<code>else end = mid;</code>
+</div>
+
+<div class="cheatsheet-item">
+<b>Interview Quick Questions</b><br>
+&#8226; Q: Multiple peaks? A: Any one return<br>
+&#8226; Q: Recursive? A: Base: start==end<br>
+&#8226; Q: Rotated array? A: Compare with end<br>
+&#8226; Q: Duplicates? A: Shrink search space
+</div>
+
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- FOOTER -->
+<!-- ============================================================ -->
+
+<div class="watermark">Harshal Chauhan</div>
+<div class="signature">MADE BY HARSHAL CHAUHAN</div>
+
+</body>
+</html>
