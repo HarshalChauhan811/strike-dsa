@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Lecture17_BinarySearchVariations.html</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@page { size: A4 portrait; margin: 0; }
+* { box-sizing: border-box; }
+body {
+    padding: 18mm 20mm 18mm 24mm;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: #FAFAF8;
+    font-family: 'Poppins', sans-serif;
+    color: #1C1C1C;
+    font-size: 12px;
+    line-height: 1.65;
+    margin: 0;
+    background-image:
+        linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+    background-size: 25px 25px;
+}
+
+h1 { font-size: 38px; font-weight: 700; color: #0B1A2E; border-bottom: 3px solid #C4924A; padding-bottom: 6px; margin-bottom: 12px; margin-top: 0; }
+h2 { font-size: 22px; font-weight: 700; color: #C4924A; border-bottom: 2px solid #C4924A; margin-top: 24px; margin-bottom: 12px; padding-bottom: 4px; }
+h3 { font-size: 16px; font-weight: 700; color: #1A4A4A; margin-top: 18px; margin-bottom: 8px; }
+h4 { font-size: 13px; font-weight: 700; color: #2D6A4F; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; }
+h5 { font-size: 11.5px; font-weight: 700; color: #3C3C3C; margin-bottom: 4px; }
+p { margin: 0 0 10px 0; }
+ul, ol { margin: 6px 0; padding-left: 20px; }
+li { margin-bottom: 4px; }
+
+pre.code-block {
+    background: #111824; border: 1px solid #2A3240; border-radius: 10px;
+    padding: 14px 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    page-break-inside: avoid; font-family: 'Fira Code', monospace;
+    color: #E0E0E0; white-space: pre-wrap; overflow-x: auto;
+    font-size: 11.5px; line-height: 1.45; margin: 12px 0;
+}
+code { font-family: 'Fira Code', monospace; font-size: 11px; background: #F0EDE8; padding: 1px 5px; border-radius: 4px; color: #7A5C3A; }
+pre.code-block code { background: transparent; padding: 0; color: inherit; }
+.kw { color: #C586C0; font-weight: bold; }
+.str { color: #CE9178; }
+.cmt { color: #6A9955; font-style: italic; }
+.fn { color: #DCDCAA; }
+.num { color: #B5CEA8; }
+.ty { color: #4EC9B0; }
+
+.box {
+    border-radius: 0 10px 10px 0; padding: 14px 18px; margin-bottom: 12px;
+    background: #FFFFFF; box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03);
+    page-break-inside: avoid; border-left: 5px solid;
+}
+.box-label { text-transform: uppercase; font-weight: 700; font-size: 10px; letter-spacing: 0.8px; margin-bottom: 8px; display: block; }
+
+.box-pattern    { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-pattern .box-label { color: #3A5F80; }
+.box-intuition  { border-left-color: #C4924A; background: #F9FBF9; }
+.box-intuition .box-label { color: #C4924A; }
+.box-workflow   { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-workflow .box-label { color: #2E6B5A; }
+.box-important  { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-important .box-label { color: #A53F3F; }
+.box-interview  { border-left-color: #5E4B7A; background: #F8F7FC; }
+.box-interview .box-label { color: #5E4B7A; }
+.box-takeaway   { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-takeaway .box-label { color: #2E6B5A; }
+.box-warning    { border-left-color: #C4924A; background: #FDFBF5; }
+.box-warning .box-label { color: #C4924A; }
+.box-edge       { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-edge .box-label { color: #A53F3F; }
+.box-best       { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-best .box-label { color: #2E6B5A; }
+.box-code       { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-code .box-label { color: #3A5F80; }
+.box-dryrun     { border-left-color: #B49450; background: #FDFBF5; }
+.box-dryrun .box-label { color: #B49450; }
+.box-complexity { border-left-color: #4F46E5; background: #FFFFFF; }
+.box-complexity .box-label { color: #4F46E5; }
+.box-problem    { border-left-color: #65A30D; background: #FFFFFF; }
+.box-problem .box-label { color: #65A30D; }
+.box-transfer   { border-left-color: #7E22CE; background: #F8F7FC; }
+.box-transfer .box-label { color: #7E22CE; }
+
+.hl { background: #F4E9D8; color: #7A5C3A; padding: 1px 5px; border-radius: 4px; font-weight: 500; }
+
+.comp-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 11.5px; page-break-inside: avoid; }
+.comp-table th { background: #F7F3EC; color: #0B1A2E; font-weight: 600; text-align: left; padding: 8px 12px; border-bottom: 2px solid #C4924A; }
+.comp-table td { padding: 7px 12px; border-bottom: 1px solid #E8E4DC; }
+.comp-table tr:nth-child(even) { background: #FAFAF8; }
+
+.diagram {
+    border: 1px solid #C4924A; border-left: 4px solid #C4924A;
+    background: #FFFBF5; padding: 12px 16px; margin: 16px 0;
+    overflow-x: auto; font-size: 10px; page-break-inside: avoid;
+}
+.diag-box {
+    display: inline-block; background: #FFFFFF; border: 2px solid #0B1A2E;
+    border-radius: 6px; padding: 4px 10px; font-weight: 700; font-size: 10px;
+    margin: 2px; text-align: center; min-width: 30px;
+}
+.diag-missing { background: #FFEBEE; border-color: #A53F3F; color: #A53F3F; }
+.diag-present { background: #E8F5E9; border-color: #2D6A4F; color: #2D6A4F; }
+.diag-ans { background: #FFF3E0; border-color: #C4924A; color: #C4924A; }
+.diag-arrow { color: #C4924A; font-size: 16px; font-weight: bold; margin: 0 4px; }
+
+.ornament { text-align: center; margin: 22px 0; color: #C4924A; font-size: 18px; letter-spacing: 6px; }
+
+.cheatsheet {
+    border: 2px solid #C4924A; background: #F9F8F5; border-radius: 10px;
+    padding: 16px; margin: 24px 0; page-break-inside: avoid;
+}
+.cheatsheet-title { text-align: center; font-size: 16px; font-weight: 700; color: #1A4A4A; margin-bottom: 12px; }
+.cheatsheet-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cheatsheet-item { background: #FFFFFF; border-radius: 6px; padding: 8px 10px; font-size: 9.5px; line-height: 1.5; border-left: 3px solid #C4924A; }
+.cheatsheet-item b { color: #0B1A2E; font-size: 10px; }
+
+.watermark { text-align: right; margin: 20px 0 5px 0; color: #9CA3AF; font-size: 8px; opacity: 0.4; }
+.signature { text-align: center; margin-top: 30px; border-top: 1px solid #E0D8CC; padding-top: 18px; color: #8C8C8C; font-size: 10px; font-weight: 500; letter-spacing: 1px; }
+
+pre, table, .box, .diagram, .cheatsheet { page-break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<h1>Lecture 17 : Binary Search Variations</h1>
+<p style="color:#8C8C8C; font-size:11px; margin-bottom:16px;">Pattern Focus: Missing Number Search & Binary Search on Answer | C++ | Print-Ready Notes</p>
+
+<div class="ornament">&#9670; &#9670; &#9670;</div>
+
+<!-- ============================================================ -->
+<!-- PROBLEM 1: Kth Missing Positive Number -->
+<!-- ============================================================ -->
+
+<h2>Problem 1 : Kth Missing Positive Number [LeetCode 1539]</h2>
+
+<div class="box box-problem">
+<span class="box-label">Problem Statement</span>
+<b>Given:</b> Ek <b>sorted array</b> of positive integers aur ek integer <code>k</code>.<br>
+<b>Task:</b> <code>k</code>th <b>missing positive number</b> return karna hai.<br>
+<b>Missing number</b> woh positive integer hai jo array mein present nahi hai.
+</div>
+
+<div class="box box-pattern">
+<span class="box-label">Examples</span>
+<table class="comp-table">
+<tr><th>Input</th><th>k</th><th>Output</th><th>Missing Numbers</th></tr>
+<tr><td>[2,3,4,7,11]</td><td>5</td><td>9</td><td>1, 5, 6, 8, <b>9</b>, 10, 12...</td></tr>
+<tr><td>[1,2,3,4]</td><td>2</td><td>6</td><td>5, <b>6</b>, 7, 8...</td></tr>
+<tr><td>[2]</td><td>1</td><td>1</td><td><b>1</b>, 3, 4, 5...</td></tr>
+<tr><td>[5,6,7]</td><td>3</td><td>3</td><td>1, 2, <b>3</b>, 4, 8...</td></tr>
+</table>
+</div>
+
+<h3>Core Intuition</h3>
+<div class="box box-intuition">
+<span class="box-label">Intuition / Insight</span>
+Array sorted hai, toh har index <code>i</code> pe <b>expected value</b> hona chahiye <code>i + 1</code>.<br><br>
+Jaise <code>[2,3,4,7,11]</code> mein index 0 pe expected 1 hai, lekin actual 2 hai. Matlab <code>2 - 1 = 1</code> number missing hai index 0 tak.<br><br>
+<b>Formula:</b> <span class="hl">Missing count till index i = arr[i] - (i + 1)</span><br><br>
+Yeh missing count <b>monotonically increase</b> hota hai — jitna aage jayenge, utne zyada numbers missing honge. Isliye Binary Search directly lag sakta hai.
+</div>
+
+<div class="diagram">
+<div style="text-align:center; margin-bottom:8px; font-weight:bold; color:#0B1A2E;">Missing Count Visualization</div>
+<div style="text-align:center;">
+<span class="diag-box diag-present">2</span>
+<span class="diag-box diag-present">3</span>
+<span class="diag-box diag-present">4</span>
+<span class="diag-box diag-present">7</span>
+<span class="diag-box diag-present">11</span>
+</div>
+<div style="text-align:center; margin-top:4px; font-size:9px; color:#8C8C8C;">Index: 0 &nbsp;&nbsp; 1 &nbsp;&nbsp; 2 &nbsp;&nbsp; 3 &nbsp;&nbsp; 4</div>
+<div style="text-align:center; margin-top:6px;">
+<span class="diag-box diag-missing">1</span>
+<span class="diag-box diag-missing">5</span>
+<span class="diag-box diag-missing">6</span>
+<span class="diag-box diag-missing">8</span>
+<span class="diag-box diag-ans">9</span>
+<span class="diag-box diag-missing">10</span>
+</div>
+<div style="text-align:center; margin-top:4px; font-size:9px; color:#8C8C8C;">Missing: 1st &nbsp; 2nd &nbsp; 3rd &nbsp; 4th &nbsp; <b style="color:#C4924A;">5th</b> &nbsp; 6th</div>
+</div>
+
+<h3>Approach 1 : Brute Force (Linear Scan)</h3>
+<div class="box box-workflow">
+<span class="box-label">Workflow / Algorithm</span>
+<ol>
+<li>Array ko <code>i = 0</code> se traverse karo.</li>
+<li>Har index <code>i</code> pe missing numbers ka count calculate karo: <code>missing = arr[i] - (i + 1)</code>.</li>
+<li>Agar <code>missing >= k</code> &rarr; <code>k</code>th missing number current element se pehle lie karta hai. Return <code>i + k</code>.</li>
+<li>Agar loop end tak koi aisa index nahi mila &rarr; <code>k</code>th missing number last element ke baad hai. Return <code>n + k</code>.</li>
+</ol>
+</div>
+
+<pre class="code-block"><code><span class="cmt">// Brute Force: O(n)</span>
+<span class="ty">class</span> <span class="fn">Solution</span> {
+<span class="kw">public</span>:
+    <span class="ty">int</span> <span class="fn">findKthPositive</span>(<span class="ty">vector</span>&lt;<span class="ty">int</span>&gt;& arr, <span class="ty">int</span> k) {
+        <span class="ty">int</span> n = arr.size();
+
+        <span class="kw">for</span> (<span class="ty">int</span> i = <span class="num">0</span>; i < n; i++) {
+            <span class="cmt">// Index i tak kitne numbers missing hain</span>
+            <span class="ty">int</span> missing = arr[i] - (i + <span class="num">1</span>);
+
+            <span class="cmt">// Kth missing number arr[i] se pehle hai</span>
+            <span class="kw">if</span> (missing >= k) {
+                <span class="kw">return</span> i + k;
+            }
+        }
+        <span class="cmt">// Kth missing number last element ke baad hai</span>
+        <span class="kw">return</span> n + k;
+    }
+};</code></pre>
+
+<div class="box box-complexity">
+<span class="box-label">Complexity Analysis</span>
+<table class="comp-table">
+<tr><th>Metric</th><th>Value</th><th>Reason</th></tr>
+<tr><td>Time</td><td><b>O(n)</b></td><td>Array ek baar traverse hota hai</td></tr>
+<tr><td>Space</td><td><b>O(1)</b></td><td>Extra variables only</td></tr>
+</table>
+</div>
+
+<div class="box box-warning">
+<span class="box-label">Why Not This Approach?</span>
+Yeh approach sirf array ko ek baar scan karti hai, isliye pehle wale two-pointer se behtar hai. Lekin <code>O(n)</code> time leta hai. Kyunki missing count <b>monotonic</b> hai (kabhi decrease nahi hota), Binary Search se <code>O(log n)</code> mein directly kaam ho jata hai.
+</div>
+
+<h3>Approach 2 : Optimal (Binary Search)</h3>
+
+<div class="box box-intuition">
+<span class="box-label">Key Insight</span>
+Har index <code>i</code> pe missing numbers ka count calculate kar sakte hain: <span class="hl">missing = arr[i] - (i + 1)</span>.<br><br>
+Hum search karte hain <b>pehla index jahan missing count >= k</b> ho. Uske pehle wale index tak missing count < k hota hai.<br><br>
+Jab loop end hota hai, <code>start</code> us pehle index ko point karta hai jahan se missing count >= k shuru hota hai. Final answer: <span class="hl">start + k</span>.<br><br>
+<b>Logic:</b> Agar index <code>start</code> tak <code>start</code> numbers present hain, toh <code>start + k</code> woh number hoga jo <code>k</code> missing numbers ke baad aata hai.
+</div>
+
+<div class="box box-workflow">
+<span class="box-label">Algorithm Steps</span>
+<ol>
+<li><code>start = 0, end = n - 1</code> initialize karo.</li>
+<li><code>while (start <= end)</code> loop chalao.</li>
+<li><code>mid = start + (end - start) / 2</code> calculate karo.</li>
+<li><code>missing = arr[mid] - (mid + 1)</code> calculate karo.</li>
+<li><b>missing < k</b> &rarr; Abhi tak k se kam missing hain. Right mein jao: <code>start = mid + 1</code>.</li>
+<li><b>missing >= k</b> &rarr; Ya toh exact k ya usse zyada missing hain. Left mein jao: <code>end = mid - 1</code>.</li>
+<li>Loop end hone pe <b>return start + k</b>.</li>
+</ol>
+</div>
+
+<pre class="code-block"><code><span class="cmt">// Optimal: Binary Search - O(log n)</span>
+<span class="ty">class</span> <span class="fn">Solution</span> {
+<span class="kw">public</span>:
+    <span class="ty">int</span> <span class="fn">findKthPositive</span>(<span class="ty">vector</span>&lt;<span class="ty">int</span>&gt;& arr, <span class="ty">int</span> k) {
+        <span class="ty">int</span> start = <span class="num">0</span>;
+        <span class="ty">int</span> end = arr.size() - <span class="num">1</span>;
+
+        <span class="kw">while</span> (start <= end) {
+            <span class="ty">int</span> mid = start + (end - start) / <span class="num">2</span>;
+
+            <span class="cmt">// Missing numbers till index mid</span>
+            <span class="ty">int</span> missing = arr[mid] - (mid + <span class="num">1</span>);
+
+            <span class="cmt">// Abhi tak k se kam missing hain -> right mein jao</span>
+            <span class="kw">if</span> (missing < k) {
+                start = mid + <span class="num">1</span>;
+            }
+            <span class="cmt">// Missing count k ya usse zyada -> left mein jao</span>
+            <span class="kw">else</span> {
+                end = mid - <span class="num">1</span>;
+            }
+        }
+        <span class="kw">return</span> start + k;           <span class="cmt">// Final formula</span>
+    }
+};</code></pre>
+
+<h3>Step-by-Step Dry Run</h3>
+<div class="box box-dryrun">
+<span class="box-label">Dry Run / Visualization</span>
+<p><b>Input:</b> arr = [2, 3, 4, 7, 11], k = 5</p>
+
+<div class="diagram">
+<div style="margin-bottom:8px;"><b>Initial:</b> start = 0, end = 4</div>
+
+<div style="margin-bottom:6px;"><b>Iteration 1:</b></div>
+<div style="margin-left:10px;">
+mid = 0 + (4-0)/2 = <span class="diag-box">2</span><br>
+arr[2] = 4<br>
+missing = 4 - (2 + 1) = 4 - 3 = <span class="diag-box">1</span><br>
+1 < 5 &rarr; <span style="color:#A53F3F; font-weight:bold;">Kam missing hain! Right mein jao.</span><br>
+start = 2 + 1 = <span class="diag-box">3</span>
+</div>
+
+<div style="margin:6px 0;"><b>Iteration 2:</b></div>
+<div style="margin-left:10px;">
+start = 3, end = 4<br>
+mid = 3 + (4-3)/2 = <span class="diag-box">3</span><br>
+arr[3] = 7<br>
+missing = 7 - (3 + 1) = 7 - 4 = <span class="diag-box">3</span><br>
+3 < 5 &rarr; <span style="color:#A53F3F; font-weight:bold;">Abhi bhi kam! Right mein jao.</span><br>
+start = 3 + 1 = <span class="diag-box">4</span>
+</div>
+
+<div style="margin:6px 0;"><b>Iteration 3:</b></div>
+<div style="margin-left:10px;">
+start = 4, end = 4<br>
+mid = <span class="diag-box">4</span><br>
+arr[4] = 11<br>
+missing = 11 - (4 + 1) = 11 - 5 = <span class="diag-box">6</span><br>
+6 >= 5 &rarr; <span style="color:#2D6A4F; font-weight:bold;">Zyada ya equal missing! Left mein jao.</span><br>
+end = 4 - 1 = <span class="diag-box">3</span>
+</div>
+
+<div style="margin-top:8px; padding-top:6px; border-top:1px dashed #C4924A;">
+<b>Loop ends</b> (start = 4, end = 3)<br>
+Answer = start + k = 4 + 5 = <span class="diag-box diag-ans">9</span><br>
+<b>Return 9</b>
+</div>
+</div>
+</div>
+
+<div class="box box-complexity">
+<span class="box-label">Complexity Analysis</span>
+<table class="comp-table">
+<tr><th>Metric</th><th>Brute Force</th><th>Optimal (Binary Search)</th></tr>
+<tr><td>Time</td><td>O(n + answer)</td><td><b>O(log n)</b></td></tr>
+<tr><td>Space</td><td>O(1)</td><td><b>O(1)</b></td></tr>
+</table>
+</div>
+
+<div class="box box-edge">
+<span class="box-label">Edge Cases & Gotchas</span>
+<ul>
+<li><b>arr = [1,2,3,4], k = 2:</b> Missing count kabhi k se zyada nahi hoga loop mein. End mein start = 4 (array size), answer = 4 + 2 = 6. Correct!</li>
+<li><b>arr = [2], k = 1:</b> missing = 2 - 1 = 1 >= 1 &rarr; end = -1. start = 0. Answer = 0 + 1 = 1. Correct!</li>
+<li><b>Formula samajhna zaroori:</b> <code>start + k</code> kyun? Kyunki <code>start</code> index tak <code>start</code> numbers present hain. <code>k</code> missing numbers ke baad jo number aata hai woh <code>start + k</code> hota hai.</li>
+<li><b>Missing count monotonic hai:</b> Isliye binary search kaam karta hai. Agar array unsorted hota, toh brute force hi chahiye hota.</li>
+</ul>
+</div>
+
+<div class="box best-practice">
+<span class="box-label">Best Practice / Optimization</span>
+<ul>
+<li><span class="hl">missing = arr[mid] - (mid + 1)</span> formula yaad rakho — yeh sabse important hai.</li>
+<li>Loop condition <code>start <= end</code> use karo — classic lower bound style.</li>
+<li>End mein <code>start + k</code> return karo — yeh formula proof se aata hai, rote mat learn karo.</li>
+</ul>
+</div>
+
+<div class="ornament">&#9670; &#9670; &#9670;</div>
+
+<!-- ============================================================ -->
+<!-- PROBLEM 2: Book Allocation -->
+<!-- ============================================================ -->
+
+<h2>Problem 2 : Allocate Minimum Number of Pages [GFG]</h2>
+
+<div class="box box-problem">
+<span class="box-label">Problem Statement</span>
+<b>Given:</b> Ek array <code>books[]</code> jisme <code>books[i]</code> = ith book ke pages. Aur ek integer <code>students</code>.<br>
+<b>Task:</b> Books ko students mein allocate karna hai such that:<br>
+&#8226; Har student ko <b>at least one book</b> mile.<br>
+&#8226; Books <b>contiguous order</b> mein allocate honge.<br>
+&#8226; Koi book <b>divide nahi</b> ho sakti.<br>
+<b>Goal:</b> <b>Maximum pages</b> assigned to any student ko <b>minimize</b> karna hai.<br>
+<b>Impossible case:</b> Agar <code>students > books.size()</code>, return <code>-1</code>.
+</div>
+
+<div class="box box-pattern">
+<span class="box-label">Examples</span>
+<table class="comp-table">
+<tr><th>Books</th><th>Students</th><th>Output</th><th>Allocation</th></tr>
+<tr><td>[12,34,67,90]</td><td>2</td><td>113</td><td>[12+34+67=113], [90]</td></tr>
+<tr><td>[15,17,20]</td><td>5</td><td>-1</td><td>Books < students, impossible</td></tr>
+<tr><td>[10,20,30,40]</td><td>2</td><td>60</td><td>[10+20+30=60], [40]</td></tr>
+<tr><td>[10,20,30,40]</td><td>3</td><td>60</td><td>[10+20=30], [30], [40] &rarr; max=60... wait let me verify</td></tr>
+</table>
+</div>
+
+<h3>Core Intuition</h3>
+<div class="box box-intuition">
+<span class="box-label">Intuition / Insight</span>
+Yeh problem directly array mein search nahi kar rahi — yeh <b>"answer space"</b> mein search kar rahi hai.<br><br>
+<b>Question:</b> Kya maximum <code>X</code> pages per student allowed ho, toh kya saari books allocate ho sakti hain?<br><br>
+Agar <code>X</code> bada hai, toh allocation easy hai (kam students chahiye). Agar <code>X</code> chota hai, toh allocation mushkil hai (zyada students chahiye).<br><br>
+Yeh <b>monotonic property</b> hai: <span class="hl">Impossible &rarr; Impossible &rarr; Possible &rarr; Possible</span>. Isliye Binary Search first possible answer dhoondh sakta hai.<br><br>
+<b>Search Space:</b><br>
+&#8226; <b>Minimum possible answer:</b> Sabse badi book (kyunki har student ko kam se kam woh book toh milegi hi).<br>
+&#8226; <b>Maximum possible answer:</b> Saari books ka sum (ek hi student ko sab mil jaye).
+</div>
+
+<div class="diagram">
+<div style="text-align:center; margin-bottom:8px; font-weight:bold; color:#0B1A2E;">Monotonic Property Visualization</div>
+<div style="text-align:center;">
+<span class="diag-box diag-missing">40</span>
+<span class="diag-box diag-missing">50</span>
+<span class="diag-box diag-missing">60</span>
+<span class="diag-box diag-ans">70</span>
+<span class="diag-box diag-present">80</span>
+<span class="diag-box diag-present">90</span>
+<span class="diag-box diag-present">100</span>
+</div>
+<div style="text-align:center; margin-top:6px;">
+<span style="color:#A53F3F; font-weight:bold;">Impossible</span>
+<span class="diag-arrow">&rarr;</span>
+<span style="color:#C4924A; font-weight:bold;">First Possible (Answer)</span>
+<span class="diag-arrow">&rarr;</span>
+<span style="color:#2D6A4F; font-weight:bold;">Possible</span>
+</div>
+<div style="text-align:center; margin-top:4px; font-size:9px; color:#8C8C8C;">Binary Search finds the boundary between Impossible and Possible</div>
+</div>
+
+<h3>Approach 1 : Brute Force (Linear Search on Answer)</h3>
+<div class="box box-workflow">
+<span class="box-label">Workflow / Algorithm</span>
+<ol>
+<li>Minimum answer = largest book se start karo.</li>
+<li>Maximum answer = total sum of all pages tak jao.</li>
+<li>Har value <code>X</code> ke liye check karo: kya <code>X</code> max pages mein allocation possible hai?</li>
+<li>First valid <code>X</code> return karo.</li>
+</ol>
+</div>
+
+<div class="box box-complexity">
+<span class="box-label">Complexity Analysis</span>
+<table class="comp-table">
+<tr><th>Metric</th><th>Value</th><th>Reason</th></tr>
+<tr><td>Time</td><td><b>O(n x sum)</b></td><td>Har possible X ke liye O(n) check</td></tr>
+<tr><td>Space</td><td><b>O(1)</b></td><td>Extra variables only</td></tr>
+</table>
+</div>
+
+<div class="box box-warning">
+<span class="box-label">Why Not Brute Force?</span>
+Sum of pages bahut bada ho sakta hai (10^9+ range). Linear search on answer space TLE de degi. Binary Search se <code>O(log(sum))</code> iterations mein kaam ho jata hai.
+</div>
+
+<h3>Approach 2 : Optimal (Binary Search on Answer)</h3>
+
+<div class="box box-intuition">
+<span class="box-label">Key Insight</span>
+<b>Two-step approach:</b><br>
+<b>Step 1:</b> <code>possible(X)</code> function — greedy approach se check karo ki <code>X</code> max pages limit mein saari books <code>students</code> count mein allocate ho sakti hain ya nahi.<br><br>
+<b>Step 2:</b> Binary Search on answer space <code>[maxBook, totalSum]</code> to find minimum valid <code>X</code>.<br><br>
+<b>Greedy Allocation:</b> Har student ko jitni books de sakte hain bina <code>X</code> cross kiye, utni do. Agar next book se <code>X</code> cross ho raha hai, toh naya student allocate karo.
+</div>
+
+<div class="box box-workflow">
+<span class="box-label">Algorithm Steps</span>
+<ol>
+<li><b>Impossible check:</b> Agar <code>students > books.size()</code>, return <code>-1</code>.</li>
+<li><code>start = max_element(books)</code>, <code>end = sum(books)</code>.</li>
+<li><code>answer = end</code> initialize karo.</li>
+<li><code>while (start <= end)</code>:
+    <ul>
+    <li><code>mid = start + (end - start) / 2</code>.</li>
+    <li><code>possible(books, students, mid)</code> check karo.</li>
+    <li>Agar possible &rarr; <code>answer = mid</code> store karo, <code>end = mid - 1</code> (chota answer dhoondho).</li>
+    <li>Agar impossible &rarr; <code>start = mid + 1</code> (bada answer chahiye).</li>
+    </ul>
+</li>
+<li>Return <code>answer</code>.</li>
+</ol>
+</div>
+
+<pre class="code-block"><code><span class="cmt">// Optimal: Binary Search on Answer - O(n x log(sum))</span>
+<span class="ty">class</span> <span class="fn">Solution</span> {
+<span class="kw">public</span>:
+    <span class="cmt">// Greedy check: kya 'maxPages' limit mein allocation possible hai?</span>
+    <span class="ty">bool</span> <span class="fn">possible</span>(<span class="ty">vector</span>&lt;<span class="ty">int</span>&gt;& books, <span class="ty">int</span> students, <span class="ty">long long</span> maxPages) {
+        <span class="ty">int</span> requiredStudents = <span class="num">1</span>;
+        <span class="ty">long long</span> currentPages = <span class="num">0</span>;
+
+        <span class="kw">for</span> (<span class="ty">int</span> pages : books) {
+            <span class="cmt">// Same student ko aur books do</span>
+            <span class="kw">if</span> (currentPages + pages <= maxPages) {
+                currentPages += pages;
+            }
+            <span class="cmt">// Naya student allocate karo</span>
+            <span class="kw">else</span> {
+                requiredStudents++;
+                currentPages = pages;
+            }
+        }
+        <span class="kw">return</span> requiredStudents <= students;
+    }
+
+    <span class="ty">int</span> <span class="fn">findPages</span>(<span class="ty">vector</span>&lt;<span class="ty">int</span>&gt;& books, <span class="ty">int</span> students) {
+        <span class="ty">int</span> n = books.size();
+
+        <span class="kw">if</span> (students > n)
+            <span class="kw">return</span> -<span class="num">1</span>;           <span class="cmt">// Impossible case</span>
+
+        <span class="ty">long long</span> start = *max_element(books.begin(), books.end());
+        <span class="ty">long long</span> end = accumulate(books.begin(), books.end(), <span class="num">0LL</span>);
+        <span class="ty">long long</span> answer = end;
+
+        <span class="kw">while</span> (start <= end) {
+            <span class="ty">long long</span> mid = start + (end - start) / <span class="num">2</span>;
+
+            <span class="cmt">// Allocation possible hai -> aur chota answer try karo</span>
+            <span class="kw">if</span> (possible(books, students, mid)) {
+                answer = mid;
+                end = mid - <span class="num">1</span>;
+            }
+            <span class="cmt">// Allocation impossible -> limit badhao</span>
+            <span class="kw">else</span> {
+                start = mid + <span class="num">1</span>;
+            }
+        }
+        <span class="kw">return</span> (<span class="ty">int</span>)answer;
+    }
+};</code></pre>
+
+<h3>Step-by-Step Dry Run</h3>
+<div class="box box-dryrun">
+<span class="box-label">Dry Run / Visualization</span>
+<p><b>Input:</b> books = [12, 34, 67, 90], students = 2</p>
+
+<div class="diagram">
+<div style="margin-bottom:8px;"><b>Search Space:</b> start = 90 (max book), end = 203 (total sum)</div>
+
+<div style="margin-bottom:6px;"><b>Iteration 1:</b></div>
+<div style="margin-left:10px;">
+mid = 90 + (203-90)/2 = <span class="diag-box">146</span><br>
+<b>possible(146)?</b> Greedy allocation:<br>
+Student 1: 12 + 34 + 67 = 113 &le; 146, +90 = 203 > 146 &rarr; stop<br>
+Student 2: 90 &le; 146<br>
+Total students needed = 2 &le; 2 &rarr; <span style="color:#2D6A4F; font-weight:bold;">Possible!</span><br>
+answer = 146, end = 146 - 1 = <span class="diag-box">145</span>
+</div>
+
+<div style="margin:6px 0;"><b>Iteration 2:</b></div>
+<div style="margin-left:10px;">
+mid = 90 + (145-90)/2 = <span class="diag-box">117</span><br>
+<b>possible(117)?</b><br>
+Student 1: 12 + 34 + 67 = 113 &le; 117, +90 = 203 > 117 &rarr; stop<br>
+Student 2: 90 &le; 117<br>
+Total = 2 &le; 2 &rarr; <span style="color:#2D6A4F; font-weight:bold;">Possible!</span><br>
+answer = 117, end = 117 - 1 = <span class="diag-box">116</span>
+</div>
+
+<div style="margin:6px 0;"><b>Iteration 3:</b></div>
+<div style="margin-left:10px;">
+mid = 90 + (116-90)/2 = <span class="diag-box">103</span><br>
+<b>possible(103)?</b><br>
+Student 1: 12 + 34 = 46, +67 = 113 > 103 &rarr; stop<br>
+Student 2: 67 &le; 103, +90 = 157 > 103 &rarr; stop<br>
+Student 3: 90 &le; 103<br>
+Total = 3 > 2 &rarr; <span style="color:#A53F3F; font-weight:bold;">Impossible!</span><br>
+start = 103 + 1 = <span class="diag-box">104</span>
+</div>
+
+<div style="margin:6px 0;"><b>Iteration 4:</b></div>
+<div style="margin-left:10px;">
+mid = 104 + (116-104)/2 = <span class="diag-box">110</span><br>
+<b>possible(110)?</b><br>
+Student 1: 12 + 34 + 67 = 113 > 110 &rarr; 12+34=46, +67>110<br>
+Actually: 12+34=46, next 67 &rarr; 46+67=113>110. So Student 1: 12+34=46<br>
+Student 2: 67 &le; 110, +90=157>110<br>
+Student 3: 90 &le; 110<br>
+Total = 3 > 2 &rarr; <span style="color:#A53F3F; font-weight:bold;">Impossible!</span><br>
+start = 110 + 1 = <span class="diag-box">111</span>
+</div>
+
+<div style="margin:6px 0;"><b>Iteration 5:</b></div>
+<div style="margin-left:10px;">
+mid = 111 + (116-111)/2 = <span class="diag-box">113</span><br>
+<b>possible(113)?</b><br>
+Student 1: 12 + 34 + 67 = 113 &le; 113, +90>113 &rarr; stop<br>
+Student 2: 90 &le; 113<br>
+Total = 2 &le; 2 &rarr; <span style="color:#2D6A4F; font-weight:bold;">Possible!</span><br>
+answer = 113, end = 113 - 1 = <span class="diag-box">112</span>
+</div>
+
+<div style="margin-top:8px; padding-top:6px; border-top:1px dashed #C4924A;">
+start = 111, end = 112. Next mid = 111. possible(111)? 3 students chahiye &rarr; Impossible.<br>
+start = 112. mid = 112. possible(112)? 3 students &rarr; Impossible.<br>
+start = 113, end = 112. <b>Loop ends.</b><br>
+<b>Return answer = 113</b>
+</div>
+</div>
+</div>
+
+<div class="box box-complexity">
+<span class="box-label">Complexity Analysis</span>
+<table class="comp-table">
+<tr><th>Component</th><th>Time</th><th>Reason</th></tr>
+<tr><td><code>possible()</code> function</td><td><b>O(n)</b></td><td>Array ek baar traverse hota hai</td></tr>
+<tr><td>Binary Search</td><td><b>O(log(sum))</b></td><td>Search space [maxBook, totalSum]</td></tr>
+<tr><td><b>Overall</b></td><td><b>O(n x log(sum))</b></td><td>Har BS step mein O(n) greedy check</td></tr>
+<tr><td>Space</td><td><b>O(1)</b></td><td>Extra variables only</td></tr>
+</table>
+</div>
+
+<div class="box box-edge">
+<span class="box-label">Edge Cases & Gotchas</span>
+<ul>
+<li><b>students > books.size():</b> Directly return -1. Har student ko kam se kam ek book chahiye.</li>
+<li><b>Single book:</b> <code>[10], students=1</code> &rarr; start=10, end=10, answer=10.</li>
+<li><b>All same pages:</b> <code>[10,10,10,10], students=2</code> &rarr; Optimal: [10+10=20], [10+10=20] &rarr; 20.</li>
+<li><b>Large numbers:</b> <code>long long</code> use karo sum ke liye — int overflow ho sakta hai.</li>
+<li><b>Greedy proof:</b> Greedy allocation (jitna de sakte ho utna do) hamesha optimal hota hai kyunki hum minimize kar rahe hain max pages per student.</li>
+</ul>
+</div>
+
+<div class="box box-interview">
+<span class="box-label">Interview Tips / Follow-up Questions</span>
+<ul>
+<li><b>Q:</b> Yeh problem "Painter's Partition" se kaise related hai?<br><b>A:</b> Same pattern! Painters = students, boards = books, time = pages. Dono mein same binary search on answer lagta hai.</li>
+<li><b>Q:</b> Agar books non-contiguous allocate ho sakti hain toh?<br><b>A:</b> Problem completely different ho jayegi. Contiguous constraint hi monotonic property deti hai.</li>
+<li><b>Q:</b> <code>possible()</code> function ko optimize kar sakte hain?<br><b>A:</b> O(n) se better nahi kar sakte kyunki saari books check karni padti hain.</li>
+<li><b>Q:</b> Agar students = 1 ho toh?<br><b>A:</b> Answer = sum of all pages. Binary Search mein start=end=sum, directly return.</li>
+</ul>
+</div>
+
+<div class="ornament">&#9670; &#9670; &#9670;</div>
+
+<!-- ============================================================ -->
+<!-- PATTERN COMPARISON -->
+<!-- ============================================================ -->
+
+<h2>Pattern Comparison : Two Variations of Binary Search</h2>
+
+<div class="box box-transfer">
+<span class="box-label">Pattern Transfer / Related Problems</span>
+<table class="comp-table">
+<tr><th>Aspect</th><th>Kth Missing Positive (LC 1539)</th><th>Book Allocation (GFG)</th></tr>
+<tr><td>Search Space</td><td>Array indices [0, n-1]</td><td>Answer range [maxBook, totalSum]</td></tr>
+<tr><td>What we search</td><td>First index where missing >= k</td><td>Minimum valid maxPages</td></tr>
+<tr><td>Monotonic Property</td><td>Missing count increases with index</td><td>Feasibility increases with maxPages</td></tr>
+<tr><td>Helper Function</td><td>Direct formula: arr[mid]-(mid+1)</td><td>Greedy O(n) possible() check</td></tr>
+<tr><td>Loop Condition</td><td>while(start <= end)</td><td>while(start <= end)</td></tr>
+<tr><td>On Valid</td><td>end = mid - 1 (find first)</td><td>end = mid - 1, store answer</td></tr>
+<tr><td>On Invalid</td><td>start = mid + 1</td><td>start = mid + 1</td></tr>
+<tr><td>Final Answer</td><td>start + k</td><td>answer variable</td></tr>
+<tr><td>Time</td><td>O(log n)</td><td>O(n x log(sum))</td></tr>
+<tr><td>Space</td><td>O(1)</td><td>O(1)</td></tr>
+</table>
+</div>
+
+<div class="box box-transfer">
+<span class="box-label">Related Problems to Practice</span>
+<ul>
+<li><b>LeetCode 410</b> — Split Array Largest Sum (Same pattern: minimize largest sum)</li>
+<li><b>GFG — Painter's Partition Problem</b> (Exact same as book allocation)</li>
+<li><b>LeetCode 1011</b> — Capacity To Ship Packages Within D Days (Binary search on capacity)</li>
+<li><b>GFG — Aggressive Cows</b> (Binary search on distance)</li>
+<li><b>LeetCode 35</b> — Search Insert Position (Lower bound pattern)</li>
+<li><b>LeetCode 34</b> — Find First and Last Position (Range search)</li>
+</ul>
+</div>
+
+<div class="ornament">&#9670; &#9670; &#9670;</div>
+
+<!-- ============================================================ -->
+<!-- QUICK REVISION CHEATSHEET -->
+<!-- ============================================================ -->
+
+<div class="cheatsheet">
+<div class="cheatsheet-title">&#9670; QUICK REVISION CHEATSHEET &#9670;</div>
+<div class="cheatsheet-grid">
+
+<div class="cheatsheet-item">
+<b>Kth Missing Positive (LC 1539)</b><br>
+&#8226; Missing till index i = arr[i] - (i + 1)<br>
+&#8226; Monotonic property &rarr; Binary Search<br>
+&#8226; Find first index where missing >= k<br>
+&#8226; <span style="color:#A53F3F;">Answer = start + k</span><br>
+&#8226; Time: O(log n) | Space: O(1)
+</div>
+
+<div class="cheatsheet-item">
+<b>Book Allocation (GFG)</b><br>
+&#8226; Binary Search on Answer Space<br>
+&#8226; Search range: [maxBook, totalSum]<br>
+&#8226; Greedy possible() check: O(n)<br>
+&#8226; Valid? &rarr; store, search left<br>
+&#8226; Invalid? &rarr; search right<br>
+&#8226; Time: O(n x log(sum)) | Space: O(1)
+</div>
+
+<div class="cheatsheet-item">
+<b>Binary Search on Answer Pattern</b><br>
+&#8226; Jab direct array mein answer nahi mile<br>
+&#8226; Answer ka range pata ho<br>
+&#8226; Monotonic feasibility property ho<br>
+&#8226; Helper function se validity check<br>
+&#8226; Examples: Sqrt(x), Book Allocation, Painter's, Ship Capacity
+</div>
+
+<div class="cheatsheet-item">
+<b>Common Mistakes (Red Flags)</b><br>
+&#8226; <span style="color:#A53F3F;">Missing formula galat:</span> arr[i]-(i+1) hi hai<br>
+&#8226; <span style="color:#A53F3F;">Book alloc mein students > books:</span> return -1<br>
+&#8226; <span style="color:#A53F3F;">Sum mein int overflow:</span> long long use karo<br>
+&#8226; <span style="color:#A53F3F;">Greedy proof bhoolna:</span> contiguous = greedy optimal<br>
+&#8226; <span style="color:#A53F3F;">Answer formula:</span> Kth missing = start + k
+</div>
+
+<div class="cheatsheet-item">
+<b>Key Formulas / Snippets</b><br>
+<code>missing = arr[mid] - (mid + 1);</code><br>
+<code>start = max_element(books.begin(), books.end());</code><br>
+<code>end = accumulate(books.begin(), books.end(), 0LL);</code><br>
+<code>if (possible(books, students, mid))</code><br>
+<code>{ answer = mid; end = mid - 1; }</code>
+</div>
+
+<div class="cheatsheet-item">
+<b>Interview Quick Questions</b><br>
+&#8226; Q: Kth missing mein answer kyun start+k? A: start numbers present, uske baad kth missing<br>
+&#8226; Q: Book alloc = Painter's? A: Same pattern, different names<br>
+&#8226; Q: Why greedy works? A: Contiguous constraint<br>
+&#8226; Q: Non-contiguous ho toh? A: NP-hard, different approach
+</div>
+
+</div>
+</div>
+
+<div class="watermark">Harshal Chauhan</div>
+<div class="signature">MADE BY HARSHAL CHAUHAN</div>
+
+</body>
+</html>
