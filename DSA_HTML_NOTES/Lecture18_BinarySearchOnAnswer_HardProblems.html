@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture18_BinarySearchOnAnswer_HardProblems</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@page { size: A4 portrait; margin: 0; }
+
+* { box-sizing: border-box; }
+
+body {
+    padding: 18mm 20mm 18mm 24mm;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: #FAFAF8;
+    font-family: 'Poppins', sans-serif;
+    color: #1C1C1C;
+    font-size: 12px;
+    line-height: 1.6;
+    margin: 0;
+    background-image: 
+        linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+    background-size: 25px 25px;
+}
+
+/* ========== TYPOGRAPHY ========== */
+h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0B1A2E;
+    border-bottom: 3px solid #C4924A;
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+    margin-top: 0;
+}
+h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #C4924A;
+    border-bottom: 2px solid #C4924A;
+    margin-top: 24px;
+    margin-bottom: 12px;
+    padding-bottom: 4px;
+}
+h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1A4A4A;
+    margin-top: 18px;
+    margin-bottom: 8px;
+}
+h4 {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #2D6A4F;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-top: 14px;
+    margin-bottom: 6px;
+}
+h5 {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #3C3C3C;
+    margin-top: 10px;
+    margin-bottom: 4px;
+}
+p { margin: 6px 0; }
+
+/* ========== CODE BLOCKS ========== */
+pre.code-block {
+    background: #111824;
+    border: 1px solid #2A3240;
+    border-radius: 10px;
+    padding: 14px 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    page-break-inside: avoid;
+    font-family: 'Fira Code', monospace;
+    color: #E0E0E0;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    font-size: 10.5px;
+    line-height: 1.5;
+    margin: 10px 0;
+}
+code.inline {
+    font-family: 'Fira Code', monospace;
+    background: #F4E9D8;
+    color: #7A5C3A;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 11px;
+}
+.kw { color: #C586C0; font-weight: bold; }
+.str { color: #CE9178; }
+.cmt { color: #6A9955; font-style: italic; }
+.fn { color: #DCDCAA; }
+.num { color: #B5CEA8; }
+.ty { color: #4EC9B0; }
+
+/* ========== PREMIUM BOXES ========== */
+.box {
+    border-radius: 0 10px 10px 0;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03);
+    page-break-inside: avoid;
+    border-left: 5px solid;
+}
+.box-label {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 9.5px;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+    display: block;
+}
+.box-pattern { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-pattern .box-label { color: #3A5F80; }
+.box-intuition { border-left-color: #C4924A; background: #FDFBF5; }
+.box-intuition .box-label { color: #C4924A; }
+.box-workflow { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-workflow .box-label { color: #2E6B5A; }
+.box-important { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-important .box-label { color: #A53F3F; }
+.box-interview { border-left-color: #5E4B7A; background: #F8F7FC; }
+.box-interview .box-label { color: #5E4B7A; }
+.box-takeaway { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-takeaway .box-label { color: #2E6B5A; }
+.box-warning { border-left-color: #C4924A; background: #FDFBF5; }
+.box-warning .box-label { color: #C4924A; }
+.box-edge { border-left-color: #A53F3F; background: #FDF8F8; }
+.box-edge .box-label { color: #A53F3F; }
+.box-best { border-left-color: #2E6B5A; background: #F9FBF9; }
+.box-best .box-label { color: #2E6B5A; }
+.box-code { border-left-color: #3A5F80; background: #FFFFFF; }
+.box-code .box-label { color: #3A5F80; }
+.box-dryrun { border-left-color: #B49450; background: #FDFBF5; }
+.box-dryrun .box-label { color: #B49450; }
+.box-complexity { border-left-color: #4F46E5; background: #FFFFFF; }
+.box-complexity .box-label { color: #4F46E5; }
+.box-problem { border-left-color: #65A30D; background: #FFFFFF; }
+.box-problem .box-label { color: #65A30D; }
+.box-transfer { border-left-color: #7E22CE; background: #F8F7FC; }
+.box-transfer .box-label { color: #7E22CE; }
+
+/* ========== TABLES ========== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 11px;
+    page-break-inside: avoid;
+}
+th {
+    background: #F7F3EC;
+    color: #0B1A2E;
+    font-weight: 600;
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 2px solid #C4924A;
+}
+td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #E8E4DC;
+}
+tr:nth-child(even) { background: #FAFAF8; }
+
+/* ========== DIAGRAMS ========== */
+.diagram {
+    border: 1px solid #C4924A;
+    border-left: 4px solid #C4924A;
+    background: #FFFBF5;
+    padding: 12px 16px;
+    margin: 14px 0;
+    overflow-x: auto;
+    page-break-inside: avoid;
+    font-size: 10.5px;
+}
+.dia-box {
+    display: inline-block;
+    background: #FFFFFF;
+    border: 2px solid #0B1A2E;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-weight: 700;
+    font-size: 10px;
+    margin: 2px;
+}
+.dia-arrow {
+    color: #C4924A;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 4px;
+}
+.dia-group {
+    border: 1.5px dashed #0B1A2E;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin: 6px 0;
+    display: inline-block;
+}
+.dia-label {
+    font-size: 9px;
+    color: #8C8C8C;
+    text-align: center;
+    margin-top: 2px;
+}
+
+/* ========== CHEATSHEET ========== */
+.cheatsheet {
+    border: 2px solid #C4924A;
+    background: #F9F8F5;
+    border-radius: 10px;
+    padding: 16px;
+    margin: 20px 0;
+    page-break-inside: avoid;
+}
+.cheatsheet-title {
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: #0B1A2E;
+    margin-bottom: 12px;
+}
+.cheatsheet-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+.cs-item {
+    background: #FFFFFF;
+    border-radius: 6px;
+    padding: 8px 10px;
+    border-left: 3px solid #C4924A;
+    font-size: 9.5px;
+    line-height: 1.5;
+}
+.cs-item strong { color: #0B1A2E; }
+
+/* ========== ORNAMENT ========== */
+.ornament {
+    text-align: center;
+    margin: 18px 0;
+    color: #C4924A;
+    font-size: 16px;
+    letter-spacing: 6px;
+}
+
+/* ========== LECTURE META ========== */
+.lecture-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 10px;
+    color: #8C8C8C;
+}
+.lecture-tag {
+    background: #0B1A2E;
+    color: #C4924A;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: 0.5px;
+}
+
+/* ========== COMPLEXITY BADGE ========== */
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 9px;
+    font-weight: 600;
+    margin-left: 6px;
+}
+.badge-time { background: #E8F5E9; color: #2D6A4F; }
+.badge-space { background: #E3F2FD; color: #1565C0; }
+.badge-hard { background: #FFEBEE; color: #A53F3F; }
+.badge-medium { background: #FFF3E0; color: #E65100; }
+
+/* ========== PRINT SAFE ========== */
+.page-break { page-break-before: always; }
+.no-break { page-break-inside: avoid; }
+
+/* ========== WATERMARK & SIGNATURE ========== */
+.watermark {
+    text-align: right;
+    margin: 16px 0 4px 0;
+    color: #9CA3AF;
+    font-size: 8px;
+    opacity: 0.4;
+}
+.signature {
+    text-align: center;
+    margin-top: 24px;
+    border-top: 1px solid #E0D8CC;
+    padding-top: 14px;
+    color: #8C8C8C;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+/* ========== TWO COLUMN ========== */
+.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+/* ========== HIGHLIGHT ========== */
+.hl {
+    background: #F4E9D8;
+    color: #7A5C3A;
+    padding: 0 3px;
+    border-radius: 3px;
+    font-weight: 500;
+}
+
+ul.compact { margin: 4px 0; padding-left: 18px; }
+ul.compact li { margin-bottom: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ==================== LECTURE HEADER ==================== -->
+<div class="lecture-meta">
+    <span class="lecture-tag">LECTURE 18</span>
+    <span>DSA MASTERY SERIES &mdash; C++ FOCUSED</span>
+</div>
+
+<h1>Binary Search on Answer &mdash; Hard Problems</h1>
+
+<div class="box box-pattern">
+    <span class="box-label">Pattern Overview</span>
+    <p><strong>Binary Search on Answer</strong> ek aisa technique hai jisme hum answer ko directly search karte hain array elements ki jagah. Normal binary search sorted array pe lagta hai, par yahaan hum <code class="inline">search space</code> ko possible answers se define karte hain. Har guess pe ek <code class="inline">validation function</code> chalata hai jo check karta hai ki woh answer feasible hai ya nahi. Iska core idea yeh hai ki feasible answers ka ek <code class="inline">monotonic property</code> hota hai &mdash; agar X valid hai, toh uske ek side ke saare values bhi valid honge.</p>
+</div>
+
+<div class="ornament">&#9670; &#9670; &#9670;</div>
+
+<!-- ==================== UNIFIED FRAMEWORK ==================== -->
+<h2>The Unified Framework</h2>
+
+<div class="box box-intuition">
+    <span class="box-label">Core Intuition</span>
+    <p>Har "Binary Search on Answer" problem mein 3 cheezein common hoti hain:</p>
+    <ul class="compact">
+        <li><strong>Search Space:</strong> Minimum possible answer se maximum possible answer tak ka range.</li>
+        <li><strong>Validation Function (Greedy Check):</strong> Kya given answer X feasible hai? Yeh linear time mein check hota hai.</li>
+        <li><strong>Monotonic Property:</strong> Agar X valid hai, toh uske ek direction mein saare values bhi valid honge.</li>
+    </ul>
+</div>
+
+<div class="diagram no-break">
+    <div style="text-align:center; font-weight:700; color:#0B1A2E; margin-bottom:10px;">TWO FLAVORS OF MONOTONICITY</div>
+    <div class="two-col">
+        <div style="text-align:center;">
+            <div style="font-weight:700; color:#2D6A4F; margin-bottom:6px;">TYPE A: Minimize the Maximum</div>
+            <div style="font-size:10px; margin-bottom:8px;">(Painter, Ship, Koko, Split Array)</div>
+            <div class="dia-box">Invalid</div>
+            <span class="dia-arrow">&rarr;</span>
+            <div class="dia-box">Invalid</div>
+            <span class="dia-arrow">&rarr;</span>
+            <div class="dia-box" style="border-color:#2D6A4F; color:#2D6A4F;">FIRST VALID</div>
+            <span class="dia-arrow">&rarr;</span>
+            <div class="dia-box">Valid</div>
+            <span class="dia-arrow">&rarr;</span>
+            <div class="dia-box">Valid</div>
+            <div class="dia-label">Search for FIRST True (minimum valid)</div>
+            <div style="margin-top:6px; font-size:9px; color:#A53F3F;">Valid milne pe <strong>left</strong> jao (chota answer dhoondo)</div>
+        </div>
+        <div style="text-align:center;">
+            <div style="font-weight:700; color:#3A5F80; margin-bottom:6px;">TYPE B: Maximize the Minimum</div>
+            <div style="font-size:10px; margin-bottom:8px;">(Aggressive Cows)</div>
+            <div class="dia-box">Valid</div>
+            <span class="dia-arrow">&rarr;</span>
+            <div class="dia-box">Valid</div>
+            <span class="dia-arrow">&rarr;</span>
+            <div class="dia-box" style="border-color:#3A5F80; color:#3A5F80;">LAST VALID</div>
+            <span class="dia-arrow">&rarr;</span>
+            <div class="dia-box">Invalid</div>
+            <span class="dia-arrow">&rarr;</span>
+            <div class="dia-box">Invalid</div>
+            <div class="dia-label">Search for LAST True (maximum valid)</div>
+            <div style="margin-top:6px; font-size:9px; color:#2D6A4F;">Valid milne pe <strong>right</strong> jao (bada answer dhoondo)</div>
+        </div>
+    </div>
+</div>
+
+<div class="box box-workflow">
+    <span class="box-label">Universal Algorithm Template</span>
+    <pre class="code-block" style="margin:8px 0;"><span class="cmt">// Step 1: Define Search Space</span>
+<span class="kw">int</span> <span class="fn">solve</span>(vector&lt;<span class="kw">int</span>&gt;&amp; arr, <span class="kw">int</span> constraint) {
+    <span class="kw">int</span> low  = getMinPossibleAnswer(arr);   <span class="cmt">// Lower bound</span>
+    <span class="kw">int</span> high = getMaxPossibleAnswer(arr);   <span class="cmt">// Upper bound</span>
+    <span class="kw">int</span> answer = high;                      <span class="cmt">// Default worst case</span>
+
+    <span class="kw">while</span> (low &lt;= high) {
+        <span class="kw">int</span> mid = low + (high - low) / <span class="num">2</span>;
+
+        <span class="kw">if</span> (<span class="fn">isValid</span>(arr, constraint, mid)) {  <span class="cmt">// Greedy check O(n)</span>
+            answer = mid;
+            <span class="cmt">// Type A (Minimize): high = mid - 1;</span>
+            <span class="cmt">// Type B (Maximize): low = mid + 1;</span>
+        } <span class="kw">else</span> {
+            <span class="cmt">// Opposite direction</span>
+        }
+    }
+    <span class="kw">return</span> answer;
+}</pre>
+</div>
+
+<div class="ornament">&#9670; &#9670; &#9670;</div>
+
+<!-- ==================== PROBLEM 1 ==================== -->
+<h2>Problem 1: Painter's Partition Problem</h2>
+<span class="badge badge-hard">HARD</span>
+<span class="badge badge-time">O(n log sum)</span>
+<span class="badge badge-space">O(1)</span>
+
+<div class="box box-problem">
+    <span class="box-label">Problem Statement</span>
+    <p>Array <code class="inline">boards[]</code> diya hai jisme <code class="inline">boards[i]</code> = ith board ki length. <code class="inline">painters</code> number of painters diye hain. Har painter sirf <strong>contiguous boards</strong> paint kar sakta hai. Koi board do painters mein nahi baat sakte. Sab boards paint karne ke liye <strong>minimum time</strong> batao jisme <code class="inline">max(painter ka time)</code> minimize ho. Agar painters &gt; boards ho toh return <code class="inline">-1</code>.</p>
+    <p style="margin-top:6px;"><strong>Example:</strong> boards = [5,10,30,20,15], painters = 3 &rarr; Output: 35 (Painter1: 5+10+20=35, Painter2: 30, Painter3: 15)</p>
+</div>
+
+<div class="box box-intuition">
+    <span class="box-label">Core Intuition</span>
+    <p>Socho ki har painter ko maximum <code class="inline">X</code> time allowed hai. Kya saare boards <code class="inline">X</code> time limit mein paint ho sakte hain? Agar haan, toh aur chota <code class="inline">X</code> try karo. Agar nahi, toh <code class="inline">X</code> badhao. Yeh monotonic property binary search ko enable karti hai.</p>
+    <p style="margin-top:4px;"><strong>Real-world analogy:</strong> Jaise ek project manager sochta hai ki "kitne din mein team ye kaam khatam kar sakti hai?" &mdash; woh pehle guess karta hai, phir dekhata hai feasible hai ya nahi, aur adjust karta hai.</p>
+</div>
+
+<div class="box box-workflow">
+    <span class="box-label">Search Space &amp; Validation</span>
+    <ul class="compact">
+        <li><strong>Low:</strong> <code class="inline">max(boards)</code> &mdash; Sabse bada board ek painter ko minimum itna time lagega.</li>
+        <li><strong>High:</strong> <code class="inline">sum(boards)</code> &mdash; Ek hi painter sab kuchh paint kare toh itna time lagega.</li>
+        <li><strong>Check:</strong> Greedy linear scan &mdash; current painter ke time mein add karte jao, limit cross hone pe naya painter assign karo.</li>
+    </ul>
+</div>
+
+<pre class="code-block"><span class="cmt">// GFG - Painter's Partition Problem</span>
+<span class="kw">class</span> <span class="ty">Solution</span> {
+<span class="kw">public</span>:
+    <span class="cmt">// Check if all boards can be painted within 'limit' time</span>
+    <span class="kw">bool</span> <span class="fn">canPaint</span>(vector&lt;<span class="kw">int</span>&gt;&amp; boards, <span class="kw">int</span> painters, <span class="kw">int</span> limit) {
+        <span class="kw">int</span> painterCount = <span class="num">1</span>;
+        <span class="kw">int</span> currentTime = <span class="num">0</span>;
+
+        <span class="kw">for</span> (<span class="kw">int</span> board : boards) {
+            <span class="kw">if</span> (currentTime + board &lt;= limit) {
+                currentTime += board;           <span class="cmt">// Same painter continues</span>
+            } <span class="kw">else</span> {
+                painterCount++;                 <span class="cmt">// New painter needed</span>
+                currentTime = board;            <span class="cmt">// Fresh start</span>
+            }
+        }
+        <span class="kw">return</span> painterCount &lt;= painters;
+    }
+
+    <span class="kw">int</span> <span class="fn">minTime</span>(vector&lt;<span class="kw">int</span>&gt;&amp; boards, <span class="kw">int</span> painters) {
+        <span class="kw">if</span> (painters &gt; boards.size()) <span class="kw">return</span> -<span class="num">1</span>;
+
+        <span class="kw">int</span> low  = *max_element(boards.begin(), boards.end());
+        <span class="kw">int</span> high = accumulate(boards.begin(), boards.end(), <span class="num">0</span>);
+        <span class="kw">int</span> answer = -<span class="num">1</span>;
+
+        <span class="kw">while</span> (low &lt;= high) {
+            <span class="kw">int</span> mid = low + (high - low) / <span class="num">2</span>;
+
+            <span class="kw">if</span> (<span class="fn">canPaint</span>(boards, painters, mid)) {
+                answer = mid;                   <span class="cmt">// Possible! Try smaller</span>
+                high = mid - <span class="num">1</span>;
+            } <span class="kw">else</span> {
+                low = mid + <span class="num">1</span>;                <span class="cmt">// Need more time</span>
+            }
+        }
+        <span class="kw">return</span> answer;
+    }
+};</pre>
+
+<div class="box box-dryrun">
+    <span class="box-label">Dry Run: boards = [10,20,30,40], painters = 2</span>
+    <table>
+        <tr><th>Iter</th><th>Low</th><th>High</th><th>Mid</th><th>Painters Needed</th><th>Valid?</th><th>Action</th></tr>
+        <tr><td>1</td><td>40</td><td>100</td><td>70</td><td>P1: 10+20+30=60, P2: 40 &rarr; 2</td><td style="color:#2D6A4F;">Yes</td><td>ans=70, high=69</td></tr>
+        <tr><td>2</td><td>40</td><td>69</td><td>54</td><td>P1: 10+20=30, P2: 30, P3: 40 &rarr; 3</td><td style="color:#A53F3F;">No</td><td>low=55</td></tr>
+        <tr><td>3</td><td>55</td><td>69</td><td>62</td><td>P1: 10+20+30=60, P2: 40 &rarr; 2</td><td style="color:#2D6A4F;">Yes</td><td>ans=62, high=61</td></tr>
+        <tr><td>4</td><td>55</td><td>61</td><td>58</td><td>3 painters needed</td><td style="color:#A53F3F;">No</td><td>low=59</td></tr>
+        <tr><td>5</td><td>59</td><td>61</td><td>60</td><td>P1: 10+20+30=60, P2: 40 &rarr; 2</td><td style="color:#2D6A4F;">Yes</td><td>ans=60, high=59</td></tr>
+    </table>
+    <p style="text-align:center; font-weight:700; color:#2D6A4F; margin-top:6px;">Final Answer = 60</p>
+</div>
+
+<div class="box box-edge">
+    <span class="box-label">Edge Cases &amp; Gotchas</span>
+    <ul class="compact">
+        <li><code class="inline">painters &gt; boards.size()</code> &rarr; return -1 (har painter ko kam se kam ek board chahiye).</li>
+        <li>Single painter ho toh answer = sum of all boards.</li>
+        <li>Boards equal to painters ho toh answer = max(board).</li>
+        <li><strong>Integer overflow:</strong> <code class="inline">accumulate</code> mein <code class="inline">long long</code> use karo agar sum bada ho.</li>
+    </ul>
+</div>
+
+<div class="ornament">&#9670; &#9670; &#9670;</div>
+
+<!-- ==================== PROBLEM 2 ==================== -->
+<h2>Problem 2: Capacity To Ship Packages Within D Days</h2>
+<span class="badge badge-medium">MEDIUM</span>
+<span class="badge badge-time">O(n log sum)</span>
+<span class="badge badge-space">O(1)</span>
+
+<div class="box box-problem">
+    <span class="box-label">Problem Statement</span>
+    <p>Conveyor belt pe packages hain jinka weight <code class="inline">weights[]</code> mein diya hai. Packages <strong>given order</strong> mein ship karne hain. Har din packages ek ek karke load hote hain jab tak ship ki capacity cross na ho. <code class="inline">days</code> mein saare packages ship karne ke liye <strong>minimum ship capacity</strong> batao.</p>
+    <p style="margin-top:6px;"><strong>Example:</strong> weights = [1,2,3,4,5,6,7,8,9,10], days = 5 &rarr; Output: 15 (Day1: 1+2+3+4+5=15, Day2: 6+7=13, Day3: 8, Day4: 9, Day5: 10)</p>
+</div>
+
+<div class="box box-intuition">
+    <span class="box-label">Core Intuition</span>
+    <p>Yeh problem Painter's Partition ka <strong>exact twin</strong> hai &mdash; bas terminology alag hai. Yahaan "painters" ko "days" bol rahe hain aur "boards" ko "packages". Core logic bilkul same: kya capacity <code class="inline">X</code> pe saare packages <code class="inline">days</code> mein ship ho sakte hain? Agar haan, choti capacity try karo.</p>
+</div>
+
+<div class="box box-workflow">
+    <span class="box-label">Search Space &amp; Validation</span>
+    <ul class="compact">
+        <li><strong>Low:</strong> <code class="inline">max(weights)</code> &mdash; Sabse bhaari package ek din mein ship karna padega.</li>
+        <li><strong>High:</strong> <code class="inline">sum(weights)</code> &mdash; Ek din mein sab kuchh ship kar do.</li>
+        <li><strong>Check:</strong> Greedy accumulation &mdash; current day mein add karte jao, capacity cross hone pe naya din shuru karo.</li>
+    </ul>
+</div>
+
+<pre class="code-block"><span class="cmt">// LeetCode 1011 - Capacity To Ship Packages Within D Days</span>
+<span class="kw">class</span> <span class="ty">Solution</span> {
+<span class="kw">public</span>:
+    <span class="kw">bool</span> <span class="fn">possible</span>(vector&lt;<span class="kw">int</span>&gt;&amp; weights, <span class="kw">int</span> days, <span class="kw">int</span> capacity) {
+        <span class="kw">int</span> currentWeight = <span class="num">0</span>;
+        <span class="kw">int</span> requiredDays = <span class="num">1</span>;
+
+        <span class="kw">for</span> (<span class="kw">int</span> w : weights) {
+            <span class="kw">if</span> (currentWeight + w &lt;= capacity) {
+                currentWeight += w;             <span class="cmt">// Same day continues</span>
+            } <span class="kw">else</span> {
+                requiredDays++;                 <span class="cmt">// New day starts</span>
+                currentWeight = w;
+            }
+        }
+        <span class="kw">return</span> requiredDays &lt;= days;
+    }
+
+    <span class="kw">int</span> <span class="fn">shipWithinDays</span>(vector&lt;<span class="kw">int</span>&gt;&amp; weights, <span class="kw">int</span> days) {
+        <span class="kw">int</span> start = *max_element(weights.begin(), weights.end());
+        <span class="kw">int</span> end   = accumulate(weights.begin(), weights.end(), <span class="num">0</span>);
+        <span class="kw">int</span> answer = end;
+
+        <span class="kw">while</span> (start &lt;= end) {
+            <span class="kw">int</span> mid = start + (end - start) / <span class="num">2</span>;
+
+            <span class="kw">if</span> (<span class="fn">possible</span>(weights, days, mid)) {
+                answer = mid;                   <span class="cmt">// Works! Try smaller</span>
+                end = mid - <span class="num">1</span>;
+            } <span class="kw">else</span> {
+                start = mid + <span class="num">1</span>;              <span class="cmt">// Need more capacity</span>
+            }
+        }
+        <span class="kw">return</span> answer;
+    }
+};</pre>
+
+<div class="box box-dryrun">
+    <span class="box-label">Dry Run: weights = [3,2,2,4,1,4], days = 3</span>
+    <table>
+        <tr><th>Iter</th><th>Start</th><th>End</th><th>Mid</th><th>Days Needed</th><th>Valid?</th><th>Action</th></tr>
+        <tr><td>1</td><td>4</td><td>16</td><td>10</td><td>D1: 3+2+2=7, D2: 4+1+4=9 &rarr; 2</td><td style="color:#2D6A4F;">Yes</td><td>ans=10, end=9</td></tr>
+        <tr><td>2</td><td>4</td><td>9</td><td>6</td><td>D1: 3+2=5, D2: 2+4=6, D3: 1+4=5 &rarr; 3</td><td style="color:#2D6A4F;">Yes</td><td>ans=6, end=5</td></tr>
+        <tr><td>3</td><td>4</td><td>5</td><td>4</td><td>Har alag package &rarr; 6 days</td><td style="color:#A53F3F;">No</td><td>start=5</td></tr>
+        <tr><td>4</td><td>5</td><td>5</td><td>5</td><td>4 days needed</td><td style="color:#A53F3F;">No</td><td>start=6</td></tr>
+    </table>
+    <p style="text-align:center; font-weight:700; color:#2D6A4F; margin-top:6px;">Final Answer = 6</p>
+</div>
+
+<div class="box box-warning">
+    <span class="box-label">Common Mistake</span>
+    <p>Is problem mein packages ka <strong>order fixed</strong> hai &mdash; tum reorder nahi kar sakte. Isliye greedy check sirf linear scan se kaam karta hai. Sort karne ka sochna bhi mat, kyunki order preserve karna mandatory hai.</p>
+</div>
+
+<div class="ornament">&#9670; &#9670; &#9670;</div>
+
+<!-- ==================== PROBLEM 3 ==================== -->
+<h2>Problem 3: Koko Eating Bananas</h2>
+<span class="badge badge-medium">MEDIUM</span>
+<span class="badge badge-time">O(n log MaxPile)</span>
+<span class="badge badge-space">O(1)</span>
+
+<div class="box box-problem">
+    <span class="box-label">Problem Statement</span>
+    <p>Koko ke paas <code class="inline">piles</code> mein bananas hain. <code class="inline">piles[i]</code> = ith pile mein kitne bananas. Koko ek speed <code class="inline">k</code> choose karti hai (bananas per hour). Har ghante woh ek pile choose karti hai aur usme se maximum <code class="inline">k</code> bananas khaati hai. Agar pile mein <code class="inline">k</code> se kam hain toh pile finish karke wait karti hai. Saare bananas <code class="inline">h</code> hours mein khatam karne ke liye <strong>minimum speed k</strong> batao.</p>
+    <p style="margin-top:6px;"><strong>Example:</strong> piles = [3,6,7,11], h = 8 &rarr; Output: 4 (Speed 4: 3&rarr;1hr, 6&rarr;2hr, 7&rarr;2hr, 11&rarr;3hr. Total = 8 hours)</p>
+</div>
+
+<div class="box box-intuition">
+    <span class="box-label">Core Intuition</span>
+    <p>Isme check function thoda alag hai. Har pile ke liye hours calculate karte hain using <code class="inline">ceil(pile / speed)</code>. Agar total hours <code class="inline">h</code> se kam ya equal hai, toh speed sufficient hai. Search space bhi alag hai &mdash; minimum 1 (ek banana per hour) se lekar maximum pile size tak.</p>
+    <p style="margin-top:4px;"><strong>Key formula:</strong> <code class="inline">hours += (bananas + speed - 1) / speed</code> &mdash; yeh ceiling division hai without floating point.</p>
+</div>
+
+<div class="box box-workflow">
+    <span class="box-label">Search Space &amp; Validation</span>
+    <ul class="compact">
+        <li><strong>Low:</strong> <code class="inline">1</code> &mdash; Minimum ek banana per hour.</li>
+        <li><strong>High:</strong> <code class="inline">max(piles)</code> &mdash; Sabse badi pile ek ghante mein khatam.</li>
+        <li><strong>Check:</strong> Har pile ke liye <code class="inline">ceil(pile / speed)</code> calculate karo. Total sum <code class="inline">h</code> se chota hona chahiye.</li>
+    </ul>
+</div>
+
+<pre class="code-block"><span class="cmt">// LeetCode 875 - Koko Eating Bananas</span>
+<span class="kw">class</span> <span class="ty">Solution</span> {
+<span class="kw">public</span>:
+    <span class="kw">bool</span> <span class="fn">possible</span>(vector&lt;<span class="kw">int</span>&gt;&amp; piles, <span class="kw">int</span> h, <span class="kw">int</span> speed) {
+        <span class="kw">long long</span> hours = <span class="num">0</span>;
+
+        <span class="kw">for</span> (<span class="kw">int</span> bananas : piles) {
+            <span class="cmt">// Ceiling division without floating point</span>
+            hours += (bananas + speed - <span class="num">1</span>) / speed;
+        }
+        <span class="kw">return</span> hours &lt;= h;
+    }
+
+    <span class="kw">int</span> <span class="fn">minEatingSpeed</span>(vector&lt;<span class="kw">int</span>&gt;&amp; piles, <span class="kw">int</span> h) {
+        <span class="kw">int</span> start = <span class="num">1</span>;
+        <span class="kw">int</span> end   = *max_element(piles.begin(), piles.end());
+        <span class="kw">int</span> answer = end;
+
+        <span class="kw">while</span> (start &lt;= end) {
+            <span class="kw">int</span> mid = start + (end - start) / <span class="num">2</span>;
+
+            <span class="kw">if</span> (<span class="fn">possible</span>(piles, h, mid)) {
+                answer = mid;                   <span class="cmt">// Sufficient! Try slower</span>
+                end = mid - <span class="num">1</span>;
+            } <span class="kw">else</span> {
+                start = mid + <span class="num">1</span>;              <span class="cmt">// Need faster speed</span>
+            }
+        }
+        <span class="kw">return</span> answer;
+    }
+};</pre>
+
+<div class="box box-dryrun">
+    <span class="box-label">Dry Run: piles = [3,6,7,11], h = 8</span>
+    <table>
+        <tr><th>Iter</th><th>Start</th><th>End</th><th>Mid</th><th>Hours Calculation</th><th>Valid?</th><th>Action</th></tr>
+        <tr><td>1</td><td>1</td><td>11</td><td>6</td><td>3&rarr;1, 6&rarr;1, 7&rarr;2, 11&rarr;2. Total=6</td><td style="color:#2D6A4F;">Yes</td><td>ans=6, end=5</td></tr>
+        <tr><td>2</td><td>1</td><td>5</td><td>3</td><td>3&rarr;1, 6&rarr;2, 7&rarr;3, 11&rarr;4. Total=10</td><td style="color:#A53F3F;">No</td><td>start=4</td></tr>
+        <tr><td>3</td><td>4</td><td>5</td><td>4</td><td>3&rarr;1, 6&rarr;2, 7&rarr;2, 11&rarr;3. Total=8</td><td style="color:#2D6A4F;">Yes</td><td>ans=4, end=3</td></tr>
+    </table>
+    <p style="text-align:center; font-weight:700; color:#2D6A4F; margin-top:6px;">Final Answer = 4</p>
+</div>
+
+<div class="box box-important">
+    <span class="box-label">Critical Insight</span>
+    <p><code class="inline">hours</code> variable ko <code class="inline">long long</code> mein rakho kyunki piles bade ho sakte hain aur sum <code class="inline">INT_MAX</code> cross kar sakta hai. Ceiling division ka formula <code class="inline">(a + b - 1) / b</code> yaad rakhna &mdash; yeh interview mein pucha jaata hai.</p>
+</div>
+
+<div class="ornament">&#9670; &#9670; &#9670;</div>
+
+<!-- ==================== PROBLEM 4 ==================== -->
+<h2>Problem 4: Split Array Largest Sum</h2>
+<span class="badge badge-hard">HARD</span>
+<span class="badge badge-time">O(n log sum)</span>
+<span class="badge badge-space">O(1)</span>
+
+<div class="box box-problem">
+    <span class="box-label">Problem Statement</span>
+    <p>Array <code class="inline">nums</code> aur integer <code class="inline">k</code> diya hai. Array ko exactly <code class="inline">k</code> non-empty continuous subarrays mein split karna hai. Aisa split karo jisme <strong>largest subarray sum minimum</strong> ho.</p>
+    <p style="margin-top:6px;"><strong>Example:</strong> nums = [7,2,5,10,8], k = 2 &rarr; Output: 18 ([7,2,5]=14, [10,8]=18. Largest = 18)</p>
+</div>
+
+<div class="box box-intuition">
+    <span class="box-label">Core Intuition</span>
+    <p>Yeh bhi Painter's Partition ka variation hai. Bas yahaan "painters" ko "subarrays" aur "boards" ko "array elements" bol rahe hain. Hum guess karte hain ki maximum allowed subarray sum <code class="inline">X</code> hai. Greedy scan se check karte hain ki kitne subarrays ban rahe hain. Agar <code class="inline">k</code> se kam ya equal subarrays ban rahe hain, toh <code class="inline">X</code> valid hai.</p>
+</div>
+
+<div class="box box-workflow">
+    <span class="box-label">Search Space &amp; Validation</span>
+    <ul class="compact">
+        <li><strong>Low:</strong> <code class="inline">max(nums)</code> &mdash; Sabse bada element apne aap mein ek subarray banayega.</li>
+        <li><strong>High:</strong> <code class="inline">sum(nums)</code> &mdash; Poora array ek subarray.</li>
+        <li><strong>Check:</strong> Accumulate karte jao, <code class="inline">mid</code> cross hone pe naya partition shuru karo. Count <code class="inline">k</code> se chota hona chahiye.</li>
+    </ul>
+</div>
+
+<pre class="code-block"><span class="cmt">// LeetCode 410 - Split Array Largest Sum</span>
+<span class="kw">class</span> <span class="ty">Solution</span> {
+<span class="kw">public</span>:
+    <span class="kw">bool</span> <span class="fn">possible</span>(vector&lt;<span class="kw">int</span>&gt;&amp; nums, <span class="kw">int</span> k, <span class="kw">int</span> maxSum) {
+        <span class="kw">int</span> partitions = <span class="num">1</span>;
+        <span class="kw">int</span> currentSum = <span class="num">0</span>;
+
+        <span class="kw">for</span> (<span class="kw">int</span> num : nums) {
+            <span class="kw">if</span> (currentSum + num &lt;= maxSum) {
+                currentSum += num;              <span class="cmt">// Same partition</span>
+            } <span class="kw">else</span> {
+                partitions++;                   <span class="cmt">// New partition</span>
+                currentSum = num;
+            }
+        }
+        <span class="kw">return</span> partitions &lt;= k;
+    }
+
+    <span class="kw">int</span> <span class="fn">splitArray</span>(vector&lt;<span class="kw">int</span>&gt;&amp; nums, <span class="kw">int</span> k) {
+        <span class="kw">int</span> start = *max_element(nums.begin(), nums.end());
+        <span class="kw">int</span> end   = accumulate(nums.begin(), nums.end(), <span class="num">0</span>);
+        <span class="kw">int</span> answer = end;
+
+        <span class="kw">while</span> (start &lt;= end) {
+            <span class="kw">int</span> mid = start + (end - start) / <span class="num">2</span>;
+
+            <span class="kw">if</span> (<span class="fn">possible</span>(nums, k, mid)) {
+                answer = mid;                   <span class="cmt">// Works! Try smaller</span>
+                end = mid - <span class="num">1</span>;
+            } <span class="kw">else</span> {
+                start = mid + <span class="num">1</span>;              <span class="cmt">// Need larger sum</span>
+            }
+        }
+        <span class="kw">return</span> answer;
+    }
+};</pre>
+
+<div class="box box-dryrun">
+    <span class="box-label">Dry Run: nums = [7,2,5,10,8], k = 2</span>
+    <table>
+        <tr><th>Iter</th><th>Start</th><th>End</th><th>Mid</th><th>Partitions</th><th>Valid?</th><th>Action</th></tr>
+        <tr><td>1</td><td>10</td><td>32</td><td>21</td><td>P1: 7+2+5=14, P2: 10+8=18 &rarr; 2</td><td style="color:#2D6A4F;">Yes</td><td>ans=21, end=20</td></tr>
+        <tr><td>2</td><td>10</td><td>20</td><td>15</td><td>7+2+5=14, +10&gt;15 &rarr; 3 parts</td><td style="color:#A53F3F;">No</td><td>start=16</td></tr>
+        <tr><td>3</td><td>16</td><td>20</td><td>18</td><td>P1: 7+2+5=14, P2: 10+8=18 &rarr; 2</td><td style="color:#2D6A4F;">Yes</td><td>ans=18, end=17</td></tr>
+        <tr><td>4</td><td>16</td><td>17</td><td>16</td><td>3 partitions needed</td><td style="color:#A53F3F;">No</td><td>start=17</td></tr>
+        <tr><td>5</td><td>17</td><td>17</td><td>17</td><td>3 partitions needed</td><td style="color:#A53F3F;">No</td><td>start=18</td></tr>
+    </table>
+    <p style="text-align:center; font-weight:700; color:#2D6A4F; margin-top:6px;">Final Answer = 18</p>
+</div>
+
+<div class="box box-takeaway">
+    <span class="box-label">Pattern Transfer</span>
+    <p>LeetCode 410, GFG Painter's Partition, aur LeetCode 1011 &mdash; yeh teeno <strong>same code</strong> hain bas problem statement alag. Interview mein agar ek aata hai toh doosra automatically samajh aa jaayega. Bas yeh realize karna hai ki "partition karna hai with a limit" = Binary Search on Answer.</p>
+</div>
+
+<div class="ornament">&#9670; &#9670; &#9670;</div>
+
+<!-- ==================== PROBLEM 5 ==================== -->
+<h2>Problem 5: Aggressive Cows</h2>
+<span class="badge badge-hard">HARD</span>
+<span class="badge badge-time">O(n log n + n log D)</span>
+<span class="badge badge-space">O(1)</span>
+
+<div class="box box-problem">
+    <span class="box-label">Problem Statement</span>
+    <p><code class="inline">stalls[]</code> mein stalls ki positions hain aur <code class="inline">cows</code> number of cows hain. Saari cows stalls mein place karni hain such that <strong>minimum distance between any two cows is maximized</strong>. Largest possible minimum distance return karo.</p>
+    <p style="margin-top:6px;"><strong>Example:</strong> stalls = [1,2,4,8,9], cows = 3 &rarr; Output: 3 (Cow1&rarr;1, Cow2&rarr;4, Cow3&rarr;8. Min distance = 3)</p>
+</div>
+
+<div class="box box-intuition">
+    <span class="box-label">Core Intuition</span>
+    <p>Yeh pehle 4 problems se <strong>ulta</strong> hai. Wahaan hum <code class="inline">minimum valid answer</code> dhoondh rahe the (Type A). Yahaan hum <code class="inline">maximum valid answer</code> dhoondh rahe hain (Type B). Monotonicity opposite direction mein hai: chota distance = easy to place, bada distance = hard to place. Search space: [1, last - first].</p>
+    <p style="margin-top:4px;"><strong>Key difference:</strong> Valid milne pe <code class="inline">low = mid + 1</code> (aur bada try karo), invalid pe <code class="inline">high = mid - 1</code>.</p>
+</div>
+
+<div class="box box-workflow">
+    <span class="box-label">Search Space &amp; Validation</span>
+    <ul class="compact">
+        <li><strong>Step 0 (CRITICAL):</strong> <code class="inline">sort(stalls)</code> &mdash; Bina sort kare greedy placement kaam nahi karega.</li>
+        <li><strong>Low:</strong> <code class="inline">1</code> &mdash; Minimum ek unit distance.</li>
+        <li><strong>High:</strong> <code class="inline">stalls.back() - stalls.front()</code> &mdash; First aur last stall ke beech ka distance.</li>
+        <li><strong>Check:</strong> Pehli cow first stall pe rakho. Har aage ke stall pe check karo ki previous cow se distance <code class="inline">&ge; mid</code> hai. Agar haan, cow place karo.</li>
+    </ul>
+</div>
+
+<pre class="code-block"><span class="cmt">// GFG / SPOJ - Aggressive Cows</span>
+<span class="kw">class</span> <span class="ty">Solution</span> {
+<span class="kw">public</span>:
+    <span class="kw">bool</span> <span class="fn">possible</span>(vector&lt;<span class="kw">int</span>&gt;&amp; stalls, <span class="kw">int</span> cows, <span class="kw">int</span> distance) {
+        <span class="kw">int</span> placed = <span class="num">1</span>;                     <span class="cmt">// First cow at first stall</span>
+        <span class="kw">int</span> lastPosition = stalls[<span class="num">0</span>];
+
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt; stalls.size(); i++) {
+            <span class="kw">if</span> (stalls[i] - lastPosition &gt;= distance) {
+                placed++;                       <span class="cmt">// Place next cow</span>
+                lastPosition = stalls[i];       <span class="cmt">// Update position</span>
+            }
+        }
+        <span class="kw">return</span> placed &gt;= cows;
+    }
+
+    <span class="kw">int</span> <span class="fn">aggressiveCows</span>(vector&lt;<span class="kw">int</span>&gt;&amp; stalls, <span class="kw">int</span> cows) {
+        sort(stalls.begin(), stalls.end());     <span class="cmt">// MUST SORT!</span>
+
+        <span class="kw">int</span> start = <span class="num">1</span>;
+        <span class="kw">int</span> end   = stalls.back() - stalls.front();
+        <span class="kw">int</span> answer = <span class="num">0</span>;
+
+        <span class="kw">while</span> (start &lt;= end) {
+            <span class="kw">int</span> mid = start + (end - start) / <span class="num">2</span>;
+
+            <span class="kw">if</span> (<span class="fn">possible</span>(stalls, cows, mid)) {
+                answer = mid;                   <span class="cmt">// Works! Try LARGER</span>
+                start = mid + <span class="num">1</span>;              <span class="cmt">// Go RIGHT</span>
+            } <span class="kw">else</span> {
+                end = mid - <span class="num">1</span>;                <span class="cmt">// Need smaller distance</span>
+            }
+        }
+        <span class="kw">return</span> answer;
+    }
+};</pre>
+
+<div class="box box-dryrun">
+    <span class="box-label">Dry Run: stalls = [1,2,4,8,9], cows = 3</span>
+    <table>
+        <tr><th>Iter</th><th>Start</th><th>End</th><th>Mid</th><th>Cows Placed</th><th>Valid?</th><th>Action</th></tr>
+        <tr><td>1</td><td>1</td><td>8</td><td>4</td><td>1&rarr;4&rarr;8 = 2 cows</td><td style="color:#A53F3F;">No</td><td>end=3</td></tr>
+        <tr><td>2</td><td>1</td><td>3</td><td>2</td><td>1&rarr;4&rarr;8 = 3 cows</td><td style="color:#2D6A4F;">Yes</td><td>ans=2, start=3</td></tr>
+        <tr><td>3</td><td>3</td><td>3</td><td>3</td><td>1&rarr;4&rarr;8 = 3 cows</td><td style="color:#2D6A4F;">Yes</td><td>ans=3, start=4</td></tr>
+        <tr><td>4</td><td>4</td><td>3</td><td>&mdash;</td><td colspan="3" style="text-align:center;">Loop ends (start &gt; end)</td></tr>
+    </table>
+    <p style="text-align:center; font-weight:700; color:#2D6A4F; margin-top:6px;">Final Answer = 3</p>
+</div>
+
+<div class="box box-warning">
+    <span class="box-label">Critical Warning</span>
+    <p><strong>Sort karna mat bhoolna!</strong> Bina sort kare greedy placement galat hoga. Is problem mein pehli cow hamesha first stall pe jaati hai &mdash; isliye sort zaroori hai. Aur valid milne pe <code class="inline">start = mid + 1</code> karte hain (right jaate hain), kyunki hum <strong>maximum</strong> dhoondh rahe hain.</p>
+</div>
+
+<div class="ornament">&#9670; &#9670; &#9670;</div>
+
+<!-- ==================== COMPARISON MATRIX ==================== -->
+<h2>Pattern Comparison Matrix</h2>
+
+<div class="diagram no-break">
+    <table style="font-size:9.5px;">
+        <tr>
+            <th>Problem</th>
+            <th>Type</th>
+            <th>Low</th>
+            <th>High</th>
+            <th>Check Logic</th>
+            <th>Valid &rarr;</th>
+            <th>Time</th>
+        </tr>
+        <tr>
+            <td><strong>Painter's Partition</strong></td>
+            <td style="color:#2D6A4F;">Minimize Max</td>
+            <td>max(board)</td>
+            <td>sum(board)</td>
+            <td>Greedy accumulate, count painters</td>
+            <td>high = mid-1</td>
+            <td>O(n log sum)</td>
+        </tr>
+        <tr>
+            <td><strong>Ship Packages</strong></td>
+            <td style="color:#2D6A4F;">Minimize Max</td>
+            <td>max(wt)</td>
+            <td>sum(wt)</td>
+            <td>Greedy accumulate, count days</td>
+            <td>high = mid-1</td>
+            <td>O(n log sum)</td>
+        </tr>
+        <tr>
+            <td><strong>Koko Bananas</strong></td>
+            <td style="color:#2D6A4F;">Minimize Max</td>
+            <td>1</td>
+            <td>max(pile)</td>
+            <td>Ceil(pile/speed), sum hours</td>
+            <td>high = mid-1</td>
+            <td>O(n log Max)</td>
+        </tr>
+        <tr>
+            <td><strong>Split Array</strong></td>
+            <td style="color:#2D6A4F;">Minimize Max</td>
+            <td>max(num)</td>
+            <td>sum(num)</td>
+            <td>Greedy accumulate, count partitions</td>
+            <td>high = mid-1</td>
+            <td>O(n log sum)</td>
+        </tr>
+        <tr style="background:#FDF8F8;">
+            <td><strong>Aggressive Cows</strong></td>
+            <td style="color:#3A5F80;"><strong>Maximize Min</strong></td>
+            <td>1</td>
+            <td>last-first</td>
+            <td>Greedy place, check distance</td>
+            <td><strong>start = mid+1</strong></td>
+            <td>O(n log n + n log D)</td>
+        </tr>
+    </table>
+</div>
+
+<div class="box box-interview">
+    <span class="box-label">Interview Tips &amp; Follow-ups</span>
+    <ul class="compact">
+        <li><strong>Pattern Recognition:</strong> Jab bhi "minimum maximum" ya "maximum minimum" dikhe, socho Binary Search on Answer.</li>
+        <li><strong>Follow-up 1:</strong> "Kya hum DP se kar sakte hain?" &mdash; Haan kar sakte hain O(n&sup2;k) mein, par binary search O(n log sum) mein optimal hai.</li>
+        <li><strong>Follow-up 2:</strong> "Kya check function hamesha greedy hoga?" &mdash; Mostly haan, kyunki monotonicity greedy ko enable karti hai.</li>
+        <li><strong>Follow-up 3:</strong> "Koko mein hours long long kyun?" &mdash; Piles ki values badi ho sakti hain (10<sup>9</sup>), aur n piles hain toh sum INT_MAX cross kar sakta hai.</li>
+        <li><strong>Trick Question:</strong> "Painter's mein painters &gt; boards pe kya return karna chahiye?" &mdash; -1, kyunki har painter ko kam se kam ek board chahiye.</li>
+    </ul>
+</div>
+
+<div class="ornament">&#9670; &#9670; &#9670;</div>
+
+<!-- ==================== CHEATSHEET ==================== -->
+<div class="cheatsheet no-break">
+    <div class="cheatsheet-title">&#9670; QUICK REVISION CHEATSHEET &#9670;</div>
+    <div class="cheatsheet-grid">
+        <div class="cs-item">
+            <strong>Pattern Trigger Words</strong><br>
+            "minimize maximum", "maximize minimum", "at most K groups", "within D days", "minimum speed/capacity"
+        </div>
+        <div class="cs-item">
+            <strong>Universal Template</strong><br>
+            low = minPossible; high = maxPossible;<br>
+            while(low &le; high) { mid = low + (high-low)/2;<br>
+            if(valid(mid)) { ans = mid; /* TypeA: high=mid-1, TypeB: low=mid+1 */ }<br>
+            else { /* opposite */ } }
+        </div>
+        <div class="cs-item">
+            <strong>Type A: Minimize Max (4 problems)</strong><br>
+            Valid &rarr; high = mid - 1 (chota dhoondo)<br>
+            Invalid &rarr; low = mid + 1<br>
+            Painter, Ship, Koko, Split Array
+        </div>
+        <div class="cs-item">
+            <strong>Type B: Maximize Min (1 problem)</strong><br>
+            Valid &rarr; low = mid + 1 (bada dhoondo)<br>
+            Invalid &rarr; high = mid - 1<br>
+            Aggressive Cows (SORT first!)
+        </div>
+        <div class="cs-item">
+            <strong>Greedy Check Functions</strong><br>
+            Accumulate until limit &rarr; count groups (Painter/Ship/Split)<br>
+            Sum of ceil(pile/speed) (Koko)<br>
+            Place at first valid stall (Cows)
+        </div>
+        <div class="cs-item">
+            <strong>Common Mistakes (Red Flags)</strong><br>
+            <span style="color:#A53F3F;">&times;</span> Sorting bhool jaana (Cows)<br>
+            <span style="color:#A53F3F;">&times;</span> int overflow (use long long)<br>
+            <span style="color:#A53F3F;">&times;</span> Type B mein direction galat<br>
+            <span style="color:#A53F3F;">&times;</span> Edge case: painters &gt; boards
+        </div>
+        <div class="cs-item">
+            <strong>Time Complexity</strong><br>
+            All Type A: O(n &times; log(sum)) or O(n &times; log(max))<br>
+            Cows: O(n log n + n log D) due to sorting<br>
+            Space: O(1) for all
+        </div>
+        <div class="cs-item">
+            <strong>Interview Must-Say</strong><br>
+            "This is Binary Search on Answer. I define a search space of possible answers, then use a greedy validation function to check feasibility. The monotonic property guarantees correctness."
+        </div>
+    </div>
+</div>
+
+<div class="watermark">Harshal Chauhan</div>
+<div class="signature">MADE BY HARSHAL CHAUHAN</div>
+
+</body>
+</html>
