@@ -56,7 +56,7 @@ strike-dsa/
 
 ---
 
-# 📚 Course Curriculum
+# 📚 Course Curriculum 
 
 ## Phase 1 — C++ Basics
 
