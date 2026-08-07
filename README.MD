@@ -22,7 +22,7 @@ Every lecture is organized into separate folders to make navigation simple and f
 
 ---
 
-# 🗂 Repository Structure
+# 🗂 Repository Structure 
 
 ```text
 strike-dsa/
