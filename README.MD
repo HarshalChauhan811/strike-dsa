@@ -1,4 +1,4 @@
-  # 🚀 Strike DSA Journey
+# 🚀 Strike DSA Journey
 
 > **Complete Data Structures & Algorithms Journey in C++**
 > Lecture-wise Notes, Code, Problem Solving, OOP, STL, Graphs, Greedy, Dynamic Programming & More.
