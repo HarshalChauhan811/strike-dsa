@@ -5,7 +5,7 @@
 
 ---
 
-## 📖 About This Repository
+## 📖 About This Repository 
 
 This repository contains my complete learning journey of the **Strike DSA Course**.
 
