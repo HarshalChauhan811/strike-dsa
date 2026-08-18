@@ -7,7 +7,7 @@ using namespace std;
         Input Array Is Sorted
 ====================================================
 
-Problem
+Problem 
 ----------------------------------------------------
 Given a 1-indexed sorted array `numbers` and an
 integer `target`, return the indices (1-based)
