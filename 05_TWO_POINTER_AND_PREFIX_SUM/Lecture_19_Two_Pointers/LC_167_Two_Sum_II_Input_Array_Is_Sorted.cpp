@@ -193,7 +193,7 @@ public:
             }
 
             // Need Smaller Sum
-            else {
+            else { 
                 right--;
             }
         }
