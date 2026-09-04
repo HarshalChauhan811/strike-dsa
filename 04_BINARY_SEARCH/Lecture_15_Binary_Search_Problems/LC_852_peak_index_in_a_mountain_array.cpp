@@ -182,7 +182,7 @@ public:
             }
             // Peak is at mid or on the left side
             else {
-                end = mid;
+                end = mid; 
             }
         }
 
