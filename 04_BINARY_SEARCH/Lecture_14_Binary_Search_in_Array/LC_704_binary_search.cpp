@@ -74,7 +74,7 @@ avoids this problem.
 Time Complexity
 ----------------------------------------------------
 Best Case    : O(1)
-Average Case : O(log n)
+Average Case : O(log n)   
 Worst Case   : O(log n)
 
 ----------------------------------------------------
@@ -99,13 +99,13 @@ public:
         int low = 0;
         int high = nums.size() - 1;
 
-        while (low <= high) {
+        while (low <= high) {  
 
             // Calculate middle index safely
             int mid = low + (high - low) / 2;
 
-            // Target Found
-            if (nums[mid] == target)
+            // Target Found  
+            if (nums[mid] == target)  
                 return mid;
 
             // Search Right Half
