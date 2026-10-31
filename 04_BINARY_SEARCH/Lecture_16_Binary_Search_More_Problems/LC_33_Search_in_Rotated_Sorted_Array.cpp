@@ -85,7 +85,7 @@ Traverse the array one by one.
 If the current element matches the target,
 return its index.
 
-Otherwise continue searching.
+Otherwise continue searching.   
 
 Algorithm
 ---------
@@ -109,7 +109,7 @@ public:
         }
 
         return -1;
-    }
+    }   
 };
 
 Time Complexity
